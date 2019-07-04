@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aspectj>
+    <aspects>
+        <aspect name="org.springframework.transaction.aspectj.AnnotationTransactionAspect" />
+        <aspect name="org.springframework.transaction.aspectj.JtaAnnotationTransactionAspect" />
+    </aspects>
+    <weaver options="-XnoInline -Xreweavable -verbose -showWeaveInfo">
+        <include within="ru.ilb..*" />
+    </weaver>
+    
+</aspectj>

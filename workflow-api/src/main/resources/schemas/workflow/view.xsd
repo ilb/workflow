@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema elementFormDefault="qualified"
+            xmlns="urn:ru:ilb:workflow:view"
+            xmlns:core="urn:ru:ilb:workflow:core"
+            targetNamespace="urn:ru:ilb:workflow:view"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+>
+    <xsd:import namespace="urn:ru:ilb:workflow:core" schemaLocation="core.xsd"/>
+
+    <xsd:element name="processDefinition">
+        <xsd:annotation>
+            <xsd:documentation>Process definition</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="id" type="xsd:string"/>
+                <xsd:element name="name" type="xsd:string"/>
+                <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="definitionName" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="version" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="packageId" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="enabled" type="xsd:boolean" minOccurs="0"/>
+                <xsd:element ref="activityDefinition" minOccurs="0" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="processDefinitions">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="processDefinition" minOccurs="0" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="activityDefinition">
+        <xsd:annotation>
+            <xsd:documentation>Activity definition</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="id" type="xsd:string"/>
+                <xsd:element name="name" type="xsd:string"/>
+                <xsd:element name="type" type="core:activityType"/>
+                <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="icon" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="activityDefinitions">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="activityDefinition" minOccurs="0" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="processInstance">
+        <xsd:annotation>
+            <xsd:documentation>Process instance</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="id" type="xsd:string"/>
+                <xsd:element name="name" type="xsd:string"/>
+                <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="processFactoryName" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="processDefinitionId" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="priority" type="xsd:int" minOccurs="0"/>
+                <xsd:element name="creationTime" type="xsd:dateTime" minOccurs="0"/>
+                <xsd:element name="startTime" type="xsd:dateTime" minOccurs="0"/>
+                <xsd:element name="lastStateTime" type="xsd:dateTime" minOccurs="0"/>
+                <xsd:element name="limitTime" type="xsd:dateTime" minOccurs="0"/>
+                <xsd:element name="state" type="processInstanceState" minOccurs="0"/>
+
+                <xsd:element ref="activityInstance"  minOccurs="0" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="processInstances">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="processInstance" minOccurs="0" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:complexType name="processInstanceState">
+        <xsd:annotation>
+            <xsd:documentation>Process instance state</xsd:documentation>
+        </xsd:annotation>
+
+        <xsd:sequence>
+            <xsd:element name="value" type="xsd:string"/>
+            <xsd:element name="open" type="xsd:boolean"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="activityInstanceState">
+        <xsd:annotation>
+            <xsd:documentation>Activity instance state</xsd:documentation>
+        </xsd:annotation>
+
+        <xsd:sequence>
+            <xsd:element name="value" type="xsd:string"/>
+            <xsd:element name="open" type="xsd:boolean"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:element name="activityInstance">
+        <xsd:annotation>
+            <xsd:documentation>Activity instance</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="id" type="xsd:string"/>
+                <xsd:element name="name" type="xsd:string"/>
+                <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="activityDefinitionId" type="xsd:string" />
+                <xsd:element name="processInstanceId" type="xsd:string" />
+                <xsd:element name="priority" type="xsd:int" minOccurs="0"/>
+                <xsd:element name="creationTime" type="xsd:dateTime" minOccurs="0"/>
+                <xsd:element name="startTime" type="xsd:dateTime" minOccurs="0"/>
+                <xsd:element name="lastStateTime" type="xsd:dateTime" minOccurs="0"/>
+                <xsd:element name="limitTime" type="xsd:dateTime" minOccurs="0"/>
+                <xsd:element name="state" type="activityInstanceState" minOccurs="0"/>
+                <xsd:element name="activityFormUrl" type="xsd:string"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="activityInstances">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="activityInstance" minOccurs="0" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="activityForm">
+        <xsd:annotation>
+            <xsd:documentation>Activity form data</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="activityInstance"/>
+                <xsd:element ref="activityAction" minOccurs="0" maxOccurs="unbounded"/>
+                <xsd:element ref="activityDossier" minOccurs="0"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+
+    <xsd:element name="processStep">
+        <xsd:annotation>
+            <xsd:documentation>Process step</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="key" type="xsd:string"/>
+                <xsd:element name="active" type="xsd:boolean" minOccurs="0"/>
+                <xsd:element name="disabled" type="xsd:boolean" minOccurs="0"/>
+                <xsd:element name="completed" type="xsd:boolean" minOccurs="0"/>
+                <xsd:element name="icon" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="title" type="xsd:string"/>
+                <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="activityId" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+
+    <xsd:element name="processSteps">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="processStep" minOccurs="0" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="activityAction">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element minOccurs="0" name="code" type="core:activityActionCode"/>
+                <xsd:element minOccurs="0" name="name" type="xsd:string"/>
+                <xsd:element minOccurs="0" name="icon" type="xsd:string"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="activityDossier">
+        <xsd:annotation>
+            <xsd:documentation>Activity dossier</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="dossierKey" type="xsd:string"/>
+                <xsd:element name="dossierPackage" type="xsd:string"/>
+                <xsd:element name="dossierCode" type="xsd:string"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>

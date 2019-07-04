@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema elementFormDefault="qualified"
+            xmlns="urn:ru:ilb:workflow:core"
+            targetNamespace="urn:ru:ilb:workflow:core"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+
+    <xsd:simpleType name="activityType">
+        <xsd:annotation>
+            <xsd:documentation>Activity type (XPDL based)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="NO">
+                <xsd:annotation>
+                    <xsd:documentation>manual activity</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="SUBFLOW">
+                <xsd:annotation>
+                    <xsd:documentation>subflow activity</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="BLOCK">
+                <xsd:annotation>
+                    <xsd:documentation>block activity</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="EVENT_START">
+                <xsd:annotation>
+                    <xsd:documentation>event start</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="EVENT_END">
+                <xsd:annotation>
+                    <xsd:documentation>event end</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <xsd:simpleType name="activityActionCode">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="ABORT"/>
+            <xsd:enumeration value="COMPLETE"/>
+            <xsd:enumeration value="CREATE"/>
+            <xsd:enumeration value="RESUME"/>
+            <xsd:enumeration value="START"/>
+            <xsd:enumeration value="STOP"/>
+            <xsd:enumeration value="SUSPEND"/>
+            <xsd:enumeration value="TERMINATE"/>        
+        </xsd:restriction>
+
+    </xsd:simpleType>
+
+</xsd:schema>

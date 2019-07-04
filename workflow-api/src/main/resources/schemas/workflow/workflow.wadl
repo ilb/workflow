@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../../stylesheets/wadldoc/wadl2html.xsl"?>
+<application 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:view="urn:ru:ilb:workflow:view"
+    xmlns:global="urn:ru:ilb:global"
+    xmlns="http://wadl.dev.java.net/2009/02"
+>
+	 
+    <doc title="BystroBank XPIL API">
+        <html:p>XPIL API</html:p>
+    </doc>
+    <grammars>
+        <include href="global.xsd" />
+        <include href="view.xsd" />
+    </grammars>
+    
+    <resource_type id="processDefinitionResource">
+        <doc title="processDefinition resource">
+
+        </doc>
+        <method name="GET" id="getProcessDefinition">
+            <doc>get processDefinition instance</doc>
+            <request></request>
+            <response>
+                <representation mediaType="application/xml" element="view:processDefinition">
+                    <doc>processDefinition data</doc>
+                </representation>
+                <representation mediaType="application/json">
+                    <doc>processDefinition data</doc>
+                </representation>
+            </response>
+        </method>
+        <resource path="activityDefinitions">
+            <resource path="{activityDefinitionId}" id="activityDefinitionResource" type="#activityDefinitionResource">
+                <param name="activityDefinitionId" style="template" type="xsd:string">
+                    <doc>activity definition</doc>
+                </param>
+            </resource>
+        </resource>
+    </resource_type>
+    
+    <resource_type id="activityDefinitionResource">
+        <doc title="activityDefinition resource">
+
+        </doc>
+        <method name="GET" id="getActivityDefinition">
+            <doc>get processDefinition instance</doc>
+            <request></request>
+            <response>
+                <representation mediaType="application/xml" element="view:activityDefinition">
+                    <doc>activityDefinition data</doc>
+                </representation>
+                <representation mediaType="application/json">
+                    <doc>activityDefinition data</doc>
+                </representation>
+            </response>
+        </method>
+    </resource_type>
+    
+    <resource_type id="processStepsResource">
+        <doc>Шаги процесса</doc>
+        <method name="GET" id="getProcessSteps">
+            <response status="200">
+                <representation mediaType="application/xml" element="view:processSteps"/>
+                <representation mediaType="application/json"/>
+            </response>
+        </method>
+    </resource_type>
+
+    <resource_type id="jsonSchemaResource">
+        <doc>Схема данных процесса</doc>
+        <method name="GET" id="getJsonSchema">
+            <response status="200">
+                <representation mediaType="application/schema+json"/>
+            </response>
+        </method>
+    </resource_type>
+    <resource_type id="activityFormResource">
+        <doc>Форма данных процесса</doc>
+        <method name="GET" id="getActivityForm">
+            <response status="200">
+                <representation mediaType="application/json">
+                </representation>
+            </response>
+        </method>
+    </resource_type>
+    <resource_type id="processContextResource">
+        <doc>Форма данных процесса</doc>
+        <method name="GET" id="getProcessContext">
+            <response status="200">
+                <representation mediaType="application/json"/>
+            </response>
+        </method>
+    </resource_type>
+
+    <resource_type id="processInstanceResource">
+        <doc title="processInstance resource">
+
+        </doc>
+        <method name="GET" id="getProcessInstance">
+            <doc>get process instance</doc>
+            <request></request>
+            <response>
+                <representation mediaType="application/xml" element="view:processInstance">
+                    <doc>processInstance data</doc>
+                </representation>
+                <representation mediaType="application/json">
+                    <doc>processInstance data</doc>
+                </representation>
+            </response>
+        </method>
+        <resource path="activityInstances">
+            <resource path="{activityInstanceId}" id="activityInstanceResource" type="#activityInstanceResource">
+                <param name="activityInstanceId" style="template" type="xsd:string">
+                    <doc>activity definition</doc>
+                </param>
+            </resource>
+        </resource>
+        <resource path="processDefinition" id="processDefinitionResource" type="#processDefinitionResource"/>
+        <resource path="processSteps" id="processStepsResource" type="#processStepsResource"/>
+        <resource path="jsonSchema" id="jsonSchemaResource" type="#jsonSchemaResource"/>
+        <resource path="activityForm" id="activityFormResource" type="#activityFormResource">
+            <doc>current activity form</doc>
+        </resource>
+        <resource path="processContext" id="processContextResource" type="#processContextResource"/>
+    </resource_type>
+    
+    <resource_type id="activityInstanceResource">
+        <doc title="activityInstance resource">
+
+        </doc>
+        <method name="GET" id="getActivityInstance">
+            <doc>get activity instance</doc>
+            <request></request>
+            <response>
+                <representation mediaType="application/xml" element="view:activityInstance">
+                    <doc>activity instance data</doc>
+                </representation>
+                <representation mediaType="application/json">
+                    <doc>activity instance data</doc>
+                </representation>
+            </response>
+        </method>
+        <resource path="complete">
+            <method name="POST" id="completeActivity">
+                <request>
+                    <representation mediaType="application/xml" element="global:map">
+                        <doc>updated activity context</doc>
+                    </representation>
+                    <representation mediaType="application/json">
+                        <doc>updated activity context</doc>
+                    </representation>
+                </request>
+                <response status="200">
+                    <representation mediaType="text/plain">
+                        <param name="stateChanged" style="plain" type="xsd:boolean">
+                            <doc>flag indicator activity state changed</doc>
+                        </param>
+                    </representation>
+                </response>
+            </method>
+        </resource>
+        <resource path="completeAndNext">
+            <doc>
+                complete and get next activity data
+            </doc>
+            <method name="POST" id="completeAndNextActivity">
+                <request>
+                    <representation mediaType="application/xml" element="global:map">
+                        <doc>updated activity context</doc>
+                    </representation>
+                    <representation mediaType="application/json">
+                        <doc>updated activity context</doc>
+                    </representation>
+                </request>
+                <response status="200">
+                    <representation mediaType="application/xml" element="view:activityInstance">
+                        <doc>next activity instance data</doc>
+                    </representation>
+                    <representation mediaType="application/json">
+                        <doc>next activity instance data</doc>
+                    </representation>
+                </response>
+
+            </method>
+        </resource>
+
+        <resource path="jsonSchema" id="jsonSchemaResource" type="#jsonSchemaResource"/>
+        <resource path="activityForm" id="activityFormResource" type="#activityFormResource"/>
+        <resource path="processContext" id="processContextResource" type="#processContextResource"/>
+    </resource_type>
+    
+    <resources base="web">
+        <resource path="processDefinitions">
+            <method name="GET" id="getProcessDefinitions">
+                <doc>get processDefinitions instance</doc>
+                <request>
+                    <param name="enabled" style="query" type="xsd:boolean">
+                        <doc>show enabled definitions</doc>
+                    </param>
+
+                    <param name="packageId" style="query" type="xsd:string">
+                        <doc>packageId</doc>
+                    </param>
+                    <param name="versionId" style="query" type="xsd:string">
+                        <doc>versionId</doc>
+                    </param>
+                    <param name="processDefinitionId" style="query" type="xsd:string">
+                        <doc>processDefinitionId</doc>
+                    </param>
+                </request>
+                <response status="200">
+                    <representation mediaType="application/xml" element="view:processDefinitions">
+                        <doc>processDefinitions data</doc>
+                    </representation>
+                    <representation mediaType="application/json">
+                        <doc>processDefinitions data</doc>
+                    </representation>
+                </response>
+            </method>
+
+            <resource path="{processDefinitionId}" id="processDefinitionResource" type="#processDefinitionResource">
+                <param name="processDefinitionId" style="template" type="xsd:string">
+                    <doc>processDefinitionId</doc>
+                </param>
+            </resource>
+
+        </resource>
+        <resource path="processInstances">
+            <method name="GET" id="getProcessInstances">
+                <doc>get processInstances instance</doc>
+                <request>
+                    <param name="open" style="query" type="xsd:boolean">
+                        <doc>show open (working) process</doc>
+                    </param>
+                    <param name="packageId" style="query" type="xsd:string">
+                        <doc>packageId</doc>
+                    </param>
+                    <param name="versionId" style="query" type="xsd:string">
+                        <doc>versionId</doc>
+                    </param>
+                    <param name="processDefinitionId" style="query" type="xsd:string">
+                        <doc>processDefinitionId</doc>
+                    </param>
+                </request>
+                <response>
+                    <representation mediaType="application/xml" element="view:processInstances">
+                        <doc>processInstances data</doc>
+                    </representation>
+                    <representation mediaType="application/json">
+                        <doc>processInstances data</doc>
+                    </representation>
+                </response>
+            </method>
+            <method name="POST" id="createProcessInstance">
+                <doc>create process instance</doc>
+                <request>
+                    <param name="packageId" style="query" type="xsd:string">
+                        <doc>packageId</doc>
+                    </param>
+                    <param name="versionId" style="query" type="xsd:string">
+                        <doc>versionId</doc>
+                    </param>
+                    <param name="processDefinitionId" style="query" type="xsd:string">
+                        <doc>processDefinitionId</doc>
+                    </param>
+                    <representation mediaType="application/xml" element="global:map">
+                        <doc>processInstances data</doc>
+                    </representation>
+                    <representation mediaType="application/json">
+                        <doc>processInstances data</doc>
+                    </representation>
+
+                </request>
+                <response status="200">
+                    <representation mediaType="text/plain">
+                        <param name="processId" style="plain" type="xsd:string">
+                            <doc>processId</doc>
+                        </param>
+                    </representation>
+                </response>
+            </method>
+
+
+            <resource path="{processInstanceId}" id="processInstanceResource" type="#processInstanceResource">
+                <param name="processInstanceId" style="template" type="xsd:string">
+                    <doc>processInstanceId</doc>
+                </param>
+            </resource>
+
+        </resource>
+
+    </resources>
+</application> 

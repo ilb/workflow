@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../../stylesheets/wadldoc/wadl2html.xsl"?>
+<application 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:xpil="http://www.together.at/2006/XPIL1.0"
+    xmlns:view="urn:ru:ilb:workflow:view"
+    xmlns="http://wadl.dev.java.net/2009/02"
+>
+	 
+    <doc title="BystroBank XPIL API">
+        <html:p>XPIL API</html:p>
+    </doc>
+    <grammars>
+        <include href="xpil.xsd" />
+    </grammars>
+    <resources base="web">
+        <resource path="processes">
+            <resource path="workList">
+                <doc>
+                    Рабочий лист
+                </doc>
+                <method name="GET" id="getWorkList">
+                    <request>
+                        <param name="x-remote-user" type="xsd:string" style="header"/>
+                        <param name="xpilprop" style="query" repeating="true"/>
+                        <param name="filter" type="xsd:string" style="query" default="state==open*;assignment==ACCEPTED_AND_NON_ACCEPTED;limit==100"/>
+                    </request>
+                    <response status="200">
+                        <representation mediaType="application/xml" element="xpil:WorkflowProcessInstances"/>
+                        <representation mediaType="application/json"/>
+                        <representation mediaType="application/xhtml+xml"/>
+                    </response>
+                </method>
+                <method name="POST">
+                    <request>
+                        <param name="filter" type="xsd:string" style="query" default="state==open*;assignment==ACCEPTED_AND_NON_ACCEPTED"/>
+                        <param name="state" type="xsd:string" style="query"/>
+                    </request>
+                    <response status="204"/>
+                </method>
+            </resource>
+            <resource path="checkDeadlines">
+                <method name="POST" id="checkDeadlines">
+                    <request>
+                        <param name="filter" type="xsd:string" style="query"/>
+                        <param name="async" style="query" type="xsd:boolean" default="false"/>
+                    </request>
+                    <response status="303">
+                        <param name="location" style="header" type="xsd:anyURI" required="true"/>
+                    </response>
+                </method>
+            </resource>
+
+            <method name="POST" id="createProcessInstance">
+                <doc>Создать процесс</doc>
+                <request>
+                    <param name="redirect" type="xsd:boolean" style="query"/>
+                    <param name="x-remote-user" type="xsd:string" style="header"/>
+                    <representation mediaType="application/xml" element="xpil:WorkflowProcessInstance"/>
+                    <representation mediaType="application/json"/>
+                </request>
+                <response status="200">
+                    <representation mediaType="text/plain">
+                        <param name="location" style="header" type="xsd:anyURI" required="true"/>
+                    </representation>
+                </response>
+            </method>
+            <method name="POST" id="createProcessInstanceXml">
+                <doc>Создать процесс</doc>
+                <request>
+                    <param name="xpilprop" style="query" repeating="true"/>
+                    <param name="redirect" type="xsd:boolean" style="query"/>
+                    <param name="x-remote-user" type="xsd:string" style="header"/>
+                    <representation mediaType="application/xml" element="xpil:WorkflowProcessInstance"/>
+                    <representation mediaType="application/json"/>
+                </request>
+                <response status="200">
+                    <representation mediaType="application/xml" element="xpil:WorkflowProcessInstance"/>
+                    <representation mediaType="application/json"/>
+                </response>
+            </method>
+            <method name="GET" id="getProcessInstanceList">
+                <request>
+                    <param name="xpilprop" style="query" repeating="true"/>
+                    <param name="filter" type="xsd:string" style="query"/>
+                </request>
+                <response status="200">
+                    <representation mediaType="application/xml" element="xpil:WorkflowProcessInstances">
+                        <doc>Список процессов</doc>
+                    </representation>
+                    <representation mediaType="application/json"/>
+                    <representation mediaType="application/xhtml+xml"/>
+                    <representation mediaType="text/csv">
+                        <doc>Список процессов в CSV</doc>
+                    </representation>
+                </response>
+            </method>
+            <resource path="terminate">
+                <method name="POST" id="terminateProcessInstanceList">
+                    <request>
+                        <param name="filter" type="xsd:string" style="query" required="true"/>
+                    </request>
+                    <response status="200">
+                        <representation mediaType="text/plain">
+                            <doc>Количество удаленных процессов</doc>
+                        </representation>
+                    </response>
+                </method>
+            </resource>
+            <resource path="delete">
+                <method name="POST" id="deleteProcessInstanceList">
+                    <request>
+                        <param name="filter" type="xsd:string" style="query" required="true"/>
+                    </request>
+                    <response status="200">
+                        <representation mediaType="text/plain">
+                            <doc>Количество удаленных процессов</doc>
+                        </representation>
+                    </response>
+                </method>
+            </resource>
+            <resource path="{processId}">
+                <param name="processId" type="xsd:string" style="template"/>
+                <method name="GET" id="getProcess">
+                    <request>
+                        <param name="xpilprop" style="query" repeating="true"/>
+                    </request>
+                    <response status="200">
+                        <representation mediaType="application/xml" element="xpil:WorkflowProcessInstance"/>
+                        <representation mediaType="application/json"/>
+                        <representation mediaType="application/xhtml+xml"/>
+                    </response>
+                </method>
+                <method name="PUT" id="editProcess">
+                    <doc>Изменить данные процесса</doc>
+                    <request>
+                        <representation mediaType="application/xml" element="xpil:WorkflowProcessInstance"/>
+                        <representation mediaType="application/json"/>
+                    </request>
+                    <response status="204"/>
+                </method>
+                <resource path="graph">
+                    <method name="GET" id="getProcessGraph">
+                        <response status="200">
+                            <representation mediaType="image/jpeg">
+                                <doc>Графическое изображение процесса</doc>
+                            </representation>
+                        </response>
+                    </method>
+                </resource>
+                <resource path="history">
+                    <method name="GET" id="getProcessHistory">
+                        <response status="200">
+                            <representation mediaType="application/xml" element="xpil:ExtendedWorkflowFacilityInstance"/>
+                            <representation mediaType="application/json"/>
+                            <representation mediaType="application/xhtml+xml"/>
+                        </response>
+                    </method>
+                </resource>
+                <resource path="processLimit">
+                    <method name="POST" id="setProcessLimit">
+                        <request>
+                            <param name="limit" type="xsd:dateTime" style="query"/>
+                        </request>
+                        <response status="204"/>
+                    </method>
+                </resource>
+                <resource path="migrate">
+                    <method name="POST" id="migrateProcess">
+                        <response status="200">
+                            <representation mediaType="text/plain">
+                                <doc>Мигрировать версию процесса</doc>
+                            </representation>
+                        </response>
+                    </method>
+                </resource>
+                <resource path="terminate">
+                    <method name="POST" id="terminateProcessInstance">
+                        <doc>Удалить процесс</doc>
+                        <response status="204"/>
+                    </method>
+                </resource>
+                <resource path="complete">
+                    <method name="POST" id="completeProcessInstance">
+                        <request>
+                            <param name="x-remote-user" type="xsd:string" style="header"/>
+                            <param name="redirect" type="xsd:boolean" style="query"/>
+                        </request>
+                        <doc>Завершить процесс</doc>
+                        <response status="204"/>
+                    </method>
+                </resource>
+                <resource path="checkDeadlines">
+                    <method name="POST" id="checkProcessDeadlines">
+                        <response status="200">
+                            <representation mediaType="text/plain">
+                                <doc>Проверить дедлайны процесса</doc>
+                            </representation>
+                        </response>
+                    </method>
+                </resource>
+                <resource path="reevaluateAssignments">
+                    <method name="POST" id="reevaluateAssignments">
+                        <response status="200">
+                            <representation mediaType="text/plain">
+                                <doc>Пересчитать назначения</doc>
+                            </representation>
+                        </response>
+                    </method>
+                </resource>
+                <resource path="datainstances">
+                    <resource path="{dataInstanceId}">
+                        <param name="dataInstanceId" type="xsd:string" style="template"/>
+                        <method name="GET" id="getDataInstance">
+                            <response>
+                                <representation mediaType="application/xml" element="xpil:DataInstance"/>
+                                <representation mediaType="application/json"/>
+                            </response>
+                        </method>
+                        <method name="POST" id="addDataInstance">
+                            <request>
+                                <representation mediaType="application/xml" element="xpil:DataInstance"/>
+                                <representation mediaType="application/json"/>
+                            </request>
+                            <response status="204"/>
+                        </method>
+                    </resource>
+                </resource>
+                <resource path="comments">
+                    <doc>Ресурс работы с комментариями процесса</doc>
+                    <method name="GET" id="getProcessComments">
+                        <response>
+                            <representation mediaType="application/xml" element="xpil:WorkflowProcessInstance"/>
+                            <representation mediaType="application/json"/>
+                            <representation mediaType="application/xhtml+xml"/>
+                        </response>
+                    </method>
+                    <method name="POST" id="addProcessComment">
+                        <request>
+                            <representation mediaType="application/xml" element="xpil:StringValue"/>
+                            <representation mediaType="application/json"/>
+                        </request>
+                        <response status="204"/>
+                    </method>
+                </resource>
+                <resource path="activities/{activityId}">
+                    <param name="activityId" type="xsd:string" style="template"/>
+                    <method name="GET" id="getActivity">
+                        <request>
+                            <param name="xpilprop" style="query" repeating="true"/>
+                            <param name="accept" style="query" type="xsd:boolean"/>
+                        </request>
+                        <response status="200">
+                            <representation mediaType="application/xml" element="xpil:WorkflowProcessInstance"/>
+                            <representation mediaType="application/json"/>
+                            <representation mediaType="application/xhtml+xml"/>
+                        </response>
+                    </method>
+                    <resource path="start">
+                        <method name="POST" id="startActivity">
+                            <doc>
+                                Запустить активити (activityId передавать definitionId)
+                            </doc>
+                            <request>
+                                <param name="x-remote-user" type="xsd:string" style="header"/>
+                            </request>
+                            <response status="200">
+                                <representation mediaType="text/plain">
+                                    <param name="location" style="header" type="xsd:anyURI" required="true"/>
+                                </representation>
+                            </response>
+                        </method>
+                    </resource>
+                    <resource path="finish">
+                        <method name="POST" id="finishActivity">
+                            <request>
+                                <param name="x-remote-user" type="xsd:string" style="header"/>
+                            </request>
+                            <response status="200">
+                                <representation mediaType="text/plain">
+                                    <param name="location" style="header" type="xsd:anyURI" required="true"/>
+                                </representation>
+                            </response>
+                        </method>
+                    </resource>                   
+                    <resource path="complete">
+                        <method name="POST" id="completeActivity">
+                            <request>
+                                <param name="x-remote-user" type="xsd:string" style="header"/>
+                                <param name="redirect" type="xsd:boolean" style="query"/>
+                            </request>
+                            <response status="200">
+                                <representation mediaType="text/plain">
+                                    <param name="location" style="header" type="xsd:anyURI" required="true"/>
+                                </representation>
+                            </response>
+                        </method>
+                    </resource>
+                    <resource path="accept">
+                        <method name="POST" id="acceptActivity">
+                            <request>
+                                <param name="x-remote-user" type="xsd:string" style="header"/>
+                            </request>
+                            <response status="200">
+                                <representation mediaType="text/plain">
+                                    <param name="location" style="header" type="xsd:anyURI" required="true"/>
+                                </representation>
+                            </response>
+                        </method>
+                    </resource>
+                    <resource path="unaccept">
+                        <method name="POST" id="unacceptActivity">
+                            <request>
+                                <param name="x-remote-user" type="xsd:string" style="header"/>
+                            </request>
+                            <response status="200">
+                                <representation mediaType="text/plain">
+                                    <param name="location" style="header" type="xsd:anyURI" required="true"/>
+                                </representation>
+                            </response>
+                        </method>
+                    </resource>
+                    <resource path="abort">
+                        <method name="POST" id="abortActivity">
+                            <request>
+                                <param name="x-remote-user" type="xsd:string" style="header"/>
+                            </request>
+                            <response status="200">
+                                <representation mediaType="text/plain">
+                                    <param name="location" style="header" type="xsd:anyURI" required="true"/>
+                                </representation>
+                            </response>
+                        </method>
+                    </resource>
+                    <resource path="terminate">
+                        <method name="POST" id="terminateActivity">
+                            <request>
+                                <param name="x-remote-user" type="xsd:string" style="header"/>
+                                <param name="redirect" type="xsd:boolean" style="query"/>
+                            </request>
+                            <response status="200">
+                                <representation mediaType="text/plain">
+                                    <param name="location" style="header" type="xsd:anyURI" required="true"/>
+                                </representation>
+                            </response>
+                        </method>
+                    </resource>
+                    <resource path="reassign">
+                        <method name="POST" id="reassignActivity">
+                            <request>
+                                <param name="sourceUser" type="xsd:string" style="query"/>
+                                <param name="targetUser" type="xsd:string" style="query"/>
+                            </request>
+                            <response status="204"/>
+                        </method>
+                    </resource>
+                    <method name="PUT" id="editActivity">
+                        <doc>
+                            Сохранить активити
+                        </doc>
+                        <request>
+                            <param name="redirect" type="xsd:boolean" style="query"/>
+                            <representation mediaType="application/xml" element="xpil:ActivityInstance"/>
+                            <representation mediaType="application/json"/>
+                        </request>
+                        <response status="200">
+                            <representation mediaType="text/plain">
+                                <param name="location" style="header" type="xsd:anyURI" required="true"/>
+                            </representation>
+                        </response>
+                    </method>
+                    <method name="PUT" id="editActivityXml">
+                        <doc>
+                            Сохранить активити и получить данные процесса
+                        </doc>
+                        <request>
+                            <param name="xpilprop" style="query" repeating="true"/>
+                            <param name="redirect" type="xsd:boolean" style="query"/>
+                            <representation mediaType="application/xml" element="xpil:ActivityInstance"/>
+                            <representation mediaType="application/json"/>
+                        </request>
+                        <response status="200">
+                            <representation mediaType="application/xml" element="xpil:WorkflowProcessInstance"/>
+                            <representation mediaType="application/json"/>
+                        </response>
+                    </method>
+                </resource>
+            </resource>
+        </resource>
+
+        <resource path="packages">
+            <method name="GET" id="list">
+                <response status="200">
+                    <representation mediaType="application/xml" element="xpil:PackageInstances"/>
+                    <representation mediaType="application/json"/>
+                    <representation mediaType="application/xhtml+xml"/>
+                </response>
+            </method>
+            <resource path="{packageId}">
+                <param name="packageId" type="xsd:string" style="template"/>
+                <method name="DELETE" id="deletePackage">
+                    <request>
+                        <param name="withProcesses" type="xsd:boolean" style="query"/>
+                    </request>
+                    <response status="204"/>
+                </method>
+                <resource path="processDefinitions">
+                    <resource path="{processDefinitionId}">
+                        <param name="processDefinitionId" type="xsd:string" style="template"/>
+                        <resource path="disable">
+                            <method name="POST" id="disableProcessDefinition">
+                                <response status="204"/>
+                            </method>
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resource>
+        <resource path="users">
+            <method name="GET" id="getUsers">
+                <response status="200">
+                    <representation mediaType="application/xml" element="xpil:Users"/>
+                    <representation mediaType="application/json"/>
+                </response>
+            </method>
+            <resource path="{userUid}">
+                <param name="userUid" type="xsd:string" style="template"/>
+                <method name="GET" id="getUser">
+                    <response status="200">
+                        <representation mediaType="application/xml" element="xpil:User"/>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="authorisedUser">
+                <method name="GET" id="getAuthorisedUser">
+                    <response status="200">
+                        <representation mediaType="application/xml" element="xpil:User"/>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+                <method name="GET" id="getAuthorisedUserName">
+                    <response status="200">
+                        <representation mediaType="text/plain"/>
+                    </response>
+                </method>
+            </resource>
+        </resource>
+
+        <resource path="admin">
+            <resource path="reevaluateAssignments">
+                <method name="GET" id="reevaluateAssignments">
+                    <response status="303">
+                        <param name="location" style="header" type="xsd:anyURI" required="true"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="clearProcessCache">
+                <method name="GET" id="clearProcessCache">
+                    <response status="200">
+                        <representation mediaType="text/plain"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="clearResourceCache">
+                <method name="GET" id="clearResourceCache">
+                    <response status="200">
+                        <representation mediaType="text/plain"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="checkDeadlines">
+                <method name="GET" id="checkDeadlines">
+                    <response status="303">
+                        <param name="location" style="header" type="xsd:anyURI" required="true"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="reevaluateDeadlines">
+                <method name="GET" id="reevaluateDeadlines">
+                    <response status="202">
+                        <param name="refresh" style="header" type="xsd:anyURI" required="true"/>
+                    </response>
+                </method>
+            </resource>
+
+            <resource path="migrateProcesses">
+                <method name="GET" id="migrateProcesses">
+                    <response status="202">
+                        <param name="refresh" style="header" type="xsd:anyURI" required="true"/>
+                    </response>
+                </method>
+            </resource>
+
+        </resource>
+        <resource path="xpdlrepository">
+            <resource path="loadAll">
+                <method name="GET" id="loadAll">
+                    <request>
+                        <param style="query" name="migrate" default="false" type="xsd:boolean" required="false"/>
+                    </request>
+                    <response status="202">
+                        <param name="refresh" style="header" type="xsd:anyURI" required="true"/>
+                    </response>
+                </method>
+            </resource>
+        </resource>
+
+    </resources>
+</application> 

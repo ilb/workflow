@@ -1,0 +1,8 @@
+/workflow-api/target/
+/workflow-xpil-api/target/
+workflow-engine/target/
+workflow-shark/target/
+/workflow/target/
+.svn
+/workflow-web/target/
+/workflow-web/bower_components/

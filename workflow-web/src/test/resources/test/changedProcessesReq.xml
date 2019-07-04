@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<changedProcessesRequest xmlns="urn:ru:ilb:workflow:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="urn:ru:ilb:workflow:workflow ../../../../../workflow-xpilapi/src/main/resources/schemas/workflow/workflow.xsd">
+   <versionFrom>3730840</versionFrom>
+   <!--<versionTo>3738840</versionTo>-->
+   <definitionId>collection_activity</definitionId>
+</changedProcessesRequest>

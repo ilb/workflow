@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+       xmlns:jaxrs-client="http://cxf.apache.org/jaxrs-client"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
+       xmlns:sec="http://cxf.apache.org/configuration/security"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+        http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://cxf.apache.org/jaxrs-client http://cxf.apache.org/schemas/jaxrs-client.xsd
+        http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd
+        http://cxf.apache.org/configuration/security http://cxf.apache.org/schemas/configuration/security.xsd
+        http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <!-- Load defaults from apache cxf -->
+    <import resource="classpath:META-INF/cxf/cxf.xml" />
+    <!--This switches on the load-time weaving for  @Transactional (in case of mode="aspectj"), @Configurable annotated classes -->
+    <!--<context:load-time-weaver/>-->
+    <!-- This switches on resolving System properties and JNDI resources in strings like ${propname} -->
+    <context:property-placeholder />
+    <!--Activates @Required, @Autowired, @PostConstruct, @PreDestroy and @Resource -->
+    <context:annotation-config/>
+    <!--Activates @Configurable -->
+    <context:spring-configured/>
+
+    <cache:annotation-driven />
+    
+    <!-- task execution -->
+    <task:annotation-driven executor="taskExecutor" scheduler="taskScheduler"/>
+    <task:executor id="taskExecutor" pool-size="5"/>
+    <task:scheduler id="taskScheduler" pool-size="5"/>
+
+    <bean id="storeFactory" class="ru.ilb.filedossier.store.StoreFactory">
+         <constructor-arg index="0" value="${ru.bystrobank.apps.workflow.processfilesbase}"/>
+    </bean>
+
+    <bean id="checkDeadlines" class="ru.ilb.workflow.job.CheckDeadlines"/>
+    <bean id="reevaluateAssignments" class="ru.ilb.workflow.job.ReevaluateAssignments"/>
+    <task:scheduled-tasks scheduler="taskScheduler">
+        <task:scheduled ref="checkDeadlines" method="executeJob" fixed-rate="60000" initial-delay="60000"/> <!--  every 60 seconds -->
+        <task:scheduled ref="reevaluateAssignments" method="executeJob" fixed-rate="300000" initial-delay="120000"/> <!--  every 5 minutes -->
+    </task:scheduled-tasks>
+
+    <bean id="asyncTaskManager" class="ru.ilb.common.jaxrs.async.AsyncTaskManager" destroy-method="destroy"/>
+<!--    <bean id="cacheBuilder" class="com.google.common.cache.CacheBuilder" factory-method="from">
+        <constructor-arg value="maximumSize=500, expireAfterAccess=60s, expireAfterWrite=60s" />
+    </bean>
+    <bean id="cacheManager" class="org.springframework.cache.guava.GuavaCacheManager">
+        <property name="cacheBuilder" ref="cacheBuilder"/>
+    </bean>-->
+    <bean id="springApplicationContext" class="ru.ilb.workflow.utils.SpringApplicationContext"/>
+    <!--<bean id="orgTreeManager" class="ru.ilb.workflow.orgtree.OrgTreeManager"/>-->
+    <tx:jta-transaction-manager />
+    <tx:annotation-driven mode="aspectj"/>
+    <!--
+         Construct Atomikos UserTransactionManager,
+         needed to configure Spring
+    -->
+    <bean id="AtomikosTransactionManager"
+          class="com.atomikos.icatch.jta.UserTransactionManager"
+          init-method="init" destroy-method="close">
+
+        <!--
+              when close is called, should we force
+              transactions to terminate or not?
+        -->
+        <property name="forceShutdown" value="true" />
+    </bean>
+
+    <!--
+         Also use Atomikos UserTransactionImp,
+         needed to configure Spring
+    -->
+    <bean id="AtomikosUserTransaction"
+          class="com.atomikos.icatch.jta.UserTransactionImp">
+
+        <property name="transactionTimeout" value="300" />
+    </bean>
+
+    <!--
+         Configure the Spring framework to use
+         JTA transactions from Atomikos
+    -->
+    <bean id="transactionManager"
+          class="org.springframework.transaction.jta.JtaTransactionManager">
+        <property name="transactionManager" ref="AtomikosTransactionManager" />
+        <property name="userTransaction" ref="AtomikosUserTransaction" />
+    </bean>
+    <bean id="uriResolver" class="ru.ilb.common.jaxrs.xml.transform.ServletContextURIResolver"/>
+
+    <bean id="xsltProvider" class="org.apache.cxf.jaxrs.provider.XSLTJaxbProvider" >
+        <property name="resolver" ref="uriResolver"/>
+        <property name="produceMediaTypes" value="application/xml,application/*+xml,text/xml,text/html,text/csv"/>
+        <property name="secureProcessing" value="false"/>
+        <property name="refreshTemplates">
+            <jee:jndi-lookup jndi-name="java:/comp/env/refreshTemplates" />
+        </property>
+    </bean>
+    <bean id="jaxbProvider" class="org.apache.cxf.jaxrs.provider.JAXBElementProvider">
+        <property name="namespacePrefixes" ref="namespaceMap"/>
+        <property name="marshallerProperties" ref="propertiesMap"/>
+    </bean>
+    <util:map id="propertiesMap">
+        <entry key="jaxb.formatted.output">
+            <value type="java.lang.Boolean">true</value>
+        </entry>
+    </util:map>
+    <bean id="jsonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider">
+        <property name="namespaceMap" ref="namespaceMap"/>
+        <property name="namespaceSeparator" value=":"/>
+        <property name="singleJaxbContext" value="true"/>
+    </bean>
+    <bean id="jsonMapProvider" class="org.apache.cxf.jaxrs.provider.json.JsonMapObjectProvider">
+    </bean>
+
+<!--    <bean id="jsonProvider" class="ru.ilb.common.jaxrs.json.MOXyJsonProvider">
+        <property name="formattedOutput" value="true"/>
+        <property name="includeRoot" value="false"/>
+    </bean>-->
+    <bean id="moxyJsonProvider" class="ru.ilb.common.jaxrs.json.MOXyJsonProvider">
+<!--        <property name="namespacePrefixMapper" ref="namespaceMap"/>
+        <property name="namespaceSeparator" value=":"/>-->
+        <property name="formattedOutput" value="true"/>
+        <!--<property name="attributePrefix" value="@"/>-->
+        <property name="includeRoot" value="${includeRoot}"/>
+        <property name="marshalEmptyCollections" value="false"/>
+        <!--<property name="schemaHandler" ref="schemaHandler"/>-->
+    </bean>
+    <bean id="jaxbContextResolver" class="ru.ilb.common.jaxrs.jaxb.JaxbContextResolver" >
+<!--        <property name="contextProperties" ref="contextProperties"/>
+        <property name="extraClass" ref="extraClass"/>-->
+    </bean>
+
+    <bean id="schemaHandler" class="org.apache.cxf.jaxrs.utils.schemas.SchemaHandler">
+        <property name="schemaLocations" ref="schemaLocations"/>
+    </bean>
+    <util:list id="schemaLocations">
+        <value>classpath:schemas/workflow/xpil.xsd</value>
+    </util:list>
+
+    <util:map id="namespaceMap" map-class="java.util.Hashtable">
+        <entry key="http://www.together.at/2006/XPIL1.0" value=""/>
+        <entry key="http://www.wfmc.org/2002/XPDL1.0" value="xpdl"/>
+        <entry key="http://www.w3.org/1999/xlink" value="xlink"/>
+        <entry key="urn:ru:ilb:workflow:view" value="view"/>
+    </util:map>
+    <!-- Provider to mail fatal errors to server admin -->
+    <bean id="exceptionHandler" class="ru.ilb.common.jaxrs.exceptionhandler.SendMailExceptionHandler">
+        <property name="mailTo" value="${SERVER_ADMIN}"/>
+    </bean>
+    <!-- Configure param converters for jaxrs:server and jaxrs:client -->
+<!--    <util:map id="mapParamConverters">
+        <entry key="java.util.Date" value="ru.ilb.common.jaxrs.converters.DateParamConverter" value-type=""/>
+    </util:map>
+    <bean id="mapParamConverterProvider" class="ru.ilb.common.jaxrs.providers.MapParamConverterProvider">
+        <property name="converters" ref="mapParamConverters"/>
+    </bean>-->
+
+    <bean id="authorizationHandler" class="ru.ilb.workflow.session.AuthorizationHandler"/>
+    <bean id="sessionDataProvider" class="ru.ilb.workflow.session.SessionDataProvider"/>
+    <bean id="searchContextProvider" class="org.apache.cxf.jaxrs.ext.search.SearchContextProvider"/>
+    <bean id="logInbound" class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+    <bean class="ru.ilb.workflow.eventaudit.CollectionEventAuditListener"/>
+    <bean class="ru.ilb.workflow.utils.InitUtils" init-method="initializeEngine" destroy-method="stopEngine" />
+    <context:component-scan base-package="ru.ilb.workflow.web,ru.ilb.filedossier.components,ru.ilb.filedossier.mappers"/>
+    <jaxrs:server address="/" basePackages="ru.ilb.workflow.web,ru.ilb.workflow.xpil.web,ru.ilb.workflow.providers,ru.ilb.common.jaxrs.providers,ru.ilb.common.jaxrs.exceptionhandler">
+        <jaxrs:properties>
+            <entry key="search.lax.property.match" value="true" />
+        </jaxrs:properties>
+        <jaxrs:providers>
+            <!--<ref bean="jaxbContextResolver"/>-->
+            <ref bean="authorizationHandler"/>
+            <ref bean="sessionDataProvider"/>
+            <ref bean="xsltProvider"/>
+            <ref bean="jaxbProvider"/>
+            <ref bean="jsonProvider"/>
+            <ref bean="jsonMapProvider"/>
+            <ref bean="searchContextProvider"/>
+            <!--<ref bean="mapParamConverterProvider"/>-->
+            <ref bean="exceptionHandler"/>
+            <!-- override default encoding  "ISO-8859-1" -->
+            <bean class="ru.ilb.common.jaxrs.interceptors.EncodingInInterceptor"/>
+
+
+        </jaxrs:providers>
+        <jaxrs:extensionMappings>
+            <entry key="xml" value="application/xml;charset=UTF-8"/>
+            <entry key="json" value="application/json;charset=UTF-8"/>
+            <entry key="csv" value="text/csv"/>
+            <entry key="jpg" value="image/jpeg"/>
+            <entry key="txt" value="text/plain"/>
+            <entry key="ics" value="text/calendar"/>
+        </jaxrs:extensionMappings>
+        <jaxrs:features>
+        </jaxrs:features>
+        
+        <jaxrs:inInterceptors>
+            <ref bean="logInbound"/>
+        </jaxrs:inInterceptors>
+    </jaxrs:server>
+    <jaxrs:server address="/v2" basePackages="ru.ilb.workflow.web,ru.ilb.workflow.xpil.web,ru.ilb.workflow.providers,ru.ilb.common.jaxrs.providers,ru.ilb.common.jaxrs.exceptionhandler,ru.ilb.filedossier.components">
+        <jaxrs:properties>
+            <entry key="search.lax.property.match" value="true" />
+        </jaxrs:properties>
+        <jaxrs:providers>
+            <ref bean="jaxbContextResolver"/>
+            <ref bean="authorizationHandler"/>
+            <ref bean="sessionDataProvider"/>
+            <ref bean="xsltProvider"/>
+            <ref bean="jaxbProvider"/>
+            <ref bean="moxyJsonProvider"/>
+            <ref bean="jsonMapProvider"/>
+            <ref bean="searchContextProvider"/>
+            <!--<ref bean="mapParamConverterProvider"/>-->
+            <ref bean="exceptionHandler"/>
+            <!-- override default encoding  "ISO-8859-1" -->
+            <bean class="ru.ilb.common.jaxrs.interceptors.EncodingInInterceptor"/>
+
+        </jaxrs:providers>
+        <jaxrs:extensionMappings>
+            <entry key="xml" value="application/xml;charset=UTF-8"/>
+            <entry key="json" value="application/json;charset=UTF-8"/>
+            <entry key="csv" value="text/csv"/>
+            <entry key="jpg" value="image/jpeg"/>
+            <entry key="txt" value="text/plain"/>
+        </jaxrs:extensionMappings>
+        <jaxrs:features>
+        </jaxrs:features>
+
+        <jaxrs:inInterceptors>
+            <ref bean="logInbound"/>
+        </jaxrs:inInterceptors>
+    </jaxrs:server>
+    <http-conf:conduit name="*.http-conduit">
+<!--        <http-conf:tlsClientParameters>
+            <sec:keyManagers keyPassword="${javax.net.ssl.keyStorePassword}">
+                <sec:keyStore
+                    type="${javax.net.ssl.keyStoreType:JKS}"
+                    password="${javax.net.ssl.keyStorePassword}"
+                    file="${javax.net.ssl.keyStore}"/>
+            </sec:keyManagers>
+            <sec:trustManagers>
+                <sec:keyStore type="${javax.net.ssl.trustStoreType:JKS}" file="${javax.net.ssl.trustStore}" />  password="${javax.net.ssl.trustStorePassword:#{null}}" 
+            </sec:trustManagers>
+        </http-conf:tlsClientParameters>-->
+        <!-- disable chunking, not works everywhere -->
+        <http-conf:client AllowChunking="false" />
+    </http-conf:conduit>
+
+    <jaxrs-client:client address="${ru.bystrobank.apps.collection.ws}" username="ide" password="123" basePackages="ru.ilb.common.jaxrs.providers"
+                         id="collectionProxy"
+                         serviceClass="ru.ilb.collection.api.CollectcasesResource">
+        <jaxrs-client:providers>
+            <!--<ref bean="mapParamConverterProvider"/>-->
+        </jaxrs-client:providers>
+    </jaxrs-client:client>    
+
+</beans>

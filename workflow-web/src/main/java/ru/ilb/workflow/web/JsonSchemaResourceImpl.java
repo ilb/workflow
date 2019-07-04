@@ -1,0 +1,131 @@
+/*
+ * Copyright 2019 slavb.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package ru.ilb.workflow.web;
+
+import ru.ilb.workflow.utils.XPDLUtils;
+import java.util.Map;
+import java.util.function.Supplier;
+import javax.ws.rs.core.Response;
+import org.enhydra.jxpdl.elements.WorkflowProcess;
+import org.enhydra.shark.Shark;
+import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
+import org.enhydra.shark.api.client.wfmodel.WfActivity;
+import org.enhydra.shark.api.client.wfmodel.WfProcess;
+import org.enhydra.shark.api.client.wfservice.SharkConnection;
+import org.springframework.transaction.annotation.Transactional;
+import ru.ilb.jsonschema.jsonschema.JsonSchema;
+import ru.ilb.jsonschema.jsonschema.JsonType;
+import ru.ilb.jsonschema.jsonschema.Property;
+import ru.ilb.jsonschema.utils.JsonTypeConverter;
+import ru.ilb.workflow.api.JsonSchemaResource;
+
+public class JsonSchemaResourceImpl implements JsonSchemaResource {
+
+    private final Supplier<WMSessionHandle> sessionHandleSupplier;
+
+    private final String processInstanceId;
+
+    private final String activityInstanceId;
+
+    public JsonSchemaResourceImpl(Supplier<WMSessionHandle> sessionHandleSupplier, String processInstanceId, String activityInstanceId) {
+        this.sessionHandleSupplier = sessionHandleSupplier;
+        this.processInstanceId = processInstanceId;
+        this.activityInstanceId = activityInstanceId;
+    }
+
+    @Override
+    @Transactional
+    public Response getJsonSchema() {
+        try {
+            return Response.ok(getJsonSchemaActivity(sessionHandleSupplier.get(), processInstanceId, activityInstanceId)).build();
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public static JsonSchema getJsonSchemaActivity(WMSessionHandle shandle, String processInstanceId, String activityInstanceId) throws Exception {
+        SharkConnection sc = Shark.getInstance().getSharkConnection();
+        sc.attachToHandle(shandle);
+
+        JsonSchema jsonSchema = getJsonSchemaProcess(shandle,sc, processInstanceId);
+        if (activityInstanceId != null) {
+            WfActivity activityInstance = sc.getActivity(processInstanceId,activityInstanceId);
+            jsonSchema.setTitle(activityInstance.name());
+            jsonSchema.setDescription(activityInstance.description());
+            filterActivityVariables(shandle, jsonSchema, processInstanceId, activityInstanceId);
+        }
+        return jsonSchema;
+    }
+
+    private static void filterActivityVariables(WMSessionHandle shandle, JsonSchema jsonSchema, String processInstanceId, String activityInstanceId) throws Exception {
+
+        Map<String, Boolean> activityVariables = XPDLUtils.getActivityVariables(shandle, processInstanceId, activityInstanceId);
+
+        // remove not existent variables
+        jsonSchema.getProperties().entrySet().removeIf(e -> !activityVariables.containsKey(e.getKey()));
+
+        // set readonly fields
+        jsonSchema.getProperties().entrySet().stream()
+                .filter(e -> activityVariables.get(e.getKey()))
+                .forEach(e -> e.getValue().setReadOnly(true));
+    }
+
+    private static JsonSchema getJsonSchemaProcess(WMSessionHandle shandle, SharkConnection sc, String processInstanceId) throws Exception {
+
+        WorkflowProcess workflowProcess = XPDLUtils.getWorkflowProcess(shandle, processInstanceId, null);
+        Map<String, String> dataFields = XPDLUtils.getDataFields(workflowProcess);
+
+
+        WfProcess processInstance = sc.getProcess(processInstanceId);
+
+        Map<String, String> contextSignature = processInstance.manager().context_signature();
+
+        JsonSchema jsonSchema = new JsonSchema();
+        jsonSchema.setTitle(processInstance.name());
+        jsonSchema.setDescription(processInstance.description());
+        jsonSchema.setType(JsonType.OBJECT);
+        for (Map.Entry<String, String> df : dataFields.entrySet()) {
+            Property property = new Property();
+            property.setName(df.getKey());
+            property.setTitle(df.getValue());
+            String javaType = contextSignature.get(df.getKey());
+            if (javaType != null) {
+                property.setType(JsonTypeConverter.getJsonType(javaType));
+                property.setFormat(JsonTypeConverter.getJsonFormat(javaType));
+            }
+            jsonSchema.addProperty(property);
+        }
+
+        return jsonSchema;
+
+//        WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
+        //WfActivity activityInstance2 = sc.getActivity(processId, activityId);
+//        WMActivityInstance activityInstance = wapi.getActivityInstance(shandle, processId, activityId);
+//
+//        WMAttributeIterator listActivityInstanceAttributes = wapi.listActivityInstanceAttributes(shandle, processId, activityId, null, false);
+//        WMAttribute[] attrs = listActivityInstanceAttributes.getArray();
+//        if (attrs.length > 0) {
+//
+//        }
+//
+//
+        //WorkflowProcess workflowProcess = XPDLUtils.getWorkflowProcess(shandle, processId, null);
+        //Map vars = workflowProcess.getAllVariables();
+        //activityInstance.name();
+        //workflowProcess.getActivity();
+    }
+
+}
