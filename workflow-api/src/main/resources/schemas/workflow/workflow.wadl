@@ -187,6 +187,30 @@
 
             </method>
         </resource>
+        <resource path="goBack">
+            <doc>
+                rollback and get previous activity data
+            </doc>
+            <method name="POST" id="goBackActivity">
+                <request>
+                    <representation mediaType="application/xml" element="global:map">
+                        <doc>updated activity context</doc>
+                    </representation>
+                    <representation mediaType="application/json">
+                        <doc>updated activity context</doc>
+                    </representation>
+                </request>
+                <response status="200">
+                    <representation mediaType="application/xml" element="view:activityInstance">
+                        <doc>next activity instance data</doc>
+                    </representation>
+                    <representation mediaType="application/json">
+                        <doc>next activity instance data</doc>
+                    </representation>
+                </response>
+
+            </method>
+        </resource>
 
         <resource path="jsonSchema" id="jsonSchemaResource" type="#jsonSchemaResource"/>
         <resource path="activityForm" id="activityFormResource" type="#activityFormResource"/>

@@ -151,5 +151,10 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
 
     }
 
+    @Override
+    public ActivityInstance goBackActivity(JsonMapObject jsonmapobject) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 
 }
