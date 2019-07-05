@@ -15,6 +15,7 @@
  */
 package ru.ilb.workflow.web;
 
+import java.util.ArrayList;
 import ru.ilb.workflow.utils.XPDLUtils;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -36,6 +37,7 @@ import ru.ilb.workflow.view.ProcessStep;
 import ru.ilb.workflow.view.ProcessSteps;
 
 public class ProcessStepsResourceImpl implements ProcessStepsResource {
+
     private final Supplier<WMSessionHandle> sessionHandleSupplier;
 
     private final String processDefinitionId;
@@ -53,16 +55,20 @@ public class ProcessStepsResourceImpl implements ProcessStepsResource {
     public ProcessSteps getProcessSteps() {
         try {
             WMSessionHandle shandle = sessionHandleSupplier.get();
-            WorkflowProcess workflowProcess = XPDLUtils.getWorkflowProcess(shandle, processInstanceId, processDefinitionId);
-            Map<String, ProcessStep> stepMap = makeStepMap(shandle, workflowProcess);
-            fillStepMap(shandle, stepMap, processInstanceId);
-            return new ProcessSteps().withProcessSteps(stepMap.values());
+            return new ProcessSteps().withProcessSteps(getProcessSteps(shandle, processInstanceId, processDefinitionId));
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
 
- /**
+    public static List<ProcessStep> getProcessSteps(WMSessionHandle shandle, String processInstanceId, String processDefinitionId) throws Exception {
+        WorkflowProcess workflowProcess = XPDLUtils.getWorkflowProcess(shandle, processInstanceId, processDefinitionId);
+        Map<String, ProcessStep> stepMap = makeStepMap(shandle, workflowProcess);
+        fillStepMap(shandle, stepMap, processInstanceId);
+        return new ArrayList<>(stepMap.values());
+    }
+
+    /**
      * Making map where one activity definitions point to the corresponding list
      * of activity instances.
      *
@@ -90,6 +96,7 @@ public class ProcessStepsResourceImpl implements ProcessStepsResource {
         }
         return stepMap;
     }
+
     private static Map<String, ProcessStep> fillStepMap(WMSessionHandle shandle, Map<String, ProcessStep> stepMap, String procId) throws Exception {
 
         if (procId != null) {

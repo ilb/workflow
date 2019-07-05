@@ -141,6 +141,7 @@
                 <xsd:element ref="activityInstance"/>
                 <xsd:element ref="activityAction" minOccurs="0" maxOccurs="unbounded"/>
                 <xsd:element ref="activityDossier" minOccurs="0"/>
+                <xsd:element ref="processStep" minOccurs="0" maxOccurs="unbounded"/>
             </xsd:sequence>
         </xsd:complexType>
     </xsd:element>

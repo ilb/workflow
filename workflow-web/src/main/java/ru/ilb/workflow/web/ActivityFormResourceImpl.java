@@ -16,10 +16,12 @@
 package ru.ilb.workflow.web;
 
 import java.util.function.Supplier;
+import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import org.apache.cxf.jaxrs.json.basic.JsonMapObject;
 import org.apache.cxf.jaxrs.json.basic.JsonMapObjectReaderWriter;
 import org.enhydra.shark.Shark;
+import org.enhydra.shark.api.client.wfmc.wapi.WAPI;
 import org.enhydra.shark.api.client.wfmc.wapi.WMActivityInstance;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.enhydra.shark.api.client.wfservice.AdminMisc;
@@ -31,9 +33,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.jsonschema.jsonschema.JsonSchema;
 import ru.ilb.workflow.api.ActivityFormResource;
+import ru.ilb.workflow.mappers.ActivityInstanceMapper;
 import ru.ilb.workflow.utils.JaxbHelper;
 import ru.ilb.workflow.view.ActivityDossier;
 import ru.ilb.workflow.view.ActivityForm;
+import ru.ilb.workflow.view.ActivityInstance;
 
 public class ActivityFormResourceImpl implements ActivityFormResource {
 
@@ -49,6 +53,9 @@ public class ActivityFormResourceImpl implements ActivityFormResource {
 
     @Autowired
     private JaxbHelper jaxbHelper;
+
+    @Inject
+    private ActivityInstanceMapper activityInstanceMapper;
 
     public ActivityFormResourceImpl(Supplier<WMSessionHandle> sessionHandleSupplier, String processInstanceId, String activityInstanceId) {
         this.sessionHandleSupplier = sessionHandleSupplier;
@@ -71,16 +78,25 @@ public class ActivityFormResourceImpl implements ActivityFormResource {
         sc.attachToHandle(shandle);
 
         ActivityForm activityForm = new ActivityForm();
+        WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
+        WMActivityInstance wmActivityInstance = wapi.getActivityInstance(shandle, processInstanceId, activityInstanceId);
+        ActivityInstance activityInstance = activityInstanceMapper.createFromEntity(wmActivityInstance);
+
+        activityForm.setActivityInstance(activityInstance);
+
+        activityForm.setActivityDossier(getActivityDossier(shandle, wmActivityInstance));
+        activityForm.setProcessSteps(ProcessStepsResourceImpl.getProcessSteps(shandle, processInstanceId, null));
 
         JsonSchema jsonSchema = JsonSchemaResourceImpl.getJsonSchemaActivity(shandle, processInstanceId, activityInstanceId);
-        //activityForm.s
-
         String jsonSchemaStr = jaxbHelper.marshal(jsonSchema, "application/json");
+
+        String activityFormStr = jaxbHelper.marshal(activityForm, "application/json");
 
         JsonMapObject jsonFormData = ProcessContextResourceImpl.getProcessContext(shandle, processInstanceId, activityInstanceId);
         String jsonFormDataStr = JSONREADERWRITER.toJson(jsonFormData);
         //activityInstance.setActivityDossier(getActivityDossier(shandle, wmActivityInstance));
-        String output = String.format("{\"jsonSchema\":%s,\"formData\":%s}", jsonSchemaStr, jsonFormDataStr);
+        String output = activityFormStr.substring(0, activityFormStr.length()-1)
+                + String.format(",\"jsonSchema\":%s,\"formData\":%s}", jsonSchemaStr, jsonFormDataStr);
         return output;
 
     }

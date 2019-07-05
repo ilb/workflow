@@ -6,7 +6,7 @@ import { DefaultApi } from 'workflow-api/dist';
 
 export default function DefaultActivityForm( {processId, activityId}) {
     const api = new DefaultApi();
-    const [data, getData] = useResource(() => api.getJsonForm(activityId, processId));
+    const [data, getData] = useResource(() => api.getActivityForm(activityId, processId));
     useEffect(() => {
         getData();
     }, [processId, activityId]);
