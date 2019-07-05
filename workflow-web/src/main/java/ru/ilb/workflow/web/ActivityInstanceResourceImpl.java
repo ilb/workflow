@@ -117,6 +117,7 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
             throw new RuntimeException(ex);
         }
     }
+
     @Override
     @Transactional
     public ActivityInstance completeAndNextActivity(JsonMapObject jsonmapobject) {
@@ -136,6 +137,7 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private static boolean completeActivity(WMSessionHandle shandle, String processInstanceId, String activityInstanceId, JsonMapObject jsonmapobject) throws Exception {
         WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
         // update variables if set
@@ -152,9 +154,14 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
     }
 
     @Override
+    @Transactional
     public ActivityInstance goBackActivity(JsonMapObject jsonmapobject) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            WMSessionHandle shandle = sessionHandleSupplier.get();
+            WMActivityInstance activityInstance = SharkInterfaceWrapper.getShark().getExecutionAdministrationExtension().goBack(shandle, processInstanceId, true, null);
+            return activityInstanceMapper.createFromEntity(activityInstance);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
-
-
 }
