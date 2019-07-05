@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context path="/workflow">
+<Context path="/workflow-web">
   <Resource auth="Container" factory="org.enhydra.jndi.UserTransactionFactory" name="UserTransaction" type="javax.transaction.UserTransaction"/>
   <Resource driverClassName="com.mysql.jdbc.Driver" factory="org.enhydra.jndi.DataSourceFactory" max="50" min="10" name="jdbc/sharkdb" password="shark" type="javax.sql.DataSource" url="jdbc:mysql://localhost/workflow" username="workflow" validationQuery="SELECT 1"/>
   <!--

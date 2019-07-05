@@ -23,6 +23,7 @@ import javax.naming.NamingException;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 import ru.ilb.filedossier.context.DossierContextBuilder;
 import ru.ilb.filedossier.context.DossierContextImpl;
 import ru.ilb.filedossier.core.DossierFactory;
@@ -38,6 +39,7 @@ import ru.ilb.filedossier.store.StoreFactory;
  * @author slavb
  */
 @SpringBootApplication
+@EnableJdbcRepositories(basePackages = "ru.ilb.filedossier.context.persistence.repositories")
 @ImportResource("classpath:beans.xml")
 public class Application {
 
@@ -55,7 +57,7 @@ public class Application {
         storeFactory = StoreFactory.newInstance(Paths.get(processfilesbase).toUri());
 
         DossierContextBuilder dossierContextBuilder = (String dossierKey, String dossierPackage, String dossierCode) -> {
-            DossierContext dc = new DossierContextImpl("");
+            DossierContext dc = new DossierContextImpl();
             dc.setProperty("name", "Тест имя");
             dc.setProperty("prop", false);
             return dc;

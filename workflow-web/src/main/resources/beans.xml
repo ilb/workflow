@@ -175,7 +175,7 @@
     <bean id="logInbound" class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
     <bean class="ru.ilb.workflow.eventaudit.CollectionEventAuditListener"/>
     <bean class="ru.ilb.workflow.utils.InitUtils" init-method="initializeEngine" destroy-method="stopEngine" />
-    <context:component-scan base-package="ru.ilb.workflow.web,ru.ilb.filedossier.components,ru.ilb.filedossier.mappers"/>
+    <context:component-scan base-package="ru.ilb.workflow.web,ru.ilb.filedossier"/>
     <jaxrs:server address="/" basePackages="ru.ilb.workflow.web,ru.ilb.workflow.xpil.web,ru.ilb.workflow.providers,ru.ilb.common.jaxrs.providers,ru.ilb.common.jaxrs.exceptionhandler">
         <jaxrs:properties>
             <entry key="search.lax.property.match" value="true" />
