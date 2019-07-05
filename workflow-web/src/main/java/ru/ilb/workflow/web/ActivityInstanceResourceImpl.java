@@ -31,7 +31,7 @@ import org.enhydra.shark.api.common.SharkConstants;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
-import ru.ilb.jsonschema.utils.JsonMapConverter;
+import ru.ilb.jsonschema.utils.JsonMapMarshaller;
 import ru.ilb.workflow.api.ActivityInstanceResource;
 import ru.ilb.workflow.api.ProcessContextResource;
 import ru.ilb.workflow.api.ActivityFormResource;
@@ -141,7 +141,7 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
         // update variables if set
         if (jsonmapobject != null && !jsonmapobject.asMap().isEmpty()) {
             Map<String, String> contextSignature = SharkUtils.getContextSignature(shandle, processInstanceId, true);
-            Map<String, Object> context = JsonMapConverter.unserializeMap(jsonmapobject.asMap(), contextSignature);
+            Map<String, Object> context = JsonMapMarshaller.unmrashallMap(jsonmapobject.asMap(), contextSignature);
             SharkUtils.updateActivityInfo(shandle, processInstanceId, activityInstanceId, context);
         }
 

@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.enhydra.jxpdl.XPDLConstants;
 import org.enhydra.shark.api.internal.toolagent.AppParameter;
-import ru.ilb.jsonschema.utils.JsonTypeMapper;
+import ru.ilb.jsonschema.utils.JsonTypeMarshaller;
 
 /**
  *
@@ -82,7 +82,7 @@ public abstract class MapObjectConverter implements ObjectConverter {
             for (int i = 1; i < parameters.length; i++) {
                 if (parameters[i].the_mode.equals(XPDLConstants.FORMAL_PARAMETER_MODE_IN) || parameters[i].the_mode.equals(XPDLConstants.FORMAL_PARAMETER_MODE_INOUT)) {
                     // get type from parameter, since it may differ from actual value type
-                    String value = JsonTypeMapper.toString(parameters[i].the_value, parameters[i].the_class);
+                    Object value = JsonTypeMarshaller.marshall(parameters[i].the_value, parameters[i].the_class);
                     map.put(parameters[i].the_formal_name, value);
                 }
             }
@@ -102,7 +102,7 @@ public abstract class MapObjectConverter implements ObjectConverter {
             // ignore 1. param, this is ext. attribs.
             for (int i = 1; i < parameters.length; i++) {
                 if (parameters[i].the_mode.equals(XPDLConstants.FORMAL_PARAMETER_MODE_OUT) || parameters[i].the_mode.equals(XPDLConstants.FORMAL_PARAMETER_MODE_INOUT)) {
-                    parameters[i].the_value = JsonTypeMapper.toObject(jmo.get(parameters[i].the_formal_name), parameters[i].the_class);
+                    parameters[i].the_value = JsonTypeMarshaller.unmarshall(jmo.get(parameters[i].the_formal_name), parameters[i].the_class);
                 }
             }
         }

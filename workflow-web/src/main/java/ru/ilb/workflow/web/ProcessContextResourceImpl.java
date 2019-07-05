@@ -24,7 +24,7 @@ import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.enhydra.shark.api.client.wfmodel.WfProcess;
 import org.enhydra.shark.api.client.wfservice.SharkConnection;
 import org.springframework.transaction.annotation.Transactional;
-import ru.ilb.jsonschema.utils.JsonMapConverter;
+import ru.ilb.jsonschema.utils.JsonMapMarshaller;
 import ru.ilb.workflow.api.ProcessContextResource;
 import ru.ilb.workflow.utils.XPDLUtils;
 
@@ -65,7 +65,7 @@ public class ProcessContextResourceImpl implements ProcessContextResource {
             context.entrySet().removeIf(e -> !activityVariables.containsKey(e.getKey()));
         }
 
-        Map<String, Object> serializedProcessContext = JsonMapConverter.serializeMap(context, contextSignature);
+        Map<String, Object> serializedProcessContext = JsonMapMarshaller.marshallMap(context, contextSignature);
 
         JsonMapObject processContext = new JsonMapObject(serializedProcessContext);
         return processContext;
