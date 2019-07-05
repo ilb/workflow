@@ -2,14 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import {useResource} from '../ReactHelper';
 import JsonSchemaForm from '@bb/jsonschema-form';
 import { Table, Button, Message, Loader } from 'semantic-ui-react';
+import '@bb/datetime-picker/lib/index.css';
 import { DefaultApi } from 'workflow-api/dist';
 
-export default function DefaultActivityForm( {processId, activityId}) {
+export default function DefaultActivityForm({activityFormData}) {
     const api = new DefaultApi();
-    const [data, getData] = useResource(() => api.getActivityForm(activityId, processId));
-    useEffect(() => {
-        getData();
-    }, [processId, activityId]);
+    const activityId = activityFormData.activityInstance.id;
+    const processId = activityFormData.activityInstance.processInstanceId
 
     const errorHandler = (data) => {
         alert(data.error);
@@ -17,28 +16,22 @@ export default function DefaultActivityForm( {processId, activityId}) {
     const submitHandler = (data) => {
         console.log('submitting', data.formData);
         api.completeActivity(activityId, processId, {body: data.formData})
-        .catch(errorHandler);
+                .catch(errorHandler);
 
     }
     return <div className="defaultActivityForm">
-        {data.loading && <Loader active /> }
-        {data.error && <Message error visible content={data.error}/> }
-        {data.value &&
-                    <div>
 
-                        <JsonSchemaForm
-                            schema={data.value.jsonSchema}
-                            formData={data.value.formData}
-                            uiSchema={data.value.uiSchema}
-                            onSubmit={submitHandler}
-                            >
-                            <div>
-                                <button type="submit" className="ui green button">Выполнить</button>
-                            </div>
-                        </JsonSchemaForm>
-                    </div>
+        <JsonSchemaForm
+            schema={activityFormData.jsonSchema}
+            formData={activityFormData.formData}
+            uiSchema={activityFormData.uiSchema}
+            onSubmit={submitHandler}
+            >
+            <div>
+                <button type="submit" className="ui green button">Выполнить</button>
+            </div>
+        </JsonSchemaForm>
 
-        }
 
     </div>;
 }

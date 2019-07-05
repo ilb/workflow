@@ -196,7 +196,7 @@
                                     <configOptions>
                                         <usePromises>true</usePromises>
                                         <projectName>${project.name}</projectName>
-                                        <projectVersion>1.100.5</projectVersion>
+                                        <projectVersion>1.100.6</projectVersion>
                                     </configOptions>
                                 </configuration>
                             </execution>

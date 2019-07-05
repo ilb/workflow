@@ -8,7 +8,7 @@ import '../Config';
 
 export default function ActivityForm( {processId, activityId, component}) {
     const api = new DefaultApi();
-    const [data, getData] = useResource(() => api.getActivityInstance(activityId,processId));
+    const [data, getData] = useResource(() => api.getActivityForm(activityId,processId));
 
     useEffect(() => {
         getData();
@@ -20,23 +20,22 @@ export default function ActivityForm( {processId, activityId, component}) {
         {data.error && <Message error visible content={data.error}/> }
         {data.value &&
                     <div>
-                        <ProcessHeader process={data.value}/>
-                        <ProcessSteps  processId={processId} />
-                        { component ? component : <DefaultActivityForm processId={processId} activityId={activityId}/>}
-                        <ProcessFooter process={data.value}/>
+                        <ActivityFormHeader actitityInstance={data.value.actitityInstance}/>
+                        { component ? component : <DefaultActivityForm activityFormData={data.value}/>}
+                        <ActivityFormFooter actitityInstance={data.value.actitityInstance}/>
                     </div>
 
         }
     </div>;
 }
 
-function ProcessHeader( {process}) {
-    return <div className="processHeader">
-        Name: {process.name}
+function ActivityFormHeader( actitityInstance) {
+    return <div className="activityFormHeader">
+        Name: {actitityInstance.name}
     </div>;
 }
 
-function ProcessFooter( {process}) {
-    return <div className="processFooter"/>;
+function ActivityFormFooter( actitityInstance) {
+    return <div className="activityFormFooter"/>;
 }
 
