@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="../../stylesheets/wadldoc/wadl2html.xsl"?>
-<application 
+<application
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:html="http://www.w3.org/1999/xhtml"
     xmlns:view="urn:ru:ilb:workflow:view"
     xmlns:global="urn:ru:ilb:global"
-    xmlns="http://wadl.dev.java.net/2009/02"
->
-	 
+    xmlns="http://wadl.dev.java.net/2009/02">
+
     <doc title="BystroBank XPIL API">
         <html:p>XPIL API</html:p>
     </doc>
@@ -16,11 +15,8 @@
         <include href="global.xsd" />
         <include href="view.xsd" />
     </grammars>
-    
     <resource_type id="processDefinitionResource">
-        <doc title="processDefinition resource">
-
-        </doc>
+        <doc title="processDefinition resource"></doc>
         <method name="GET" id="getProcessDefinition">
             <doc>get processDefinition instance</doc>
             <request></request>
@@ -41,11 +37,9 @@
             </resource>
         </resource>
     </resource_type>
-    
-    <resource_type id="activityDefinitionResource">
-        <doc title="activityDefinition resource">
 
-        </doc>
+    <resource_type id="activityDefinitionResource">
+        <doc title="activityDefinition resource"></doc>
         <method name="GET" id="getActivityDefinition">
             <doc>get processDefinition instance</doc>
             <request></request>
@@ -59,7 +53,7 @@
             </response>
         </method>
     </resource_type>
-    
+
     <resource_type id="processStepsResource">
         <doc>Шаги процесса</doc>
         <method name="GET" id="getProcessSteps">
@@ -97,9 +91,7 @@
     </resource_type>
 
     <resource_type id="processInstanceResource">
-        <doc title="processInstance resource">
-
-        </doc>
+        <doc title="processInstance resource"></doc>
         <method name="GET" id="getProcessInstance">
             <doc>get process instance</doc>
             <request></request>
@@ -127,11 +119,9 @@
         </resource>
         <resource path="processContext" id="processContextResource" type="#processContextResource"/>
     </resource_type>
-    
-    <resource_type id="activityInstanceResource">
-        <doc title="activityInstance resource">
 
-        </doc>
+    <resource_type id="activityInstanceResource">
+        <doc title="activityInstance resource"></doc>
         <method name="GET" id="getActivityInstance">
             <doc>get activity instance</doc>
             <request></request>
@@ -164,9 +154,7 @@
             </method>
         </resource>
         <resource path="completeAndNext">
-            <doc>
-                complete and get next activity data
-            </doc>
+            <doc>complete and get next activity data</doc>
             <method name="POST" id="completeAndNextActivity">
                 <request>
                     <representation mediaType="application/xml" element="global:map">
@@ -188,9 +176,7 @@
             </method>
         </resource>
         <resource path="goBack">
-            <doc>
-                rollback and get previous activity data
-            </doc>
+            <doc>rollback and get previous activity data</doc>
             <method name="POST" id="goBackActivity">
                 <request>
                     <representation mediaType="application/xml" element="global:map">
@@ -211,12 +197,11 @@
 
             </method>
         </resource>
-
         <resource path="jsonSchema" id="jsonSchemaResource" type="#jsonSchemaResource"/>
         <resource path="activityForm" id="activityFormResource" type="#activityFormResource"/>
         <resource path="processContext" id="processContextResource" type="#processContextResource"/>
     </resource_type>
-    
+
     <resources base="web">
         <resource path="processDefinitions">
             <method name="GET" id="getProcessDefinitions">
@@ -297,7 +282,6 @@
                     <representation mediaType="application/json">
                         <doc>processInstances data</doc>
                     </representation>
-
                 </request>
                 <response status="200">
                     <representation mediaType="text/plain">
@@ -308,14 +292,12 @@
                 </response>
             </method>
 
-
             <resource path="{processInstanceId}" id="processInstanceResource" type="#processInstanceResource">
                 <param name="processInstanceId" style="template" type="xsd:string">
                     <doc>processInstanceId</doc>
                 </param>
             </resource>
-
         </resource>
-
     </resources>
-</application> 
+
+</application>

@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jaxb:bindings version="2.1"
-               xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
-               xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-               xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
-               xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance"
-               jaxb:extensionBindingPrefixes="xjc inheritance"
-               schemaLocation="./view.xsd" node="/xsd:schema"
->
+<jaxb:bindings
+    version="2.1"
+    xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+    xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance"
+    jaxb:extensionBindingPrefixes="xjc inheritance"
+    schemaLocation="./view.xsd"
+    node="/xsd:schema">
+
     <jaxb:bindings node="//xsd:element[@name='processDefinition']//xsd:element[@ref='activityDefinition']">
         <jaxb:property>
             <jaxb:baseType name="java.util.Map&lt;String,ActivityDefinition&gt;" />
         </jaxb:property>
     </jaxb:bindings>
-</jaxb:bindings>
 
+</jaxb:bindings>
