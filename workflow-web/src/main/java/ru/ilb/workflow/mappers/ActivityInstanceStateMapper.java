@@ -28,9 +28,8 @@ import ru.ilb.workflow.view.ActivityInstanceState;
 public abstract class ActivityInstanceStateMapper implements GenericMapperDto<WMActivityInstanceState,ActivityInstanceState>{
 
     @Override
-    @Mapping(target = "value",
-         expression = "java( entity.stringValue() )")
-
+    @Mapping(target = "code",
+         expression = "java( ru.ilb.workflow.core.StateCode.fromValue(entity.stringValue()) )")
     public abstract ActivityInstanceState createFromEntity(WMActivityInstanceState entity);
 
   

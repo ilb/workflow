@@ -28,9 +28,8 @@ import ru.ilb.workflow.view.ProcessInstanceState;
 public abstract class ProcessInstanceStateMapper implements GenericMapperDto<WMProcessInstanceState,ProcessInstanceState>{
 
     @Override
-    @Mapping(target = "value",
-         expression = "java( entity.stringValue() )")
-
+    @Mapping(target = "code",
+         expression = "java( ru.ilb.workflow.core.StateCode.fromValue(entity.stringValue()) )")
     public abstract ProcessInstanceState createFromEntity(WMProcessInstanceState entity);
 
   

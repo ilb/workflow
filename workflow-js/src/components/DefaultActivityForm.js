@@ -28,7 +28,9 @@ export default function DefaultActivityForm({activityFormData}) {
             onSubmit={submitHandler}
             >
             <div>
-                <button type="submit" className="ui green button">Выполнить</button>
+                { activityFormData.activityInstance.state.open && 
+                    <button type="submit" className="ui green button">Выполнить</button>
+                }
             </div>
         </JsonSchemaForm>
 

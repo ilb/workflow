@@ -90,7 +90,8 @@
         </xsd:annotation>
 
         <xsd:sequence>
-            <xsd:element name="value" type="xsd:string"/>
+            <xsd:element name="code" type="core:stateCode"/>
+            <xsd:element name="name" type="xsd:string"/>
             <xsd:element name="open" type="xsd:boolean"/>
         </xsd:sequence>
     </xsd:complexType>
@@ -100,7 +101,8 @@
         </xsd:annotation>
 
         <xsd:sequence>
-            <xsd:element name="value" type="xsd:string"/>
+            <xsd:element name="code" type="core:stateCode"/>
+            <xsd:element name="name" type="xsd:string"/>
             <xsd:element name="open" type="xsd:boolean"/>
         </xsd:sequence>
     </xsd:complexType>
