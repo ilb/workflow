@@ -1,41 +1,49 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Table, Button, Message, Loader } from 'semantic-ui-react';
 import {useResource} from '../ReactHelper';
-import ProcessSteps from './ProcessSteps';
 import DefaultActivityForm from './DefaultActivityForm';
 import { ApiClient, DefaultApi } from 'workflow-api/dist';
 import '../Config';
 
-export default function ActivityForm( {processId, activityId, component}) {
+export default function ActivityFormContainer( {processId, activityId, component}) {
     const api = new DefaultApi();
-    const [data, getData] = useResource(() => api.getActivityForm(activityId,processId));
+
+    const activityFromResorce = (activityId, processId) => {
+        console.log('activityFromResorce', activityId, processId);
+        if (activityId != null) {
+            return api.getActivityForm(activityId, processId);
+        } else {
+            return api.getActivityForm1(processId)
+        }
+    }
+    const [data, getData] = useResource(() => activityFromResorce(activityId, processId));
 
     useEffect(() => {
         getData();
     }, [processId, activityId]);
 
-    
-    return <div className="activityForm">
+
+    return <div className="activityFormContainer">
         {data.loading && <Loader active /> }
         {data.error && <Message error visible content={data.error}/> }
-        {data.value &&
-                    <div>
-                        <ActivityFormHeader actitityInstance={data.value.actitityInstance}/>
-                        { component ? component : <DefaultActivityForm activityFormData={data.value}/>}
-                        <ActivityFormFooter actitityInstance={data.value.actitityInstance}/>
-                    </div>
-
-        }
+        {data.value && <ActivityForm activityFormData={data.value} component={component}/>}
     </div>;
 }
+function ActivityForm({activityFormData, component}) {
+    return <div className="activityForm">
+        <ActivityFormHeader actitityInstance={activityFormData.actitityInstance}/>
+        { component ? component : <DefaultActivityForm activityFormData={activityFormData}/>}
+        <ActivityFormFooter actitityInstance={activityFormData.actitityInstance}/>
+    </div>
+}
 
-function ActivityFormHeader( actitityInstance) {
+function ActivityFormHeader(actitityInstance) {
     return <div className="activityFormHeader">
-        Name: {actitityInstance.name}
+        Этап: {actitityInstance.name}
     </div>;
 }
 
-function ActivityFormFooter( actitityInstance) {
+function ActivityFormFooter(actitityInstance) {
     return <div className="activityFormFooter"/>;
 }
 

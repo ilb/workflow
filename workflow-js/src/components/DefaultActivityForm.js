@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {useResource} from '../ReactHelper';
 import JsonSchemaForm from '@bb/jsonschema-form';
-import { Table, Button, Message, Loader } from 'semantic-ui-react';
+import { Table, Button, Message, Loader, Step } from 'semantic-ui-react';
 import '@bb/datetime-picker/lib/index.css';
 import { DefaultApi } from 'workflow-api/dist';
 
@@ -15,12 +15,13 @@ export default function DefaultActivityForm({activityFormData}) {
     }
     const submitHandler = (data) => {
         console.log('submitting', data.formData);
-        api.completeActivity(activityId, processId, {body: data.formData})
+        api.completeAndNextActivity(activityId, processId, {body: data.formData})
+                .then(act => document.location=act.activityFormUrl)
                 .catch(errorHandler);
 
     }
     return <div className="defaultActivityForm">
-
+        <Step.Group items={activityFormData.processStep}/>
         <JsonSchemaForm
             schema={activityFormData.jsonSchema}
             formData={activityFormData.formData}

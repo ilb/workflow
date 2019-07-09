@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import ActivityForm from './components/ActivityForm';
+import ActivityFormContainer from './components/ActivityForm';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 function Index() {
@@ -17,16 +17,17 @@ function ProcessIndex( { match }) {
     return (
         <div className="app">
             <Index/>
-            <ActivityForm processId={match.params.processId} activityId={match.params.activityId}/>
+            <ActivityFormContainer processId={match.params.processId} activityId={match.params.activityId}/>
         </div>
     );
 }
-
+// <Route path="/processes/:processId" component={ProcessIndex} />
 function App() {
     return (
             <Router>
                 <div>
                     <Route path="/" exact component={Index} />
+                    
                     <Route path="/processes/:processId/activities/:activityId" component={ProcessIndex} />
                 </div>
             </Router>
