@@ -6,11 +6,18 @@ import {useResource} from '../ReactHelper';
 
 export default function ProcessSelectorContainer() {
     const api = new DefaultApi();
+
+    const errorHandler = (data) => {
+        alert(data.error);
+    }
+
     const startProcess = () => {
-        alert('start!');
+        api.createProcessInstanceAndNext({processDefinitionId: "stockvaluation_fairpricecalc",body:{}})
+                .then(act => document.location = act.activityFormUrl)
+                .catch(errorHandler);
     }
     return <div className="processSelectorContainer">
-    <Button onClick={startProcess}>Start process</Button>
+        <Button onClick={startProcess}>Start process</Button>
     </div>;
 }
 
