@@ -128,8 +128,6 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
             WMActivityInstance nextAct = WAPIUtils.findNextActivity(shandle, AuthorizationHandler.getAuthorisedUser(), processInstanceId);
             if (nextAct != null) {
                 nextActivityInstance = activityInstanceMapper.createFromEntity(nextAct);
-                String url = WorkflowUtils.getActivityFormUrl(shandle, null, nextAct.getProcessInstanceId(), nextAct.getId());
-                nextActivityInstance.setActivityFormUrl(url);
             }
             return nextActivityInstance;
         } catch (Exception ex) {

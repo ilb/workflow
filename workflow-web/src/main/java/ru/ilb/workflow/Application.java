@@ -15,11 +15,11 @@
  */
 package ru.ilb.workflow;
 
-import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import javax.annotation.Resource;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportResource;
@@ -43,10 +43,12 @@ import ru.ilb.filedossier.store.StoreFactory;
 @ImportResource("classpath:beans.xml")
 public class Application {
 
-    @Resource(mappedName = "ru.bystrobank.apps.workflow.processfilesbase")
+    //@Resource(mappedName = "ru.bystrobank.apps.workflow.processfilesbase")
+    @Value("${ru.bystrobank.apps.workflow.processfilesbase}")
     String processfilesbase;
 
-    @Resource(mappedName = "xpdlRepository")
+    //@Resource(mappedName = "xpdlRepository")
+    @Value("${xpdlRepository}")
     String xpdlRepository;
 
     @Bean

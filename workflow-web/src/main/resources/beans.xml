@@ -157,10 +157,7 @@
         <entry key="http://www.w3.org/1999/xlink" value="xlink"/>
         <entry key="urn:ru:ilb:workflow:view" value="view"/>
     </util:map>
-    <!-- Provider to mail fatal errors to server admin -->
-    <bean id="exceptionHandler" class="ru.ilb.common.jaxrs.exceptionhandler.SendMailExceptionHandler">
-        <property name="mailTo" value="${SERVER_ADMIN}"/>
-    </bean>
+    
     <!-- Configure param converters for jaxrs:server and jaxrs:client -->
 <!--    <util:map id="mapParamConverters">
         <entry key="java.util.Date" value="ru.ilb.common.jaxrs.converters.DateParamConverter" value-type=""/>
@@ -189,8 +186,6 @@
             <ref bean="jsonProvider"/>
             <ref bean="jsonMapProvider"/>
             <ref bean="searchContextProvider"/>
-            <!--<ref bean="mapParamConverterProvider"/>-->
-            <ref bean="exceptionHandler"/>
             <!-- override default encoding  "ISO-8859-1" -->
             <bean class="ru.ilb.common.jaxrs.interceptors.EncodingInInterceptor"/>
 
@@ -224,8 +219,6 @@
             <ref bean="moxyJsonProvider"/>
             <ref bean="jsonMapProvider"/>
             <ref bean="searchContextProvider"/>
-            <!--<ref bean="mapParamConverterProvider"/>-->
-            <ref bean="exceptionHandler"/>
             <!-- override default encoding  "ISO-8859-1" -->
             <bean class="ru.ilb.common.jaxrs.interceptors.EncodingInInterceptor"/>
 

@@ -15,18 +15,33 @@
  */
 package ru.ilb.workflow.mappers;
 
+import javax.inject.Inject;
 import org.enhydra.shark.api.client.wfmc.wapi.WMActivityInstance;
+import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
+import ru.ilb.workflow.session.SessionDataProvider;
+import ru.ilb.workflow.utils.WorkflowUtils;
 import ru.ilb.workflow.view.ActivityInstance;
 
 /**
  *
  * @author slavb
  */
-@Mapper(uses={ActivityInstanceStateMapper.class,DateTimeMapper.class})
-public abstract class ActivityInstanceMapper implements GenericMapperDto<WMActivityInstance,ActivityInstance>{
+@Mapper(uses = {ActivityInstanceStateMapper.class, DateTimeMapper.class})
+public abstract class ActivityInstanceMapper implements GenericMapperDto<WMActivityInstance, ActivityInstance> {
+
+    @Inject
+    private SessionDataProvider sessionDataProvider;
 
     @Override
     public abstract ActivityInstance createFromEntity(WMActivityInstance entity);
 
+    @AfterMapping
+    protected void afterMapping(@MappingTarget ActivityInstance dto, WMActivityInstance entity) {
+        WMSessionHandle shandle = sessionDataProvider.getSessionData().getSessionHandle();
+        String url = WorkflowUtils.getActivityFormUrl(shandle, null, entity.getProcessInstanceId(), entity.getId());
+        dto.setActivityFormUrl(url);
+    }
 }

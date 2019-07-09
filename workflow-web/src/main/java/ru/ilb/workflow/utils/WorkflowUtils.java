@@ -17,6 +17,8 @@ package ru.ilb.workflow.utils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
@@ -29,7 +31,7 @@ import ru.ilb.filedossier.scripting.TemplateEvaluator;
  */
 public class WorkflowUtils {
 
-    private static String WORKFLOW_FORM_RESOURCE_URL = "WORKFLOW_FORM_RESOURCE_URL";
+    private static final String WORKFLOW_FORM_RESOURCE_URL = "WORKFLOW_FORM_RESOURCE_URL";
 
     /**
      * Get url to activity form
@@ -39,11 +41,16 @@ public class WorkflowUtils {
      * @param procId
      * @param actId
      * @return
-     * @throws NamingException
      */
-    public static String getActivityFormUrl(WMSessionHandle shandle, String procDefId, String procId, String actId) throws NamingException {
-        javax.naming.Context ctx = new InitialContext();
-        String defaultActivityFormUrl = (String) ctx.lookup("ru.bystrobank.apps.workflow.activityform.url");
+    public static String getActivityFormUrl(WMSessionHandle shandle, String procDefId, String procId, String actId) {
+        javax.naming.Context ctx;
+        String defaultActivityFormUrl;
+        try {
+            ctx = new InitialContext();
+            defaultActivityFormUrl = (String) ctx.lookup("ru.bystrobank.apps.workflow.activityform.url");
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
         String activityFormUrl = XPDLUtils.getEAValue(shandle, WORKFLOW_FORM_RESOURCE_URL, procDefId, procId, actId, defaultActivityFormUrl);
         TemplateEvaluator templateEvaluator = new SubstitutorTemplateEvaluator(ctx);
         Map<String, Object> params = new HashMap<>();
