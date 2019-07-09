@@ -31,19 +31,19 @@ export default function ActivityFormContainer( {processId, activityId, component
 }
 function ActivityForm({activityFormData, component}) {
     return <div className="activityForm">
-        <ActivityFormHeader actitityInstance={activityFormData.actitityInstance}/>
+        <ActivityFormHeader activityFormData={activityFormData}/>
         { component ? component : <DefaultActivityForm activityFormData={activityFormData}/>}
-        <ActivityFormFooter actitityInstance={activityFormData.actitityInstance}/>
+        <ActivityFormFooter activityFormData={activityFormData}/>
     </div>
 }
 
-function ActivityFormHeader(actitityInstance) {
+function ActivityFormHeader({activityFormData}) {
     return <div className="activityFormHeader">
-        Этап: {actitityInstance.name}
+        Этап: {activityFormData.activityInstance.name}
     </div>;
 }
 
-function ActivityFormFooter(actitityInstance) {
+function ActivityFormFooter({activityFormData}) {
     return <div className="activityFormFooter"/>;
 }
 
