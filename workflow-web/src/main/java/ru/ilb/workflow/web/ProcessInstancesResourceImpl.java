@@ -31,13 +31,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.workflow.api.ProcessInstanceResource;
 import ru.ilb.workflow.api.ProcessInstancesResource;
+import ru.ilb.workflow.mappers.ActivityInstanceMapper;
 import ru.ilb.workflow.mappers.ProcessInstanceMapper;
+import ru.ilb.workflow.session.AuthorizationHandler;
 import ru.ilb.workflow.session.SessionDataProvider;
 import ru.ilb.workflow.utils.ExceptionUtils;
 import ru.ilb.workflow.utils.HTTPUtils;
 import ru.ilb.workflow.utils.SharkUtils;
 import ru.ilb.workflow.utils.WAPIUtils;
 import ru.ilb.workflow.utils.WorkflowUtils;
+import ru.ilb.workflow.view.ActivityInstance;
 import ru.ilb.workflow.view.ProcessInstances;
 
 @Path("processInstances")
@@ -50,7 +53,9 @@ public class ProcessInstancesResourceImpl extends JaxRsContextResource implement
     private ApplicationContext applicationContext;
     @Inject
     private ProcessInstanceMapper processInstanceMapper;
-    
+    @Inject
+    private ActivityInstanceMapper activityInstanceMapper;
+
     @Override
     public ProcessInstanceResource getProcessInstanceResource(String processInstanceId) {
         ProcessInstanceResource resource = new ProcessInstanceResourceImpl(sessionDataProvider.getSessionData().getSessionHandleSupplier(), processInstanceId);
@@ -92,6 +97,19 @@ public class ProcessInstancesResourceImpl extends JaxRsContextResource implement
             throw new RuntimeException(ex);
         }
 
+    }
+
+    @Override
+    @Transactional
+    public ActivityInstance createProcessInstanceAndNext(String packageId, String versionId, String processDefinitionId, JsonMapObject jsonmapobject) {
+        String processInstanceId = createProcessInstance(packageId, versionId, processDefinitionId, jsonmapobject);
+        ActivityInstance nextActivityInstance = null;
+        WMSessionHandle shandle = sessionDataProvider.getSessionData().getSessionHandleSupplier().get();
+        WMActivityInstance nextAct = WAPIUtils.findNextActivity(shandle, AuthorizationHandler.getAuthorisedUser(), processInstanceId);
+        if (nextAct != null) {
+            nextActivityInstance = activityInstanceMapper.createFromEntity(nextAct);
+        }
+        return nextActivityInstance;
     }
 
 }

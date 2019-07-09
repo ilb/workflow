@@ -20,6 +20,8 @@ import at.together._2006.xpil1.StringDataInstance;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.core.MultivaluedMap;
 import org.enhydra.shark.api.client.wfmc.wapi.WAPI;
 import org.enhydra.shark.api.client.wfmc.wapi.WMActivityInstance;
@@ -44,7 +46,7 @@ import org.enhydra.shark.utilities.namevalue.NameValueUtilities;
  */
 public class WAPIUtils {
 
-  public static WMProcessDefinition[] getProcessDefinitions(WMSessionHandle shandle, Boolean enabled, String packageId, String versionId, String processDefinitionId) throws Exception {
+    public static WMProcessDefinition[] getProcessDefinitions(WMSessionHandle shandle, Boolean enabled, String packageId, String versionId, String processDefinitionId) throws Exception {
         //PackageAdministration pa = SharkInterfaceWrapper.getShark().getPackageAdministration();
         WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
 
@@ -76,7 +78,8 @@ public class WAPIUtils {
         return mgrs;
 
     }
-  public static WMProcessInstance[] getProcessInstances(WMSessionHandle shandle, Boolean open, String packageId, String versionId, String processDefinitionId) throws Exception {
+
+    public static WMProcessInstance[] getProcessInstances(WMSessionHandle shandle, Boolean open, String packageId, String versionId, String processDefinitionId) throws Exception {
         //PackageAdministration pa = SharkInterfaceWrapper.getShark().getPackageAdministration();
         WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
 
@@ -109,41 +112,47 @@ public class WAPIUtils {
 
     }
 
-    public static WMActivityInstance findNextActivity(WMSessionHandle shandle, String userId, String procId) throws Exception {
+    public static WMActivityInstance findNextActivity(WMSessionHandle shandle, String userId, String procId) {
 
-        WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
-        ActivityFilterBuilder fb = SharkInterfaceWrapper.getShark().getActivityFilterBuilder();
-        WMFilter f = fb.addProcessIdEquals(shandle, procId);
-        f = fb.and(shandle, f, fb.addStateStartsWith(shandle, SharkConstants.STATE_OPEN_NOT_RUNNING_NOT_STARTED));
-        WMActivityInstance[] acts = wapi.listActivityInstances(shandle, f, true).getArray();
-        WMWorkItem[] ass = null;
-        if (NameValueUtilities.convertNameValueArrayToProperties(SharkInterfaceWrapper.getShark().getProperties())
-                .getProperty("SharkKernel.createAssignments", "true")
-                .equals("true")) {
-            AssignmentFilterBuilder afb = SharkInterfaceWrapper.getShark().getAssignmentFilterBuilder();
-            f = afb.addUsernameEquals(shandle, userId);
-            //f = afb.and(shandle, f, afb.addProcessIdEquals(shandle, procId));
-            ass = wapi.listWorkItems(shandle, f, true).getArray();
-        }
-
-        WMActivityInstance nextAct = null;
-        for (WMActivityInstance act : acts) {
-            if(act.getState().isClosed()) continue; //TEMP FIX
-            if (ass == null) {
-                nextAct = act;
-                break;
+        try {
+            WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
+            ActivityFilterBuilder fb = SharkInterfaceWrapper.getShark().getActivityFilterBuilder();
+            WMFilter f = fb.addProcessIdEquals(shandle, procId);
+            f = fb.and(shandle, f, fb.addStateStartsWith(shandle, SharkConstants.STATE_OPEN_NOT_RUNNING_NOT_STARTED));
+            WMActivityInstance[] acts = wapi.listActivityInstances(shandle, f, true).getArray();
+            WMWorkItem[] ass = null;
+            if (NameValueUtilities.convertNameValueArrayToProperties(SharkInterfaceWrapper.getShark().getProperties())
+                    .getProperty("SharkKernel.createAssignments", "true")
+                    .equals("true")) {
+                AssignmentFilterBuilder afb = SharkInterfaceWrapper.getShark().getAssignmentFilterBuilder();
+                f = afb.addUsernameEquals(shandle, userId);
+                //f = afb.and(shandle, f, afb.addProcessIdEquals(shandle, procId));
+                ass = wapi.listWorkItems(shandle, f, true).getArray();
             }
-            for (WMWorkItem as : ass) {
-                if (as.getActivityInstanceId().equals(act.getId())) {
+
+            WMActivityInstance nextAct = null;
+            for (WMActivityInstance act : acts) {
+                if (act.getState().isClosed()) {
+                    continue; //TEMP FIX
+                }
+                if (ass == null) {
                     nextAct = act;
                     break;
                 }
+                for (WMWorkItem as : ass) {
+                    if (as.getActivityInstanceId().equals(act.getId())) {
+                        nextAct = act;
+                        break;
+                    }
+                }
+                if (nextAct != null) {
+                    break;
+                }
             }
-            if (nextAct != null) {
-                break;
-            }
+            return nextAct;
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
-        return nextAct;
     }
 
     public static Boolean changeActivityState(WMSessionHandle shandle, WMActivityInstance act, String state) throws Exception {
@@ -160,7 +169,7 @@ public class WAPIUtils {
                 }
                 wapi.changeActivityInstanceState(shandle, procId, actId, WMActivityInstanceState.valueOf(state));
                 act.setState(WMActivityInstanceState.valueOf(state));
-                changed=true;
+                changed = true;
             }
         }
         return changed;

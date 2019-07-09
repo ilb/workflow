@@ -291,6 +291,36 @@
                     </representation>
                 </response>
             </method>
+            <resource path="createProcessInstanceAndNext">
+                <method name="POST" id="createProcessInstanceAndNext">
+                    <doc>create process instance and get next activity</doc>
+                    <request>
+                        <param name="packageId" style="query" type="xsd:string">
+                            <doc>packageId</doc>
+                        </param>
+                        <param name="versionId" style="query" type="xsd:string">
+                            <doc>versionId</doc>
+                        </param>
+                        <param name="processDefinitionId" style="query" type="xsd:string">
+                            <doc>processDefinitionId</doc>
+                        </param>
+                        <representation mediaType="application/xml" element="global:map">
+                            <doc>processInstances data</doc>
+                        </representation>
+                        <representation mediaType="application/json">
+                            <doc>processInstances data</doc>
+                        </representation>
+                    </request>
+                    <response status="200">
+                        <representation mediaType="application/xml" element="view:activityInstance">
+                            <doc>next activity instance data</doc>
+                        </representation>
+                        <representation mediaType="application/json">
+                            <doc>next activity instance data</doc>
+                        </representation>
+                    </response>
+                </method>
+            </resource>
 
             <resource path="{processInstanceId}" id="processInstanceResource" type="#processInstanceResource">
                 <param name="processInstanceId" style="template" type="xsd:string">
