@@ -15,14 +15,18 @@
  */
 package ru.ilb.workflow.utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.enhydra.jawe.JaWEManager;
 import org.enhydra.jxpdl.XMLCollectionElement;
 import org.enhydra.jxpdl.XMLComplexElement;
+import org.enhydra.jxpdl.XMLUtil;
+import org.enhydra.jxpdl.elements.Responsible;
 import org.enhydra.jxpdl.elements.WorkflowProcess;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.enhydra.shark.api.client.wfservice.AdminMisc;
@@ -100,6 +104,26 @@ public class XPDLUtils {
 
         WorkflowProcess wp = packag.getWorkflowProcess(ent.getId());
         return wp;
+    }
+
+    /**
+     * @see WfActivityImpl.findUsers
+     * @param shandle
+     * @param processId
+     * @param uniqueDefId
+     * @return
+     * @throws Exception
+     */
+    public static List<String> getResponsibles(WMSessionHandle shandle, String processId, String uniqueDefId) throws Exception {
+        WorkflowProcess workflowProcess = getWorkflowProcess(shandle, processId, uniqueDefId);
+ List resps = XMLUtil.getResponsibles(workflowProcess);
+         Iterator it = resps.iterator();
+         List<String> responsibles = new ArrayList<>();
+         while (it.hasNext()) {
+            Responsible resp = (Responsible) it.next();
+            responsibles.add(resp.toValue());
+         }
+         return responsibles;
     }
 
     /**
