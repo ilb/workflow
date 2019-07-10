@@ -15,17 +15,22 @@
  */
 package ru.ilb.workflow.web;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import org.apache.cxf.jaxrs.json.basic.JsonMapObject;
+import static org.apache.tomcat.jni.User.username;
 import org.enhydra.shark.api.client.wfmc.wapi.WAPI;
 import org.enhydra.shark.api.client.wfmc.wapi.WMActivityInstance;
+import org.enhydra.shark.api.client.wfmc.wapi.WMFilter;
 import org.enhydra.shark.api.client.wfmc.wapi.WMProcessDefinition;
 import org.enhydra.shark.api.client.wfmc.wapi.WMProcessInstance;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
+import org.enhydra.shark.api.common.ActivityFilterBuilder;
+import org.enhydra.shark.api.common.SharkConstants;
 import org.enhydra.shark.api.internal.toolagent.ToolAgentGeneralException;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 import org.springframework.context.ApplicationContext;
@@ -44,6 +49,7 @@ import ru.ilb.workflow.utils.SharkUtils;
 import ru.ilb.workflow.utils.WAPIUtils;
 import ru.ilb.workflow.utils.WorkflowUtils;
 import ru.ilb.workflow.view.ActivityInstance;
+import ru.ilb.workflow.view.ActivityInstances;
 import ru.ilb.workflow.view.ProcessInstances;
 
 @Path("processInstances")
@@ -117,9 +123,25 @@ public class ProcessInstancesResourceImpl extends JaxRsContextResource implement
 
     @Override
     @Transactional
-    public Response getWorkList(AssignmentFilterCode assignment, Integer limit) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ActivityInstances getWorkList(AssignmentFilterCode assignment, Integer limit) {
+        try {
+            WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
+            WMSessionHandle shandle = sessionDataProvider.getSessionData().getSessionHandleSupplier().get();
+            ActivityFilterBuilder fb = SharkInterfaceWrapper.getShark().getActivityFilterBuilder();
+            List<WMFilter> filters = new ArrayList<>();
+            filters.add(fb.addStateStartsWith(shandle, SharkConstants.STATEPREFIX_OPEN));
+            if (assignment != null) {
+                filters.add(fb.addHasAssignmentForUser(shandle, sessionDataProvider.getSessionData().getAuthorisedUser(), WAPIUtils.acceptedStatus(assignment.value())));
+            }
+            WMFilter filter = fb.andForArray(shandle, filters.toArray(new WMFilter[filters.size()]));
+            if (limit!=null) {
+                fb.setLimit(shandle, filter, limit);
+            }
+            WMActivityInstance[] entities = wapi.listActivityInstances(shandle, filter, false).getArray();
+            return activityInstanceMapper.createWrapperFromEntities(Arrays.asList(entities));
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
-
 
 }

@@ -175,4 +175,23 @@ public class WAPIUtils {
         return changed;
     }
 
+    public static int acceptedStatus(String acceptedStatus) {
+        int valueInt;
+        switch (acceptedStatus) {
+            case "ACCEPTED_AND_NON_ACCEPTED":
+                valueInt = ActivityFilterBuilder.ACCEPTED_AND_NON_ACCEPTED;
+                break;
+            case "ONLY_NON_ACCEPTED":
+                valueInt = ActivityFilterBuilder.ONLY_NON_ACCEPTED;
+                break;
+            case "ONLY_ACCEPTED":
+                valueInt = ActivityFilterBuilder.ONLY_ACCEPTED;
+                break;
+            default:
+                throw new IllegalArgumentException("acceptedStatus values: ACCEPTED_AND_NON_ACCEPTED, ONLY_NON_ACCEPTED,ONLY_ACCEPTED");
+        }
+        return valueInt;
+
+    }
+
 }

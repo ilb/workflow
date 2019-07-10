@@ -86,7 +86,7 @@
         </xsd:restriction>
     </xsd:simpleType>
     
-    <xsd:simpleType name="assignmentFilterCode">
+    <xsd:simpleType name="acceptedStatus">
         <xsd:restriction base="xsd:string">
             <xsd:enumeration value="ACCEPTED_AND_NON_ACCEPTED"/>
             <xsd:enumeration value="ONLY_NON_ACCEPTED"/>

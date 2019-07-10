@@ -673,13 +673,16 @@
                 </doc>
                 <method name="GET" id="getWorkList">
                     <request>
-                        <param name="assignment" type="core:assignmentFilterCode" style="query" default="ACCEPTED_AND_NON_ACCEPTED"/>
+                        <param name="assignment" type="core:acceptedStatus" style="query" default="ACCEPTED_AND_NON_ACCEPTED"/>
                         <param name="limit" type="xsd:int" style="query" default="100"/>
                     </request>
                     <response status="200">
-                        <representation mediaType="application/xml" element="xpil:WorkflowProcessInstances"/>
-                        <representation mediaType="application/json"/>
-                        <representation mediaType="application/xhtml+xml"/>
+                    <representation mediaType="application/xml" element="view:activityInstances">
+                        <doc>next activity instance data</doc>
+                    </representation>
+                    <representation mediaType="application/json">
+                        <doc>next activity instance data</doc>
+                    </representation>
                     </response>
                 </method>
             </resource>
