@@ -68,7 +68,11 @@
                 <xsd:element name="processDefinitionId" type="xsd:string" minOccurs="0"/>
                 <xsd:element name="priority" type="xsd:int" minOccurs="0"/>
                 <xsd:element name="creationTime" type="xsd:dateTime" minOccurs="0"/>
-                <xsd:element name="startTime" type="xsd:dateTime" minOccurs="0"/>
+                <xsd:element name="startTime" type="xsd:dateTime" minOccurs="0">
+                    <xsd:annotation>
+                        <xsd:documentation>the time when the process is started</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
                 <xsd:element name="lastStateTime" type="xsd:dateTime" minOccurs="0"/>
                 <xsd:element name="limitTime" type="xsd:dateTime" minOccurs="0"/>
                 <xsd:element name="state" type="processInstanceState" minOccurs="0"/>
@@ -115,14 +119,32 @@
             <xsd:sequence>
                 <xsd:element name="id" type="xsd:string"/>
                 <xsd:element name="name" type="xsd:string"/>
-                <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="description" type="xsd:string" minOccurs="0">
+                    <xsd:annotation>
+                        <xsd:documentation>short textual description of the activity</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
                 <xsd:element name="activityDefinitionId" type="xsd:string" />
                 <xsd:element name="processInstanceId" type="xsd:string" />
                 <xsd:element name="priority" type="xsd:int" minOccurs="0"/>
-                <xsd:element name="creationTime" type="xsd:dateTime" minOccurs="0"/>
-                <xsd:element name="startTime" type="xsd:dateTime" minOccurs="0"/>
+                <xsd:element name="creationTime" type="xsd:dateTime" minOccurs="0">
+                    <xsd:annotation>
+                        <xsd:documentation>the time when process flow comes to activity and assignments for the activity are created</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="startTime" type="xsd:dateTime" minOccurs="0">
+                    <xsd:annotation>
+                        <xsd:documentation>the time when the first assignment for the activity is accepted.
+                            If activity is being rejected after its acceptance, or it is not accepted at all, startTime is set to null.
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
                 <xsd:element name="lastStateTime" type="xsd:dateTime" minOccurs="0"/>
-                <xsd:element name="limitTime" type="xsd:dateTime" minOccurs="0"/>
+                <xsd:element name="limitTime" type="xsd:dateTime" minOccurs="0">
+                    <xsd:annotation>
+                        <xsd:documentation>Expected duration for timemanagement purposes (e.g. starting an escalation procedure etc.)</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
                 <xsd:element name="state" type="activityInstanceState" minOccurs="0"/>
                 <xsd:element name="activityFormUrl" type="xsd:string"/>
             </xsd:sequence>

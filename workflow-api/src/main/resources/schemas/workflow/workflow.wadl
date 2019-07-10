@@ -5,6 +5,7 @@
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:html="http://www.w3.org/1999/xhtml"
     xmlns:view="urn:ru:ilb:workflow:view"
+    xmlns:core="urn:ru:ilb:workflow:core"
     xmlns:global="urn:ru:ilb:global"
     xmlns="http://wadl.dev.java.net/2009/02">
 
@@ -118,6 +119,222 @@
             <doc>current activity form</doc>
         </resource>
         <resource path="processContext" id="processContextResource" type="#processContextResource"/>
+        <resource path="start">
+            <doc>starts process ( can be used in the case the process is in open.not_running.not_started state)</doc>
+            <method name="POST" id="start">
+                <request>
+                    <representation mediaType="application/xml" element="global:map">
+                        <doc>updated process context</doc>
+                    </representation>
+                    <representation mediaType="application/json">
+                        <doc>updated process context</doc>
+                    </representation>
+                </request>
+                <response status="200">
+                    <representation mediaType="text/plain">
+                        <param name="stateChanged" style="plain" type="xsd:boolean">
+                            <doc>indicator process state changed</doc>
+                        </param>
+                    </representation>
+                </response>
+            </method>
+        </resource>
+        <resource path="suspend">
+            <doc>suspends the process, which means all of its active activities and synchronous sub-processes instantiated by some active subflow activities will be suspended</doc>
+            <method name="POST" id="suspend">
+                <request>
+                    <representation mediaType="application/xml" element="global:map">
+                        <doc>updated process context</doc>
+                    </representation>
+                    <representation mediaType="application/json">
+                        <doc>updated process context</doc>
+                    </representation>
+                </request>
+                <response status="200">
+                    <representation mediaType="text/plain">
+                        <param name="stateChanged" style="plain" type="xsd:boolean">
+                            <doc>indicator process state changed</doc>
+                        </param>
+                    </representation>
+                </response>
+            </method>
+        </resource>
+        <resource path="resume">
+            <doc>resumes the process, which means all of its activities and synchronous sub-processes instantiated by an active subflow activities will be resumed
+                NOTE: Synchronous process started by some subflow activity of the suspended process can't be resumed - it will be
+                automatically resumed when the 'parent' process/activity is resumed</doc>
+            <method name="POST" id="resume">
+                <request>
+                    <representation mediaType="application/xml" element="global:map">
+                        <doc>updated process context</doc>
+                    </representation>
+                    <representation mediaType="application/json">
+                        <doc>updated process context</doc>
+                    </representation>
+                </request>
+                <response status="200">
+                    <representation mediaType="text/plain">
+                        <param name="stateChanged" style="plain" type="xsd:boolean">
+                            <doc>indicator process state changed</doc>
+                        </param>
+                    </representation>
+                </response>
+            </method>
+        </resource>
+        <resource path="terminate">
+            <doc>terminates the process, which means that all of its activities and synchronous sub-processes instantiated by an
+                active subflow activities will be terminated
+            </doc>
+            <method name="POST" id="terminate">
+                <request>
+                    <representation mediaType="application/xml" element="global:map">
+                        <doc>updated process context</doc>
+                    </representation>
+                    <representation mediaType="application/json">
+                        <doc>updated process context</doc>
+                    </representation>
+                </request>
+                <response status="200">
+                    <representation mediaType="text/plain">
+                        <param name="stateChanged" style="plain" type="xsd:boolean">
+                            <doc>indicator process state changed</doc>
+                        </param>
+                    </representation>
+                </response>
+            </method>
+        </resource>
+        <resource path="abort">
+            <doc>aborts the process, which means that all of its activities and synchronous sub-processes instantiated by an active subflow
+                activities will be aborted</doc>
+            <method name="POST" id="abort">
+                <request>
+                    <representation mediaType="application/xml" element="global:map">
+                        <doc>updated process context</doc>
+                    </representation>
+                    <representation mediaType="application/json">
+                        <doc>updated process context</doc>
+                    </representation>
+                </request>
+                <response status="200">
+                    <representation mediaType="text/plain">
+                        <param name="stateChanged" style="plain" type="xsd:boolean">
+                            <doc>indicator process state changed</doc>
+                        </param>
+                    </representation>
+                </response>
+            </method>
+        </resource>
+
+        <resource path="goBack">
+            <doc>    Back navigation through the running process instance. It is assumed that process is
+                running, that there is only one activity running, and that there is only one
+                activity in XPDL definition prior to the currently running activity. Implementation
+                of this API method must:
+                <html:ul>
+                    <html:li>find the only one running activity of the given process,</html:li>
+                    <html:li>find activity definition prior to the running activity (it could be specified to
+                        search only manual activities)</html:li>
+                    <html:li>abort the running activity</html:li>
+                    <html:li>update process context with the context provided</html:li>
+                    <html:li>start previous activity from the definition</html:li>
+                </html:ul>
+                NOTE: if block activities are used, be sure that you do not nest them - it won't
+                work properly in that case. Also, be sure that ActivitySet is referenced from only
+                one block activity.</doc>
+            <method name="POST" id="goBack">
+                <request>
+                    <representation mediaType="application/xml" element="global:map">
+                        <doc>updated activity context</doc>
+                    </representation>
+                    <representation mediaType="application/json">
+                        <doc>updated activity context</doc>
+                    </representation>
+                </request>
+                <response status="200">
+                    <representation mediaType="application/xml" element="view:activityInstance">
+                        <doc>next activity instance data</doc>
+                    </representation>
+                    <representation mediaType="application/json">
+                        <doc>next activity instance data</doc>
+                    </representation>
+                </response>
+            </method>
+        </resource>
+        <resource path="goForth">
+            <doc> Forward navigation through the running process instance. It is assumed that process
+                is running, that there is only one activity running, and that there is only one
+                activity in XPDL definition following the currently running activity. Implementation
+                of this API method must:
+                <html:ul>
+                    <html:li>find the only one running activity of the given process,</html:li>
+                    <html:li>find activity definition following the running activity</html:li>
+                    <html:li>abort the running activity</html:li>
+                    <html:li>update process context with the context provided</html:li>
+                    <html:li>start next activity from the definition</html:li>
+                </html:ul>
+                NOTE: if block activities are used, be sure that you do not nest them - it won't
+                work properly in that case.</doc>
+            <method name="POST" id="goForth">
+                <request>
+                    <representation mediaType="application/xml" element="global:map">
+                        <doc>updated process context</doc>
+                    </representation>
+                    <representation mediaType="application/json">
+                        <doc>updated process context</doc>
+                    </representation>
+                </request>
+                <response status="200">
+                    <representation mediaType="application/xml" element="view:activityInstance">
+                        <doc>next activity instance data</doc>
+                    </representation>
+                    <representation mediaType="application/json">
+                        <doc>next activity instance data</doc>
+                    </representation>
+                </response>
+            </method>
+        </resource>
+        <resource path="goAnywhere">
+            <doc>Navigation through the running process instance. It is assumed that process is
+                running, in the case you don't provide 'actId' parameter (it is null) that there is
+                only one activity running, and that there is activity in XPDL definition with a
+                given definition Id. Implementation of this API method must:
+                <html:ul>
+                    <html:li>if 'actId' parameter is 'null' find the only one running activity of the given
+                        process, or find the running activity based on not-null 'actId' parameter</html:li>
+                    <html:li>find activity definition specified by the 'nextActDefId' parameter</html:li>
+                    <html:li>abort the running activity</html:li>
+                    <html:li>update process context with the context provided</html:li>
+                    <html:li>start specified activity</html:li>
+                </html:ul>
+                NOTE: if block activities are used, be sure that you do not nest them - it won't
+                work properly in that case. Also, be sure that ActivitySet is referenced from only
+                one block activity.</doc>
+            <method name="POST" id="goAnywhere">
+                <request>
+                    <param name="activityInstanceId" style="query" type="xsd:string">
+                        <doc>activityDefinitionId to move from (not required)</doc>
+                    </param>
+                    <param name="activityDefinitionId" style="query" type="xsd:string">
+                        <doc>activityDefinitionId to move to</doc>
+                    </param>
+                    <representation mediaType="application/xml" element="global:map">
+                        <doc>updated process context</doc>
+                    </representation>
+                    <representation mediaType="application/json">
+                        <doc>updated process context</doc>
+                    </representation>
+                </request>
+                <response status="200">
+                    <representation mediaType="application/xml" element="view:activityInstance">
+                        <doc>next activity instance data</doc>
+                    </representation>
+                    <representation mediaType="application/json">
+                        <doc>next activity instance data</doc>
+                    </representation>
+                </response>
+            </method>
+        </resource>
+
     </resource_type>
 
     <resource_type id="activityInstanceResource">
@@ -135,7 +352,8 @@
             </response>
         </method>
         <resource path="complete">
-            <method name="POST" id="completeActivity">
+            <doc>completes activity</doc>
+            <method name="POST" id="complete">
                 <request>
                     <representation mediaType="application/xml" element="global:map">
                         <doc>updated activity context</doc>
@@ -147,7 +365,7 @@
                 <response status="200">
                     <representation mediaType="text/plain">
                         <param name="stateChanged" style="plain" type="xsd:boolean">
-                            <doc>flag indicator activity state changed</doc>
+                            <doc>indicator activity state changed</doc>
                         </param>
                     </representation>
                 </response>
@@ -155,7 +373,7 @@
         </resource>
         <resource path="completeAndNext">
             <doc>complete and get next activity data</doc>
-            <method name="POST" id="completeAndNextActivity">
+            <method name="POST" id="completeAndNext">
                 <request>
                     <representation mediaType="application/xml" element="global:map">
                         <doc>updated activity context</doc>
@@ -175,9 +393,9 @@
 
             </method>
         </resource>
-        <resource path="goBack">
-            <doc>rollback and get previous activity data</doc>
-            <method name="POST" id="goBackActivity">
+        <resource path="start">
+            <doc>starts activity (accepts it)</doc>
+            <method name="POST" id="start">
                 <request>
                     <representation mediaType="application/xml" element="global:map">
                         <doc>updated activity context</doc>
@@ -187,16 +405,115 @@
                     </representation>
                 </request>
                 <response status="200">
-                    <representation mediaType="application/xml" element="view:activityInstance">
-                        <doc>next activity instance data</doc>
-                    </representation>
-                    <representation mediaType="application/json">
-                        <doc>next activity instance data</doc>
+                    <representation mediaType="text/plain">
+                        <param name="stateChanged" style="plain" type="xsd:boolean">
+                            <doc>indicator activity state changed</doc>
+                        </param>
                     </representation>
                 </response>
-
             </method>
         </resource>
+        <resource path="stop">
+            <doc> stops activity (rejects it when accepted)</doc>
+            <method name="POST" id="stop">
+                <request>
+                    <representation mediaType="application/xml" element="global:map">
+                        <doc>updated activity context</doc>
+                    </representation>
+                    <representation mediaType="application/json">
+                        <doc>updated activity context</doc>
+                    </representation>
+                </request>
+                <response status="200">
+                    <representation mediaType="text/plain">
+                        <param name="stateChanged" style="plain" type="xsd:boolean">
+                            <doc>indicator activity state changed</doc>
+                        </param>
+                    </representation>
+                </response>
+            </method>
+        </resource>
+        <resource path="suspend">
+            <doc>suspends activity</doc>
+            <method name="POST" id="suspend">
+                <request>
+                    <representation mediaType="application/xml" element="global:map">
+                        <doc>updated activity context</doc>
+                    </representation>
+                    <representation mediaType="application/json">
+                        <doc>updated activity context</doc>
+                    </representation>
+                </request>
+                <response status="200">
+                    <representation mediaType="text/plain">
+                        <param name="stateChanged" style="plain" type="xsd:boolean">
+                            <doc>indicator activity state changed</doc>
+                        </param>
+                    </representation>
+                </response>
+            </method>
+        </resource>
+        <resource path="resume">
+            <doc>resumes activity</doc>
+            <method name="POST" id="resume">
+                <request>
+                    <representation mediaType="application/xml" element="global:map">
+                        <doc>updated activity context</doc>
+                    </representation>
+                    <representation mediaType="application/json">
+                        <doc>updated activity context</doc>
+                    </representation>
+                </request>
+                <response status="200">
+                    <representation mediaType="text/plain">
+                        <param name="stateChanged" style="plain" type="xsd:boolean">
+                            <doc>indicator activity state changed</doc>
+                        </param>
+                    </representation>
+                </response>
+            </method>
+        </resource>
+        <resource path="terminate">
+            <doc>terminates activity (when activity is terminated, process proceeds to the next activities if transition conditions are satisfied)</doc>
+            <method name="POST" id="terminate">
+                <request>
+                    <representation mediaType="application/xml" element="global:map">
+                        <doc>updated activity context</doc>
+                    </representation>
+                    <representation mediaType="application/json">
+                        <doc>updated activity context</doc>
+                    </representation>
+                </request>
+                <response status="200">
+                    <representation mediaType="text/plain">
+                        <param name="stateChanged" style="plain" type="xsd:boolean">
+                            <doc>indicator activity state changed</doc>
+                        </param>
+                    </representation>
+                </response>
+            </method>
+        </resource>
+        <resource path="abort">
+            <doc> aborts activity (process becomes 'stucked')</doc>
+            <method name="POST" id="abort">
+                <request>
+                    <representation mediaType="application/xml" element="global:map">
+                        <doc>updated activity context</doc>
+                    </representation>
+                    <representation mediaType="application/json">
+                        <doc>updated activity context</doc>
+                    </representation>
+                </request>
+                <response status="200">
+                    <representation mediaType="text/plain">
+                        <param name="stateChanged" style="plain" type="xsd:boolean">
+                            <doc>indicator activity state changed</doc>
+                        </param>
+                    </representation>
+                </response>
+            </method>
+        </resource>
+
         <resource path="jsonSchema" id="jsonSchemaResource" type="#jsonSchemaResource"/>
         <resource path="activityForm" id="activityFormResource" type="#activityFormResource"/>
         <resource path="processContext" id="processContextResource" type="#processContextResource"/>
@@ -327,13 +644,8 @@
                 </doc>
                 <method name="GET" id="getWorkList">
                     <request>
-                        <param name="open" style="query" type="xsd:boolean">
-                            <doc>show open (working) activities</doc>
-                        </param>
-
-                        <param name="x-remote-user" type="xsd:string" style="header"/>
-                        <param name="xpilprop" style="query" repeating="true"/>
-                        <param name="filter" type="xsd:string" style="query" default="state==open*;assignment==ACCEPTED_AND_NON_ACCEPTED;limit==100"/>
+                        <param name="assignment" type="core:assignmentFilterCode" style="query" default="ACCEPTED_AND_NON_ACCEPTED"/>
+                        <param name="limit" type="xsd:int" style="query" default="100"/>
                     </request>
                     <response status="200">
                         <representation mediaType="application/xml" element="xpil:WorkflowProcessInstances"/>

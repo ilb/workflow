@@ -16,8 +16,10 @@
 package ru.ilb.workflow.web;
 
 import java.util.Arrays;
+import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
 import org.apache.cxf.jaxrs.json.basic.JsonMapObject;
 import org.enhydra.shark.api.client.wfmc.wapi.WAPI;
 import org.enhydra.shark.api.client.wfmc.wapi.WMActivityInstance;
@@ -31,6 +33,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.workflow.api.ProcessInstanceResource;
 import ru.ilb.workflow.api.ProcessInstancesResource;
+import ru.ilb.workflow.core.AssignmentFilterCode;
 import ru.ilb.workflow.mappers.ActivityInstanceMapper;
 import ru.ilb.workflow.mappers.ProcessInstanceMapper;
 import ru.ilb.workflow.session.AuthorizationHandler;
@@ -111,5 +114,12 @@ public class ProcessInstancesResourceImpl extends JaxRsContextResource implement
         }
         return nextActivityInstance;
     }
+
+    @Override
+    @Transactional
+    public Response getWorkList(AssignmentFilterCode assignment, Integer limit) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 
 }

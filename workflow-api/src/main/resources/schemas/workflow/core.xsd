@@ -40,14 +40,14 @@
 
     <xsd:simpleType name="activityActionCode">
         <xsd:restriction base="xsd:string">
-            <xsd:enumeration value="ABORT"/>
-            <xsd:enumeration value="COMPLETE"/>
-            <xsd:enumeration value="CREATE"/>
-            <xsd:enumeration value="RESUME"/>
-            <xsd:enumeration value="START"/>
-            <xsd:enumeration value="STOP"/>
-            <xsd:enumeration value="SUSPEND"/>
-            <xsd:enumeration value="TERMINATE"/>
+            <xsd:enumeration value="abort"/>
+            <xsd:enumeration value="complete"/>
+            <xsd:enumeration value="create"/>
+            <xsd:enumeration value="resume"/>
+            <xsd:enumeration value="start"/>
+            <xsd:enumeration value="stop"/>
+            <xsd:enumeration value="suspend"/>
+            <xsd:enumeration value="terminate"/>
         </xsd:restriction>
     </xsd:simpleType>
     
@@ -86,7 +86,7 @@
         </xsd:restriction>
     </xsd:simpleType>
     
-    <xsd:simpleType name="assignmentFilter">
+    <xsd:simpleType name="assignmentFilterCode">
         <xsd:restriction base="xsd:string">
             <xsd:enumeration value="ACCEPTED_AND_NON_ACCEPTED"/>
             <xsd:enumeration value="ONLY_NON_ACCEPTED"/>

@@ -109,10 +109,10 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
 
     @Override
     @Transactional
-    public boolean completeActivity(JsonMapObject jsonmapobject) {
+    public boolean complete(JsonMapObject jsonmapobject) {
         try {
             WMSessionHandle shandle = sessionHandleSupplier.get();
-            return completeActivity(shandle, processInstanceId, activityInstanceId, jsonmapobject);
+            return complete(shandle, processInstanceId, activityInstanceId, jsonmapobject);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -120,10 +120,10 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
 
     @Override
     @Transactional
-    public ActivityInstance completeAndNextActivity(JsonMapObject jsonmapobject) {
+    public ActivityInstance completeAndNext(JsonMapObject jsonmapobject) {
         try {
             WMSessionHandle shandle = sessionHandleSupplier.get();
-            completeActivity(shandle, processInstanceId, activityInstanceId, jsonmapobject);
+            complete(shandle, processInstanceId, activityInstanceId, jsonmapobject);
             ActivityInstance nextActivityInstance = null;
             WMActivityInstance nextAct = WAPIUtils.findNextActivity(shandle, AuthorizationHandler.getAuthorisedUser(), processInstanceId);
             if (nextAct != null) {
@@ -136,7 +136,7 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
     }
 
     @SuppressWarnings("unchecked")
-    private static boolean completeActivity(WMSessionHandle shandle, String processInstanceId, String activityInstanceId, JsonMapObject jsonmapobject) throws Exception {
+    private static boolean complete(WMSessionHandle shandle, String processInstanceId, String activityInstanceId, JsonMapObject jsonmapobject) throws Exception {
         WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
         // update variables if set
         if (jsonmapobject != null && !jsonmapobject.asMap().isEmpty()) {
@@ -151,15 +151,45 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
 
     }
 
+  
     @Override
     @Transactional
-    public ActivityInstance goBackActivity(JsonMapObject jsonmapobject) {
-        try {
-            WMSessionHandle shandle = sessionHandleSupplier.get();
-            WMActivityInstance activityInstance = SharkInterfaceWrapper.getShark().getExecutionAdministrationExtension().goBack(shandle, processInstanceId, true, null);
-            return activityInstanceMapper.createFromEntity(activityInstance);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
+    public boolean start(JsonMapObject jsonmapobject) {
+        // WAPIUtils.changeActivityState to STATE_OPEN_RUNNING
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    @Transactional
+    public boolean stop(JsonMapObject jsonmapobject) {
+        // WAPIUtils.changeActivityState to STATE_OPEN_NOT_RUNNING_NOT_STARTED
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional
+    public boolean suspend(JsonMapObject jsonmapobject) {
+        // WAPIUtils.changeActivityState to STATE_OPEN_NOT_RUNNING_SUSPENDED
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional
+    public boolean resume(JsonMapObject jsonmapobject) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional
+    public boolean terminate(JsonMapObject jsonmapobject) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional
+    public boolean abort(JsonMapObject jsonmapobject) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+
 }

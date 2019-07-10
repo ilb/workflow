@@ -19,7 +19,9 @@ import java.util.function.Supplier;
 import javax.inject.Inject;
 import javax.ws.rs.container.ResourceContext;
 import javax.ws.rs.core.Context;
+import org.apache.cxf.jaxrs.json.basic.JsonMapObject;
 import org.enhydra.shark.api.client.wfmc.wapi.WAPI;
+import org.enhydra.shark.api.client.wfmc.wapi.WMActivityInstance;
 import org.enhydra.shark.api.client.wfmc.wapi.WMProcessInstance;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
@@ -32,7 +34,9 @@ import ru.ilb.workflow.api.JsonSchemaResource;
 import ru.ilb.workflow.api.ProcessDefinitionResource;
 import ru.ilb.workflow.api.ProcessInstanceResource;
 import ru.ilb.workflow.api.ProcessStepsResource;
+import ru.ilb.workflow.mappers.ActivityInstanceMapper;
 import ru.ilb.workflow.mappers.ProcessInstanceMapper;
+import ru.ilb.workflow.view.ActivityInstance;
 import ru.ilb.workflow.view.ProcessInstance;
 
 public class ProcessInstanceResourceImpl implements ProcessInstanceResource {
@@ -49,6 +53,9 @@ public class ProcessInstanceResourceImpl implements ProcessInstanceResource {
 
     @Inject
     private  ApplicationContext applicationContext;
+    
+    @Inject
+    private ActivityInstanceMapper activityInstanceMapper;
 
     public ProcessInstanceResourceImpl(Supplier<WMSessionHandle> sessionHandleSupplier, String processInstanceId) {
         this.sessionHandleSupplier = sessionHandleSupplier;
@@ -99,6 +106,62 @@ public class ProcessInstanceResourceImpl implements ProcessInstanceResource {
 
     @Override
     public ProcessContextResource getProcessContextResource() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional
+    public boolean start(JsonMapObject jsonmapobject) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional
+    public boolean suspend(JsonMapObject jsonmapobject) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional
+    public boolean resume(JsonMapObject jsonmapobject) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional
+    public boolean terminate(JsonMapObject jsonmapobject) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional
+    public boolean abort(JsonMapObject jsonmapobject) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
+    @Transactional
+    public ActivityInstance goBack(JsonMapObject jsonmapobject) {
+        try {
+            WMSessionHandle shandle = sessionHandleSupplier.get();
+            WMActivityInstance activityInstance = SharkInterfaceWrapper.getShark().getExecutionAdministrationExtension().goBack(shandle, processInstanceId, true, null);
+            return activityInstanceMapper.createFromEntity(activityInstance);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
+    @Transactional
+    public ActivityInstance goForth(JsonMapObject jsonmapobject) {
+        // use SharkInterfaceWrapper.getShark().getExecutionAdministrationExtension().goForth
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional
+    public ActivityInstance goAnywhere(String activityInstanceId, String activityDefinitionId, JsonMapObject jsonmapobject) {
+        // use SharkInterfaceWrapper.getShark().getExecutionAdministrationExtension().goAnywhere
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
