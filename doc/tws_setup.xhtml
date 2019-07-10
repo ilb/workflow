@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link rel="stylesheet" type="text/css" href="../styles/ITDocumentation/ITDocumentation.css" />
+        <title>Установка и настройка TWS</title>
+    </head>
+    <body>
+        <h1>Установка и настройка TWS</h1>
+        <div class="contents"/>
+        <h2 id="db">Создание базы данных</h2>
+        <ol>
+            <li>
+                Создать БД shark:<br/>
+                create schema workflow;<br/>
+                grant all privileges on workflow.* to 'workflow'@'localhost' identified by 'shark';<br/>
+                grant all privileges on workflow.* to 'workflow'@'%' identified by 'shark';<br/>
+            </li>
+            <li>
+                Залить дамп пустой БД: <a href="../db/workflow.sql">workflow.sql</a>
+            </li>
+        </ol>
+        <h2 id="compile">Сборка из исходных кодов</h2>
+        <ol>
+            <li>svn checkout http://svn.code.sf.net/p/sharkwf/code/trunk sharkwf-code</li>
+            <li>cd sharkwf-code/tws</li>
+            <li>sh configure</li>
+            <li>make any TARGET=buildLinuxInstall</li>
+        </ol>
+        <p>
+            Результат сборки будет в каталоге Shark/output/tws
+        </p>
+        <h2 id="setup">Настройка (быстрая)</h2>
+        <p>Переписать файлы из <a href="https://svn.net.ilb.ru/repos/shark/trunk/shark-setup/">shark-setup</a></p>
+        <h2 id="setupstep">Настройка (пошаговая)</h2>
+        <ol>
+            <li>cd Shark/output/tws</li>
+
+            <li>Отредактировать configure.properties:<br/>
+                db_loader_job=mysql<br/>
+                db_ext_dirs=lib<br/>
+                mysql_user=shark<br/>
+                mysql_passwd=shark<br/>
+            </li>
+            <li>TODO....</li>
+            <li>Скопировать mysql-connector-java-5.1.31.jar в подкаталог lib, без этого будет ошибка <b>configure.xml:229: Java returned: 1</b></li>
+            <li>Выполнить ./configure : В результате в БД будет создана структура таблиц для ядра TWS и будет собран WebClient/tomcat/sharkWebClient.war</li>
+        </ol>
+
+
+    </body>
+</html>
