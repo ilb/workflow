@@ -53,6 +53,28 @@
                 </representation>
             </response>
         </method>
+        <resource path="start">
+            <doc>starts activity manually  (beyond the process definition)</doc>
+            <method name="POST" id="start">
+                <request>
+                    <representation mediaType="application/xml" element="global:map">
+                        <doc>updated activity context</doc>
+                    </representation>
+                    <representation mediaType="application/json">
+                        <doc>updated activity context</doc>
+                    </representation>
+                </request>
+                <response status="200">
+                    <representation mediaType="application/xml" element="view:activityInstance">
+                        <doc>next activity instance data</doc>
+                    </representation>
+                    <representation mediaType="application/json">
+                        <doc>next activity instance data</doc>
+                    </representation>
+                </response>
+            </method>
+        </resource>
+
     </resource_type>
 
     <resource_type id="processStepsResource">
@@ -108,6 +130,13 @@
         <resource path="activityInstances">
             <resource path="{activityInstanceId}" id="activityInstanceResource" type="#activityInstanceResource">
                 <param name="activityInstanceId" style="template" type="xsd:string">
+                    <doc>activity definition</doc>
+                </param>
+            </resource>
+        </resource>
+        <resource path="activityDefinitions">
+            <resource path="{activityDefinitionId}" id="activityDefinitionResource" type="#activityDefinitionResource">
+                <param name="activityDefinitionId" style="template" type="xsd:string">
                     <doc>activity definition</doc>
                 </param>
             </resource>

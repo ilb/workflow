@@ -27,6 +27,7 @@ import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
+import ru.ilb.workflow.api.ActivityDefinitionResource;
 import ru.ilb.workflow.api.ActivityInstanceResource;
 import ru.ilb.workflow.api.ProcessContextResource;
 import ru.ilb.workflow.api.ActivityFormResource;
@@ -162,6 +163,11 @@ public class ProcessInstanceResourceImpl implements ProcessInstanceResource {
     @Transactional
     public ActivityInstance goAnywhere(String activityInstanceId, String activityDefinitionId, JsonMapObject jsonmapobject) {
         // use SharkInterfaceWrapper.getShark().getExecutionAdministrationExtension().goAnywhere
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ActivityDefinitionResource getActivityDefinitionResource(String activityDefinitionId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

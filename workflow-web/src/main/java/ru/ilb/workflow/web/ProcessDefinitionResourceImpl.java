@@ -64,7 +64,7 @@ public class ProcessDefinitionResourceImpl implements ProcessDefinitionResource 
 
     @Override
     public ActivityDefinitionResource getActivityDefinitionResource(String activityDefinitionId) {
-        return resourceContext.initResource(new ActivityDefinitionResourceImpl(sessionHandleSupplier, processDefinitionId, activityDefinitionId));
+        return resourceContext.initResource(new ActivityDefinitionResourceImpl(sessionHandleSupplier, processDefinitionId, activityDefinitionId, null));
     }
 
 }

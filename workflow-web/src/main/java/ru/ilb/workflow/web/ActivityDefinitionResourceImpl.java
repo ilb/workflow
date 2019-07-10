@@ -16,27 +16,40 @@
 package ru.ilb.workflow.web;
 
 import java.util.function.Supplier;
+import org.apache.cxf.jaxrs.json.basic.JsonMapObject;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
+import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.workflow.api.ActivityDefinitionResource;
 import ru.ilb.workflow.view.ActivityDefinition;
+import ru.ilb.workflow.view.ActivityInstance;
 
 public class ActivityDefinitionResourceImpl implements ActivityDefinitionResource {
 
     private final Supplier<WMSessionHandle> sessionHandleSupplier;
 
+    private final String processInstanceId;
+
     private final String processDefinitionId;
 
     private final String activityDefinitionId;
 
-    public ActivityDefinitionResourceImpl(Supplier<WMSessionHandle> sessionHandleSupplier, String processDefinitionId, String activityDefinitionId) {
+    public ActivityDefinitionResourceImpl(Supplier<WMSessionHandle> sessionHandleSupplier, String processDefinitionId, String activityDefinitionId, String processInstanceId) {
         this.sessionHandleSupplier = sessionHandleSupplier;
         this.processDefinitionId = processDefinitionId;
         this.activityDefinitionId = activityDefinitionId;
+        this.processInstanceId  = processInstanceId;
     }
 
 
     @Override
+    @Transactional
     public ActivityDefinition getActivityDefinition() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional
+    public ActivityInstance start(JsonMapObject jsonmapobject) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
