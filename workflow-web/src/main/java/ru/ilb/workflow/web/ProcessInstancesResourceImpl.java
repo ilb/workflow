@@ -38,16 +38,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.workflow.api.ProcessInstanceResource;
 import ru.ilb.workflow.api.ProcessInstancesResource;
-import ru.ilb.workflow.core.AssignmentFilterCode;
+import ru.ilb.workflow.core.AcceptedStatus;
 import ru.ilb.workflow.mappers.ActivityInstanceMapper;
 import ru.ilb.workflow.mappers.ProcessInstanceMapper;
 import ru.ilb.workflow.session.AuthorizationHandler;
 import ru.ilb.workflow.session.SessionDataProvider;
 import ru.ilb.workflow.utils.ExceptionUtils;
-import ru.ilb.workflow.utils.HTTPUtils;
 import ru.ilb.workflow.utils.SharkUtils;
 import ru.ilb.workflow.utils.WAPIUtils;
-import ru.ilb.workflow.utils.WorkflowUtils;
 import ru.ilb.workflow.view.ActivityInstance;
 import ru.ilb.workflow.view.ActivityInstances;
 import ru.ilb.workflow.view.ProcessInstances;
@@ -123,7 +121,7 @@ public class ProcessInstancesResourceImpl extends JaxRsContextResource implement
 
     @Override
     @Transactional
-    public ActivityInstances getWorkList(AssignmentFilterCode assignment, Integer limit) {
+    public ActivityInstances getWorkList(AcceptedStatus assignment, Integer limit) {
         try {
             WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
             WMSessionHandle shandle = sessionDataProvider.getSessionData().getSessionHandleSupplier().get();
