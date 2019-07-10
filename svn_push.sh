@@ -1,3 +1,4 @@
 #!/bin/bash
 set -e
-git svn dcommit
+git svn rebase
+git push origin
