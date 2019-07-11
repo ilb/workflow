@@ -1,12 +1,12 @@
 {
   "name": "@ilb/workflow-js",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "/workflow-js",
   "proxy": "http://localhost:8080",
   "dependencies": {
     "@bb/jsonschema-form": "^1.0.1",
     "@bb/semantic-ui-css": "^2.2.12",
-    "@ilb/filedossier-js": "^0.1.4",
+    "@ilb/filedossier-js": "^0.1.7",
     "@ilb/workflow-api": "^2.0.0",
     "formik": "^1.5.7",
     "react": "^16.8.6",

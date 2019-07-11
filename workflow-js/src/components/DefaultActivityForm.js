@@ -16,7 +16,7 @@ export default function DefaultActivityForm({activityFormData}) {
     }
     const submitHandler = (data) => {
         console.log('submitting', data.formData);
-        api.completeAndNextActivity(activityId, processId, {body: data.formData})
+        api.completeAndNext(activityId, processId, {body: data.formData})
                 .then(act => document.location=act.activityFormUrl)
                 .catch(errorHandler);
 
