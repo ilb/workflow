@@ -15,6 +15,7 @@
  */
 package ru.ilb.workflow;
 
+import java.net.URI;
 import java.nio.file.Paths;
 import javax.annotation.Resource;
 import javax.naming.InitialContext;
@@ -56,7 +57,7 @@ public class Application {
         DossierDefinitionRepository dossierModelRepository;
         StoreFactory storeFactory;
         dossierModelRepository = new FileDossierDefinitionRepository(Paths.get(xpdlRepository).resolve("packages").toUri());
-        storeFactory = StoreFactory.newInstance(Paths.get(processfilesbase).toUri());
+        storeFactory = StoreFactory.newInstance(URI.create(processfilesbase));
 
         DossierContextBuilder dossierContextBuilder = (String dossierKey, String dossierPackage, String dossierCode) -> {
             DossierContext dc = new DossierContextImpl();
