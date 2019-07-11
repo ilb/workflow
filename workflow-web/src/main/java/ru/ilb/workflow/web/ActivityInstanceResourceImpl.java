@@ -176,18 +176,22 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
     @Override
     @Transactional
     public boolean resume(JsonMapObject jsonmapobject) {
+        // check if state STATE_OPEN_NOT_RUNNING_SUSPENDED
+        // WAPIUtils.changeActivityState to STATE_OPEN_RUNNING
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     @Transactional
     public boolean terminate(JsonMapObject jsonmapobject) {
+        // WAPIUtils.changeActivityState to STATE_CLOSED_TERMINATED
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     @Transactional
     public boolean abort(JsonMapObject jsonmapobject) {
+        // WAPIUtils.changeActivityState to STATE_CLOSED_ABORTED
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
