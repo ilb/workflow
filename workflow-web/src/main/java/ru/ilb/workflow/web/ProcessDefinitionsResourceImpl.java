@@ -27,6 +27,7 @@ import ru.ilb.workflow.api.ProcessDefinitionResource;
 import ru.ilb.workflow.api.ProcessDefinitionsResource;
 import ru.ilb.workflow.mappers.ProcessDefinitionMapper;
 import ru.ilb.workflow.session.SessionDataProvider;
+import ru.ilb.workflow.utils.ProcessDefinitionFilter;
 import ru.ilb.workflow.utils.WAPIUtils;
 import ru.ilb.workflow.view.ProcessDefinitions;
 
@@ -37,7 +38,8 @@ public class ProcessDefinitionsResourceImpl extends JaxRsContextResource impleme
     @Inject
     private SessionDataProvider sessionDataProvider;
 
-
+    @Inject
+    private ProcessDefinitionFilter processDefinitionFilter;
 
     @Inject
     private ProcessDefinitionMapper processDefinitionMapper;
@@ -58,6 +60,8 @@ public class ProcessDefinitionsResourceImpl extends JaxRsContextResource impleme
         try {
             WMSessionHandle shandle = sessionDataProvider.getSessionData().getSessionHandleSupplier().get();
             WMProcessDefinition[] wmProcessDefinitions = WAPIUtils.getProcessDefinitions(shandle, enabled, packageId, versionId, processDefinitionId);
+            String userName = sessionDataProvider.getSessionData().getAuthorisedUser();
+            wmProcessDefinitions = processDefinitionFilter.filterAccessible(wmProcessDefinitions, userName, shandle);
             return processDefinitionMapper.createWrapperFromEntities(Arrays.asList(wmProcessDefinitions));
         } catch (Exception ex) {
             throw new RuntimeException(ex);
