@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {  Message, Loader, Select, Button } from 'semantic-ui-react'
-import { ApiClient, DefaultApi } from 'workflow-api/dist';
+import { ApiClient, DefaultApi } from '@ilb/workflow-api/dist';
 import {useResource} from '../ReactHelper';
 
 

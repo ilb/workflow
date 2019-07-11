@@ -195,7 +195,7 @@
                                     <generatorName>javascript</generatorName>
                                     <configOptions>
                                         <usePromises>true</usePromises>
-                                        <projectName>${project.name}</projectName>
+                                        <projectName>@ilb/${project.name}</projectName>
                                         <projectVersion>2.0.0</projectVersion>
                                     </configOptions>
                                 </configuration>

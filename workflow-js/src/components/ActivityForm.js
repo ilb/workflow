@@ -2,11 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Table, Button, Message, Loader } from 'semantic-ui-react';
 import {useResource} from '../ReactHelper';
 import DefaultActivityForm from './DefaultActivityForm';
-import { ApiClient, DefaultApi } from 'workflow-api/dist';
-import '../Config';
+import { DefaultApi as WorkflowApi} from '@ilb/workflow-api/dist';
 
 export default function ActivityFormContainer( {processId, activityId, component}) {
-    const api = new DefaultApi();
+    const api = new WorkflowApi();
 
     const activityFromResorce = (activityId, processId) => {
         console.log('activityFromResorce', activityId, processId);

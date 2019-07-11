@@ -3,7 +3,8 @@ import {useResource} from '../ReactHelper';
 import JsonSchemaForm from '@bb/jsonschema-form';
 import { Table, Button, Message, Loader, Step } from 'semantic-ui-react';
 import '@bb/datetime-picker/lib/index.css';
-import { DefaultApi } from 'workflow-api/dist';
+import { DefaultApi } from '@ilb/workflow-api/dist';
+import Dossier from '@ilb/filedossier-js/lib/Dossier';
 
 export default function DefaultActivityForm({activityFormData}) {
     const api = new DefaultApi();
@@ -34,6 +35,7 @@ export default function DefaultActivityForm({activityFormData}) {
                 }
             </div>
         </JsonSchemaForm>
+        {activityFormData.activityDossier && <Dossier {...activityFormData.activityDossier}/> }
 
 
     </div>;

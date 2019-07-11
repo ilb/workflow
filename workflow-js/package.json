@@ -6,14 +6,14 @@
   "dependencies": {
     "@bb/jsonschema-form": "^1.0.1",
     "@bb/semantic-ui-css": "^2.2.12",
-    "@ilb/filedossier-js": "^0.1.3",
+    "@ilb/filedossier-js": "^0.1.4",
+    "@ilb/workflow-api": "^2.0.0",
     "formik": "^1.5.7",
     "react": "^16.8.6",
     "react-addons-shallow-compare": "^15.6.2",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
-    "whatwg-fetch": "^3.0.0",
-    "workflow-api": "^2.0.0"
+    "whatwg-fetch": "^3.0.0"
   },
   "scripts": {
     "start": "react-scripts start",

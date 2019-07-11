@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import './Config';
 import ActivityFormContainer from './components/ActivityForm';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import ProcessMenuContainer from './components/ProcessMenu';

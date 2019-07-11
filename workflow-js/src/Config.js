@@ -1,9 +1,5 @@
-//import { ApiClient, DefaultApi } from './openapi/src';
-//import ApiClient from './ApiClient';
-import { ApiClient, DefaultApi } from 'workflow-api/dist';
+import { ApiClient as WorkflowApiClient} from '@ilb/workflow-api/dist';
+import { ApiClient as DossierApiClient} from '@ilb/filedossier-api/dist';
 
-//export const processApiClient = null;
-//ApiClient.instance = new ApiClient();
-console.log('ApiClient.instance',ApiClient.instance);
-ApiClient.instance.basePath = '/workflow-web/web/v2';
-//export const processApi = new DefaultApi(processApiClient);
+WorkflowApiClient.instance.basePath = '/workflow-web/web/v2';
+DossierApiClient.instance.basePath = '/workflow-web/web/v2';
