@@ -15,9 +15,14 @@
  */
 package ru.ilb.workflow.mappers;
 
+import javax.inject.Inject;
+import org.enhydra.shark.api.client.wfmc.wapi.WMActivityInstanceState;
 import org.enhydra.shark.api.client.wfmc.wapi.WMProcessInstanceState;
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import ru.ilb.workflow.view.ActivityInstanceState;
 import ru.ilb.workflow.view.ProcessInstanceState;
 
 /**
@@ -27,11 +32,17 @@ import ru.ilb.workflow.view.ProcessInstanceState;
 @Mapper
 public abstract class ProcessInstanceStateMapper implements GenericMapperDto<WMProcessInstanceState,ProcessInstanceState>{
 
+    @Inject
+    StateConvertor stateConvertor;
+    
     @Override
     @Mapping(target = "code",
          expression = "java( ru.ilb.workflow.core.StateCode.fromValue(entity.stringValue()) )")
     public abstract ProcessInstanceState createFromEntity(WMProcessInstanceState entity);
 
-  
+    @AfterMapping
+    protected void afterMapping(@MappingTarget ActivityInstanceState state, WMActivityInstanceState dto) {
+        state.setName(stateConvertor.convert(dto.stringValue()));
+    }
 
 }
