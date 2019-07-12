@@ -9,6 +9,7 @@
     "@ilb/filedossier-js": "^0.1.7",
     "@ilb/workflow-api": "^2.0.0",
     "formik": "^1.5.7",
+    "query-string": "^6.8.1",
     "react": "^16.8.6",
     "react-addons-shallow-compare": "^15.6.2",
     "react-dom": "^16.8.6",

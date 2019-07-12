@@ -64,7 +64,7 @@
         <description>Путь к файлам процесса</description>
         <env-entry-name>ru.bystrobank.apps.workflow.activityform.url</env-entry-name>
         <env-entry-type>java.lang.String</env-entry-type>
-        <env-entry-value>${ru.bystrobank.apps.workflow.js}/processes/${processInstanceId}/activities/${activityInstanceId}</env-entry-value>
+        <env-entry-value>${ru.bystrobank.apps.workflow.js}/activityForm?processInstanceId=${processInstanceId}&amp;activityInstanceId=${activityInstanceId}</env-entry-value>
     </env-entry>
 
     <env-entry>

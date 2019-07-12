@@ -5,35 +5,37 @@ import ActivityFormContainer from './components/ActivityForm';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import ProcessMenuContainer from './components/ProcessMenu';
 import ProcessSelectorContainer from './components/ProcessSelector';
+import queryString from 'query-string'
 
 
 function Index() {
     return (<div className="app">
-        <Link to="/processes/5801_stockvaluation_stockvaluation_fairpricecalc/activities/8302_5801_stockvaluation_stockvaluation_fairpricecalc_stockvaluation_fairpricecalc_input">TEST PROCESS</Link>
+        <Link to="/activityForm?processInstanceId=5801_stockvaluation_stockvaluation_fairpricecalc&activityInstanceId=8302_5801_stockvaluation_stockvaluation_fairpricecalc_stockvaluation_fairpricecalc_input">TEST PROCESS</Link>
         |
-        <Link to="/processes/5602_stockvaluation_stockvaluation_fairpricecalc/activities/8008_5602_stockvaluation_stockvaluation_fairpricecalc_stockvaluation_fairpricecalc_check">TEST PROCESS2</Link>
+        <Link to="/activityForm?processInstanceId=5602_stockvaluation_stockvaluation_fairpricecalc&activityInstanceId=8008_5602_stockvaluation_stockvaluation_fairpricecalc_stockvaluation_fairpricecalc_check">TEST PROCESS2</Link>
         <ProcessSelectorContainer/>
     </div>
             );
 }
 
-function ProcessIndex( { match }) {
-    //console.log('match.params', match.params);
+function ActivitFormIndex( { match }) {
+    console.log('match', match);
+    const values = queryString.parse(match.url)
+    console.log('values', values);
     return (
         <div className="app">
             <Index/>
-            <ActivityFormContainer processId={match.params.processId} activityId={match.params.activityId}/>
+            <ActivityFormContainer processInstanceId={values.processInstanceId} activityInstanceId={values.activityInstanceId}/>
         </div>
     );
 }
-// <Route path="/processes/:processId" component={ProcessIndex} />
+// <Route path="/processes/:processInstanceId" component={ActivitFormIndex} />
 function App() {
     return (
             <Router>
                 <div>
                     <Route path="/" exact component={Index} />
-                    
-                    <Route path="/processes/:processId/activities/:activityId" component={ProcessIndex} />
+                    <Route path="/activityForm" component={ActivitFormIndex} />
                 </div>
             </Router>
             );

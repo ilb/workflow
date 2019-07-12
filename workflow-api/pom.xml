@@ -181,17 +181,15 @@
                         <version>4.0.0</version>
                         <executions>
                             <execution>
+                                <id>generate_javascript</id>
                                 <phase>compile</phase>
                                 <goals>
                                     <goal>generate</goal>
                                 </goals>
                                 <configuration>
                                     <inputSpec>${openapi.generated.path}/openapi.json</inputSpec>
-                                    <!--<inputSpec>${basedir}/src/main/resources/openapi.json</inputSpec>-->
+                                    <output>${project.build.directory}/generated-sources/openapi-javascript</output>
                                     <skipValidateSpec>true</skipValidateSpec>
-                                    <!--<generatorName>php</generatorName>-->
-                                    <!--<generatorName>typescript-fetch</generatorName>-->
-                                    <!--<generatorName>jaxrs-cxf</generatorName>-->
                                     <generatorName>javascript</generatorName>
                                     <configOptions>
                                         <usePromises>true</usePromises>
@@ -200,6 +198,26 @@
                                     </configOptions>
                                 </configuration>
                             </execution>
+                            <execution>
+                                <id>generate_python</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                                <configuration>
+                                    <inputSpec>${openapi.generated.path}/openapi.json</inputSpec>
+                                    <output>${project.build.directory}/generated-sources/openapi-python</output>
+                                    <skipValidateSpec>true</skipValidateSpec>
+                                    <generatorName>python</generatorName>
+                                    <configOptions>
+                                        <packageName>workflow</packageName>
+                                        <packageVersion>2.0.0</packageVersion>
+                                        <projectName>${project.name}</projectName>
+                                    </configOptions>
+
+                                </configuration>
+                            </execution>
+
                         </executions>
                     </plugin>
                 </plugins>

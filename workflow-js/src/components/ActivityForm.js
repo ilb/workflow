@@ -4,22 +4,22 @@ import {useResource} from '../ReactHelper';
 import DefaultActivityForm from './DefaultActivityForm';
 import { DefaultApi as WorkflowApi} from '@ilb/workflow-api/dist';
 
-export default function ActivityFormContainer( {processId, activityId, component}) {
+export default function ActivityFormContainer( {processInstanceId, activityInstanceId, component}) {
     const api = new WorkflowApi();
 
-    const activityFromResorce = (activityId, processId) => {
-        console.log('activityFromResorce', activityId, processId);
-        if (activityId != null) {
-            return api.getActivityForm(activityId, processId);
+    const activityFromResorce = (activityInstanceId, processInstanceId) => {
+        console.log('activityFromResorce', activityInstanceId, processInstanceId);
+        if (activityInstanceId != null) {
+            return api.getActivityForm(activityInstanceId, processInstanceId);
         } else {
-            return api.getActivityForm1(processId)
+            return api.getActivityForm1(processInstanceId)
         }
     }
-    const [data, getData] = useResource(() => activityFromResorce(activityId, processId));
+    const [data, getData] = useResource(() => activityFromResorce(activityInstanceId, processInstanceId));
 
     useEffect(() => {
         getData();
-    }, [processId, activityId]);
+    }, [processInstanceId, activityInstanceId]);
 
 
     return <div className="activityFormContainer">

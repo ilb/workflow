@@ -8,15 +8,15 @@ import Dossier from '@ilb/filedossier-js/lib/Dossier';
 
 export default function DefaultActivityForm({activityFormData}) {
     const api = new DefaultApi();
-    const activityId = activityFormData.activityInstance.id;
-    const processId = activityFormData.activityInstance.processInstanceId
+    const activityInstanceId = activityFormData.activityInstance.id;
+    const processInstanceId = activityFormData.activityInstance.processInstanceId
 
     const errorHandler = (data) => {
         alert(data.error);
     }
     const submitHandler = (data) => {
         console.log('submitting', data.formData);
-        api.completeAndNext(activityId, processId, {body: data.formData})
+        api.completeAndNext(activityInstanceId, processInstanceId, {body: data.formData})
                 .then(act => document.location=act.activityFormUrl)
                 .catch(errorHandler);
 
