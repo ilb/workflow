@@ -111,8 +111,7 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
     @Transactional
     public boolean complete(JsonMapObject jsonmapobject) {
         try {
-            WMSessionHandle shandle = sessionHandleSupplier.get();
-            return complete(shandle, processInstanceId, activityInstanceId, jsonmapobject);
+            return changeActivityState(jsonmapobject, SharkConstants.STATE_CLOSED_COMPLETED);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -123,7 +122,7 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
     public ActivityInstance completeAndNext(JsonMapObject jsonmapobject) {
         try {
             WMSessionHandle shandle = sessionHandleSupplier.get();
-            complete(shandle, processInstanceId, activityInstanceId, jsonmapobject);
+            changeActivityState(shandle, jsonmapobject, SharkConstants.STATE_CLOSED_COMPLETED);
             ActivityInstance nextActivityInstance = null;
             WMActivityInstance nextAct = WAPIUtils.findNextActivity(shandle, AuthorizationHandler.getAuthorisedUser(), processInstanceId);
             if (nextAct != null) {
@@ -135,64 +134,97 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
         }
     }
 
+    // update variables if set
     @SuppressWarnings("unchecked")
-    private static boolean complete(WMSessionHandle shandle, String processInstanceId, String activityInstanceId, JsonMapObject jsonmapobject) throws Exception {
-        WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
-        // update variables if set
+    private void updateVariables(WMSessionHandle shandle, JsonMapObject jsonmapobject) throws Exception {
         if (jsonmapobject != null && !jsonmapobject.asMap().isEmpty()) {
             Map<String, String> contextSignature = SharkUtils.getContextSignature(shandle, processInstanceId, true);
             Map<String, Object> context = JsonMapMarshaller.unmrashallMap(jsonmapobject.asMap(), contextSignature);
             SharkUtils.updateActivityInfo(shandle, processInstanceId, activityInstanceId, context);
         }
-
-        WMActivityInstance activityinstance = wapi.getActivityInstance(shandle, processInstanceId, activityInstanceId);
-        Boolean stateChanged = WAPIUtils.changeActivityState(shandle, activityinstance, SharkConstants.STATE_CLOSED_COMPLETED);
-        return stateChanged;
-
     }
 
-  
+    @SuppressWarnings("unchecked")
+    private boolean changeActivityState(WMSessionHandle shandle, JsonMapObject jsonmapobject, String state) throws Exception {
+        updateVariables(shandle, jsonmapobject);
+        WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
+        WMActivityInstance activityinstance = wapi.getActivityInstance(shandle, processInstanceId, activityInstanceId);
+        Boolean stateChanged = WAPIUtils.changeActivityState(shandle, activityinstance, state);
+        return stateChanged;
+    }
+
+    @SuppressWarnings("unchecked")
+    private boolean changeActivityState(JsonMapObject jsonmapobject, String state) throws Exception {
+        WMSessionHandle shandle = sessionHandleSupplier.get();
+        return changeActivityState(shandle, jsonmapobject, state);
+    }
+
     @Override
     @Transactional
     public boolean start(JsonMapObject jsonmapobject) {
-        // WAPIUtils.changeActivityState to STATE_OPEN_RUNNING
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            return changeActivityState(jsonmapobject, SharkConstants.STATE_OPEN_RUNNING);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
     @Transactional
     public boolean stop(JsonMapObject jsonmapobject) {
-        // WAPIUtils.changeActivityState to STATE_OPEN_NOT_RUNNING_NOT_STARTED
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            return changeActivityState(jsonmapobject, SharkConstants.STATE_OPEN_NOT_RUNNING_NOT_STARTED);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
     @Transactional
     public boolean suspend(JsonMapObject jsonmapobject) {
-        // WAPIUtils.changeActivityState to STATE_OPEN_NOT_RUNNING_SUSPENDED
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            return changeActivityState(jsonmapobject, SharkConstants.STATE_OPEN_NOT_RUNNING_SUSPENDED);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
     @Transactional
     public boolean resume(JsonMapObject jsonmapobject) {
-        // check if state STATE_OPEN_NOT_RUNNING_SUSPENDED
-        // WAPIUtils.changeActivityState to STATE_OPEN_RUNNING
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            WMSessionHandle shandle = sessionHandleSupplier.get();
+            updateVariables(shandle, jsonmapobject);
+            WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
+            WMActivityInstance activityinstance = wapi.getActivityInstance(shandle, processInstanceId, activityInstanceId);
+            if (SharkConstants.STATE_OPEN_NOT_RUNNING_SUSPENDED.equals(activityinstance.getState().stringValue())) {
+                Boolean stateChanged = WAPIUtils.changeActivityState(shandle, activityinstance, SharkConstants.STATE_OPEN_RUNNING);
+                return stateChanged;
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return false;
     }
 
     @Override
     @Transactional
     public boolean terminate(JsonMapObject jsonmapobject) {
-        // WAPIUtils.changeActivityState to STATE_CLOSED_TERMINATED
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            return changeActivityState(jsonmapobject, SharkConstants.STATE_CLOSED_TERMINATED);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
     @Transactional
     public boolean abort(JsonMapObject jsonmapobject) {
-        // WAPIUtils.changeActivityState to STATE_CLOSED_ABORTED
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            return changeActivityState(jsonmapobject, SharkConstants.STATE_CLOSED_ABORTED);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
 
