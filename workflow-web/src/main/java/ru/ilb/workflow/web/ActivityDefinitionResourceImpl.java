@@ -20,8 +20,8 @@ import org.apache.cxf.jaxrs.json.basic.JsonMapObject;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.workflow.api.ActivityDefinitionResource;
+import ru.ilb.workflow.utils.WorkflowUtils;
 import ru.ilb.workflow.view.ActivityDefinition;
-import ru.ilb.workflow.view.ActivityInstance;
 
 public class ActivityDefinitionResourceImpl implements ActivityDefinitionResource {
 
@@ -49,8 +49,13 @@ public class ActivityDefinitionResourceImpl implements ActivityDefinitionResourc
 
     @Override
     @Transactional
-    public ActivityInstance start(JsonMapObject jsonmapobject) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void start(JsonMapObject jsonmapobject) {
+        WMSessionHandle shandle = sessionHandleSupplier.get();
+        try {
+            WorkflowUtils.startActivity(shandle, processDefinitionId, activityDefinitionId);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
 }

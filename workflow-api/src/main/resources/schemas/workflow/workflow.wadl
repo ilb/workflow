@@ -64,14 +64,7 @@
                         <doc>updated activity context</doc>
                     </representation>
                 </request>
-                <response status="200">
-                    <representation mediaType="application/xml" element="view:activityInstance">
-                        <doc>next activity instance data</doc>
-                    </representation>
-                    <representation mediaType="application/json">
-                        <doc>next activity instance data</doc>
-                    </representation>
-                </response>
+                <response status="204"></response>
             </method>
         </resource>
 
