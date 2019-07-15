@@ -1,7 +1,7 @@
 {
   "name": "@ilb/workflow-js",
   "version": "0.1.2",
-  "homepage": "/workflow-js",
+  "homepage": "/workflow",
   "proxy": "http://localhost:8080",
   "dependencies": {
     "@bb/jsonschema-form": "^1.0.1",
