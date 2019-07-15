@@ -34,6 +34,7 @@ import org.enhydra.shark.api.client.wfservice.WMEntity;
 import org.enhydra.shark.api.client.wfservice.XPDLBrowser;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 import org.enhydra.shark.utilities.wmentity.WMEntityUtilities;
+import org.enhydra.shark.webclient.business.prof.graph.JaWEUtil;
 //import org.enhydra.shark.webclient.business.prof.graph.JaWEUtil;
 
 /**
@@ -89,12 +90,12 @@ public class XPDLUtils {
                 .getXPDLHandler()
                 .getPackageByIdAndVersion(ent.getPkgId(), ent.getPkgVer());
 
-//        if (packag == null) {
-//            JaWEUtil.insertPackage(shandle, ent.getPkgId(), ent.getPkgVer());
-//        }
-//        packag = JaWEManager.getInstance()
-//                .getXPDLHandler()
-//                .getPackageByIdAndVersion(ent.getPkgId(), ent.getPkgVer());
+        if (packag == null) {
+            JaWEUtil.insertPackage(shandle, ent.getPkgId(), ent.getPkgVer());
+        }
+        packag = JaWEManager.getInstance()
+                .getXPDLHandler()
+                .getPackageByIdAndVersion(ent.getPkgId(), ent.getPkgVer());
         if (packag == null) {
             throw new RuntimeException("Didn't find package for a "
                     + ((processId != null) ? ("process " + processId)
