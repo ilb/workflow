@@ -1,6 +1,6 @@
 {
   "name": "@ilb/workflow-js",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "homepage": "/workflow",
   "proxy": "http://localhost:8080",
   "dependencies": {
