@@ -165,6 +165,12 @@
     <bean id="mapParamConverterProvider" class="ru.ilb.common.jaxrs.providers.MapParamConverterProvider">
         <property name="converters" ref="mapParamConverters"/>
     </bean>-->
+    <bean id="swagger2Feature" class="org.apache.cxf.jaxrs.swagger.Swagger2Feature">
+        <!--<property name="customizer" ref="swagger2Customizer"/>-->
+        <property name="resourcePackage" value="ru.ilb.workflow.web"/>
+        <property name="scanAllResources" value="true"/>
+        <property name="prettyPrint" value="true"/>
+    </bean>
 
     <bean id="authorizationHandler" class="ru.ilb.workflow.session.AuthorizationHandler"/>
     <bean id="sessionDataProvider" class="ru.ilb.workflow.session.SessionDataProvider"/>
@@ -200,6 +206,7 @@
             <entry key="ics" value="text/calendar"/>
         </jaxrs:extensionMappings>
         <jaxrs:features>
+            <ref bean="swagger2Feature" />
         </jaxrs:features>
         
         <jaxrs:inInterceptors>
@@ -231,6 +238,7 @@
             <entry key="txt" value="text/plain"/>
         </jaxrs:extensionMappings>
         <jaxrs:features>
+            <ref bean="swagger2Feature" />
         </jaxrs:features>
 
         <jaxrs:inInterceptors>

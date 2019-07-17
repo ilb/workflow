@@ -126,9 +126,9 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <!--<openapi.generated.path>${project.build.outputDirectory}/META-INF/resources/filedossier</openapi.generated.path>-->
+                <openapi.generated.path>${project.build.outputDirectory}/META-INF/resources/workflow</openapi.generated.path>
                 <!--<openapi.generated.path>${project.build.outputDirectory}/filedossier-api</openapi.generated.path>-->
-                <openapi.generated.path>${project.build.directory}/generated-sources/openapi-spec</openapi.generated.path>
+                <!--<openapi.generated.path>${project.build.directory}/generated-sources/openapi-spec</openapi.generated.path>-->
             </properties>
             <build>
                 <plugins>
