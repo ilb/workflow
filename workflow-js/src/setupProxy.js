@@ -5,8 +5,7 @@ const keytar = require('keytar');
 module.exports = async function (app) {
     const homedir = require('os').homedir();
     const passphrase = await keytar.getPassword('.certs', 'my.p12');
-    //disable password log
-    require('http-proxy-middleware/lib/logger').getInstance().setLevel('warn');
+    //disable password log logLevel: 'warn'
 
     var options = {
         target: {
@@ -16,6 +15,7 @@ module.exports = async function (app) {
             pfx: fs.readFileSync(homedir+'/.certs/my.p12'),
             passphrase: passphrase
         },
+        logLevel: 'warn',
         changeOrigin: true
     };
     app.use(proxy('/workflow-web', options));
