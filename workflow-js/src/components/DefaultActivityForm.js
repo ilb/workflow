@@ -17,7 +17,7 @@ export default function DefaultActivityForm({activityFormData}) {
     const submitHandler = (data) => {
         console.log('submitting', data.formData);
         api.completeAndNext(activityInstanceId, processInstanceId, {body: data.formData})
-                .then(act => document.location=act.activityFormUrl)
+                .then(act => document.location=act.activityFormUrl.replace(/https:\/\/devel.net.ilb.ru\/workflow-js/,"http://" + document.location.host))
                 .catch(errorHandler);
 
     }

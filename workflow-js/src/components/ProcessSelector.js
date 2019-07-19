@@ -13,7 +13,7 @@ export default function ProcessSelectorContainer() {
 
     const startProcess = () => {
         api.createProcessInstanceAndNext({processDefinitionId: "stockvaluation_fairpricecalc",body:{}})
-                .then(act => document.location = act.activityFormUrl)
+                .then(act => document.location=act.activityFormUrl.replace(/https:\/\/devel.net.ilb.ru\/workflow-js/,"http://" + document.location.host))
                 .catch(errorHandler);
     }
     return <div className="processSelectorContainer">
