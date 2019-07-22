@@ -26,7 +26,7 @@ module.exports = async function (app) {
             passphrase: passphrase
 
         },
-        logLevel: 'info',
+        logLevel: 'warn',
         changeOrigin: true
     };
 
