@@ -1,7 +1,7 @@
 const proxy = require('http-proxy-middleware');
 
 const os = require('os');
-const homedir = os.homedir()
+const homedir = os.homedir();
 const fs = require('fs');
 const path = require('path');
 const xpath = require('xpath');
