@@ -1,6 +1,7 @@
 const proxy = require('http-proxy-middleware');
 
-//const homedir = require('os').homedir();
+const os = require('os');
+const homedir = os.homedir()
 const fs = require('fs');
 const path = require('path');
 const xpath = require('xpath');
@@ -12,10 +13,12 @@ const xml = fs.readFileSync(configpath, 'utf8');
 const doc = new DOMParser().parseFromString(xml)
 const certpath = xpath.select1("//Environment[@name='ru.bystrobank.apps.workflow.certfile']/@value", doc).value;
 const cert = fs.readFileSync(certpath);
-const passphrase = xpath.select1("//Environment[@name='ru.bystrobank.apps.workflow.cert_PASSWORD']/@value",doc).value;
+const passphrase = xpath.select1("//Environment[@name='ru.bystrobank.apps.workflow.cert_PASSWORD']/@value", doc).value;
 
 module.exports = async function (app) {
-
+    function onProxyReq(proxyReq, req, res) {
+        proxyReq.setHeader('x-remote-user', os.userInfo().username);
+    }
     var options = {
         target: {
             host: 'devel.net.ilb.ru',
@@ -27,7 +30,9 @@ module.exports = async function (app) {
 
         },
         logLevel: 'warn',
-        changeOrigin: true
+        changeOrigin: true,
+        onProxyReq: onProxyReq
+
     };
 
     app.use(proxy('/workflow-web', options));
