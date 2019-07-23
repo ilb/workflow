@@ -14,6 +14,7 @@
         "@bb/jsonschema-form": "^1.0.1",
         "@bb/semantic-ui-css": "^2.2.12",
         "@ilb/workflow-api": "^2.0.0",
+        "http-proxy-middleware": "^0.19.1",
         "next": "^9.0.2",
         "react": "^16.8.6",
         "react-addons-shallow-compare": "^15.6.2",

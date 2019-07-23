@@ -13,7 +13,6 @@ if (!process.browser) {
 
 module.exports = {
     lookup: function (name) {
-        const xpath = require('xpath');
-        return process.browser ? null : xpath.select1("//Environment[@name='" + name + "']/@value", doc).value;
+        return process.browser ? null : require('xpath').select1("//Environment[@name='" + name + "']/@value", doc).value;
     }
 };
