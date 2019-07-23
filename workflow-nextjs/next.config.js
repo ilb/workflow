@@ -1,8 +1,11 @@
 // see https://github.com/zeit/next.js/issues/257
+const isProd = process.env.NODE_ENV === 'production'
 module.exports = {
-  assetPrefix: '/workflow', // affects page bundles and app/commons/vendor scripts
+  assetPrefix: isProd ? '/workflow' : '', // affects page bundles and app/commons/vendor scripts
   webpack: (config) => {
-    config.output.publicPath = `/workflow${config.output.publicPath}`; // affects 'chunks'
+    if(isProd) {
+      config.output.publicPath = `/workflow${config.output.publicPath}`; // affects 'chunks'
+    }
     return config;
   },
 };
