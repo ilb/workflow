@@ -64,7 +64,7 @@ public class ProcessInstancesResourceImpl extends JaxRsContextResource implement
     private ActivityInstanceMapper activityInstanceMapper;
 
     @Override
-    public ProcessInstanceResource getProcessInstanceResource(String processInstanceId) {
+    public ProcessInstanceResource getProcessInstanceResource(String x_remote_user, String processInstanceId) {
         ProcessInstanceResource resource = new ProcessInstanceResourceImpl(sessionDataProvider.getSessionData().getSessionHandleSupplier(), processInstanceId);
         applicationContext.getAutowireCapableBeanFactory().autowireBean(resource);
         return resourceContext.initResource(resource);
@@ -72,7 +72,7 @@ public class ProcessInstancesResourceImpl extends JaxRsContextResource implement
 
     @Override
     @Transactional
-    public ProcessInstances getProcessInstances(Boolean open, String packageId, String versionId, String processDefinitionId) {
+    public ProcessInstances getProcessInstances(String x_remote_user, Boolean open, String packageId, String versionId, String processDefinitionId) {
         try {
             WMSessionHandle shandle = sessionDataProvider.getSessionData().getSessionHandleSupplier().get();
             WMProcessInstance[] wmProcessInstances = WAPIUtils.getProcessInstances(shandle, open, packageId, versionId, processDefinitionId);
@@ -85,7 +85,7 @@ public class ProcessInstancesResourceImpl extends JaxRsContextResource implement
 
     @Override
     @Transactional
-    public String createProcessInstance(String packageId, String versionId, String processDefinitionId, JsonMapObject jsonmapobject) {
+    public String createProcessInstance(String x_remote_user, String packageId, String versionId, String processDefinitionId, JsonMapObject jsonmapobject) {
         try {
             WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
             WMSessionHandle shandle = sessionDataProvider.getSessionData().getSessionHandleSupplier().get();
@@ -108,8 +108,8 @@ public class ProcessInstancesResourceImpl extends JaxRsContextResource implement
 
     @Override
     @Transactional
-    public ActivityInstance createProcessInstanceAndNext(String packageId, String versionId, String processDefinitionId, JsonMapObject jsonmapobject) {
-        String processInstanceId = createProcessInstance(packageId, versionId, processDefinitionId, jsonmapobject);
+    public ActivityInstance createProcessInstanceAndNext(String x_remote_user, String packageId, String versionId, String processDefinitionId, JsonMapObject jsonmapobject) {
+        String processInstanceId = createProcessInstance(x_remote_user, packageId, versionId, processDefinitionId, jsonmapobject);
         ActivityInstance nextActivityInstance = null;
         WMSessionHandle shandle = sessionDataProvider.getSessionData().getSessionHandleSupplier().get();
         WMActivityInstance nextAct = WAPIUtils.findNextActivity(shandle, AuthorizationHandler.getAuthorisedUser(), processInstanceId);
@@ -121,7 +121,7 @@ public class ProcessInstancesResourceImpl extends JaxRsContextResource implement
 
     @Override
     @Transactional
-    public ActivityInstances getWorkList(AcceptedStatus assignment, Integer limit) {
+    public ActivityInstances getWorkList(String x_remote_user, AcceptedStatus assignment, Integer limit) {
         try {
             WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
             WMSessionHandle shandle = sessionDataProvider.getSessionData().getSessionHandleSupplier().get();

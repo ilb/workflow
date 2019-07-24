@@ -543,6 +543,9 @@
 
     <resources base="web">
         <resource path="processDefinitions">
+            <param name="x-remote-user" style="header" type="xsd:string">
+                <doc>remote authenticated user</doc>
+            </param>
             <method name="GET" id="getProcessDefinitions">
                 <doc>get processDefinitions instance</doc>
                 <request>
@@ -571,6 +574,9 @@
             </method>
 
             <resource path="{processDefinitionId}" id="processDefinitionResource" type="#processDefinitionResource">
+                <param name="x-remote-user" style="header" type="xsd:string">
+                    <doc>remote authenticated user</doc>
+                </param>
                 <param name="processDefinitionId" style="template" type="xsd:string">
                     <doc>processDefinitionId</doc>
                 </param>
@@ -578,6 +584,9 @@
 
         </resource>
         <resource path="processInstances">
+            <param name="x-remote-user" style="header" type="xsd:string">
+                <doc>remote authenticated user</doc>
+            </param>
             <method name="GET" id="getProcessInstances">
                 <doc>get processInstances instance</doc>
                 <request>
@@ -631,6 +640,9 @@
                 </response>
             </method>
             <resource path="createProcessInstanceAndNext">
+                <param name="x-remote-user" style="header" type="xsd:string">
+                    <doc>remote authenticated user</doc>
+                </param>
                 <method name="POST" id="createProcessInstanceAndNext">
                     <doc>create process instance and get next activity</doc>
                     <request>
@@ -664,22 +676,28 @@
                 <doc>
                     Work list of user (activities)
                 </doc>
+                <param name="x-remote-user" style="header" type="xsd:string">
+                    <doc>remote authenticated user</doc>
+                </param>
                 <method name="GET" id="getWorkList">
                     <request>
                         <param name="assignment" type="core:acceptedStatus" style="query" default="ACCEPTED_AND_NON_ACCEPTED"/>
                         <param name="limit" type="xsd:int" style="query" default="100"/>
                     </request>
                     <response status="200">
-                    <representation mediaType="application/xml" element="view:activityInstances">
-                        <doc>next activity instance data</doc>
-                    </representation>
-                    <representation mediaType="application/json">
-                        <doc>next activity instance data</doc>
-                    </representation>
+                        <representation mediaType="application/xml" element="view:activityInstances">
+                            <doc>next activity instance data</doc>
+                        </representation>
+                        <representation mediaType="application/json">
+                            <doc>next activity instance data</doc>
+                        </representation>
                     </response>
                 </method>
             </resource>
             <resource path="{processInstanceId}" id="processInstanceResource" type="#processInstanceResource">
+                <param name="x-remote-user" style="header" type="xsd:string">
+                    <doc>remote authenticated user</doc>
+                </param>
                 <param name="processInstanceId" style="template" type="xsd:string">
                     <doc>processInstanceId</doc>
                 </param>

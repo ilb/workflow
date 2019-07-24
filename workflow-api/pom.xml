@@ -15,6 +15,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <swagger-version>2.0.8</swagger-version>
+        <generated-api-version>2.0.1</generated-api-version>
     </properties>
     <dependencies>
         <dependency>
@@ -194,7 +195,7 @@
                                     <configOptions>
                                         <usePromises>true</usePromises>
                                         <projectName>@ilb/${project.name}</projectName>
-                                        <projectVersion>2.0.0</projectVersion>
+                                        <projectVersion>${generated-api-version}</projectVersion>
                                     </configOptions>
                                 </configuration>
                             </execution>
@@ -211,7 +212,7 @@
                                     <generatorName>python</generatorName>
                                     <configOptions>
                                         <packageName>workflow</packageName>
-                                        <packageVersion>2.0.0</packageVersion>
+                                        <packageVersion>${generated-api-version}</packageVersion>
                                         <projectName>${project.name}</projectName>
                                     </configOptions>
 
