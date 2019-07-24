@@ -7,7 +7,7 @@ if (!process.browser) {
     passphrase = context.lookup('ru.bystrobank.apps.workflow.cert_PASSWORD');
     const fs = require('fs');
     cert = certfile !== null ? fs.readFileSync(certfile) : null;
-    ca = process.env.NODE_EXTRA_CA_CERTS !== null ? fs.readFileSync(process.env.NODE_EXTRA_CA_CERTS) : null;
+    ca = process.env.NODE_EXTRA_CA_CERTS ? fs.readFileSync(process.env.NODE_EXTRA_CA_CERTS) : null;
 }
 
 module.exports = {
