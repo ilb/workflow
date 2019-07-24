@@ -16,7 +16,7 @@ ActivityForm.getInitialProps = async function (context) {
     const processInstanceId = context.query.processInstanceId;
     const activityInstanceId = context.query.activityInstanceId;
     const data = await new WorkflowApi().getActivityForm1(activityInstanceId, processInstanceId, {xRemoteUser: context.headers ? context.headers['x-remote-user'] : config.user} );
-    console.log('data',data);
+    //console.log('data',data);
     return data;
 };
 
