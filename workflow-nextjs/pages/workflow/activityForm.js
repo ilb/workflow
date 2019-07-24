@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { ApiClient as WorkflowApiClient, DefaultApi as WorkflowApi} from '@ilb/workflow-api/dist';
-import '../../conf/apiconfig';
+import config from '../../conf/config';
 
 function ActivityForm() {
 
@@ -15,7 +15,7 @@ function ActivityForm() {
 ActivityForm.getInitialProps = async function (context) {
     const processInstanceId = context.query.processInstanceId;
     const activityInstanceId = context.query.activityInstanceId;
-    const data = await new WorkflowApi().getActivityForm1(activityInstanceId, processInstanceId, context.headers ? {xRemoteUser: context.headers['x-remote-user']} : {});
+    const data = await new WorkflowApi().getActivityForm1(activityInstanceId, processInstanceId, {xRemoteUser: context.headers ? context.headers['x-remote-user'] : config.user} );
     console.log('data',data);
     return data;
 };
