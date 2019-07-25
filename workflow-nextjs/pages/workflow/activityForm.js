@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ApiClient as WorkflowApiClient, DefaultApi as WorkflowApi} from '@ilb/workflow-api/dist';
 import config from '../../conf/config';
 import { Button, Step } from 'semantic-ui-react';
+import JsonSchemaForm from '@bb/jsonschema-form';
 import '@bb/semantic-ui-css/semantic.min.css'
 //import '@bb/datetime-picker/lib/index.css';
 //import Dossier from '@ilb/filedossier-js/lib/Dossier';
@@ -23,9 +24,21 @@ function ActivityForm(activityFormData) {
 
     };
 
-    return <div className="defaultActivityForm">
+    return <div className="activityForm">
         <Step.Group items={activityFormData.processStep}/>
         
+        <JsonSchemaForm
+            schema={activityFormData.jsonSchema}
+            formData={activityFormData.formData}
+            uiSchema={activityFormData.uiSchema}
+            onSubmit={submitHandler}
+            >
+            <div>
+                { activityFormData.activityInstance.state.open &&
+                    <button type="submit" className="ui green button">Выполнить</button>
+                }
+            </div>
+        </JsonSchemaForm>
 
 
     </div>;
