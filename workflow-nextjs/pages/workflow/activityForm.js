@@ -5,6 +5,7 @@ import config from '../../conf/config';
 import { Button, Step } from 'semantic-ui-react';
 import JsonSchemaForm from '@bb/jsonschema-form';
 import '@bb/semantic-ui-css/semantic.min.css'
+import superagent from "superagent";
 //import '@bb/datetime-picker/lib/index.css';
 //import Dossier from '@ilb/filedossier-js/lib/Dossier';
 
@@ -16,17 +17,20 @@ function ActivityForm(activityFormData) {
     const errorHandler = (data) => {
         alert(data.error);
     };
-    const submitHandler = (data) => {
+    const submitHandler = async (data) => {
         console.log('submitting', data.formData);
-        api.completeAndNext(activityInstanceId, processInstanceId, {body: data.formData})
-                .then(act => document.location = act.activityFormUrl.replace(/https:\/\/devel.net.ilb.ru\/workflow-js/, "http://" + document.location.host))
-                .catch(errorHandler);
+        const res = await superagent.post(process.env.API_PATH + "/activityForm").send(data.formData);
+        console.log('submitHandler res',res);
+//
+//        api.completeAndNext(activityInstanceId, processInstanceId, {body: data.formData})
+//                .then(act => document.location = act.activityFormUrl.replace(/https:\/\/devel.net.ilb.ru\/workflow-js/, "http://" + document.location.host))
+//                .catch(errorHandler);
 
     };
 
     return <div className="activityForm">
         <Step.Group items={activityFormData.processStep}/>
-        
+
         <JsonSchemaForm
             schema={activityFormData.jsonSchema}
             formData={activityFormData.formData}
@@ -34,7 +38,7 @@ function ActivityForm(activityFormData) {
             onSubmit={submitHandler}
             >
             <div>
-                { activityFormData.activityInstance.state.open &&
+                { activityFormData.activityInstance.state.open || true &&
                     <button type="submit" className="ui green button">Выполнить</button>
                 }
             </div>

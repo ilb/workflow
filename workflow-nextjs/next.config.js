@@ -4,6 +4,9 @@ const isProd = process.env.NODE_ENV === 'production'
 const prefix = isProd ? '/workflow' : '';
 module.exports = withCSS({
     assetPrefix: prefix, // affects page bundles and app/commons/vendor scripts
+    env: {
+        API_PATH: prefix + '/api'
+    },
     webpack: (config) => {
 
         config.module.rules.push({
@@ -19,7 +22,7 @@ module.exports = withCSS({
             }
         })
         if (isProd) {
-            config.output.publicPath = `/workflow${config.output.publicPath}`; // affects 'chunks'
+            config.output.publicPath = prefix + config.output.publicPath; // affects 'chunks'
         }
         return config;
     },
