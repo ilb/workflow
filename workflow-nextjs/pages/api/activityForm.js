@@ -1,14 +1,20 @@
-import { ApiClient as WorkflowApiClient, DefaultApi as WorkflowApi} from '@ilb/workflow-api/dist';
+import { ProcessInstancesApi } from '@ilb/workflow-api/dist';
 import config from '../../conf/config';
 
-export default async (req, res) => {
-    const processInstanceId = req.query.processInstanceId;
-    const activityInstanceId = req.query.activityInstanceId;
-    const data = await new WorkflowApi().completeAndNext(activityInstanceId, processInstanceId, {body: req.body,xRemoteUser: req.headers ? req.headers['x-remote-user'] : config.user});
-            
+export default async ({query, headers, body}, res) => {
+    const processInstanceId = query.processInstanceId;
+    const activityInstanceId = query.activityInstanceId;
+    const api = new ProcessInstancesApi(config.workflowApiClient(headers ? headers['x-remote-user'] : null));
+    const act = await api.completeAndNext(activityInstanceId, processInstanceId, {body});
 
-    //console.log('req:', req);
-    res.setHeader('Content-Type', 'application/json');
+    if (act.activityFormUrl) {
+        res.setHeader('X-Location', act.activityFormUrl);
+    } else {
+        res.setHeader('X-Location', "workList");
+    }
+
+    console.log('req:', headers);
+    
     res.statusCode = 200;
     res.end(JSON.stringify({name: 'Nextjs'}));
 };
