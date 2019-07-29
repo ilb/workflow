@@ -4,6 +4,7 @@ import { ProcessInstancesApi } from '@ilb/workflow-api/dist';
 import config from '../../conf/config';
 import { Button, Step } from 'semantic-ui-react';
 import JsonSchemaForm from '@bb/jsonschema-form';
+import '@bb/datetime-picker/lib/index.css';
 import '@bb/semantic-ui-css/semantic.min.css'
 import superagent from "superagent";
 //import '@bb/datetime-picker/lib/index.css';

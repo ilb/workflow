@@ -1,6 +1,6 @@
 {
     "name": "@ilb/workflow-nextjs",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "",
     "main": "index.js",
     "scripts": {
@@ -11,7 +11,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@bb/jsonschema-form": "^1.0.1",
+        "@bb/jsonschema-form": "^1.0.2",
         "@bb/semantic-ui-css": "^2.2.12",
         "@ilb/workflow-api": "^2.0.2",
         "next": "^9.0.2",
