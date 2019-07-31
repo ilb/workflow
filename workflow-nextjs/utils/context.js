@@ -7,12 +7,14 @@ if (!process.browser) {
 
     const configpath = path.resolve(path.join(process.env.HOME, '.config/context.xml'))
 
-    const xml = fs.readFileSync(configpath, 'utf8');
-    doc = new DOMParser().parseFromString(xml);
+    if (fs.existsSync(configpath)) {
+        const xml = fs.readFileSync(configpath, 'utf8');
+        doc = new DOMParser().parseFromString(xml);
+    }
 }
 
 module.exports = {
     lookup: function (name) {
-        return process.browser ? null : require('xpath').select1("//Environment[@name='" + name + "']/@value", doc).value;
+        return doc===null ? null : require('xpath').select1("//Environment[@name='" + name + "']/@value", doc).value;
     }
 };
