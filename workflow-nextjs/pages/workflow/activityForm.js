@@ -11,8 +11,9 @@ import superagent from "superagent";
 //import Dossier from '@ilb/filedossier-js/lib/Dossier';
 
 function ActivityForm(activityFormData) {
-    const activityInstanceId = activityFormData.activityInstance.id;
-    const processInstanceId = activityFormData.activityInstance.processInstanceId;
+  // console.log('activityFormData', activityFormData);
+    const activityInstanceId = activityFormData.activityInstance && activityFormData.activityInstance.id;
+    const processInstanceId = activityFormData.activityInstance && activityFormData.activityInstance.processInstanceId;
 
     const errorHandler = (data) => {
         alert(data.error);
@@ -23,7 +24,7 @@ function ActivityForm(activityFormData) {
                 .query({processInstanceId: processInstanceId, activityInstanceId: activityInstanceId})
                 .send(data.formData);
         console.log('submitHandler res', res);
-//
+
 //        api.completeAndNext(activityInstanceId, processInstanceId, {body: data.formData})
 //                .then(act => document.location = act.activityFormUrl.replace(/https:\/\/devel.net.ilb.ru\/workflow-js/, "http://" + document.location.host))
 //                .catch(errorHandler);
@@ -40,7 +41,7 @@ function ActivityForm(activityFormData) {
             onSubmit={submitHandler}
             >
             <div>
-                { activityFormData.activityInstance.state.open || true &&
+                { (activityFormData.activityInstance && activityFormData.activityInstance.state.open) || true &&
                     <button type="submit" className="ui green button">Выполнить</button>
                 }
             </div>
