@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
+<div id="TOC">
+<ul>
+<li><a href="#actors">Actors</a><ul>
+<li><a>Пользователь</a></li>
+<li><a>Система</a></li>
+</ul></li>
+<li><a href="#usecases">Use Cases</a><ul>
+<li><a>Получить форму активности</a></li>
+<li><a>Запустить процесс</a></li>
+<li><a>Завершить активность</a></li>
+<li><a>Взять в работу</a></li>
+<li><a>Вернуть на доработку</a></li>
+<li><a>Выбрать задание в рабочем листе</a></li>
+<li><a>Получить следующее задание</a></li>
+<li><a>Сохранить данные</a></li>
+</ul></li>
+<li><a href="#interfaces">Interfaces</a></li>
+<li><a href="#classes">Classes</a><ul>
+<li><a>Процесс</a></li>
+<li><a>Активность</a></li>
+<li><a>Рабочий лист</a></li>
+</ul></li>
+<li><a href="#diagrams">Diagrams</a><ul>
+<li><a>Диаграмма классов</a></li>
+<li><a>Classes:</a></li>
+<li><a>workflow</a></li>
+<li><a>Actor:</a></li>
+<li><a>Use Cases:</a></li>
+</ul></li>
+</ul>
+</div>
+<h1 id="actors">Actors</h1>
+<h2>Пользователь</h2>
+<table>
+<thead>
+<tr class="header">
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h2>Система</h2>
+<table>
+<thead>
+<tr class="header">
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h1 id="usecases">Use Cases</h1>
+<h2>Получить форму активности</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Пользователь видит форму активности с данными, необходимыми для работы</p></td>
+</tr>
+</tbody>
+</table>
+<h2>Запустить процесс</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Пользователь запускает процесс для выполнения работы</p></td>
+</tr>
+</tbody>
+</table>
+<h2>Завершить активность</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Выполнив все необходимые действия, пользователь завершает активность.</p></td>
+</tr>
+</tbody>
+</table>
+<h2>Взять в работу</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Пользователь может взять в работу активность, при этом активность закрепляется за пользователем, ее статус меняется на &quot;Запущено&quot;</p></td>
+</tr>
+</tbody>
+</table>
+<h2>Вернуть на доработку</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Видя ошибки, допущенные на предыдущих активностях, пользователь может вернуть процесс на доработку на выбранную или фиксированную активность.</p></td>
+</tr>
+</tbody>
+</table>
+<h2>Выбрать задание в рабочем листе</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Пользователь выбирает активность из списка в своем рабочем листе</p></td>
+</tr>
+</tbody>
+</table>
+<h2>Получить следующее задание</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Пользователь, завершая очередной процесс, получает очередное задание в порядке приоритета</p></td>
+</tr>
+</tbody>
+</table>
+<h2>Сохранить данные</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Пользователь может сохранить данные активности, не завершая работу с ней</p></td>
+</tr>
+</tbody>
+</table>
+<h1 id="interfaces">Interfaces</h1>
+<h1 id="classes">Classes</h1>
+<h2>Процесс</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Class</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Бизнес-процесс – это упорядоченный по времени набор взаимозависимых активностей.</p></td>
+</tr>
+<tr class="even">
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2>Активность</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Class</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Активность - логическая, самодостаточная единица работы в процессе.</p></td>
+</tr>
+<tr class="even">
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2>Рабочий лист</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Class</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="diagrams">Diagrams</h1>
+<h2>Диаграмма классов</h2>
+<p><img src="Диаграмма классов.png" /></p>
+<h2>Classes:</h2>
+<h2>workflow</h2>
+<p><img src="workflow.png" /></p>
+<h2>Actor:</h2>
+<h2>Use Cases:</h2>
+</body>
+</html>
