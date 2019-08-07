@@ -148,6 +148,8 @@
                             <filterClass>ru.ilb.openapiutils.generator.OpenAPISpecFilterImpl</filterClass>
                             <modelConverterClasses>ru.ilb.openapiutils.generator.ModelConverterImpl</modelConverterClasses>
                             <objectMapperProcessorClass>ru.ilb.openapiutils.generator.ObjectMapperProcessorImpl</objectMapperProcessorClass>
+                            <scannerClass>ru.ilb.openapiutils.generator.OpenApiScannerImpl</scannerClass>
+                            <readerClass>ru.ilb.openapiutils.generator.OpenApiReaderImpl</readerClass>
                         </configuration>
                         <executions>
                             <execution>
