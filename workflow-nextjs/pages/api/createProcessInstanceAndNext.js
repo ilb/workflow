@@ -2,16 +2,14 @@ import { ProcessInstancesApi } from '@ilb/workflow-api/dist';
 import config from '../../conf/config';
 
 export default async ({query, headers, body}, res) => {
-    const processInstanceId = query.processInstanceId;
-    const activityInstanceId = query.activityInstanceId;
+    const processDefinitionId = query.processDefinitionId;
     const api = new ProcessInstancesApi(config.workflowApiClient(headers ? headers['x-remote-user'] : null));
-    console.log('api/activityForm api', api);
-    const act = await api.completeAndNext(activityInstanceId, processInstanceId, {body});
+    const act = await api.createProcessInstanceAndNext({processDefinitionId,body});
 
-    if (act && act.activityFormUrl) {
+    if (act.activityFormUrl) {
         res.setHeader('X-Location', act.activityFormUrl);
     } else {
-        res.setHeader('X-Location', "/workflow/worklist");
+        res.setHeader('X-Location', "workList");
     }
 
     console.log('req:', headers);

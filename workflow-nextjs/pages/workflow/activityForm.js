@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router';
+import { useRouter, useEffect } from 'next/router';
 import Link from 'next/link';
 import { ProcessInstancesApi } from '@ilb/workflow-api/dist';
 import config from '../../conf/config';
@@ -8,12 +8,15 @@ import '@bb/datetime-picker/lib/index.css';
 import '@bb/semantic-ui-css/semantic.min.css'
 import superagent from "superagent";
 //import '@bb/datetime-picker/lib/index.css';
-//import Dossier from '@ilb/filedossier-js/lib/Dossier';
+// import Dossier from '@ilb/filedossier-js/lib/Dossier';
 
-function ActivityForm(activityFormData) {
-    const activityInstanceId = activityFormData.activityInstance.id;
-    const processInstanceId = activityFormData.activityInstance.processInstanceId;
-
+// function ActivityForm(activityFormData) {
+function ActivityForm(props) {
+  const activityFormData = props && props.pageProps;
+  console.log('activityFormData', activityFormData);
+    const activityInstanceId = activityFormData && activityFormData.activityInstance && activityFormData.activityInstance.id;
+    const processInstanceId = activityFormData && activityFormData.activityInstance && activityFormData.activityInstance.processInstanceId;
+    console.log('activityInstanceId, processInstanceId', activityInstanceId, processInstanceId);
     const errorHandler = (data) => {
         alert(data.error);
     };
@@ -23,12 +26,24 @@ function ActivityForm(activityFormData) {
                 .query({processInstanceId: processInstanceId, activityInstanceId: activityInstanceId})
                 .send(data.formData);
         console.log('submitHandler res', res);
-//
-//        api.completeAndNext(activityInstanceId, processInstanceId, {body: data.formData})
-//                .then(act => document.location = act.activityFormUrl.replace(/https:\/\/devel.net.ilb.ru\/workflow-js/, "http://" + document.location.host))
-//                .catch(errorHandler);
-
+        if (res && res.headers) {
+          console.log(res.headers['x-location']);
+          document.location=res.headers['x-location'].replace(/https:\/\/devel.net.ilb.ru\/workflow-js/,"http://" + document.location.host + "/workflow");
+        }
     };
+
+    // TODO возможно лучше в беке добавить ссылку в activityFormData.processStep.href ?
+    // document.location.host  ReferenceError: document is not defined
+    // activityForm?processInstanceId=5602_stockvaluation_stockvaluation_fairpricecalc&
+    // activityInstanceId=8008_5602_stockvaluation_stockvaluation_fairpricecalc_stockvaluation_fairpricecalc_check
+      // const url = "http://" + document.location.host + "/workflow/activityForm?processInstanceId=" + processInstanceId + "&activityInstancesId=/";
+      const url = "http://" + "localhost:3000" + "/workflow/activityForm?processInstanceId=" + processInstanceId + "&activityInstanceId=";
+      activityFormData.processStep.forEach(el => {
+        console.log('el.activityId', el.activityId);
+        if (el.activityId !== activityInstanceId) {
+          el.href = url + el.activityId;
+        }
+      });
 
     return <div className="activityForm">
         <Step.Group items={activityFormData.processStep}/>
@@ -39,12 +54,13 @@ function ActivityForm(activityFormData) {
             uiSchema={activityFormData.uiSchema}
             onSubmit={submitHandler}
             >
-            <div>
-                { activityFormData.activityInstance.state.open || true &&
+            <div logg={console.log('activityFormData.activityInstance && activityFormData.activityInstance.state.open', activityFormData.activityInstance && activityFormData.activityInstance.state.open)}>
+                { ((activityFormData.activityInstance && activityFormData.activityInstance.state.open) || true) &&
                     <button type="submit" className="ui green button">Выполнить</button>
                 }
             </div>
         </JsonSchemaForm>
+        {/* activityFormData.activityDossier && <Dossier {...activityFormData.activityDossier}/> */}
 
 
     </div>;
