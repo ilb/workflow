@@ -81,11 +81,6 @@ const Header = (props) => {
   return <div>
     <Menu style={{ marginBottom: '1.5rem' }}>
         <Menu.Item
-          href='/'
-        >
-          <Icon name='home' />
-        </Menu.Item>
-        <Menu.Item
           name='Рабочий лист'
           href='/workflow/worklist'
         />
