@@ -1,6 +1,6 @@
 {
   "name": "@ilb/workflow-nextjs",
-  "version": "2.0.8",
+  "version": "2.0.9",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,7 @@
   "dependencies": {
     "@bb/jsonschema-form": "^1.0.2",
     "@bb/semantic-ui-css": "^2.2.12",
-    "@ilb/filedossier-js": "^0.1.7",
+    "@ilb/filedossier-api": "^1.0.0",
     "@ilb/workflow-api": "^2.0.2",
     "next": "^9.0.2",
     "react": "^16.8.6",

@@ -31,13 +31,13 @@ function Dossier( { dossierKey, dossierPackage, dossierCode }) {
 
                                         <Table.Body>
                                             {dossier.value.dossierFile.map(file => (
-                                              <DossierFile
-                                                  key={file.code}
-                                                  file={file}
-                                                  onChange={getDossier}
-                                                  resource={dossierResource.getDossierFileResource(file.code)}
-                                                  />
-                                            ))}
+                                                                        <DossierFile
+                                                                            key={file.code}
+                                                                            file={file}
+                                                                            onChange={getDossier}
+                                                                            resource={dossierResource.getDossierFileResource(file.code)}
+                                                                            />
+                                                            ))}
                                         </Table.Body>
                                     </Table>
                     }
@@ -83,5 +83,14 @@ function DossierFile( { file: { code, name,exists }, onChange, resource }) {
             </Table.Row>
             );
 }
+
+Dossier.getInitialProps = async function ( {query, headers}) {
+    const processInstanceId = query.processInstanceId;
+    const activityInstanceId = query.activityInstanceId;
+    const api = new ProcessInstancesApi(config.workflowApiClient(headers ? headers['x-remote-user'] : null));
+    const data = await api.getActivityForm(activityInstanceId, processInstanceId);
+    console.log('data',data);
+    return data;
+};
 
 export default Dossier;

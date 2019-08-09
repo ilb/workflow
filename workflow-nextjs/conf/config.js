@@ -1,5 +1,6 @@
 const context = require('../utils/context');
 const workflow_api = require('@ilb/workflow-api');
+const dossier_api = require('@ilb/filedossier-api');
 
 
 let certfile, passphrase, cert, ca;
@@ -25,13 +26,27 @@ function workflowApiClient(xRemoteUser) {
     return apiClient;
 }
 
+function dossierApiClient(xRemoteUser) {
+    const apiClient = new dossier_api.ApiClient();
+    apiClient.basePath = 'https://devel.net.ilb.ru/workflow-web/web/v2';
+    if (!process.browser) {
+        apiClient.applyAuthToRequest = (request, authNames) => {
+            request.ca(ca).key(cert).cert(cert);
+            request._passphrase = passphrase;
+            request.set('x-remote-user',xRemoteUser || process.env.USER);
+        };
+    }
+    return apiClient;
+}
+
 workflow_api.ApiClient.instance.basePath = 'https://devel.net.ilb.ru/workflow-web/web/v2';
+//dossier_api.ApiClient.instance.basePath = 'https://devel.net.ilb.ru/workflow-web/web/v2';
 
 module.exports = {
     certfile: certfile,
     passphrase: passphrase,
     cert: cert,
     ca: ca,
-    workflowApiClient: workflowApiClient
+    workflowApiClient: workflowApiClient,
+    dossierApiClient: dossierApiClient
 };
-

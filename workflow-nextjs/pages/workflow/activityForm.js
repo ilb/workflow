@@ -7,8 +7,10 @@ import JsonSchemaForm from '@bb/jsonschema-form';
 import '@bb/datetime-picker/lib/index.css';
 import '@bb/semantic-ui-css/semantic.min.css'
 import superagent from "superagent";
+import { DefaultApi as DossierApi} from '@ilb/filedossier-api/dist';
+
 //import '@bb/datetime-picker/lib/index.css';
-// import Dossier from '@ilb/filedossier-js/lib/Dossier';
+import Dossier from '../components/Dossier';
 
 // function ActivityForm(activityFormData) {
 function ActivityForm(props) {
@@ -60,7 +62,7 @@ function ActivityForm(props) {
                 }
             </div>
         </JsonSchemaForm>
-        {/* activityFormData.activityDossier && <Dossier {...activityFormData.activityDossier}/> */}
+        { activityFormData.dossierData && <Dossier {...activityFormData.dossierData}/> }
 
 
     </div>;
@@ -71,7 +73,16 @@ ActivityForm.getInitialProps = async function ( {query, headers}) {
     const activityInstanceId = query.activityInstanceId;
     const api = new ProcessInstancesApi(config.workflowApiClient(headers ? headers['x-remote-user'] : null));
     const data = await api.getActivityForm(activityInstanceId, processInstanceId);
-    console.log('data',data);
+    const apiDossier=new DossierApi(config.dossierApiClient(headers ? headers['x-remote-user'] : null));
+    if (data.activityDossier) {
+      const {dossierKey, dossierPackage, dossierCode} = data.activityDossier;
+      data.dossierData= await apiDossier.getDossier(dossierKey, dossierPackage, dossierCode);
+      // TODO добавить в бэк
+      data.dossierData.dossierKey=dossierKey;
+      data.dossierData.dossierPackage=dossierPackage;
+      console.log('data.dossierData',data.dossierData);
+    }
+    //console.log('data',data);
     return data;
 };
 
