@@ -14,7 +14,7 @@ import Dossier from '../components/Dossier';
 
 // function ActivityForm(activityFormData) {
 function ActivityForm(props) {
-  const activityFormData = props && props.pageProps;
+  const activityFormData = props;
   console.log('activityFormData', activityFormData);
     const activityInstanceId = activityFormData && activityFormData.activityInstance && activityFormData.activityInstance.id;
     const processInstanceId = activityFormData && activityFormData.activityInstance && activityFormData.activityInstance.processInstanceId;

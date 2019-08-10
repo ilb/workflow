@@ -27,7 +27,7 @@ const WorkList = (props) => {
   console.log('WorkList props', props);
   // const api = new ProcessInstancesApi();
   // const api = new ProcessInstancesApi(config.workflowApiClient(headers ? headers['x-remote-user'] : null));
-  const _data = props && props.pageProps && props.pageProps.activityInstance;
+  const _data = props && props.activityInstance;
   // console.log('_data', _data);
   // const [data, getData] = useResource(() => api.getWorkList({}));
   // useEffect(() => {
