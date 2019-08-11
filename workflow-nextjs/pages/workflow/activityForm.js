@@ -68,7 +68,9 @@ function ActivityForm(props) {
     </div>;
 }
 
-ActivityForm.getInitialProps = async function ( {query, headers}) {
+
+ActivityForm.getInitialProps = async function ({query,req}) {
+    const headers = req ? req.headers : {};
     const processInstanceId = query.processInstanceId;
     const activityInstanceId = query.activityInstanceId;
     const api = new ProcessInstancesApi(config.workflowApiClient(headers ? headers['x-remote-user'] : null));
@@ -77,10 +79,10 @@ ActivityForm.getInitialProps = async function ( {query, headers}) {
     if (data.activityDossier) {
       const {dossierKey, dossierPackage, dossierCode} = data.activityDossier;
       data.dossierData= await apiDossier.getDossier(dossierKey, dossierPackage, dossierCode);
-      // TODO добавить в бэк
+      // TODO добавить в бэк dossierKey, dossierPackage
       data.dossierData.dossierKey=dossierKey;
       data.dossierData.dossierPackage=dossierPackage;
-      console.log('data.dossierData',data.dossierData);
+      //console.log('data.dossierData',data.dossierData);
     }
     //console.log('data',data);
     return data;

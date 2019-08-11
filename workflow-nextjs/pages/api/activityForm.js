@@ -11,7 +11,7 @@ export default async ({query, headers, body}, res) => {
     if (act && act.activityFormUrl) {
         res.setHeader('X-Location', act.activityFormUrl);
     } else {
-        res.setHeader('X-Location', "/workflow/worklist");
+        res.setHeader('X-Location', "/workflow/workList");
     }
 
     console.log('req:', headers);

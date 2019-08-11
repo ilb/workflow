@@ -82,7 +82,7 @@ const Header = (props) => {
     <Menu style={{ marginBottom: '1.5rem' }}>
         <Menu.Item
           name='Рабочий лист'
-          href='/workflow/worklist'
+          href='/workflow/workList'
         />
         <ProcessSelectorContainer
           props={props}

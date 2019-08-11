@@ -10,13 +10,10 @@ import config from '../../conf/config';
 import '@bb/semantic-ui-css/semantic.min.css'
 import Link from 'next/link';
 
-// console.log('Table', Table);
-
-// const DefaultApi = require('@ilb/workflow-api/dist');
-const PostLink = props => (
+const ActivityLink = props => (
     <Link
       // href="/activityForm/[processInstanceId]/activities/[activityInstanceId]" as={`/processes/${props.processInstanceId}/activities/${props.id}`}
-      href={{ pathname: '/workflow/activityForm', query: { processInstanceId: `${props.processInstanceId}`, activityInstanceId: `${props.id}` } }}
+      href={{ pathname: '/workflow/activityForm', query: { processInstanceId: props.processInstanceId, activityInstanceId: props.id} }}
       target="_blank"
       >
       <a>{props.title}</a>
@@ -24,7 +21,7 @@ const PostLink = props => (
 );
 // function WorkList() {
 const WorkList = (props) => {
-  console.log('WorkList props', props);
+  //console.log('WorkList props', props);
   // const api = new ProcessInstancesApi();
   // const api = new ProcessInstancesApi(config.workflowApiClient(headers ? headers['x-remote-user'] : null));
   const _data = props && props.activityInstance;
@@ -83,7 +80,7 @@ const RenderTable = (activityInstance) => {
           {activityInstanceData && Object.values(activityInstanceData).map((el,index) => (
             <Table.Row key={index}>
               <Table.Cell>
-                {<PostLink title={el && el.name} processInstanceId={el && el.processInstanceId} id={el && el.id}/>}
+                {<ActivityLink title={el && el.name} processInstanceId={el && el.processInstanceId} id={el && el.id}/>}
               </Table.Cell>
               <Table.Cell>{dateToString(el.creationTime)}</Table.Cell>
               <Table.Cell>{dateToString(el.lastStateTime)}</Table.Cell>
@@ -98,11 +95,8 @@ const RenderTable = (activityInstance) => {
   return html;
 }
 
-WorkList.getInitialProps = async function ({query, headers}) {
-  // console.log('WorkList.getInitialProps = async function ( {query, headers}) ', headers);
-    // const processInstanceId = query.processInstanceId;
-    // const activityInstanceId = query.activityInstanceId;
-    // console.log('config.workflowApiClient(headers ? headers[] : null)', config.workflowApiClient(headers ? headers['x-remote-user'] : null));
+WorkList.getInitialProps = async function ({req}) {
+    const headers = req ? req.headers : {};
     const api = new ProcessInstancesApi(config.workflowApiClient(headers ? headers['x-remote-user'] : null));
     const data = await api.getWorkList({});
     return data;
