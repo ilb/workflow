@@ -2,7 +2,6 @@ var doc = null;
 if (!process.browser) {
     const fs = require('fs');
     const path = require('path');
-    
     const DOMParser = require('xmldom').DOMParser;
 
     const configpath = path.resolve(path.join(process.env.HOME, '.config/context.xml'))

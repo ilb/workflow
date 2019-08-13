@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Message, Loader, Select, Button, Header, Icon } from 'semantic-ui-react'
-import { ProcessInstancesApi } from '@ilb/workflow-api/dist';
+import { Message, Loader, Select, Button, Header as HeaderUI, Icon } from 'semantic-ui-react'
+import { ProcessInstancesApi, ProcessDefinitionsApi } from '@ilb/workflow-api/dist';
 // import  from '@ilb/workflow-api/dist';
 // import {useResource} from '../api/ReactHelper';
 import { Table } from 'semantic-ui-react';
@@ -9,31 +9,29 @@ import { Table } from 'semantic-ui-react';
 import config from '../../conf/config';
 import '@bb/semantic-ui-css/semantic.min.css'
 import Link from 'next/link';
+import Layout from '../../components/layout'
+import { getProcessDefinitions } from '../../components/header'
 
 const ActivityLink = props => (
     <Link
-      // href="/activityForm/[processInstanceId]/activities/[activityInstanceId]" as={`/processes/${props.processInstanceId}/activities/${props.id}`}
       href={{ pathname: '/workflow/activityForm', query: { processInstanceId: props.processInstanceId, activityInstanceId: props.id} }}
+      passHref
       target="_blank"
       >
       <a>{props.title}</a>
     </Link>
 );
-// function WorkList() {
+
 const WorkList = (props) => {
-  //console.log('WorkList props', props);
-  // const api = new ProcessInstancesApi();
-  // const api = new ProcessInstancesApi(config.workflowApiClient(headers ? headers['x-remote-user'] : null));
-  const _data = props && props.activityInstance;
+  // console.log('WorkList props', props);
+
+  const _data = props && props.data.activityInstance;
   // console.log('_data', _data);
-  // const [data, getData] = useResource(() => api.getWorkList({}));
-  // useEffect(() => {
-  //     getData();
-  // }, []);
-  return <div>
+  return <Layout {...props}>
+    <div>
       {!_data && <p>данные отсутствуют</p>}
       {_data && <RenderTable activityInstance={_data}/>}
-  </div>;
+  </div></Layout>;
 }
 
 const dateToString = (d) => {
@@ -61,37 +59,37 @@ const RenderTable = (activityInstance) => {
   // const activityInstanceData = activityInstance;
   const html =
     <div>
-    <Header as='h3' icon textAlign='center'>
-      {/* <Icon name='barcode' /> */}
-      <Header.Content>Рабочий лист</Header.Content>
-    </Header>
-      <Table striped celled>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>Этап</Table.HeaderCell>
-            <Table.HeaderCell>Создан</Table.HeaderCell>
-            <Table.HeaderCell>Изменен</Table.HeaderCell>
-            <Table.HeaderCell>{<a title={'Приоритет'}>П</a>}</Table.HeaderCell>
-            <Table.HeaderCell>Состояние</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-
-        <Table.Body>
-          {activityInstanceData && Object.values(activityInstanceData).map((el,index) => (
-            <Table.Row key={index}>
-              <Table.Cell>
-                {<ActivityLink title={el && el.name} processInstanceId={el && el.processInstanceId} id={el && el.id}/>}
-              </Table.Cell>
-              <Table.Cell>{dateToString(el.creationTime)}</Table.Cell>
-              <Table.Cell>{dateToString(el.lastStateTime)}</Table.Cell>
-              <Table.Cell>{el.priority}</Table.Cell>
-              <Table.Cell>{el.state && el.state.name}</Table.Cell>
+      <HeaderUI as='h3' icon textAlign='center'>
+        {/* <Icon name='barcode' /> */}
+        <HeaderUI.Content>Рабочий лист</HeaderUI.Content>
+      </HeaderUI>
+        <Table striped celled>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>Этап</Table.HeaderCell>
+              <Table.HeaderCell>Создан</Table.HeaderCell>
+              <Table.HeaderCell>Изменен</Table.HeaderCell>
+              <Table.HeaderCell>{<a title={'Приоритет'}>П</a>}</Table.HeaderCell>
+              <Table.HeaderCell>Состояние</Table.HeaderCell>
             </Table.Row>
-          )
-          )}
-        </Table.Body>
-      </Table>
-    </div>
+          </Table.Header>
+
+          <Table.Body>
+            {activityInstanceData && Object.values(activityInstanceData).map((el,index) => (
+              <Table.Row key={index}>
+                <Table.Cell>
+                  {<ActivityLink title={el && el.name} processInstanceId={el && el.processInstanceId} id={el && el.id}/>}
+                </Table.Cell>
+                <Table.Cell>{el.creationTime}</Table.Cell>
+                <Table.Cell>{el.lastStateTime}</Table.Cell>
+                <Table.Cell>{el.priority}</Table.Cell>
+                <Table.Cell>{el.state && el.state.name}</Table.Cell>
+              </Table.Row>
+            )
+            )}
+          </Table.Body>
+        </Table>
+      </div>
   return html;
 }
 
@@ -99,7 +97,14 @@ WorkList.getInitialProps = async function ({req}) {
     const headers = req ? req.headers : {};
     const api = new ProcessInstancesApi(config.workflowApiClient(headers ? headers['x-remote-user'] : null));
     const data = await api.getWorkList({});
-    return data;
+    data.activityInstance && data.activityInstance.forEach(activity => {
+      activity.creationTime = dateToString(activity.creationTime);
+      activity.lastStateTime = dateToString(activity.lastStateTime);
+    });
+
+    const processDefinitions = await getProcessDefinitions();
+
+    return { data, processDefinitions };
 };
 
 export default WorkList;

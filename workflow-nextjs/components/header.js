@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Menu, Icon } from 'semantic-ui-react'
-import config from '../../conf/config';
+import config from '../conf/config';
 // import React, { useState, useEffect, useRef } from 'react';
 import React, { useState, useEffect, useRef } from 'react';
 import {  Message, Loader, Select, Button } from 'semantic-ui-react'
@@ -13,6 +13,7 @@ import superagent from "superagent";
 
 
 const ProcessSelectorContainer = (props) => {
+  console.log('ProcessSelectorContainer props', props);
     const errorHandler = (data) => {
         alert(data.error);
     }
@@ -35,22 +36,25 @@ const ProcessSelectorContainer = (props) => {
     };
 
     //-------------
-    const data = props && props.props && props.props.pageProps && props.props.pageProps.data;
-    const processDefinition = data && data.processDefinition;
+    const data = props && props.processDefinitions;
+    console.log('ProcessSelectorContainer data', data);
+    const processDefinitions = data && data.processDefinition;
+    // console.log('processDefinition ', processDefinition);
     const options = [];
     const createOption = (optionData) => {
       return { key: optionData.name, text: optionData.definitionName, value: optionData.id }
     };
-    if (processDefinition) {
-      Object.keys(processDefinition).forEach(el => options.push(createOption(processDefinition[el])));
+    if (processDefinitions) {
+      Object.keys(processDefinitions).forEach(el => options.push(createOption(processDefinitions[el])));
     }
 
     const [optionValue, setOptionValue] = useState(null);
+    console.log('options', options);
 
     return <div className="processSelectorContainer">
       {data && data.loading && <Loader active /> }
       {data && data.error && <Message error visible content={data.error}/> }
-      {processDefinition && <div>
+      {processDefinitions && <div>
         <Menu compact>
           <Dropdown
             // inline
@@ -78,6 +82,7 @@ const linkStyle = {
 };
 
 const Header = (props) => {
+  console.log('Header props', props);
   return <div>
     <Menu style={{ marginBottom: '1.5rem' }}>
         <Menu.Item
@@ -85,10 +90,15 @@ const Header = (props) => {
           href='/workflow/workList'
         />
         <ProcessSelectorContainer
-          props={props}
+          {...props}
           />
       </Menu>
   </div>;
 };
+
+export function getProcessDefinitions () {
+  const api = new ProcessDefinitionsApi(config.workflowApiClient(null));
+  return api.getProcessDefinitions({enabled: true});
+}
 
 export default Header;

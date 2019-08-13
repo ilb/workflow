@@ -1,15 +1,17 @@
-import Home from './workflow/index.js';
-import ActivityForm from './workflow/activityForm.js';
-import Header from './components/header.js';
-import WorkList from './workflow/workList.js';
-// import fetch from 'isomorphic-unfetch';
+import Layout from '../components/layout'
+import { getProcessDefinitions } from '../components/header'
 
+const Index = (props) => {
 
-export default class Index extends React.Component {
-
-  render() {
     return (
-      <div></div>
+      <Layout {...props}><div></div></Layout>
     )
-  }
 }
+
+Index.getInitialProps = async function () {
+    const processDefinitions = await getProcessDefinitions();
+
+    return { processDefinitions };
+};
+
+export default Index;

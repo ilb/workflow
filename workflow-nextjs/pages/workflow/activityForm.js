@@ -10,14 +10,16 @@ import superagent from "superagent";
 import { DefaultApi as DossierApi} from '@ilb/filedossier-api/dist';
 
 //import '@bb/datetime-picker/lib/index.css';
-import Dossier from '../components/Dossier';
+import Dossier from '../../components/Dossier';
+import Layout from '../../components/layout'
+import { getProcessDefinitions } from '../../components/header'
 
 // function ActivityForm(activityFormData) {
 function ActivityForm(props) {
-  const activityFormData = props;
-  console.log('activityFormData', activityFormData);
-    const activityInstanceId = activityFormData && activityFormData.activityInstance && activityFormData.activityInstance.id;
-    const processInstanceId = activityFormData && activityFormData.activityInstance && activityFormData.activityInstance.processInstanceId;
+  const activityFormData = props && props.activityFormData;
+  console.log('activityFormData props', props);
+    const activityInstanceId = props && props.activityFormData && props.activityFormData.activityInstance && props.activityFormData.activityInstance.id;
+    const processInstanceId = props && props.activityFormData && props.activityFormData.activityInstance && props.activityFormData.activityInstance.processInstanceId;
     console.log('activityInstanceId, processInstanceId', activityInstanceId, processInstanceId);
     const errorHandler = (data) => {
         alert(data.error);
@@ -40,14 +42,14 @@ function ActivityForm(props) {
     // activityInstanceId=8008_5602_stockvaluation_stockvaluation_fairpricecalc_stockvaluation_fairpricecalc_check
       // const url = "http://" + document.location.host + "/workflow/activityForm?processInstanceId=" + processInstanceId + "&activityInstancesId=/";
       const url = "http://" + "localhost:3000" + "/workflow/activityForm?processInstanceId=" + processInstanceId + "&activityInstanceId=";
-      activityFormData.processStep.forEach(el => {
+      activityFormData && activityFormData.processStep && activityFormData.processStep.forEach(el => {
         console.log('el.activityId', el.activityId);
         if (el.activityId !== activityInstanceId) {
           el.href = url + el.activityId;
         }
       });
 
-    return <div className="activityForm">
+    return <Layout {...props}><div className="activityForm">
         <Step.Group items={activityFormData.processStep}/>
 
         <JsonSchemaForm
@@ -65,7 +67,7 @@ function ActivityForm(props) {
         { activityFormData.dossierData && <Dossier {...activityFormData.dossierData}/> }
 
 
-    </div>;
+    </div></Layout>;
 }
 
 
@@ -74,18 +76,18 @@ ActivityForm.getInitialProps = async function ({query,req}) {
     const processInstanceId = query.processInstanceId;
     const activityInstanceId = query.activityInstanceId;
     const api = new ProcessInstancesApi(config.workflowApiClient(headers ? headers['x-remote-user'] : null));
-    const data = await api.getActivityForm(activityInstanceId, processInstanceId);
+    const activityFormData = await api.getActivityForm(activityInstanceId, processInstanceId);
     const apiDossier=new DossierApi(config.dossierApiClient(headers ? headers['x-remote-user'] : null));
-    if (data.activityDossier) {
-      const {dossierKey, dossierPackage, dossierCode} = data.activityDossier;
-      data.dossierData= await apiDossier.getDossier(dossierKey, dossierPackage, dossierCode);
+    if (activityFormData.activityDossier) {
+      const {dossierKey, dossierPackage, dossierCode} = activityFormData.activityDossier;
+      activityFormData.dossierData= await apiDossier.getDossier(dossierKey, dossierPackage, dossierCode);
       // TODO добавить в бэк dossierKey, dossierPackage
-      data.dossierData.dossierKey=dossierKey;
-      data.dossierData.dossierPackage=dossierPackage;
-      //console.log('data.dossierData',data.dossierData);
+      activityFormData.dossierData.dossierKey=dossierKey;
+      activityFormData.dossierData.dossierPackage=dossierPackage;
     }
-    //console.log('data',data);
-    return data;
+    const processDefinitions = await getProcessDefinitions();
+
+    return { activityFormData: activityFormData, processDefinitions };
 };
 
 export default ActivityForm;
