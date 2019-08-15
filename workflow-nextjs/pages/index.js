@@ -8,8 +8,9 @@ const Index = (props) => {
     )
 }
 
-Index.getInitialProps = async function () {
-    const processDefinitions = await getProcessDefinitions();
+Index.getInitialProps = async function ({req}) {
+    const headers = req ? req.headers : {};
+    const processDefinitions = await getProcessDefinitions(headers);
 
     return { processDefinitions };
 };

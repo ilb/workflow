@@ -92,7 +92,7 @@ ActivityForm.getInitialProps = async function ({query,req}) {
       activityFormData.dossierData.dossierKey=dossierKey;
       activityFormData.dossierData.dossierPackage=dossierPackage;
     }
-    const processDefinitions = await getProcessDefinitions();
+    const processDefinitions = await getProcessDefinitions(headers);
 
     return { activityFormData: activityFormData, processDefinitions };
 };
