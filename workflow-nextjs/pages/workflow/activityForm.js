@@ -45,9 +45,14 @@ function ActivityForm(props) {
       // TODO поменять на Link
       const url = "/workflow/activityForm?processInstanceId=" + processInstanceId + "&activityInstanceId=";
       activityFormData && activityFormData.processStep && activityFormData.processStep.forEach(el => {
-        console.log('el.activityId', el.activityId);
         if (el.activityId !== activityInstanceId) {
           el.href = url + el.activityId;
+        }
+        // active - выделяем активный шаг
+        if (el.activityId === activityInstanceId) {
+          el.active = true;
+        } else {
+          el.active = false;
         }
       });
 

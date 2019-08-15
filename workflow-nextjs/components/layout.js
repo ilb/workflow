@@ -8,7 +8,7 @@ const layoutStyle = {
 
 
 export default function Layout(props) {
-  console.log('Layout props', props);
+  // console.log('Layout props', props);
   return (
     <div style={layoutStyle}>
       <Header {...props}/>

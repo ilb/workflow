@@ -12,13 +12,13 @@ import superagent from "superagent";
 
 
 const ProcessSelectorContainer = (props) => {
-  console.log('ProcessSelectorContainer props', props);
+  // console.log('ProcessSelectorContainer props', props);
     const errorHandler = (data) => {
         alert(data.error);
     }
 
     const startProcess = async (optionValue_) => {
-        console.log('optionValue', optionValue || optionValue_);
+        // console.log('optionValue', optionValue || optionValue_);
         if (!(optionValue || optionValue_)) {
           alert('Процесс не выбран');
           return false;
@@ -36,7 +36,7 @@ const ProcessSelectorContainer = (props) => {
 
     //-------------
     const data = props && props.processDefinitions;
-    console.log('ProcessSelectorContainer data', data);
+    // console.log('ProcessSelectorContainer data', data);
     const processDefinitions = data && data.processDefinition;
     // console.log('processDefinition ', processDefinition);
     const options = [];
@@ -95,13 +95,13 @@ const Header = (props) => {
   </div>;
 };
 
-export function getProcessDefinitions () {
+export function getProcessDefinitions (headers) {
   // console.log('req', req);
   // alert('req', req)
   // const headers = req ? req.headers : {};
-  // console.log('headers', headers);
+  console.log('header.js getProcessDefinitions headers', headers);
   // console.log('headers !!!!', headers['x-remote-user']);
-  const api = new ProcessDefinitionsApi(config.workflowApiClient(null));
+  const api = new ProcessDefinitionsApi(config.workflowApiClient(headers ? headers['x-remote-user'] : null));
   return api.getProcessDefinitions({enabled: true});
 }
 
