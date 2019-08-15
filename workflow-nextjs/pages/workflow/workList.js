@@ -4,28 +4,25 @@ import { ProcessInstancesApi, ProcessDefinitionsApi } from '@ilb/workflow-api/di
 // import  from '@ilb/workflow-api/dist';
 // import {useResource} from '../api/ReactHelper';
 import { Table } from 'semantic-ui-react';
-// console.log('DefaultApi', DefaultApi);
 // import { ProcessInstancesApi } from '@ilb/workflow-api/dist';
 import config from '../../conf/config';
 import '@bb/semantic-ui-css/semantic.min.css'
-import Link from 'next/link';
+
 import Layout from '../../components/layout'
 import { getProcessDefinitions } from '../../components/header'
+// import RenderTable from '../../components/RenderTable'
+import dynamic from 'next/dynamic'
 
-const ActivityLink = props => (
-    <Link
-      href={{ pathname: '/workflow/activityForm', query: { processInstanceId: props.processInstanceId, activityInstanceId: props.id} }}
-      passHref
-      target="_blank"
-      >
-      <a>{props.title}</a>
-    </Link>
-);
+const RenderTable = dynamic(
+  () => import('../../components/RenderTable'),
+  { loading: () => <p>loading...</p> }
+)
 
 const WorkList = (props) => {
   // console.log('WorkList props', props);
 
   const _data = props && props.data.activityInstance;
+  const loading = props && props.loading;
   // console.log('_data', _data);
   return <Layout {...props}>
     <div>
@@ -50,47 +47,6 @@ const dateToString = (d) => {
   datestring = datestring0;
   return datestring || d; // 11.11.2022 09:50
   // return d; // 11.11.2022 09:50
-}
-
-const RenderTable = (activityInstance) => {
-  // console.log('activityInstance', activityInstance);
-  // const activityInstanceData = activityInstance && activityInstance.activityInstance.activityInstance;
-  const activityInstanceData = activityInstance && activityInstance.activityInstance;
-  // const activityInstanceData = activityInstance;
-  const html =
-    <div>
-      <HeaderUI as='h3' icon textAlign='center'>
-        {/* <Icon name='barcode' /> */}
-        <HeaderUI.Content>Рабочий лист</HeaderUI.Content>
-      </HeaderUI>
-        <Table striped celled>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>Этап</Table.HeaderCell>
-              <Table.HeaderCell>Создан</Table.HeaderCell>
-              <Table.HeaderCell>Изменен</Table.HeaderCell>
-              <Table.HeaderCell>{<a title={'Приоритет'}>П</a>}</Table.HeaderCell>
-              <Table.HeaderCell>Состояние</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-
-          <Table.Body>
-            {activityInstanceData && Object.values(activityInstanceData).map((el,index) => (
-              <Table.Row key={index}>
-                <Table.Cell>
-                  {<ActivityLink title={el && el.name} processInstanceId={el && el.processInstanceId} id={el && el.id}/>}
-                </Table.Cell>
-                <Table.Cell>{el.creationTime}</Table.Cell>
-                <Table.Cell>{el.lastStateTime}</Table.Cell>
-                <Table.Cell>{el.priority}</Table.Cell>
-                <Table.Cell>{el.state && el.state.name}</Table.Cell>
-              </Table.Row>
-            )
-            )}
-          </Table.Body>
-        </Table>
-      </div>
-  return html;
 }
 
 WorkList.getInitialProps = async function ({req}) {

@@ -2,6 +2,7 @@ import { ProcessInstancesApi } from '@ilb/workflow-api/dist';
 import config from '../../conf/config';
 
 export default async ({query, headers, body}, res) => {
+      console.log('activityForm async');
     const processInstanceId = query.processInstanceId;
     const activityInstanceId = query.activityInstanceId;
     const api = new ProcessInstancesApi(config.workflowApiClient(headers ? headers['x-remote-user'] : null));

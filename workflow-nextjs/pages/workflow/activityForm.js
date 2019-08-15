@@ -41,7 +41,9 @@ function ActivityForm(props) {
     // activityForm?processInstanceId=5602_stockvaluation_stockvaluation_fairpricecalc&
     // activityInstanceId=8008_5602_stockvaluation_stockvaluation_fairpricecalc_stockvaluation_fairpricecalc_check
       // const url = "http://" + document.location.host + "/workflow/activityForm?processInstanceId=" + processInstanceId + "&activityInstancesId=/";
-      const url = "http://" + "localhost:3000" + "/workflow/activityForm?processInstanceId=" + processInstanceId + "&activityInstanceId=";
+      // console.log('path', router.pathname, process);
+      // TODO поменять на Link
+      const url = "/workflow/activityForm?processInstanceId=" + processInstanceId + "&activityInstanceId=";
       activityFormData && activityFormData.processStep && activityFormData.processStep.forEach(el => {
         console.log('el.activityId', el.activityId);
         if (el.activityId !== activityInstanceId) {

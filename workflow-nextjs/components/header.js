@@ -8,7 +8,6 @@ import { ApiClient, ProcessDefinitionsApi, ProcessInstancesApi } from '@ilb/work
 // import { useResource } from '../api/ReactHelper';
 import { Dropdown } from 'semantic-ui-react';
 import '@bb/semantic-ui-css/semantic.min.css'
-// import config from '../../conf/config';
 import superagent from "superagent";
 
 
@@ -97,6 +96,11 @@ const Header = (props) => {
 };
 
 export function getProcessDefinitions () {
+  // console.log('req', req);
+  // alert('req', req)
+  // const headers = req ? req.headers : {};
+  // console.log('headers', headers);
+  // console.log('headers !!!!', headers['x-remote-user']);
   const api = new ProcessDefinitionsApi(config.workflowApiClient(null));
   return api.getProcessDefinitions({enabled: true});
 }
