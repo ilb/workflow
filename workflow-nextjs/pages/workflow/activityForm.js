@@ -68,7 +68,7 @@ function ActivityForm(props) {
             >
             <div logg={console.log('activityFormData.activityInstance && activityFormData.activityInstance.state.open', activityFormData.activityInstance && activityFormData.activityInstance.state.open)}>
                 { ((activityFormData.activityInstance && activityFormData.activityInstance.state.open) || true) &&
-                    <button type="submit" style={{marginBottom: '30px'}} className="ui green button">Выполнить</button>
+                    <button type="submit" className="ui green button">Выполнить</button>
                 }
             </div>
         </JsonSchemaForm>

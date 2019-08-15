@@ -7,10 +7,9 @@ function Dossier( dossier) {
   console.log('dossier',dossier);
 
     return (
-            <div className="fileDosser">
+            <div style={{marginTop: '30px'}} className="fileDosser">
                    <div>
-                   <legend className="ui dividing header"></legend>
-                    <div>{dossier.name}</div>
+                   <legend className="ui dividing header"><div>{dossier.name}</div></legend>
                     {dossier.dossierFile &&
                                     <Table celled>
                                         <Table.Header>
