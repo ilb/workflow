@@ -32,7 +32,8 @@ function ActivityForm(props) {
         console.log('submitHandler res', res);
         if (res && res.headers) {
           console.log(res.headers['x-location']);
-          document.location=res.headers['x-location'].replace(/https:\/\/devel.net.ilb.ru\/workflow-js/,document.location.origin + "/workflow");
+          // document.location=res.headers['x-location'].replace(/https:\/\/devel.net.ilb.ru\/workflow-js/,document.location.origin + "/workflow");
+          document.location = res.headers['x-location'].replace('/workflow-js/', '/workflow/');
         }
     };
 

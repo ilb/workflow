@@ -30,7 +30,8 @@ const ProcessSelectorContainer = (props) => {
           // .then(res => document.location=res.headers['x-location'].replace(/https:\/\/devel.net.ilb.ru\/workflow-js/,"http://" + document.location.host));
         if (res && res.headers) {
           console.log(res.headers['x-location']);
-          document.location=res.headers['x-location'].replace(/https:\/\/devel.net.ilb.ru\/workflow-js/,"http://" + document.location.host + "/workflow");
+          document.location=res.headers['x-location'].replace(/https:\/\/devel.net.ilb.ru\/workflow-js/,document.location.origin + "/workflow");
+          // document.location = res.headers['x-location'].replace('/workflow-js/', '/workflow/');
         }
     };
 
@@ -38,6 +39,7 @@ const ProcessSelectorContainer = (props) => {
     const data = props && props.processDefinitions;
     // console.log('ProcessSelectorContainer data', data);
     const processDefinitions = data && data.processDefinition;
+
     // console.log('processDefinition ', processDefinition);
     const options = [];
     const createOption = (optionData) => {
@@ -49,31 +51,22 @@ const ProcessSelectorContainer = (props) => {
 
     const [optionValue, setOptionValue] = useState(null);
     console.log('options', options);
-
-    return <div className="processSelectorContainer">
-      {data && data.loading && <Loader active /> }
-      {data && data.error && <Message error visible content={data.error}/> }
-      {processDefinitions && <div>
-        <Menu compact>
-          <Dropdown
-            // inline
-            text='Запустить процесс'
-            onChange={(e, data) => {
-              console.log('12344', data.value);
-              setOptionValue(data.value);
-              startProcess(data.value);
-            }}
-            // onClick={startProcess}
-            options={options}
-            // placeholder='Выбрать процесс'
-            // selection
-            value={optionValue}
-            item
-            simple
-          />
-        </Menu>
-      </div>}
-    </div>;
+    return <Dropdown
+      // inline
+      text='Запустить процесс'
+      onChange={(e, data) => {
+        console.log('12344', data.value);
+        setOptionValue(data.value);
+        startProcess(data.value);
+      }}
+      // onClick={startProcess}
+      options={options}
+      // placeholder='Выбрать процесс'
+      // selection
+      value={optionValue}
+      item
+      simple
+    />;
 }
 
 const linkStyle = {
@@ -83,7 +76,7 @@ const linkStyle = {
 const Header = (props) => {
   console.log('Header props', props);
   return <div>
-    <Menu style={{ marginBottom: '1.5rem' }}>
+    <Menu horizontal style={{ marginBottom: '1.5rem' }}>
         <Menu.Item
           name='Рабочий лист'
           href='/workflow/workList'

@@ -9,7 +9,8 @@ function Dossier( dossier) {
     return (
             <div className="fileDosser">
                    <div>
-                    Name: {dossier.name}
+                   <legend className="ui dividing header"></legend>
+                    <div>{dossier.name}</div>
                     {dossier.dossierFile &&
                                     <Table celled>
                                         <Table.Header>
