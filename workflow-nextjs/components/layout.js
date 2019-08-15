@@ -9,10 +9,12 @@ const layoutStyle = {
 
 export default function Layout(props) {
   // console.log('Layout props', props);
+  const loading = props.loading;
+  console.log('Layout loading', loading);
   return (
     <div style={layoutStyle}>
       <Header {...props}/>
-      {props.children}
+      {loading ? <div>loading ... </div> : props.children}
     </div>
   )
 }

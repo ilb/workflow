@@ -2,7 +2,7 @@ import { useRouter, useEffect } from 'next/router';
 import Link from 'next/link';
 import { ProcessInstancesApi } from '@ilb/workflow-api/dist';
 import config from '../../conf/config';
-import { Button, Step } from 'semantic-ui-react';
+import { Button, Step, Divider } from 'semantic-ui-react';
 import JsonSchemaForm from '@bb/jsonschema-form';
 import '@bb/datetime-picker/lib/index.css';
 import '@bb/semantic-ui-css/semantic.min.css'
@@ -32,7 +32,7 @@ function ActivityForm(props) {
         console.log('submitHandler res', res);
         if (res && res.headers) {
           console.log(res.headers['x-location']);
-          document.location=res.headers['x-location'].replace(/https:\/\/devel.net.ilb.ru\/workflow-js/,"http://" + document.location.host + "/workflow");
+          document.location=res.headers['x-location'].replace(/https:\/\/devel.net.ilb.ru\/workflow-js/,document.location.origin + "/workflow");
         }
     };
 
@@ -67,11 +67,11 @@ function ActivityForm(props) {
             >
             <div logg={console.log('activityFormData.activityInstance && activityFormData.activityInstance.state.open', activityFormData.activityInstance && activityFormData.activityInstance.state.open)}>
                 { ((activityFormData.activityInstance && activityFormData.activityInstance.state.open) || true) &&
-                    <button type="submit" className="ui green button">Выполнить</button>
+                    <button type="submit" style={{marginBottom: '30px'}} className="ui green button">Выполнить</button>
                 }
             </div>
         </JsonSchemaForm>
-        { activityFormData.dossierData && <Dossier {...activityFormData.dossierData}/> }
+        {activityFormData.dossierData && <Dossier {...activityFormData.dossierData}/>}
 
 
     </div></Layout>;
