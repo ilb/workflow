@@ -1,4 +1,6 @@
-import Header from './header'
+import Header from './header';
+import { Segment } from 'semantic-ui-react';
+
 
 const layoutStyle = {
   margin: 0,
@@ -8,13 +10,10 @@ const layoutStyle = {
 
 
 export default function Layout(props) {
-  // console.log('Layout props', props);
-  const loading = props.loading;
-  console.log('Layout loading', loading);
-  return (
-    <div style={layoutStyle}>
+  return <div style={layoutStyle}>
       <Header {...props}/>
-      {loading ? <div>loading ... </div> : props.children}
-    </div>
-  )
+      <Segment loading={props.loader}>
+        {props.children}
+      </Segment>
+    </div>;
 }

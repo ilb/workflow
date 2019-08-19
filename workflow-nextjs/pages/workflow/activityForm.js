@@ -1,8 +1,9 @@
 import { useRouter, useEffect } from 'next/router';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { ProcessInstancesApi } from '@ilb/workflow-api/dist';
 import config from '../../conf/config';
-import { Button, Step, Divider } from 'semantic-ui-react';
+import { Button, Step, Loader } from 'semantic-ui-react';
 import JsonSchemaForm from '@bb/jsonschema-form';
 import '@bb/datetime-picker/lib/index.css';
 import '@bb/semantic-ui-css/semantic.min.css'
@@ -11,11 +12,13 @@ import { DefaultApi as DossierApi} from '@ilb/filedossier-api/dist';
 
 //import '@bb/datetime-picker/lib/index.css';
 import Dossier from '../../components/Dossier';
-import Layout from '../../components/layout'
-import { getProcessDefinitions } from '../../components/header'
+import Layout from '../../components/layout';
+import { getProcessDefinitions } from '../../components/header';
 
-// function ActivityForm(activityFormData) {
+
 function ActivityForm(props) {
+  const [loading, setLoading] = useState(false);
+
   const activityFormData = props && props.activityFormData;
   console.log('activityFormData props', props);
     const activityInstanceId = props && props.activityFormData && props.activityFormData.activityInstance && props.activityFormData.activityInstance.id;
@@ -25,6 +28,7 @@ function ActivityForm(props) {
         alert(data.error);
     };
     const submitHandler = async (data) => {
+        setLoading(true);
         console.log('submitting', data.formData);
         const res = await superagent.post(process.env.API_PATH + "/activityForm")
                 .query({processInstanceId: processInstanceId, activityInstanceId: activityInstanceId})
@@ -32,17 +36,12 @@ function ActivityForm(props) {
         console.log('submitHandler res', res);
         if (res && res.headers) {
           console.log(res.headers['x-location']);
-          // document.location=res.headers['x-location'].replace(/https:\/\/devel.net.ilb.ru\/workflow-js/,document.location.origin + "/workflow");
-          document.location = res.headers['x-location'].replace('/workflow-js/', '/workflow/');
+          document.location=res.headers['x-location'].replace(/https:\/\/devel.net.ilb.ru\/workflow-js/,document.location.origin + "/workflow");
+          // document.location = res.headers['x-location'].replace('/workflow-js/', '/workflow/');
         }
+        setLoading(false);
     };
 
-    // TODO возможно лучше в беке добавить ссылку в activityFormData.processStep.href ?
-    // document.location.host  ReferenceError: document is not defined
-    // activityForm?processInstanceId=5602_stockvaluation_stockvaluation_fairpricecalc&
-    // activityInstanceId=8008_5602_stockvaluation_stockvaluation_fairpricecalc_stockvaluation_fairpricecalc_check
-      // const url = "http://" + document.location.host + "/workflow/activityForm?processInstanceId=" + processInstanceId + "&activityInstancesId=/";
-      // console.log('path', router.pathname, process);
       // TODO поменять на Link
       const url = "/workflow/activityForm?processInstanceId=" + processInstanceId + "&activityInstanceId=";
       activityFormData && activityFormData.processStep && activityFormData.processStep.forEach(el => {
@@ -57,7 +56,7 @@ function ActivityForm(props) {
         }
       });
 
-    return <Layout {...props}><div className="activityForm">
+    return <Layout {...props} loader={loading}><div className="activityForm">
         <Step.Group items={activityFormData.processStep}/>
 
         <JsonSchemaForm
@@ -66,7 +65,7 @@ function ActivityForm(props) {
             uiSchema={activityFormData.uiSchema}
             onSubmit={submitHandler}
             >
-            <div logg={console.log('activityFormData.activityInstance && activityFormData.activityInstance.state.open', activityFormData.activityInstance && activityFormData.activityInstance.state.open)}>
+            <div>
                 { ((activityFormData.activityInstance && activityFormData.activityInstance.state.open) || true) &&
                     <button type="submit" className="ui green button">Выполнить</button>
                 }
@@ -94,6 +93,7 @@ ActivityForm.getInitialProps = async function ({query,req}) {
       activityFormData.dossierData.dossierPackage=dossierPackage;
     }
     const processDefinitions = await getProcessDefinitions(headers);
+    console.log('ActivityForm.getInitialProps processDefinitions', processDefinitions);
 
     return { activityFormData: activityFormData, processDefinitions };
 };

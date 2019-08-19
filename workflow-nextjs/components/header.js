@@ -76,7 +76,7 @@ const linkStyle = {
 const Header = (props) => {
   console.log('Header props', props);
   return <div>
-    <Menu horizontal style={{ marginBottom: '1.5rem' }}>
+    <Menu style={{ marginBottom: '1.5rem' }}>
         <Menu.Item
           name='Рабочий лист'
           href='/workflow/workList'
@@ -84,16 +84,13 @@ const Header = (props) => {
         <ProcessSelectorContainer
           {...props}
           />
+          {props.loading}
       </Menu>
   </div>;
 };
 
 export function getProcessDefinitions (headers) {
-  // console.log('req', req);
-  // alert('req', req)
-  // const headers = req ? req.headers : {};
   console.log('header.js getProcessDefinitions headers', headers);
-  // console.log('headers !!!!', headers['x-remote-user']);
   const api = new ProcessDefinitionsApi(config.workflowApiClient(headers ? headers['x-remote-user'] : null));
   return api.getProcessDefinitions({enabled: true});
 }

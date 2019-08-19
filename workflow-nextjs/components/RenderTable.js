@@ -1,32 +1,16 @@
 import { Table, Header } from 'semantic-ui-react'
 import Link from 'next/link';
 
-// <Link route='blog' params={{slug: 'hello-world'}}>
-//   <a>Hello world</a>
-// </Link>
-
 const ActivityLink = props => {
   const href = `/workflow/activityForm?processInstanceId=${props.processInstanceId}&activityInstanceId=${props.id}`
-  // <Link
-  // // page="/workflow/activityForm"
-  // // params={{query: { processInstanceId: props.processInstanceId, activityInstanceId: props.id}}}
-  // // query={{processInstanceId: props.processInstanceId, activityInstanceId: props.id}}
-  // href={{ pathname: '/workflow/activityForm', query: { processInstanceId: props.processInstanceId, activityInstanceId: props.id} }}
-  // // passHref
-  // // target="_blank"
-  // >
-  // <a>{props.title}</a>
-  // </Link>
   return <div>
       <a href={href}>{props.title}</a>
     </div>;
 };
 
 const RenderTable = (activityInstance) => {
-  // console.log('activityInstance', activityInstance);
-  // const activityInstanceData = activityInstance && activityInstance.activityInstance.activityInstance;
   const activityInstanceData = activityInstance && activityInstance.activityInstance;
-  // const activityInstanceData = activityInstance;
+
   const html =
     <div>
       <Header as='h3' icon textAlign='center'>

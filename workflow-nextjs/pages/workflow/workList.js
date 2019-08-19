@@ -1,10 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Message, Loader, Select, Button, Header as HeaderUI, Icon } from 'semantic-ui-react'
 import { ProcessInstancesApi, ProcessDefinitionsApi } from '@ilb/workflow-api/dist';
-// import  from '@ilb/workflow-api/dist';
-// import {useResource} from '../api/ReactHelper';
 import { Table } from 'semantic-ui-react';
-// import { ProcessInstancesApi } from '@ilb/workflow-api/dist';
 import config from '../../conf/config';
 import '@bb/semantic-ui-css/semantic.min.css'
 
@@ -19,7 +16,6 @@ const RenderTable = dynamic(
 )
 
 const WorkList = (props) => {
-  // console.log('WorkList props', props);
 
   const _data = props && props.data.activityInstance;
   const loading = props && props.loading;
