@@ -63,7 +63,10 @@ const ProcessSelectorContainer = (props) => {
       options={options}
       // placeholder='Выбрать процесс'
       // selection
-      value={optionValue}
+      // value={optionValue}
+      value={0}
+      selectOnNavigation={true}
+      selectOnBlur={true}
       item
       simple
     />;

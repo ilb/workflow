@@ -18,6 +18,7 @@ import { getProcessDefinitions } from '../../components/header';
 
 function ActivityForm(props) {
   const [loading, setLoading] = useState(false);
+  // const [errorRes, setErrorRes] = useState(false);
 
   const activityFormData = props && props.activityFormData;
   console.log('activityFormData props', props);
@@ -56,26 +57,30 @@ function ActivityForm(props) {
         }
       });
 
-    return <Layout {...props} loader={loading}><div className="activityForm">
-        <Step.Group items={activityFormData.processStep}/>
+      // {errorRes && <Message negative>
+        //   <Message.Header>Ошибка</Message.Header>
+        //   <p>{errorRes}</p>
+        //   </Message>}
+      return <Layout {...props} loader={loading}>
+        {<div className="activityForm">
+          <Step.Group items={activityFormData.processStep}/>
 
-        <JsonSchemaForm
-            schema={activityFormData.jsonSchema}
-            formData={activityFormData.formData}
-            uiSchema={activityFormData.uiSchema}
-            onSubmit={submitHandler}
-            >
-            <div>
-                { ((activityFormData.activityInstance && activityFormData.activityInstance.state.open) || true) &&
-                    <button type="submit" className="ui green button">Выполнить</button>
-                }
-            </div>
-        </JsonSchemaForm>
-        {activityFormData.dossierData && <Dossier {...activityFormData.dossierData}/>}
+          <JsonSchemaForm
+              schema={activityFormData.jsonSchema}
+              formData={activityFormData.formData}
+              uiSchema={activityFormData.uiSchema}
+              onSubmit={submitHandler}
+              >
+              <div>
+                  { ((activityFormData.activityInstance && activityFormData.activityInstance.state.open) || true) &&
+                      <button type="submit" className="ui green button">Выполнить</button>
+                  }
+              </div>
+          </JsonSchemaForm>
+          {activityFormData.dossierData && <Dossier {...activityFormData.dossierData}/>}
 
-
-    </div></Layout>;
-}
+      </div>}</Layout>;
+  }
 
 
 ActivityForm.getInitialProps = async function ({query,req}) {
