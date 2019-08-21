@@ -1,9 +1,8 @@
 import Link from 'next/link';
-import { Menu, Icon } from 'semantic-ui-react'
 import config from '../conf/config';
 // import React, { useState, useEffect, useRef } from 'react';
 import React, { useState, useEffect, useRef } from 'react';
-import {  Message, Loader, Select, Button } from 'semantic-ui-react'
+import { Message, Loader, Select, Button, Menu } from 'semantic-ui-react'
 import { ApiClient, ProcessDefinitionsApi, ProcessInstancesApi } from '@ilb/workflow-api/dist';
 import { Dropdown } from 'semantic-ui-react';
 import '@bb/semantic-ui-css/semantic.min.css'
@@ -15,28 +14,33 @@ const ProcessSelectorContainer = (props) => {
         alert(data.error);
     }
 
-    const [loading, setLoading] = useState(false);
-    const [errorRes, setErrorRes] = useState(null);
+    const [{ loading, error }, setSubmitState] = useState({ loading: false, error: null });
 
-    const startProcess = async (optionValue_) => {
+    const startProcess = async (optionValue) => {
 
-        if (!optionValue_) {
-          setErrorRes('Что-то пошло не так');
+        if (!optionValue) {
+          setSubmitState({ loading: false, error: 'нет данных для отправки' });
         }
-        setLoading(true);
-
-        const res = await superagent.post(process.env.API_PATH + "/createProcessInstanceAndNext") // /api/createProcessInstanceAndNext.js
-          .query({processDefinitionId: optionValue_})
-          .send({})
-          // .then(res => document.location=res.headers['x-location'].replace(/https:\/\/devel.net.ilb.ru\/workflow-js/,"http://" + document.location.host));
-        if (res && (res.statusText !== "OK" || !res.headers)) {
-          setErrorRes('Что-то пошло не так');
-        } else {
-          console.log(res.headers['x-location']);
-          document.location=res.headers['x-location'].replace(/https:\/\/devel.net.ilb.ru\/workflow-js/,document.location.origin + "/workflow");
-          // document.location = res.headers['x-location'].replace('/workflow-js/', '/workflow/');
+        setSubmitState({ loading: true });
+        try {
+          const res = await superagent.post(process.env.API_PATH + "/createProcessInstanceAndNext") // /api/createProcessInstanceAndNext.js
+            .query({processDefinitionId: optionValue})
+            .send({});
+            // .then(res => document.location=res.headers['x-location'].replace(/https:\/\/devel.net.ilb.ru\/workflow-js/,"http://" + document.location.host));
+          if (res && (res.statusText !== "OK" || !res.headers)) {
+            console.log('submitHandler res', res);
+            setSubmitState({ loading: false, error: res.status + ' ' + res.statusText });
+          } else {
+            console.log('res', res);
+            console.log(res.headers['x-location']);
+            setSubmitState({ loading: false });
+            document.location=res.headers['x-location'].replace(/https:\/\/devel.net.ilb.ru\/workflow-js/,document.location.origin + "/workflow");
+            // document.location = res.headers['x-location'].replace('/workflow-js/', '/workflow/');
+          }
+        } catch (e) {
+          console.log('e e.message', e, e.message);
+          setSubmitState({ loading: false, error: e.status + ' ' + e.message });
         }
-        setLoading(false);
     };
 
     //-------------
@@ -52,19 +56,23 @@ const ProcessSelectorContainer = (props) => {
     }
 
     console.log('options', options);
-    return !errorRes ? <Dropdown loading={loading}
-      // inline
-      text='Запустить процесс'
-      onChange={(e, data) => {
-        startProcess(data.value);
-      }}
-      options={options}
-      value={0}
-      selectOnNavigation
-      closeOnBlur
-      item
-      simple
-    /> : <Message size='small' negative>{errorRes}</Message>
+    return <div style={{ display: 'inline-flex' }}>
+      <Dropdown loading={loading}
+        // inline
+        text='Запустить процесс'
+        onChange={(e, data) => {
+          // startProcess('');
+          startProcess(data.value);
+        }}
+        options={options}
+        value={0}
+        selectOnBlur={false}
+        selectOnNavigation={false}
+        item
+        simple
+      />
+      {error && <Message style={{ margin: 0}} size='small' error visible content={error} />}
+    </div>
 }
 
 const linkStyle = {

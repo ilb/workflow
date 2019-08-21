@@ -17,8 +17,7 @@ import { getProcessDefinitions } from '../../components/header';
 
 
 function ActivityForm(props) {
-  const [loading, setLoading] = useState(false);
-  const [errorRes, setErrorRes] = useState(null);
+  const [{ loading, error }, setSubmitState] = useState({ loading: false, error: null });
 
   const activityFormData = props && props.activityFormData;
   console.log('activityFormData props', props);
@@ -30,31 +29,35 @@ function ActivityForm(props) {
     };
     const submitHandler = async (data) => {
         if (!data) {
-          setErrorRes('Что-то пошло не так');
+          setSubmitState({ loading: false, error: 'нет данных для отправки' });
         }
-        setLoading(true);
+
+        setSubmitState({ loading: true });
         console.log('submitting', data.formData);
+        try {
           const res = await superagent.post(process.env.API_PATH + "/activityForm")
-          .query({processInstanceId: processInstanceId, activityInstanceId: activityInstanceId})
-          .send(data.formData);
-          console.log('submitHandler res', res);
-        if (res && (res.statusText !== "OK" || !res.headers)) {
-          setErrorRes('Что-то пошло не так');
-        } else {
-            console.log(res.headers['x-location']);
-            document.location=res.headers['x-location'].replace(/https:\/\/devel.net.ilb.ru\/workflow-js/,document.location.origin + "/workflow");
-            // document.location = res.headers['x-location'].replace('/workflow-js/', '/workflow/');
+            .query({processInstanceId: processInstanceId, activityInstanceId: activityInstanceId})
+            .send(data.formData);
+          if (res && (res.statusText !== "OK" || !res.headers)) {
+            console.log('submitHandler res', res);
+            setSubmitState({ loading: false, error: res.status + ' ' + res.statusText });
+          } else {
+              console.log('res1', res);
+              console.log(res.headers['x-location']);
+              setSubmitState({ loading: false });
+              document.location=res.headers['x-location'].replace(/https:\/\/devel.net.ilb.ru\/workflow-js/,document.location.origin + "/workflow");
+              // document.location = res.headers['x-location'].replace('/workflow-js/', '/workflow/');
+          }
+        } catch (e) {
+          console.log('e e.message', e, e.message);
+          setSubmitState({ loading: false, error: e.status + ' ' + e.message });
         }
-        setLoading(false);
     };
 
       return <Layout {...props} loader={loading}>
-        {errorRes && <Message negative>
-          <Message.Header>Ошибка</Message.Header>
-          <p>{errorRes}</p>
-          </Message>}
+        {error && <Message error visible header='Ошибка' content={error} />}
 
-        {!errorRes && <div className="activityForm">
+        {!error && <div className="activityForm">
 
           <Step.Group items={activityFormData.processStep}/>
 
@@ -102,11 +105,7 @@ ActivityForm.getInitialProps = async function ({query,req}) {
         el.href = url + el.activityId;
       }
       // active - выделяем активный шаг
-      if (el.activityId === activityInstanceId) {
-        el.active = true;
-      } else {
-        el.active = false;
-      }
+      el.active = el.activityId === activityInstanceId;
     });
 
     return { activityFormData: activityFormData, processDefinitions };
