@@ -5,42 +5,44 @@ import config from '../conf/config';
 import React, { useState, useEffect, useRef } from 'react';
 import {  Message, Loader, Select, Button } from 'semantic-ui-react'
 import { ApiClient, ProcessDefinitionsApi, ProcessInstancesApi } from '@ilb/workflow-api/dist';
-// import { useResource } from '../api/ReactHelper';
 import { Dropdown } from 'semantic-ui-react';
 import '@bb/semantic-ui-css/semantic.min.css'
 import superagent from "superagent";
 
 
 const ProcessSelectorContainer = (props) => {
-  // console.log('ProcessSelectorContainer props', props);
     const errorHandler = (data) => {
         alert(data.error);
     }
 
+    const [loading, setLoading] = useState(false);
+    const [errorRes, setErrorRes] = useState(null);
+
     const startProcess = async (optionValue_) => {
-        // console.log('optionValue', optionValue || optionValue_);
-        if (!(optionValue || optionValue_)) {
-          alert('Процесс не выбран');
-          return false;
+
+        if (!optionValue_) {
+          setErrorRes('Что-то пошло не так');
         }
+        setLoading(true);
 
         const res = await superagent.post(process.env.API_PATH + "/createProcessInstanceAndNext") // /api/createProcessInstanceAndNext.js
-          .query({processDefinitionId: optionValue || optionValue_})
+          .query({processDefinitionId: optionValue_})
           .send({})
           // .then(res => document.location=res.headers['x-location'].replace(/https:\/\/devel.net.ilb.ru\/workflow-js/,"http://" + document.location.host));
-        if (res && res.headers) {
+        if (res && (res.statusText !== "OK" || !res.headers)) {
+          setErrorRes('Что-то пошло не так');
+        } else {
           console.log(res.headers['x-location']);
           document.location=res.headers['x-location'].replace(/https:\/\/devel.net.ilb.ru\/workflow-js/,document.location.origin + "/workflow");
           // document.location = res.headers['x-location'].replace('/workflow-js/', '/workflow/');
         }
+        setLoading(false);
     };
 
     //-------------
     const data = props && props.processDefinitions;
-    // console.log('ProcessSelectorContainer data', data);
     const processDefinitions = data && data.processDefinition;
 
-    // console.log('processDefinition ', processDefinition);
     const options = [];
     const createOption = (optionData) => {
       return { key: optionData.name, text: optionData.definitionName, value: optionData.id }
@@ -49,27 +51,20 @@ const ProcessSelectorContainer = (props) => {
       Object.keys(processDefinitions).forEach(el => options.push(createOption(processDefinitions[el])));
     }
 
-    const [optionValue, setOptionValue] = useState(null);
     console.log('options', options);
-    return <Dropdown
+    return !errorRes ? <Dropdown loading={loading}
       // inline
       text='Запустить процесс'
       onChange={(e, data) => {
-        console.log('12344', data.value);
-        setOptionValue(data.value);
         startProcess(data.value);
       }}
-      // onClick={startProcess}
       options={options}
-      // placeholder='Выбрать процесс'
-      // selection
-      // value={optionValue}
       value={0}
-      selectOnNavigation={true}
-      selectOnBlur={true}
+      selectOnNavigation
+      closeOnBlur
       item
       simple
-    />;
+    /> : <Message size='small' negative>{errorRes}</Message>
 }
 
 const linkStyle = {
@@ -87,7 +82,6 @@ const Header = (props) => {
         <ProcessSelectorContainer
           {...props}
           />
-          {props.loading}
       </Menu>
   </div>;
 };

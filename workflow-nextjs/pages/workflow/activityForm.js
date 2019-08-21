@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { ProcessInstancesApi } from '@ilb/workflow-api/dist';
 import config from '../../conf/config';
-import { Button, Step, Loader } from 'semantic-ui-react';
+import { Button, Step, Loader, Message } from 'semantic-ui-react';
 import JsonSchemaForm from '@bb/jsonschema-form';
 import '@bb/datetime-picker/lib/index.css';
 import '@bb/semantic-ui-css/semantic.min.css'
@@ -18,7 +18,7 @@ import { getProcessDefinitions } from '../../components/header';
 
 function ActivityForm(props) {
   const [loading, setLoading] = useState(false);
-  // const [errorRes, setErrorRes] = useState(false);
+  const [errorRes, setErrorRes] = useState(null);
 
   const activityFormData = props && props.activityFormData;
   console.log('activityFormData props', props);
@@ -29,40 +29,33 @@ function ActivityForm(props) {
         alert(data.error);
     };
     const submitHandler = async (data) => {
+        if (!data) {
+          setErrorRes('Что-то пошло не так');
+        }
         setLoading(true);
         console.log('submitting', data.formData);
-        const res = await superagent.post(process.env.API_PATH + "/activityForm")
-                .query({processInstanceId: processInstanceId, activityInstanceId: activityInstanceId})
-                .send(data.formData);
-        console.log('submitHandler res', res);
-        if (res && res.headers) {
-          console.log(res.headers['x-location']);
-          document.location=res.headers['x-location'].replace(/https:\/\/devel.net.ilb.ru\/workflow-js/,document.location.origin + "/workflow");
-          // document.location = res.headers['x-location'].replace('/workflow-js/', '/workflow/');
+          const res = await superagent.post(process.env.API_PATH + "/activityForm")
+          .query({processInstanceId: processInstanceId, activityInstanceId: activityInstanceId})
+          .send(data.formData);
+          console.log('submitHandler res', res);
+        if (res && (res.statusText !== "OK" || !res.headers)) {
+          setErrorRes('Что-то пошло не так');
+        } else {
+            console.log(res.headers['x-location']);
+            document.location=res.headers['x-location'].replace(/https:\/\/devel.net.ilb.ru\/workflow-js/,document.location.origin + "/workflow");
+            // document.location = res.headers['x-location'].replace('/workflow-js/', '/workflow/');
         }
         setLoading(false);
     };
 
-      // TODO поменять на Link
-      const url = "/workflow/activityForm?processInstanceId=" + processInstanceId + "&activityInstanceId=";
-      activityFormData && activityFormData.processStep && activityFormData.processStep.forEach(el => {
-        if (el.activityId !== activityInstanceId) {
-          el.href = url + el.activityId;
-        }
-        // active - выделяем активный шаг
-        if (el.activityId === activityInstanceId) {
-          el.active = true;
-        } else {
-          el.active = false;
-        }
-      });
-
-      // {errorRes && <Message negative>
-        //   <Message.Header>Ошибка</Message.Header>
-        //   <p>{errorRes}</p>
-        //   </Message>}
       return <Layout {...props} loader={loading}>
-        {<div className="activityForm">
+        {errorRes && <Message negative>
+          <Message.Header>Ошибка</Message.Header>
+          <p>{errorRes}</p>
+          </Message>}
+
+        {!errorRes && <div className="activityForm">
+
           <Step.Group items={activityFormData.processStep}/>
 
           <JsonSchemaForm
@@ -99,6 +92,22 @@ ActivityForm.getInitialProps = async function ({query,req}) {
     }
     const processDefinitions = await getProcessDefinitions(headers);
     console.log('ActivityForm.getInitialProps processDefinitions', processDefinitions);
+
+
+    // TODO поменять на Link
+    const url = "/workflow/activityForm?processInstanceId=" + processInstanceId + "&activityInstanceId=";
+    activityFormData && activityFormData.processStep && activityFormData.processStep.forEach(el => {
+      // добавляем url для переключения между стадиями процесса
+      if (el.activityId !== activityInstanceId) {
+        el.href = url + el.activityId;
+      }
+      // active - выделяем активный шаг
+      if (el.activityId === activityInstanceId) {
+        el.active = true;
+      } else {
+        el.active = false;
+      }
+    });
 
     return { activityFormData: activityFormData, processDefinitions };
 };
