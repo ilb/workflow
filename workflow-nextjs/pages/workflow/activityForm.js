@@ -55,9 +55,7 @@ function ActivityForm(props) {
     };
 
       return <Layout {...props} loader={loading}>
-        {error && <Message error visible header='Ошибка' content={error} />}
-
-        {!error && <div className="activityForm">
+        <div className="activityForm">
 
           <Step.Group items={activityFormData.processStep}/>
 
@@ -73,9 +71,10 @@ function ActivityForm(props) {
                   }
               </div>
           </JsonSchemaForm>
+          <div style={{ margin: '0.5rem' }}>{error && <Message error visible header='Ошибка' content={error} />}</div>
           {activityFormData.dossierData && <Dossier {...activityFormData.dossierData}/>}
 
-      </div>}</Layout>;
+      </div></Layout>;
   }
 
 

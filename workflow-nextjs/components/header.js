@@ -7,9 +7,11 @@ import { ApiClient, ProcessDefinitionsApi, ProcessInstancesApi } from '@ilb/work
 import { Dropdown } from 'semantic-ui-react';
 import '@bb/semantic-ui-css/semantic.min.css'
 import superagent from "superagent";
+import './index.css';
 
 
 const ProcessSelectorContainer = (props) => {
+  console.log('ProcessSelectorContainer props', props);
     const errorHandler = (data) => {
         alert(data.error);
     }
@@ -40,6 +42,7 @@ const ProcessSelectorContainer = (props) => {
         } catch (e) {
           console.log('e e.message', e, e.message);
           setSubmitState({ loading: false, error: e.status + ' ' + e.message });
+          showPopup({ title: 'Ошибка', message: e.status + ' ' + e.message, type: 'error', position: 'tr', autoDismiss: '30' });
         }
     };
 
@@ -55,8 +58,10 @@ const ProcessSelectorContainer = (props) => {
       Object.keys(processDefinitions).forEach(el => options.push(createOption(processDefinitions[el])));
     }
 
+    const showPopup = props.showPopup;
+
     console.log('options', options);
-    return <div style={{ display: 'inline-flex' }}>
+    return <div>
       <Dropdown loading={loading}
         // inline
         text='Запустить процесс'
@@ -71,7 +76,6 @@ const ProcessSelectorContainer = (props) => {
         item
         simple
       />
-      {error && <Message style={{ margin: 0}} size='small' error visible content={error} />}
     </div>
 }
 
@@ -81,7 +85,7 @@ const linkStyle = {
 
 const Header = (props) => {
   console.log('Header props', props);
-  return <div>
+  return <div className='fixedMenu'>
     <Menu style={{ marginBottom: '1.5rem' }}>
         <Menu.Item
           name='Рабочий лист'
