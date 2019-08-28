@@ -1,5 +1,5 @@
-import Layout from '../components/layout'
-import { getProcessDefinitions } from '../components/header'
+import Layout from '../components/layout';
+import { getProcessDefinitions } from '../components/header';
 
 const Index = (props) => {
 

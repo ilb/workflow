@@ -53,7 +53,7 @@ WorkList.getInitialProps = async function ({req}) {
       activity.creationTime = dateToString(activity.creationTime);
       activity.lastStateTime = dateToString(activity.lastStateTime);
     });
-    console.log('WorkList.getInitialProps headers', headers);
+    // console.log('WorkList.getInitialProps headers', headers);
     const processDefinitions = await getProcessDefinitions(headers);
     console.log('WorkList.getInitialProps processDefinitions', processDefinitions);
 
