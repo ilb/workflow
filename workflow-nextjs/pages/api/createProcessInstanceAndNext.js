@@ -12,7 +12,6 @@ export default async ({query, headers, body}, res) => {
         res.setHeader('X-Location', "workList");
     }
 
-    console.log('req:', headers);
 
     res.statusCode = 200;
     res.end(JSON.stringify({name: 'Nextjs'}));

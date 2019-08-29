@@ -4,8 +4,8 @@ import { DefaultApi as DossierApi} from '@ilb/filedossier-api/dist';
 
 
 function Dossier( dossier) {
-  console.log('dossier',dossier);
-    const { dossierKey, dossierPackage, dossierCode } = dossier;
+  // console.log('dossier',dossier);
+    const { dossierKey, dossierPackage, dossierCode } = dossier.activityDossier;
 
     return (
       <div style={{marginTop: '30px'}} className="fileDosser">

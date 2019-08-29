@@ -11,7 +11,7 @@ import './index.css';
 
 
 const ProcessSelectorContainer = (props) => {
-  console.log('ProcessSelectorContainer props', props);
+  // console.log('ProcessSelectorContainer props', props);
     const errorHandler = (data) => {
         alert(data.error);
     }
@@ -30,19 +30,15 @@ const ProcessSelectorContainer = (props) => {
             .send({});
             // .then(res => document.location=res.headers['x-location'].replace(/https:\/\/devel.net.ilb.ru\/workflow-js/,"http://" + document.location.host));
           if (res && (res.statusText !== "OK" || !res.headers)) {
-            // console.log('submitHandler res', res);
             setSubmitState({ loading: false, error: res.status + ' ' + res.statusText });
           } else {
-            // console.log('res', res);
-            // console.log(res.headers['x-location']);
             setSubmitState({ loading: false });
             document.location=res.headers['x-location'].replace(/https:\/\/devel.net.ilb.ru\/workflow-js/,document.location.origin + "/workflow");
             // document.location = res.headers['x-location'].replace('/workflow-js/', '/workflow/');
           }
         } catch (e) {
-          // console.log('e e.message', e, e.message);
           setSubmitState({ loading: false, error: e.status + ' ' + e.message });
-          showPopup({ title: 'Ошибка', message: e.status + ' ' + e.message, type: 'error', position: 'tr', autoDismiss: '30' });
+          showPopup({ title: 'Ошибка при запуске процесса', message: e.status + ' ' + e.message, type: 'error', position: 'tr', autoDismiss: '30' });
         }
     };
 
@@ -60,33 +56,32 @@ const ProcessSelectorContainer = (props) => {
 
     const showPopup = props.showPopup;
 
-    console.log('options', options);
-    return <div>
-      <Dropdown loading={loading}
+    return <Dropdown loading={loading}
         // inline
         text='Запустить процесс'
-        onChange={(e, data) => {
-          // startProcess('');
-          startProcess(data.value);
-        }}
-        options={options}
-        value={0}
         selectOnBlur={false}
         selectOnNavigation={false}
         item
         simple
-      />
-    </div>
+        closeOnChange={true}
+      >
+        <Dropdown.Menu>
+          {options && options.map((option)=>(
+            <Dropdown.Item
+              key={option.key}
+              text={option.text}
+              onClick={(e, data) => {
+                startProcess(option.value);
+              }}
+            />
+          ))}
+        </Dropdown.Menu>
+      </Dropdown>
 }
 
-const linkStyle = {
-  marginRight: 15
-};
-
 const Header = (props) => {
-  // console.log('Header props', props);
-  return <div className='fixedMenu'>
-    <Menu style={{ marginBottom: '1.5rem' }}>
+  return <div>
+    <Menu>
         <Menu.Item
           name='Рабочий лист'
           href='/workflow/workList'
@@ -99,7 +94,6 @@ const Header = (props) => {
 };
 
 export function getProcessDefinitions (headers) {
-  // console.log('header.js getProcessDefinitions headers', headers);
   const api = new ProcessDefinitionsApi(config.workflowApiClient(headers ? headers['x-remote-user'] : null));
   return api.getProcessDefinitions({enabled: true});
 }

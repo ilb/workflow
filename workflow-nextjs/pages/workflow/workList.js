@@ -3,12 +3,11 @@ import { Message, Loader, Select, Button, Header as HeaderUI, Icon } from 'seman
 import { ProcessInstancesApi, ProcessDefinitionsApi } from '@ilb/workflow-api/dist';
 import { Table } from 'semantic-ui-react';
 import config from '../../conf/config';
-import '@bb/semantic-ui-css/semantic.min.css'
+import '@bb/semantic-ui-css/semantic.min.css';
 
-import Layout from '../../components/layout'
-import { getProcessDefinitions } from '../../components/header'
-// import RenderTable from '../../components/RenderTable'
-import dynamic from 'next/dynamic'
+import Layout from '../../components/layout';
+import { getProcessDefinitions } from '../../components/header';
+import dynamic from 'next/dynamic';
 
 const RenderTable = dynamic(
   () => import('../../components/RenderTable'),
@@ -42,7 +41,6 @@ const dateToString = (d) => {
   }
   datestring = datestring0;
   return datestring || d; // 11.11.2022 09:50
-  // return d; // 11.11.2022 09:50
 }
 
 WorkList.getInitialProps = async function ({req}) {
@@ -53,9 +51,8 @@ WorkList.getInitialProps = async function ({req}) {
       activity.creationTime = dateToString(activity.creationTime);
       activity.lastStateTime = dateToString(activity.lastStateTime);
     });
-    // console.log('WorkList.getInitialProps headers', headers);
+
     const processDefinitions = await getProcessDefinitions(headers);
-    console.log('WorkList.getInitialProps processDefinitions', processDefinitions);
 
     return { data, processDefinitions };
 };

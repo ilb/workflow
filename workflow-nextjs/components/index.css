@@ -1,6 +1,16 @@
-.fixedMenu {
-	position: fixed;
-	top: 0;
-	z-index: 9999;
-	width: 100%;
+.scrollable {
+  overflow-y: auto;
+  height: calc(100vh - 42px);
+  /* 42 px высота меню  */
+}
+
+body {
+  line-height: normal !important;
+}
+
+.layoutStyle {
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  width: 100%;
 }

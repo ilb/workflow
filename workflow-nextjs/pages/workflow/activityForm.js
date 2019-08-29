@@ -17,14 +17,11 @@ import { getProcessDefinitions } from '../../components/header';
 
 
 function ActivityForm(props) {
-  console.log('props.issuancevolume', props.issuancevolume);
   const [{ loading, error }, setSubmitState] = useState({ loading: false, error: null });
 
   const activityFormData = props && props.activityFormData;
-  // console.log('activityFormData props', props);
     const activityInstanceId = props && props.activityFormData && props.activityFormData.activityInstance && props.activityFormData.activityInstance.id;
     const processInstanceId = props && props.activityFormData && props.activityFormData.activityInstance && props.activityFormData.activityInstance.processInstanceId;
-    // console.log('activityInstanceId, processInstanceId', activityInstanceId, processInstanceId);
 
     const submitHandler = async (data) => {
         if (!data) {
@@ -32,39 +29,27 @@ function ActivityForm(props) {
         }
 
         setSubmitState({ loading: true });
-        // console.log('submitting', data.formData);
         try {
           const res = await superagent.post(process.env.API_PATH + "/activityForm")
             .query({processInstanceId: processInstanceId, activityInstanceId: activityInstanceId})
             .send(data.formData);
           if (res && (res.statusText !== "OK" || !res.headers)) {
-            // console.log('submitHandler res', res);
             setSubmitState({ loading: false, error: res.status + ' ' + res.statusText });
           } else {
-              // console.log('res1', res);
               setSubmitState({ loading: false });
               document.location=res.headers['x-location'].replace(/https:\/\/devel.net.ilb.ru\/workflow-js/,document.location.origin + "/workflow");
               // document.location = res.headers['x-location'].replace('/workflow-js/', '/workflow/');
           }
         } catch (e) {
-          // console.log('e e.message', e, e.message);
           setSubmitState({ loading: false, error: e.status + ' ' + e.message });
         }
     };
 
-    // выводим название и текуший номер шага и общее количество шагов
-    const getStepNumber = (steps) => {
-      const len = steps.length;
-      const ind = steps.findIndex(step => step.active);
-      return <span>Этап <b>{steps[ind].description}</b> {`${ind+1}/${len}`}</span>
-    }
-
       return <Layout {...props} loader={loading}>
         <div className="activityForm">
-        <Segment style={{ padding: 0, overflowX: 'auto' }}>
+        <div style={{ padding: 0, overflowX: 'auto' }}>
           <Step.Group size='tiny' unstackable items={activityFormData.processStep}/>
-        </Segment>
-        <div>{getStepNumber(activityFormData.processStep)}</div>
+        </div>
           <JsonSchemaForm
               schema={activityFormData.jsonSchema}
               formData={activityFormData.formData}
@@ -93,14 +78,10 @@ ActivityForm.getInitialProps = async function ({query,req}) {
     if (activityFormData.activityDossier) {
       const {dossierKey, dossierPackage, dossierCode} = activityFormData.activityDossier;
       activityFormData.dossierData = await apiDossier.getDossier(dossierKey, dossierPackage, dossierCode);
-      // console.log('TESTSSSS', apiDossier.uploadContents);
       // TODO добавить в бэк dossierKey, dossierPackage
-      activityFormData.dossierData.dossierKey = dossierKey;
-      activityFormData.dossierData.dossierPackage = dossierPackage;
-      activityFormData.dossierData.dossierCode = dossierCode;
+      activityFormData.dossierData.activityDossier = activityFormData.activityDossier;
     }
     const processDefinitions = await getProcessDefinitions(headers);
-    // console.log('ActivityForm.getInitialProps processDefinitions', processDefinitions);
 
 
     // TODO поменять на Link
