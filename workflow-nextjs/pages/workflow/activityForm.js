@@ -47,9 +47,7 @@ function ActivityForm(props) {
 
       return <Layout {...props} loader={loading}>
         <div className="activityForm">
-        <div style={{ padding: 0, overflowX: 'auto' }}>
-          <Step.Group size='tiny' unstackable items={activityFormData.processStep}/>
-        </div>
+          <Step.Group style={{ overflowX: 'auto' }} size='tiny' unstackable items={activityFormData.processStep}/>
           <JsonSchemaForm
               schema={activityFormData.jsonSchema}
               formData={activityFormData.formData}

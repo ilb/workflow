@@ -27,7 +27,7 @@ export default class Layout extends React.Component {
       <NotificationSystem ref="notificationSystem" />
       <Header {...this.props} showPopup={this.showPopup}/>
       <div className="scrollable">
-        <Segment loading={this.props.loader}>
+        <Segment basic loading={this.props.loader}>
           {this.props.children}
         </Segment>
       </div>
