@@ -79,6 +79,8 @@ ActivityForm.getInitialProps = async function ({query,req}) {
       // TODO FIXME добавить в бэк dossierKey, dossierPackage. убрать этот код
       activityFormData.dossierData.dossierKey = dossierKey;
       activityFormData.dossierData.dossierPackage = dossierPackage;
+      activityFormData.dossierData.activityDossier = activityFormData.activityDossier;
+      activityFormData.dossierData.activityDossier.headers = headers;
     }
     const processDefinitions = await getProcessDefinitions(headers);
 

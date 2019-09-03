@@ -1,15 +1,11 @@
 import React, { Suspense, useState, useEffect, useRef } from 'react';
 import { Table, Button, Message, Loader } from 'semantic-ui-react';
-// import { DefaultApi as DossierApi} from '@ilb/filedossier-api/dist';
+import { DefaultApi as DossierApi} from '@ilb/filedossier-api/dist';
 // import DossierResource from './DossierResource';
+import config from '../conf/config';
 
 function Dossier( dossier) {
-  // console.log('dossier',dossier);
-    //const { dossierKey, dossierPackage, dossierCode } = dossier.activityDossier;
-
-    // const dossierApi = new DossierApi();
-    // const dossierResource = new DossierResource(dossierApi, {dossierKey, dossierPackage, dossierCode});
-    // const [dossier, getDossier] = useResource(() => dossierResource.getDossier());
+    const { dossierKey, dossierPackage, dossierCode, headers } = dossier.activityDossier;
 
     return (
       <div style={{marginTop: '30px'}} className="fileDosser">
@@ -30,6 +26,7 @@ function Dossier( dossier) {
                           key={file.code}
                           file={file}
                           link={getDownloadLink(dossier, file.code)}
+                          dossier={dossier}
                           // onChange={getDossier}
                           // resource={dossierResource(file.code)}
                           />
@@ -46,18 +43,20 @@ function getDownloadLink(dossier, fileCode) {
 }
 
 
-function DossierFile( { file: { code, name, exists, readonly }, onChange, resource, link }) {
+function DossierFile( { file: { code, name, exists, readonly }, file, onChange, resource, link, dossier }) {
+    const { dossierKey, dossierPackage, dossierCode, headers } = dossier.activityDossier;
+    console.log('DossierFile headers', headers);
+    const api = new DossierApi(config.dossierApiClient(headers ? headers['x-remote-user'] : null));
 
     const inputFileEl = useRef(null);
+    const [error, setError] = useState(null);
 
     const remove = () => {
-        console.log('code', code);
-        onChange();
+        // onChange();
     };
 
-    const upload = () => {
-        //console.log('upload', code, inputFileEl.current.files);
-        const files = inputFileEl.current.files;
+    const upload = async () => {
+        console.log('upload', code, inputFileEl.current.files);
 
 //        const formData = new FormData();
 //
@@ -65,8 +64,20 @@ function DossierFile( { file: { code, name, exists, readonly }, onChange, resour
 //            formData.append(i, files.item(i));
 //        }
 
-        resource.uploadContents(inputFileEl.current.files[0]);
-        onChange();
+        const fileCode = file.code;
+        const opts = { file: inputFileEl.current.files[0] };
+        console.log('inputFileEl', inputFileEl);
+        console.log('headers', headers);
+        try {
+          const uploadAwait = await api.uploadContents(fileCode, dossierKey, dossierPackage, dossierCode, opts);
+          // await api.uploadContents(fileCode, dossierKey, dossierPackage, dossierCode, opts);
+          console.log('uploadAwait', uploadAwait);
+        } catch (err) {
+          setError('ошибка');
+          console.log('err!!!', err);
+        }
+        // resource.uploadContents(inputFileEl.current.files[0]);
+        // onChange();
     };
 
 
@@ -81,6 +92,7 @@ function DossierFile( { file: { code, name, exists, readonly }, onChange, resour
                 <Button content="Удалить" onClick={remove}/>
                 <input ref={inputFileEl} type="file" name="file" onChange={upload}/>
             </div>}
+            {error && <Message error visible header='Ошибка при загрузке файла' content={error} />}
           </Table.Cell>
       </Table.Row>
       );
