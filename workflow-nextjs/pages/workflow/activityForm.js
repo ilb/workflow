@@ -76,8 +76,9 @@ ActivityForm.getInitialProps = async function ({query,req}) {
     if (activityFormData.activityDossier) {
       const {dossierKey, dossierPackage, dossierCode} = activityFormData.activityDossier;
       activityFormData.dossierData = await apiDossier.getDossier(dossierKey, dossierPackage, dossierCode);
-      // TODO добавить в бэк dossierKey, dossierPackage
-      activityFormData.dossierData.activityDossier = activityFormData.activityDossier;
+      // TODO FIXME добавить в бэк dossierKey, dossierPackage. убрать этот код
+      activityFormData.dossierData.dossierKey = dossierKey;
+      activityFormData.dossierData.dossierPackage = dossierPackage;
     }
     const processDefinitions = await getProcessDefinitions(headers);
 

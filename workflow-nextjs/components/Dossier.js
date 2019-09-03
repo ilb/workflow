@@ -5,7 +5,7 @@ import { Table, Button, Message, Loader } from 'semantic-ui-react';
 
 function Dossier( dossier) {
   // console.log('dossier',dossier);
-    const { dossierKey, dossierPackage, dossierCode } = dossier.activityDossier;
+    //const { dossierKey, dossierPackage, dossierCode } = dossier.activityDossier;
 
     // const dossierApi = new DossierApi();
     // const dossierResource = new DossierResource(dossierApi, {dossierKey, dossierPackage, dossierCode});
