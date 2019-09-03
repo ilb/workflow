@@ -1,11 +1,15 @@
 import React, { Suspense, useState, useEffect, useRef } from 'react';
 import { Table, Button, Message, Loader } from 'semantic-ui-react';
 import { DefaultApi as DossierApi} from '@ilb/filedossier-api/dist';
-
+import DossierResource from './DossierResource';
 
 function Dossier( dossier) {
   // console.log('dossier',dossier);
     const { dossierKey, dossierPackage, dossierCode } = dossier.activityDossier;
+
+    const dossierApi = new DossierApi();
+    const dossierResource = new DossierResource(dossierApi, {dossierKey, dossierPackage, dossierCode});
+    // const [dossier, getDossier] = useResource(() => dossierResource.getDossier());
 
     return (
       <div style={{marginTop: '30px'}} className="fileDosser">
@@ -26,7 +30,8 @@ function Dossier( dossier) {
                           key={file.code}
                           file={file}
                           link={getDownloadLink(dossier, file.code)}
-                          // resource={dossierResource && dossierResource(file.code)}
+                          // onChange={getDossier}
+                          resource={dossierResource(file.code)}
                           />
                     ))}
                 </Table.Body>
@@ -69,10 +74,10 @@ function DossierFile( { file: { code, name, exists, readonly }, onChange, resour
       <Table.Row>
           <Table.Cell>
           {exists && <a href={link}>{name}</a>}
-          {!exists && name }
+          {(!exists || true) && name }
           </Table.Cell>
           <Table.Cell>
-              {!readonly && <div>
+              {(!readonly || true) && <div>
                 <Button content="Удалить" onClick={remove}/>
                 <input ref={inputFileEl} type="file" name="file" onChange={upload}/>
             </div>}
