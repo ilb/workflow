@@ -16,9 +16,9 @@ class TestProcessInstances(unittest.TestCase):
         self.configuration.username = "slavb"
         self.configuration.password = "123"
         self.configuration.debug=True
-        auth_header='Basic ' + base64.b64encode(bytes(self.configuration.username+':'+self.configuration.password, 'utf-8')).decode("utf-8") 
+        auth_header='Basic ' + base64.b64encode(bytes(self.configuration.username+':'+self.configuration.password, 'utf-8')).decode("utf-8")
         self.workflow_api = workflow.DefaultApi(workflow.ApiClient(configuration=self.configuration,header_name="Authorization",header_value=auth_header))
-        
+
     def test_createProcessInstanceAndNext(self):
         nextActivity = self.workflow_api.create_process_instance_and_next(process_definition_id="stockvaluation_fairpricecalc",body={})
         print('nextActivity', nextActivity)
