@@ -30,7 +30,7 @@ export default function DefaultActivityForm({activityFormData}) {
             onSubmit={submitHandler}
             >
             <div>
-                { activityFormData.activityInstance.state.open && 
+                { activityFormData.activityInstance.state.open &&
                     <button type="submit" className="ui green button">Выполнить</button>
                 }
             </div>

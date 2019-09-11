@@ -25,7 +25,7 @@ export function ProcessMenuContainer1() {
         {data.error && <Message error visible content={data.error}/> }
         {data.value && <ProcessMenu />}
     </div>;
- 
+
 }
 
 function ProcessMenu() {

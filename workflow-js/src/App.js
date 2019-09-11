@@ -32,7 +32,7 @@ function App() {
             <Router>
                 <div>
                     <Route path="/" exact component={Index} />
-                    
+
                     <Route path="/processInstances/:processId/activityInstances/:activityId/activityForm" component={ActivityFormIndex} />
                 </div>
             </Router>
