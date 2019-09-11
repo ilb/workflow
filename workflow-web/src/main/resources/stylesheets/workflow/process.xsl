@@ -36,7 +36,7 @@
     <xsl:strip-space elements="*" />
     <xsl:param name="base.path"/>
     <xsl:param name="webroot.path" select="substring-before($base.path,'/web/')"/>
-    
+
     <xsl:template match="/">
         <html xml:lang="ru">
             <head>

@@ -38,7 +38,7 @@
     <xsl:template match="/xpil:MainWorkflowProcessInstance">
         <xsl:apply-templates select="." mode="commentsTable"/>
     </xsl:template>
-    
+
     <xsl:template match="xpil:MainWorkflowProcessInstance" mode="commentsTable">
         <xsl:variable name="pr" select="."/>
         <div>

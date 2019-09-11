@@ -37,7 +37,7 @@
     <xsl:strip-space elements="*" />
     <xsl:param name="base.path"/>
     <xsl:param name="webroot.path" select="substring-before($base.path,'/web/')"/>
-    
+
     <xsl:template match="/">
         <html xml:lang="ru">
             <head>
@@ -138,17 +138,17 @@
                 <button class="pure-button" name="{local-name($ac)}[@State]" value="open.not_running.not_started" type="submit">Разблокировать</button>
             </xsl:when>
         </xsl:choose>
-        
+
     </xsl:template>
     <xsl:template match="xpil:MainWorkflowProcessInstance | xpil:SubWorkflowProcessInstance" mode="form_footer">
-        
+
     </xsl:template>
     <xsl:template match="xpil:MainWorkflowProcessInstance | xpil:SubWorkflowProcessInstance" mode="form_header">
         <xsl:variable name="pr" select="."/>
         <xsl:variable name="ac" select="xpil:ActivityInstances/xpil:*"/>
         <div class="pure-control-group">
             <label>
-                Процесс: 
+                Процесс:
             </label>
             <span>
                 <xsl:value-of select="$pr/@Name"/> / <xsl:value-of select="$ac/@Name"/>

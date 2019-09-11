@@ -68,7 +68,7 @@
         </xsl:if>
 
     </xsl:template>
-    
+
     <xsl:template match="xpil:*" mode="controlToolTip">
         <xsl:variable name="localname" select="local-name(.)"/>
         <xsl:variable name="how_to_handle_marker" select="xpil:InstanceExtendedAttributes/xpil:InstanceExtendedAttribute[@Name='how_to_handle_marker']/@Value"/>
@@ -80,7 +80,7 @@
             </div>
         </xsl:if>
     </xsl:template>
-    
+
     <xsl:template match="xpil:DateDataInstance" mode="control">
         <xsl:param name="position"/>
         <xsl:choose>
@@ -227,12 +227,12 @@
                             <xsl:call-template name="tokenizedValue">
                                 <xsl:with-param name="enumValues" select="xpdl:DataField/xpdl:ExtendedAttributes/xpdl:ExtendedAttribute[@Name='ENUM']/@Value"/>
                                 <xsl:with-param name="value" select="@Value"/>
-                            </xsl:call-template>                            
+                            </xsl:call-template>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:value-of select="@Value"/>
                         </xsl:otherwise>
-                    </xsl:choose>                    
+                    </xsl:choose>
                 </span>
             </xsl:when>
             <!-- VariableToProcess_FETCH -->
@@ -306,9 +306,9 @@
         <xsl:param name="value"/>
         <xsl:for-each select="str:tokenize($enumValues, '&amp;')">
             <xsl:if test="contains(.,'=')">
-                    <xsl:if test="$value=substring-before(.,'=')">
-                        <xsl:value-of select="substring-after(.,'=')"/>
-                    </xsl:if>                    
+                <xsl:if test="$value=substring-before(.,'=')">
+                    <xsl:value-of select="substring-after(.,'=')"/>
+                </xsl:if>
             </xsl:if>
         </xsl:for-each>
     </xsl:template>
@@ -327,5 +327,5 @@
             </option>
         </xsl:for-each>
     </xsl:template>
-    
+
 </xsl:stylesheet>

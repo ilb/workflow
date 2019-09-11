@@ -16,11 +16,11 @@
     along with this program. If not, see http://www.gnu.org/licenses
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                    xmlns:xpil="http://www.together.at/2006/XPIL1.0"
-                    xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" 
-                    exclude-result-prefixes="xsl xpil xpdl"
-                    xmlns:langutils="org.enhydra.shark.webclient.business.SharkUtils" 
-                    version="1.0">
+                xmlns:xpil="http://www.together.at/2006/XPIL1.0"
+                xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0"
+                exclude-result-prefixes="xsl xpil xpdl"
+                xmlns:langutils="org.enhydra.shark.webclient.business.SharkUtils"
+                version="1.0">
     <xsl:output
         media-type="application/xhtml+xml"
         method="xml"
@@ -29,7 +29,7 @@
         omit-xml-declaration="no"
         doctype-public="-//W3C//DTD XHTML 1.1//EN"
         doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd" />
-    
+
     <xsl:include href="common.xsl"/>
 
     <xsl:strip-space elements="*" />
@@ -44,7 +44,7 @@
             <xsl:otherwise>descending</xsl:otherwise>
         </xsl:choose>
     </xsl:variable>
-    
+
     <xsl:param name="auth_type" select="FORM" />
     <xsl:param name="username" select="u" />
     <xsl:param name="lang" select="en_GB"/>
@@ -99,7 +99,7 @@
                     }
 
                     function openNewDialogWindow(pageName,windowName,parameters) {
-                    window.open(pageName,windowName,parameters); 
+                    window.open(pageName,windowName,parameters);
                     }
 
                     function submitContentFormWithAction(formId,actionAttr,event, txt) {
@@ -113,7 +113,7 @@
                     formTag.submit();
                     }
                     }
-	
+
                 </script-->
             </head>
             <body>
@@ -152,8 +152,8 @@
                                             <xsl:with-param name="prop_groupmanag" select="prop:getProperty('groupmanag','true')" />
                                             <xsl:with-param name="howManyVisible" select="$howManyVisible" />
                                         </xsl:call-template-->
-                                        <!-- header menu end -->	
-                    
+                                        <!-- header menu end -->
+
                                         <!-- toolbar -->
                                         <div id="cnthdr">
                                             <div id="cnthdrw0">
@@ -171,18 +171,18 @@
                                                         <xsl:if test="$act_id!='NaN'">
                                                             <h1>Activity History</h1>
                                                             <span class="tmdata">
-                                                                <b>Process Id : </b> 
+                                                                <b>Process Id : </b>
                                                                 <xsl:value-of select="xpil:InstanceExtendedAttributes/xpil:InstanceExtendedAttribute[1]/@Value"/>
                                                             </span>
                                                             <span class="tmdata">
-                                                                <b>Activity Id : </b> 
+                                                                <b>Activity Id : </b>
                                                                 <xsl:value-of select="xpil:InstanceExtendedAttributes/xpil:InstanceExtendedAttribute[2]/@Value"/>
                                                             </span>
                                                         </xsl:if>
                                                         <xsl:if test="$act_id='NaN'">
                                                             <h1>История процесса</h1>
                                                             <span class="tmdata">
-                                                                <b>Процесс : </b> 
+                                                                <b>Процесс : </b>
                                                                 <xsl:value-of select="xpil:InstanceExtendedAttributes/xpil:InstanceExtendedAttribute[1]/@Value"/>
                                                             </span>
                                                         </xsl:if>
@@ -202,7 +202,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>	
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -226,16 +226,17 @@
                                             <table class="pure-table pure-table-horizontal pure-table-striped" id="prlistdata" cellspacing="0">
                                                 <thead id="table01head">
                                                     <tr>
-                                                        <th title="Time"><a id="headTime" href="javascript:void(0)">Time
-                                                            <xsl:choose>
-                                                                <xsl:when test="$orderDirect='ascending'">
+                                                        <th title="Time">
+                                                            <a id="headTime" href="javascript:void(0)">Time
+                                                                <xsl:choose>
+                                                                    <xsl:when test="$orderDirect='ascending'">
                                                                     &#8593;
-                                                                </xsl:when>
-                                                                <xsl:otherwise>
+                                                                    </xsl:when>
+                                                                    <xsl:otherwise>
                                                                     &#8595;
-                                                                </xsl:otherwise>
-                                                            </xsl:choose>
-                                                        </a>
+                                                                    </xsl:otherwise>
+                                                                </xsl:choose>
+                                                            </a>
                                                         </th>
                                                         <th title="Type">Type</th>
                                                         <th title="Package Id">Package Id</th>
@@ -245,7 +246,7 @@
                                                         <th title="Activity Definition Id">Activity Definition Id</th>
                                                         <xsl:if test="/xpil:ExtendedWorkflowFacilityInstance/xpil:InstanceExtendedAttributes/xpil:InstanceExtendedAttribute[2]/@Value='NaN'">
                                                             <th title="Activity Id">Activity Id</th>
-                                                        </xsl:if>          
+                                                        </xsl:if>
                                                         <th title="Activity Name">Activity Name</th>
                                                         <th title="Additional Information" style="min-width:300px;">Additional Information</th>
                                                     </tr>
@@ -310,7 +311,7 @@
                                                                     <xsl:if test="@OldResourceKey!=''">Old assignee: <xsl:value-of select="@OldResourceKey" />&#160;&#10;</xsl:if>New assignee: <xsl:value-of select="@NewResourceKey" />
                                                                     Is accepted: <xsl:value-of select="@IsAccepted" />
                                                                 </xsl:if>
-                                                                <xsl:if test="local-name()='DataEventAudit'">Variable changes: 
+                                                                <xsl:if test="local-name()='DataEventAudit'">Variable changes:
                                                                     <xsl:for-each select="xpil:NewEventData/xpil:StringDataInstance">
                                                                         <xsl:text> - </xsl:text>
                                                                         <xsl:value-of select="@Id"/>: <xsl:value-of select="@Value"/>&#160;
@@ -350,7 +351,7 @@
                                                                         Parent version: <xsl:value-of select="@PWorkflowProcessFactoryVersion" />
                                                                         Parent process id: <xsl:value-of select="@PWorkflowProcessInstanceId" />
                                                                         Parent process name: <xsl:value-of select="@PWorkflowProcessInstanceName" />
-                                                                        Parent activity definition id: <xsl:value-of select="@PActivityDefinitionId" />		
+                                                                        Parent activity definition id: <xsl:value-of select="@PActivityDefinitionId" />
                                                                         Parent activity id: <xsl:value-of select="@PActivityInstanceId" />
                                                                     </xsl:if>
                                                                 </xsl:if>
@@ -455,7 +456,7 @@
                                                                         <xsl:value-of select="@PWorkflowProcessInstanceName" />
                                                                         <br/>
                                                                         <b>Parent activity definition id: </b>
-                                                                        <xsl:value-of select="@PActivityDefinitionId" />		
+                                                                        <xsl:value-of select="@PActivityDefinitionId" />
                                                                         <br/>
                                                                         <b>Parent activity id: </b>
                                                                         <xsl:value-of select="@PActivityInstanceId" />
@@ -470,7 +471,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- frame end -->    
+                                <!-- frame end -->
 
                                 <!-- footer -->
                                 <!--xsl:call-template name="Footer"></xsl:call-template-->

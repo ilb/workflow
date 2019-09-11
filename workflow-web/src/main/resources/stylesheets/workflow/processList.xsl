@@ -40,7 +40,7 @@
     <xsl:param name="state"/>
     <xsl:param name="assignment"/>
     <xsl:param name="DataInstances.clientUUID"/>
-    
+
     <xsl:template match="/xpil:WorkflowProcessInstances">
         <html xml:lang="ru">
             <head>
@@ -112,8 +112,8 @@
                         <th>Создан</th>
                         <th>Начат</th>
                         <th>Завершен</th>
-                    </tr>            
-                    <xsl:for-each select="xpil:*">                
+                    </tr>
+                    <xsl:for-each select="xpil:*">
                         <tr>
                             <td>
                                 <a href="processes/{@Id}?xpilprop=FILL_PROCESS_VARIABLES&amp;xpilprop=FILL_RUNNING_ACTIVITIES&amp;xpilprop=FILL_ACTIVITY_DEADLINE_INFO">
