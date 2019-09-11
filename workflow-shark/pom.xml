@@ -13,7 +13,6 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <shark.version>6.3-4</shark.version>
         <twe.version>5.3.1</twe.version>
-        
     </properties>
     <dependencies>
         <!-- JDK 11 -->
