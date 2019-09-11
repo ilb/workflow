@@ -10,7 +10,7 @@
             </goals>
             <properties>
                 <jpda.listen>maven</jpda.listen>
-                <OASISCatalogManager.catalog.debug.level>99</OASISCatalogManager.catalog.debug.level> 
+                <OASISCatalogManager.catalog.debug.level>99</OASISCatalogManager.catalog.debug.level>
             </properties>
         </action>
     </actions>
