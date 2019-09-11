@@ -131,7 +131,7 @@
         </plugins>
     </build>
     <name>workflow-xpil-api</name>
-    
+
     <profiles>
         <profile>
             <id>swagger-maven-plugin</id>

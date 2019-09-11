@@ -13,9 +13,9 @@ import java.util.List;
  *
  * @author slavb
  */
-public class ActivityInstancesImpl extends ActivityInstances{
+public class ActivityInstancesImpl extends ActivityInstances {
 
-    public ActivityInstance getActivity(String id){
+    public ActivityInstance getActivity(String id) {
         ActivityInstance result = null;
         if (manualActivityInstancesAndToolActivityInstancesAndBlockActivityInstances != null) {
             for (ActivityInstance ai : manualActivityInstancesAndToolActivityInstancesAndBlockActivityInstances) {
@@ -27,7 +27,8 @@ public class ActivityInstancesImpl extends ActivityInstances{
         }
         return result;
     }
-    public ActivityInstance getActivityByDefinitionId(String definitionId){
+
+    public ActivityInstance getActivityByDefinitionId(String definitionId) {
         ActivityInstance result = null;
         if (manualActivityInstancesAndToolActivityInstancesAndBlockActivityInstances != null) {
             for (ActivityInstance ai : manualActivityInstancesAndToolActivityInstancesAndBlockActivityInstances) {
@@ -39,7 +40,8 @@ public class ActivityInstancesImpl extends ActivityInstances{
         }
         return result;
     }
-    public ActivityInstance getActivityByDefinitionId(List<String> definitionId){
+
+    public ActivityInstance getActivityByDefinitionId(List<String> definitionId) {
         ActivityInstance result = null;
         if (manualActivityInstancesAndToolActivityInstancesAndBlockActivityInstances != null) {
             for (ActivityInstance ai : manualActivityInstancesAndToolActivityInstancesAndBlockActivityInstances) {

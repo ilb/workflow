@@ -5,7 +5,6 @@
  */
 package at.together._2006.xpil1.wrapper;
 
-
 /**
  *
  * @author slavb

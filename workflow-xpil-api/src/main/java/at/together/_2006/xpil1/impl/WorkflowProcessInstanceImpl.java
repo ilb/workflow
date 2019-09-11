@@ -19,7 +19,7 @@ import org.wfmc._2002.xpdl1.WorkflowProcess;
  *
  * @author slavb
  */
-public class WorkflowProcessInstanceImpl extends WorkflowProcessInstance{
+public class WorkflowProcessInstanceImpl extends WorkflowProcessInstance {
 
     public WorkflowProcessInstanceImpl() {
     }
@@ -28,15 +28,16 @@ public class WorkflowProcessInstanceImpl extends WorkflowProcessInstance{
         super(instanceDescription, instanceLimit, instancePriority, dataInstances, eventAudits, instanceExtendedAttributes, id, definitionId, name, state, created, started, finished, otherAttributes, activityInstances, workflowProcess, requesterUsername, factoryId, packageId);
     }
 
-    public ActivityInstance getActivity(String id){
-        return activityInstances!=null?activityInstances.getActivity(id):null;
-    }
-    public ActivityInstance getActivityByDefinitionId(String definitionId){
-        return activityInstances!=null?activityInstances.getActivityByDefinitionId(definitionId):null;
+    public ActivityInstance getActivity(String id) {
+        return activityInstances != null ? activityInstances.getActivity(id) : null;
     }
 
-    public ActivityInstance getActivityByDefinitionId(List<String> definitionId){
-        return activityInstances!=null?activityInstances.getActivityByDefinitionId(definitionId):null;
+    public ActivityInstance getActivityByDefinitionId(String definitionId) {
+        return activityInstances != null ? activityInstances.getActivityByDefinitionId(definitionId) : null;
+    }
+
+    public ActivityInstance getActivityByDefinitionId(List<String> definitionId) {
+        return activityInstances != null ? activityInstances.getActivityByDefinitionId(definitionId) : null;
     }
 
 }

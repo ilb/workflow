@@ -26,7 +26,7 @@ import javax.xml.namespace.QName;
  *
  * @author slavb
  */
-public class ExecutionInstanceImpl extends ExecutionInstance{
+public class ExecutionInstanceImpl extends ExecutionInstance {
 
     public ExecutionInstanceImpl() {
     }
@@ -36,40 +36,47 @@ public class ExecutionInstanceImpl extends ExecutionInstance{
     }
 
     public DataInstance getDataInstance(String id) {
-        return dataInstances!=null?dataInstances.getDataInstance(id):null;
+        return dataInstances != null ? dataInstances.getDataInstance(id) : null;
     }
-    public String getStringValue(String id){
+
+    public String getStringValue(String id) {
         return getDataInstance(id).unwrap(StringDataInstance.class).getValue();
     }
-    public Boolean getBooleanValue(String id){
+
+    public Boolean getBooleanValue(String id) {
         return getDataInstance(id).unwrap(BooleanDataInstance.class).getValue();
     }
-    public Date getDateValue(String id){
-        DataInstance di=getDataInstance(id);
-        Date result=null;
-        if(di instanceof DateDataInstance){
-            result=((DateDataInstance) di).getValue();
-        }else if (di instanceof DateTimeDataInstance){
-            result=((DateTimeDataInstance) di).getValue();
+
+    public Date getDateValue(String id) {
+        DataInstance di = getDataInstance(id);
+        Date result = null;
+        if (di instanceof DateDataInstance) {
+            result = ((DateDataInstance) di).getValue();
+        } else if (di instanceof DateTimeDataInstance) {
+            result = ((DateTimeDataInstance) di).getValue();
         }
         return result;
     }
-    public Date getDateTimeValue(String id){
+
+    public Date getDateTimeValue(String id) {
         return getDataInstance(id).unwrap(DateTimeDataInstance.class).getValue();
     }
-    public Long getLongValue(String id){
+
+    public Long getLongValue(String id) {
         return getDataInstance(id).unwrap(LongDataInstance.class).getValue();
     }
-    public Integer getIntegerValue(String id){
-        Integer result=null;
-        Long value=getLongValue(id);
-        if(value!=null){
-            result=value.intValue();
+
+    public Integer getIntegerValue(String id) {
+        Integer result = null;
+        Long value = getLongValue(id);
+        if (value != null) {
+            result = value.intValue();
         }
         return result;
     }
-    public List<String> getStringArrayValue(String id){
-        StringArrayDataInstance sa=getDataInstance(id).unwrap(StringArrayDataInstance.class);
+
+    public List<String> getStringArrayValue(String id) {
+        StringArrayDataInstance sa = getDataInstance(id).unwrap(StringArrayDataInstance.class);
         List<String> list = null;
         if (sa.getStringValues() != null) {
             list = new ArrayList<>();

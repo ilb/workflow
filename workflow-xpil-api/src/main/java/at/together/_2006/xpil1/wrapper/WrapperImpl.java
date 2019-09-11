@@ -9,12 +9,13 @@ package at.together._2006.xpil1.wrapper;
  *
  * @author slavb
  */
-public class WrapperImpl implements Wrapper{
+public class WrapperImpl implements Wrapper {
 
     @Override
     public <T> T unwrap(Class<T> type) throws WrapperNotCapableException {
-        if (!isWrapperFor(type))
+        if (!isWrapperFor(type)) {
             throw new WrapperNotCapableException();
+        }
 
         return type.cast(this);
     }

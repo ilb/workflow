@@ -10,7 +10,6 @@ import at.together._2006.xpil1.DataInstances;
 import at.together._2006.xpil1.InstanceExtendedAttributes;
 import java.util.List;
 
-
 /**
  *
  * @author slavb

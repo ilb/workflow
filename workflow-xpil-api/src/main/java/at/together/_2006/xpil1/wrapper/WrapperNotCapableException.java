@@ -9,6 +9,6 @@ package at.together._2006.xpil1.wrapper;
  *
  * @author slavb
  */
-public class WrapperNotCapableException extends RuntimeException{
+public class WrapperNotCapableException extends RuntimeException {
 
 }
