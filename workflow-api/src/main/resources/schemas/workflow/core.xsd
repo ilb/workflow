@@ -50,7 +50,7 @@
             <xsd:enumeration value="terminate"/>
         </xsd:restriction>
     </xsd:simpleType>
-    
+
     <xsd:simpleType name="stateCode">
         <xsd:restriction base="xsd:NMTOKEN">
             <xsd:enumeration value="open.not_running.not_started">
@@ -85,7 +85,7 @@
             </xsd:enumeration>
         </xsd:restriction>
     </xsd:simpleType>
-    
+
     <xsd:simpleType name="acceptedStatus">
         <xsd:restriction base="xsd:string">
             <xsd:enumeration value="ACCEPTED_AND_NON_ACCEPTED"/>
