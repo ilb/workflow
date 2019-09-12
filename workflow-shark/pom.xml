@@ -9,8 +9,6 @@
     <artifactId>workflow-shark</artifactId>
     <packaging>jar</packaging>
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
         <shark.version>6.3-4</shark.version>
         <twe.version>5.3.1</twe.version>
     </properties>
@@ -68,7 +66,6 @@
             <artifactId>ejb-api</artifactId>
             <version>3.0</version>
         </dependency>
-
         <!-- TWS libs -->
         <dependency>
             <groupId>org.enhydra.shark.contrib</groupId>
@@ -470,7 +467,6 @@
             <artifactId>taf-core</artifactId>
             <version>${shark.version}</version>
         </dependency>
-
         <!-- TWE libs -->
         <dependency>
             <groupId>org.enhydra.jawe</groupId>

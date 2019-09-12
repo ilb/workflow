@@ -11,9 +11,6 @@
     <version>2.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
         <swagger-version>2.0.8</swagger-version>
         <generated-api-version>2.0.2</generated-api-version>
     </properties>
@@ -73,8 +70,6 @@
                                         <extraarg>{http://www.w3.org/2001/XMLSchema}time=java.time.LocalTime</extraarg>
                                         <extraarg>-tMap</extraarg>
                                         <extraarg>{urn:ru:ilb:global}map=org.apache.cxf.jaxrs.json.basic.JsonMapObject</extraarg>
-<!--                                        <extraarg>-repMap</extraarg>
-                                        <extraarg>text/plain=java.lang.String</extraarg>-->
                                         <extraarg>-repMap</extraarg>
                                         <extraarg>text/calendar=java.lang.String</extraarg>
                                         <extraarg>-xjc-Xannotate</extraarg>
@@ -119,7 +114,6 @@
         </plugins>
     </build>
     <name>workflow-api</name>
-
     <profiles>
         <profile>
             <id>swagger-maven-plugin</id>
@@ -217,10 +211,8 @@
                                         <packageVersion>${generated-api-version}</packageVersion>
                                         <projectName>${project.name}</projectName>
                                     </configOptions>
-
                                 </configuration>
                             </execution>
-
                         </executions>
                     </plugin>
                 </plugins>

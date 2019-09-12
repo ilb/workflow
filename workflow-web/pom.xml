@@ -6,21 +6,14 @@
         <artifactId>workflow</artifactId>
         <version>2.0-SNAPSHOT</version>
     </parent>
-
     <groupId>ru.ilb.workflow</groupId>
     <artifactId>workflow-web</artifactId>
     <version>2.0-SNAPSHOT</version>
     <packaging>war</packaging>
-
     <name>workflow-web</name>
-    <scm>
-        <connection>scm:svn:https://svn.ilb.ru/repos/workflow/trunk/workflow</connection>
-    </scm>
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven-JarWar-Plugin.Version>2.4</maven-JarWar-Plugin.Version>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <javax.ws.rs-api.version>2.1</javax.ws.rs-api.version>
         <eclipselink.version>2.7.4</eclipselink.version>
         <javax-persistence.version>2.2.1</javax-persistence.version>
@@ -39,7 +32,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    
     <dependencies>
         <!-- JDK 11 -->
         <dependency>
@@ -102,7 +94,7 @@
             <groupId>ru.ilb.collection</groupId>
             <artifactId>collection-api</artifactId>
             <version>1.166</version>
-        </dependency>        
+        </dependency>
         <!-- jax-rs -->
         <dependency>
             <groupId>javax.ws.rs</groupId>
@@ -305,7 +297,6 @@
             <version>${org.mapstruct.version}</version>
         </dependency>
     </dependencies>
-
     <build>
         <finalName>${project.name}</finalName>
         <plugins>
@@ -377,11 +368,10 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>properties-maven-plugin</artifactId>
-                <version>1.0-alpha-2</version>
+                <version>1.0.0</version>
                 <executions>
                     <execution>
                         <goals>
@@ -399,7 +389,6 @@
                     </execution>
                 </executions>
             </plugin>
-
         </plugins>
     </build>
     <profiles>
@@ -453,6 +442,5 @@
                 </plugins>
             </build>
         </profile>
-
     </profiles>
 </project>

@@ -76,7 +76,6 @@
                 <xsd:element name="lastStateTime" type="xsd:dateTime" minOccurs="0"/>
                 <xsd:element name="limitTime" type="xsd:dateTime" minOccurs="0"/>
                 <xsd:element name="state" type="processInstanceState" minOccurs="0"/>
-
                 <xsd:element ref="activityInstance"  minOccurs="0" maxOccurs="unbounded"/>
             </xsd:sequence>
         </xsd:complexType>
