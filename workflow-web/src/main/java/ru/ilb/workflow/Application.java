@@ -16,6 +16,7 @@
 package ru.ilb.workflow;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import javax.annotation.Resource;
 import javax.naming.InitialContext;
@@ -52,22 +53,47 @@ public class Application {
     @Value("${xpdlRepository}")
     String xpdlRepository;
 
-    @Bean
-    public DossierFactory dossierFactory() throws NamingException {
-        DossierDefinitionRepository dossierModelRepository;
-        StoreFactory storeFactory;
-        dossierModelRepository = new FileDossierDefinitionRepository(Paths.get(xpdlRepository).resolve("packages").toUri());
-        storeFactory = StoreFactory.newInstance(URI.create(processfilesbase));
+//    @Bean
+//    public DossierFactory dossierFactory() throws NamingException {
+//        DossierDefinitionRepository dossierModelRepository;
+//        StoreFactory storeFactory;
+//        dossierModelRepository = new FileDossierDefinitionRepository(Paths.get(xpdlRepository).resolve("packages").toUri());
+//        storeFactory = StoreFactory.newInstance(URI.create(processfilesbase));
+//
+//        DossierContextBuilder dossierContextBuilder = (String dossierKey, String dossierPackage, String dossierCode) -> {
+//            DossierContext dc = new DossierContextImpl();
+//            dc.setProperty("name", "Тест имя");
+//            dc.setProperty("prop", false);
+//            return dc;
+//        };
+//        TemplateEvaluator templateEvaluator = new SubstitutorTemplateEvaluator(new InitialContext());
+//        return new DossierFactory(dossierModelRepository, storeFactory, dossierContextBuilder, templateEvaluator);
+//
+//    }
 
+    @Bean
+    public TemplateEvaluator templateEvaluator() throws NamingException {
+        return new SubstitutorTemplateEvaluator(new InitialContext());
+    }
+
+    @Bean
+    public DossierContextBuilder dossierContextBuilder() {
         DossierContextBuilder dossierContextBuilder = (String dossierKey, String dossierPackage, String dossierCode) -> {
             DossierContext dc = new DossierContextImpl();
             dc.setProperty("name", "Тест имя");
             dc.setProperty("prop", false);
             return dc;
         };
-        TemplateEvaluator templateEvaluator = new SubstitutorTemplateEvaluator(new InitialContext());
-        return new DossierFactory(dossierModelRepository, storeFactory, dossierContextBuilder, templateEvaluator);
-
+        return dossierContextBuilder;
     }
 
+    @Bean
+    public StoreFactory storeFactory() {
+        return StoreFactory.newInstance(URI.create(processfilesbase));
+    }
+
+    @Bean
+    public DossierDefinitionRepository dossierDefinitionRepository() {
+        return new FileDossierDefinitionRepository(Paths.get(xpdlRepository).resolve("packages").toUri());
+    }
 }
