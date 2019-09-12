@@ -25,7 +25,7 @@ import org.apache.cxf.jaxrs.ext.MessageContext;
  * @author slavb
  */
 public class JaxRsContextResource {
-    
+
     protected ResourceContext resourceContext;
 
     protected MessageContext messageContext;
@@ -39,5 +39,5 @@ public class JaxRsContextResource {
     public void setMessageContext(MessageContext messageContext) {
         this.messageContext = messageContext;
     }
-    
+
 }

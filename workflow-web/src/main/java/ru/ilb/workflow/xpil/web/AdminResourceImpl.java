@@ -55,10 +55,12 @@ public class AdminResourceImpl implements AdminResource {
 
     @Autowired
     AsyncTaskManager asyncTaskManager;
-    
-    @Autowired CheckDeadlines checkDeadlines;
-    
-    @Autowired ReevaluateAssignments reevaluateAssignments;
+
+    @Autowired
+    CheckDeadlines checkDeadlines;
+
+    @Autowired
+    ReevaluateAssignments reevaluateAssignments;
 
     @Context
     public void setUriInfo(UriInfo uriInfo) {

@@ -39,7 +39,6 @@ public class JndiMock extends Jndi {
 //
 //    @Autowired
 //    private TestConfiguration testConfiguration;
-
     public JndiMock() {
         addExcludeName("jdbc/loancalculator");
         try {

@@ -26,7 +26,7 @@
             var location = request.getResponseHeader("Location");
             if (location) {
                 document.location = location;
-            }else{
+            } else {
                 var webrootpath = document.location.toString().substr(0, document.location.toString().indexOf("/workflow/") + 9);
                 document.location = webrootpath + "/web/processes/workList";
             }
@@ -38,10 +38,10 @@
 
     function disableProcessDefinition(event) {
         // replace # with ^ for url
-        var definitionId=event.target.value; //.replace(/#/g,'^');
+        var definitionId = event.target.value; //.replace(/#/g,'^');
         var packageId = event.target.value.split("#")[0];
         //alert(value);
-        packagesResource.disableProcessDefinition(packageId,definitionId)
+        packagesResource.disableProcessDefinition(packageId, definitionId)
                 .then(workflow_lib_Common.checkStatus)
                 .then(workflow_lib_Common.reloadWindow)
                 .catch(workflow_lib_Common.errorHandler);

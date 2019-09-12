@@ -54,7 +54,8 @@ public class InitUtils {
     @Autowired
     ServletContext context;
 
-    @Autowired CollectionEventAuditListener collectionEventAuditListener;
+    @Autowired
+    CollectionEventAuditListener collectionEventAuditListener;
 
     String contextPath;
 
@@ -230,8 +231,8 @@ public class InitUtils {
     }
 
     private void initEventListeners() {
-        NotifyingEventAuditManager.addEventAuditListener(collectionEventAuditListener,NotifyingEventAuditManager.CREATION_EVENT_TYPE);
-        NotifyingEventAuditManager.addEventAuditListener(collectionEventAuditListener,NotifyingEventAuditManager.STATE_EVENT_TYPE);
+        NotifyingEventAuditManager.addEventAuditListener(collectionEventAuditListener, NotifyingEventAuditManager.CREATION_EVENT_TYPE);
+        NotifyingEventAuditManager.addEventAuditListener(collectionEventAuditListener, NotifyingEventAuditManager.STATE_EVENT_TYPE);
     }
 
 }

@@ -23,7 +23,7 @@ import java.util.List;
  * @param <E> entity class
  * @param <D> dto class
  */
-public interface GenericMapperDto<E,D> {
+public interface GenericMapperDto<E, D> {
 
     D createFromEntity(E entity);
 

@@ -28,11 +28,11 @@ import org.enhydra.shark.api.client.xpil.XPILHandler;
  */
 public class XpilpropUtils {
 
-        public static void convertXpilpropListToProperties(List<String> xpilprop,Properties props ) {
+    public static void convertXpilpropListToProperties(List<String> xpilprop, Properties props) {
         if (xpilprop != null && xpilprop.size() > 0) {
             for (String p : xpilprop) {
-                String[] parts=p.split("=");
-                props.setProperty(toSharkValue(parts[0]), parts.length==1?"true":parts[1]);
+                String[] parts = p.split("=");
+                props.setProperty(toSharkValue(parts[0]), parts.length == 1 ? "true" : parts[1]);
             }
         }
     }
@@ -43,13 +43,14 @@ public class XpilpropUtils {
             nvarr = new NameValue[xpilprop.size()];
             int i = 0;
             for (String p : xpilprop) {
-                String[] parts=p.split("=");
-                nvarr[i++] = new NameValue(toSharkValue(parts[0]), parts.length==1?"true":parts[1]);
+                String[] parts = p.split("=");
+                nvarr[i++] = new NameValue(toSharkValue(parts[0]), parts.length == 1 ? "true" : parts[1]);
             }
         }
         return nvarr;
     }
-    public static String toSharkValue(String p){
+
+    public static String toSharkValue(String p) {
         try {
             Field f = XPILHandler.class.getField(p);
             return (String) f.get(null);

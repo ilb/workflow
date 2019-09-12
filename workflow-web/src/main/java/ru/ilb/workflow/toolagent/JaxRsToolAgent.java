@@ -31,7 +31,7 @@ import org.enhydra.shark.api.internal.toolagent.ToolAgentGeneralException;
 import org.enhydra.shark.toolagent.AbstractToolAgent;
 
 /**
-
+ *
  */
 public class JaxRsToolAgent extends AbstractToolAgent {
 
@@ -79,7 +79,7 @@ public class JaxRsToolAgent extends AbstractToolAgent {
             interfaceName = ea.getVValue();
             ea = eas.getFirstExtendedAttributeForName(METHOD_NAME_EXT_ATTR_NAME);
             methodName = ea.getVValue();
-            String resourceUrl=(String) new javax.naming.InitialContext().lookup(resourceName);
+            String resourceUrl = (String) new javax.naming.InitialContext().lookup(resourceName);
 
             ClassLoader cl = getClass().getClassLoader();
             Class iface = cl.loadClass(interfaceName);
@@ -88,32 +88,32 @@ public class JaxRsToolAgent extends AbstractToolAgent {
             // Get parameter types - ignore 1. param, these are ext.attribs
             Class[] parameterTypes;
             Object[] parameterValues = null;
-            AppParameter outParam=null;
+            AppParameter outParam = null;
             //if (parameters != null) {
-                int paramsLength = parameters.length;
-                if ("OUT".equals(parameters[paramsLength - 1].the_mode)) {
-                    outParam=parameters[paramsLength - 1];
-                    paramsLength--;
+            int paramsLength = parameters.length;
+            if ("OUT".equals(parameters[paramsLength - 1].the_mode)) {
+                outParam = parameters[paramsLength - 1];
+                paramsLength--;
+            }
+            parameterTypes = new Class[paramsLength - 1];
+            parameterValues = new Object[paramsLength - 1];
+            for (int i = 1; i < paramsLength; i++) {
+                if (parameters[i].the_class.equals(Long.class)) {
+                    parameterTypes[i - 1] = parameters[i].the_class = int.class;
+                    parameterValues[i - 1] = parameters[i].the_value != null ? ((Long) parameters[i].the_value).intValue() : null;
+                } else {
+                    parameterTypes[i - 1] = parameters[i].the_class;
+                    parameterValues[i - 1] = parameters[i].the_value;
                 }
-                parameterTypes = new Class[paramsLength - 1];
-                parameterValues = new Object[paramsLength - 1];
-                for (int i = 1; i < paramsLength; i++) {
-                    if(parameters[i].the_class.equals(Long.class)){
-                        parameterTypes[i - 1] = parameters[i].the_class=int.class;
-                        parameterValues[i - 1] = parameters[i].the_value!=null?((Long)parameters[i].the_value).intValue():null;
-                    }else {
-                        parameterTypes[i - 1] = parameters[i].the_class;
-                        parameterValues[i - 1] = parameters[i].the_value;
-                    }
-                }
+            }
             //}
 
             Method m = resource.getClass().getMethod(methodName, parameterTypes);
 
-            if(outParam==null){
+            if (outParam == null) {
                 m.invoke(resource, parameterValues);
-            }else{
-                outParam.the_value=m.invoke(resource, parameterValues);
+            } else {
+                outParam.the_value = m.invoke(resource, parameterValues);
             }
             status = APP_STATUS_FINISHED;
 
@@ -139,7 +139,7 @@ public class JaxRsToolAgent extends AbstractToolAgent {
                     + "], can't find class definition: " + ncdfe);
             throw new ApplicationNotDefined("Class " + appName + " can't be executed", ncdfe);
         } catch (InvocationTargetException ex) {
-            Throwable extarget=ex.getTargetException();
+            Throwable extarget = ex.getTargetException();
             status = APP_STATUS_INVALID;
             cus.error(shandle, "JavaClassToolAgent - application "
                     + appName + " terminated incorrectly for [process="

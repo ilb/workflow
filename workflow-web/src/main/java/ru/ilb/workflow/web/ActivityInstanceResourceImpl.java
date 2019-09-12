@@ -227,5 +227,4 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
         }
     }
 
-
 }

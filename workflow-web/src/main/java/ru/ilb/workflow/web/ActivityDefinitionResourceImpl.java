@@ -37,9 +37,8 @@ public class ActivityDefinitionResourceImpl implements ActivityDefinitionResourc
         this.sessionHandleSupplier = sessionHandleSupplier;
         this.processDefinitionId = processDefinitionId;
         this.activityDefinitionId = activityDefinitionId;
-        this.processInstanceId  = processInstanceId;
+        this.processInstanceId = processInstanceId;
     }
-
 
     @Override
     @Transactional

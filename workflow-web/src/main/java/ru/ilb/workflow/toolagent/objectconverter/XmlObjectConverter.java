@@ -26,13 +26,14 @@ import org.json.JSONObject;
 import org.json.XML;
 
 public class XmlObjectConverter extends MapObjectConverter {
+
     private final JsonMapObjectReaderWriter jsonreaderwriter = new JsonMapObjectReaderWriter();
 
     @Override
     protected void marshall(Map<String, Object> map, OutputStream os) throws IOException {
         String str = jsonreaderwriter.toJson(new JsonMapObject(map));
         JSONObject json = new JSONObject(str);
-        String xml = XML.toString(json,"root");
+        String xml = XML.toString(json, "root");
         os.write(xml.getBytes());
     }
 

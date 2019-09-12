@@ -53,8 +53,8 @@ public class ProcessInstanceResourceImpl implements ProcessInstanceResource {
     private ProcessInstanceMapper processInstanceMapper;
 
     @Inject
-    private  ApplicationContext applicationContext;
-    
+    private ApplicationContext applicationContext;
+
     @Inject
     private ActivityInstanceMapper activityInstanceMapper;
 
@@ -86,7 +86,7 @@ public class ProcessInstanceResourceImpl implements ProcessInstanceResource {
 
     @Override
     public ProcessDefinitionResource getProcessDefinitionResource() {
-        return resourceContext.initResource(new ProcessDefinitionResourceImpl(sessionHandleSupplier,processInstanceId , null));
+        return resourceContext.initResource(new ProcessDefinitionResourceImpl(sessionHandleSupplier, processInstanceId, null));
     }
 
     @Override
@@ -139,7 +139,7 @@ public class ProcessInstanceResourceImpl implements ProcessInstanceResource {
     public boolean abort(JsonMapObject jsonmapobject) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     @Transactional
     public ActivityInstance goBack(JsonMapObject jsonmapobject) {

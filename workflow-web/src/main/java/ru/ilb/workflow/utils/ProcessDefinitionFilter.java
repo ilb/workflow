@@ -24,30 +24,32 @@ import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.enhydra.shark.api.common.SharkConstants;
 import org.enhydra.shark.api.internal.usergroup.UserGroupManager;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
+
 /**
  *
  * @author chunaev
  */
 @Named
 public class ProcessDefinitionFilter {
+
     public WMProcessDefinition[] filterAccessible(WMProcessDefinition[] processDefinitions, String userName, WMSessionHandle shandle) throws Exception {
 
         List<WMProcessDefinition> permitedProcesses = new ArrayList();
         for (WMProcessDefinition processDefinition : processDefinitions) {
 
-                List<String> resp = XPDLUtils.getResponsibles(shandle, null, processDefinition.getName());
-                if (resp.size() == 0) {
-                    continue;
-                }
-                UserGroupManager ugm = (UserGroupManager) SharkInterfaceWrapper.getShark().getPlugIn(SharkConstants.PLUGIN_USER_GROUP);
-                boolean isResponsible = false;
-                Iterator<String> it = resp.iterator();
-                while (it.hasNext() && !isResponsible) {
-                    isResponsible = ugm.doesUserBelongToGroup(shandle, it.next(), userName);
-                }
-                if (isResponsible) {
-                    permitedProcesses.add(processDefinition);
-                }
+            List<String> resp = XPDLUtils.getResponsibles(shandle, null, processDefinition.getName());
+            if (resp.size() == 0) {
+                continue;
+            }
+            UserGroupManager ugm = (UserGroupManager) SharkInterfaceWrapper.getShark().getPlugIn(SharkConstants.PLUGIN_USER_GROUP);
+            boolean isResponsible = false;
+            Iterator<String> it = resp.iterator();
+            while (it.hasNext() && !isResponsible) {
+                isResponsible = ugm.doesUserBelongToGroup(shandle, it.next(), userName);
+            }
+            if (isResponsible) {
+                permitedProcesses.add(processDefinition);
+            }
 
         }
         return permitedProcesses.toArray(new WMProcessDefinition[permitedProcesses.size()]);

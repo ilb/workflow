@@ -30,6 +30,7 @@ public class Duration {
     public static Date addTo(Date d, String duration) {
         return addTo(d, duration, null, null);
     }
+
     public static Date addTo(Date d, String duration, String hourmin, String hourmax) {
         Calendar c = new GregorianCalendar();
         c.setTime(d);
@@ -38,13 +39,13 @@ public class Duration {
         } catch (DatatypeConfigurationException ex) {
             throw new RuntimeException(ex);
         }
-        Integer hourminInt=hourmin!=null?Integer.parseInt(hourmin):null;
+        Integer hourminInt = hourmin != null ? Integer.parseInt(hourmin) : null;
         if (hourminInt != null && c.get(Calendar.HOUR_OF_DAY) < hourminInt) {
             c.set(Calendar.HOUR_OF_DAY, hourminInt);
             c.set(Calendar.MINUTE, 0);
             c.set(Calendar.SECOND, 0);
         }
-        Integer hourmaxInt=hourmax!=null?Integer.parseInt(hourmax):null;
+        Integer hourmaxInt = hourmax != null ? Integer.parseInt(hourmax) : null;
         if (hourmaxInt != null && c.get(Calendar.HOUR_OF_DAY) > hourmaxInt) {
             c.add(Calendar.DATE, 1);
             c.set(Calendar.HOUR_OF_DAY, hourminInt);
@@ -54,9 +55,11 @@ public class Duration {
         }
         return c.getTime();
     }
+
     public static Timestamp addToTS(Date d, String duration, String hourmin, String hourmax) {
         return new Timestamp(addTo(d, duration, hourmin, hourmax).getTime());
     }
+
     public static GregorianCalendar addToGC(Date d, String duration, String hourmin, String hourmax) {
         GregorianCalendar gc = new GregorianCalendar();
         gc.setTime(addTo(d, duration, hourmin, hourmax));

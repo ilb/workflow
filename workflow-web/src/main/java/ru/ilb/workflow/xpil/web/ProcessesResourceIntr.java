@@ -64,42 +64,42 @@ class ProcessesResourceIntr {
     public void setSearchContext(SearchContext searchContext) {
         this.searchContext = searchContext;
     }
-    
+
     @Resource(mappedName = "jdbc/sharkdb")
     private DataSource ds;
     private JdbcTemplate db;
-    
+
     @Resource(mappedName = "jdbc/sharkdb")
     public void setJT(DataSource datasource) {
         db = new JdbcTemplate(datasource);
     }
-    
-    void changePriorityByMK(String campaignUid, Integer priority){
-        String sql1 = "UPDATE SHKProcesses p " +
-                "JOIN SHKProcessStates ps ON ps.oid=p.State " +
-                "JOIN SHKProcessData sp ON sp.process = p.oid AND sp.variableDefinitionId = 'campaignUid' " +
-                "JOIN SHKProcessDefinitions pdef ON pdef.oid=p.ProcessDefinition " +
-                "SET p.Priority=CASE " +
-                "WHEN sp.VariableValueVCHAR = ? THEN ? " +
-                " END " +
-                "WHERE " +
-                "ps.Name LIKE 'open%' " +
-                "AND pdef.ProcessDefinitionId='outgoingcall' " +
-                "AND sp.VariableValueVCHAR = ?";
-        String sql2 = "UPDATE SHKActivities a " +
-                "JOIN SHKProcesses p ON a.Process=p.oid " +
-                "JOIN SHKProcessData ca ON ca.process = p.oid AND ca.variableDefinitionId = 'callAction' " +
-                "JOIN SHKProcessData sp ON sp.process = p.oid AND sp.variableDefinitionId = 'sessionPriority' " +
-                "JOIN SHKProcessStates ps ON ps.oid=p.State " +
-                "JOIN SHKActivityStates ast ON ast.oid=a.STATE " +
-                "JOIN SHKProcessDefinitions pdef ON pdef.oid=p.ProcessDefinition " +
-                "SET a.Priority=(p.priority * 2 + sp.VariableValueLONG) " +
-                "WHERE " +
-                " (ps.Name LIKE 'open%' ) " +
-                "AND (ast.Name LIKE 'open%' ) " +
-                "AND pdef.ProcessDefinitionId='outgoingcall' " +
-                "AND a.ActivityDefinitionId='outgoingcall_session' " +
-                " AND a.priority != (p.priority * 2 + sp.VariableValueLONG)";
+
+    void changePriorityByMK(String campaignUid, Integer priority) {
+        String sql1 = "UPDATE SHKProcesses p "
+                + "JOIN SHKProcessStates ps ON ps.oid=p.State "
+                + "JOIN SHKProcessData sp ON sp.process = p.oid AND sp.variableDefinitionId = 'campaignUid' "
+                + "JOIN SHKProcessDefinitions pdef ON pdef.oid=p.ProcessDefinition "
+                + "SET p.Priority=CASE "
+                + "WHEN sp.VariableValueVCHAR = ? THEN ? "
+                + " END "
+                + "WHERE "
+                + "ps.Name LIKE 'open%' "
+                + "AND pdef.ProcessDefinitionId='outgoingcall' "
+                + "AND sp.VariableValueVCHAR = ?";
+        String sql2 = "UPDATE SHKActivities a "
+                + "JOIN SHKProcesses p ON a.Process=p.oid "
+                + "JOIN SHKProcessData ca ON ca.process = p.oid AND ca.variableDefinitionId = 'callAction' "
+                + "JOIN SHKProcessData sp ON sp.process = p.oid AND sp.variableDefinitionId = 'sessionPriority' "
+                + "JOIN SHKProcessStates ps ON ps.oid=p.State "
+                + "JOIN SHKActivityStates ast ON ast.oid=a.STATE "
+                + "JOIN SHKProcessDefinitions pdef ON pdef.oid=p.ProcessDefinition "
+                + "SET a.Priority=(p.priority * 2 + sp.VariableValueLONG) "
+                + "WHERE "
+                + " (ps.Name LIKE 'open%' ) "
+                + "AND (ast.Name LIKE 'open%' ) "
+                + "AND pdef.ProcessDefinitionId='outgoingcall' "
+                + "AND a.ActivityDefinitionId='outgoingcall_session' "
+                + " AND a.priority != (p.priority * 2 + sp.VariableValueLONG)";
         int count1 = db.update(sql1, campaignUid, priority, campaignUid);
         int count2 = db.update(sql2);
         logger.info(">>Было обновлено {} процессов(SHKProcesses) и {} активностей (SHKActivities)", count1, count2);
@@ -175,10 +175,10 @@ class ProcessesResourceIntr {
     }
 
     @Transactional
-    WMSessionHandle getSessionHandle(String username,Object vendorSpecificData) throws Exception {
+    WMSessionHandle getSessionHandle(String username, Object vendorSpecificData) throws Exception {
         return SharkInterfaceWrapper.getSessionHandle(username, vendorSpecificData);
     }
-    
+
     @Transactional
     void reevaluateDeadlinesForProcesses(WMSessionHandle shandle, String processId) throws Exception {
         try {
@@ -189,6 +189,7 @@ class ProcessesResourceIntr {
             }
         }
     }
+
     @Transactional
     void reevaluateAssignmentsForProcesses(WMSessionHandle shandle, String processId) throws Exception {
         try {

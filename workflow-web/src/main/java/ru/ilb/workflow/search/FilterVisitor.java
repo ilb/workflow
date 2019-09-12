@@ -83,7 +83,8 @@ public abstract class FilterVisitor<T> extends AbstractSearchConditionVisitor<T,
         }
 
     }
-    protected abstract FilterBuilder getFilterBuilder()  throws Exception;
+
+    protected abstract FilterBuilder getFilterBuilder() throws Exception;
 
     protected abstract WMFilter buildWMFilter(PrimitiveStatement statement) throws Exception;
 

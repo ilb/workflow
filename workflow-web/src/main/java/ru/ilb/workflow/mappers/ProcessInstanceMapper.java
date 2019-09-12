@@ -26,13 +26,13 @@ import ru.ilb.workflow.view.ProcessInstances;
  *
  * @author slavb
  */
-@Mapper(uses={ProcessInstanceStateMapper.class,DateTimeMapper.class})
-public abstract class ProcessInstanceMapper implements GenericMapperDto<WMProcessInstance,ProcessInstance>{
+@Mapper(uses = {ProcessInstanceStateMapper.class, DateTimeMapper.class})
+public abstract class ProcessInstanceMapper implements GenericMapperDto<WMProcessInstance, ProcessInstance> {
 
     @Override
     public abstract ProcessInstance createFromEntity(WMProcessInstance entity);
 
-    public ProcessInstances createWrapperFromEntities(List<WMProcessInstance> entities){
+    public ProcessInstances createWrapperFromEntities(List<WMProcessInstance> entities) {
         return new ProcessInstances().withProcessInstances(createFromEntities(entities));
     }
 

@@ -39,6 +39,6 @@ public class StateConvertor {
         } else if (SharkConstants.STATE_CLOSED_ABORTED.equals(value)) {
             return "Отменен";
         }
-    return null;
+        return null;
     }
 }

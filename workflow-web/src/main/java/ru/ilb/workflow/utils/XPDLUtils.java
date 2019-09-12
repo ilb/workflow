@@ -117,14 +117,14 @@ public class XPDLUtils {
      */
     public static List<String> getResponsibles(WMSessionHandle shandle, String processId, String uniqueDefId) throws Exception {
         WorkflowProcess workflowProcess = getWorkflowProcess(shandle, processId, uniqueDefId);
- List resps = XMLUtil.getResponsibles(workflowProcess);
-         Iterator it = resps.iterator();
-         List<String> responsibles = new ArrayList<>();
-         while (it.hasNext()) {
+        List resps = XMLUtil.getResponsibles(workflowProcess);
+        Iterator it = resps.iterator();
+        List<String> responsibles = new ArrayList<>();
+        while (it.hasNext()) {
             Responsible resp = (Responsible) it.next();
             responsibles.add(resp.toValue());
-         }
-         return responsibles;
+        }
+        return responsibles;
     }
 
     /**
@@ -203,44 +203,44 @@ public class XPDLUtils {
         return result;
     }
 
- public static String getEAValue(WMSessionHandle shandle, String eaName, String procDefId, String procId, String actId, String defaultValue) {
-      try {
-         String cval = null;
+    public static String getEAValue(WMSessionHandle shandle, String eaName, String procDefId, String procId, String actId, String defaultValue) {
+        try {
+            String cval = null;
 
-         AdminMisc am = SharkInterfaceWrapper.getShark().getAdminMisc();
+            AdminMisc am = SharkInterfaceWrapper.getShark().getAdminMisc();
 
-         String pkgId = null;
-         String pkgVer = null;
-         if (null != actId && !actId.equals("")) {
-            WMEntity actInfo = am.getActivityDefinitionInfo(shandle, procId, actId);
-            pkgId = actInfo.getPkgId();
-            pkgVer = actInfo.getPkgVer();
-            cval = WMEntityUtilities.findEAAndGetValue(shandle, SharkInterfaceWrapper.getShark().getXPDLBrowser(), actInfo, eaName);
-         }
-         if (cval == null || cval.trim().equals("")) {
-            WMEntity procInfo = null;
-            if (procId != null) {
-               procInfo = am.getProcessDefinitionInfo(shandle, procId);
-            } else {
-               procInfo = am.getProcessDefinitionInfoByUniqueProcessDefinitionName(shandle, procDefId);
+            String pkgId = null;
+            String pkgVer = null;
+            if (null != actId && !actId.equals("")) {
+                WMEntity actInfo = am.getActivityDefinitionInfo(shandle, procId, actId);
+                pkgId = actInfo.getPkgId();
+                pkgVer = actInfo.getPkgVer();
+                cval = WMEntityUtilities.findEAAndGetValue(shandle, SharkInterfaceWrapper.getShark().getXPDLBrowser(), actInfo, eaName);
             }
-            pkgId = procInfo.getPkgId();
-            pkgVer = procInfo.getPkgVer();
-            cval = WMEntityUtilities.findEAAndGetValue(shandle, SharkInterfaceWrapper.getShark().getXPDLBrowser(), procInfo, eaName);
+            if (cval == null || cval.trim().equals("")) {
+                WMEntity procInfo = null;
+                if (procId != null) {
+                    procInfo = am.getProcessDefinitionInfo(shandle, procId);
+                } else {
+                    procInfo = am.getProcessDefinitionInfoByUniqueProcessDefinitionName(shandle, procDefId);
+                }
+                pkgId = procInfo.getPkgId();
+                pkgVer = procInfo.getPkgVer();
+                cval = WMEntityUtilities.findEAAndGetValue(shandle, SharkInterfaceWrapper.getShark().getXPDLBrowser(), procInfo, eaName);
 
-         }
-         if (cval == null || cval.trim().equals("")) {
-            WMEntity pkgInfo = SharkInterfaceWrapper.getShark().getPackageAdministration().getPackageEntity(shandle, pkgId, pkgVer);
-            cval = WMEntityUtilities.findEAAndGetValue(shandle, SharkInterfaceWrapper.getShark().getXPDLBrowser(), pkgInfo, eaName);
-         }
-         if (cval != null && !cval.trim().equals("")) {
-            return cval;
-         }
-      } catch (Exception ex) {
-         throw new RuntimeException(ex);
-      }
-      return defaultValue;
-   }
+            }
+            if (cval == null || cval.trim().equals("")) {
+                WMEntity pkgInfo = SharkInterfaceWrapper.getShark().getPackageAdministration().getPackageEntity(shandle, pkgId, pkgVer);
+                cval = WMEntityUtilities.findEAAndGetValue(shandle, SharkInterfaceWrapper.getShark().getXPDLBrowser(), pkgInfo, eaName);
+            }
+            if (cval != null && !cval.trim().equals("")) {
+                return cval;
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return defaultValue;
+    }
 //
 //    static class DataField {
 //

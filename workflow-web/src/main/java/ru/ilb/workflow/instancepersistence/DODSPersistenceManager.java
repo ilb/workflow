@@ -30,47 +30,47 @@ import org.enhydra.shark.instancepersistence.dodsselective.DODSSelectivePersiste
  *
  * @author slavb
  */
-public class DODSPersistenceManager extends DODSSelectivePersistenceManager{
+public class DODSPersistenceManager extends DODSSelectivePersistenceManager {
 
     @Override
-   public List getAllIdsForProcessesWithExpiriedDeadlines(WMSessionHandle shandle, long timeLimitBoundary) throws PersistenceException {
-      long tStamp = cus.methodStart(shandle, "DODSPersistentManager.getAllIdsForProcessesWithExpiriedDeadlines()");
-      initActivityAndProcessStatesTable();
-      try {
-         List ret = new ArrayList();
+    public List getAllIdsForProcessesWithExpiriedDeadlines(WMSessionHandle shandle, long timeLimitBoundary) throws PersistenceException {
+        long tStamp = cus.methodStart(shandle, "DODSPersistentManager.getAllIdsForProcessesWithExpiriedDeadlines()");
+        initActivityAndProcessStatesTable();
+        try {
+            List ret = new ArrayList();
 
-         BigDecimal procOpenRunningState = (BigDecimal) _prStates.get("open.running");
-         BigDecimal actNotStartedState = (BigDecimal) _acStates.get("open.not_running.not_started");
-         BigDecimal actRunningState = (BigDecimal) _acStates.get("open.running");
-         String oidCol = CoreDO.get_OIdColumnName();
-         String sqlWherePS = "SHKProcesses.State=" + procOpenRunningState;
-         String sqlWhereDL = "SHKProcesses."
-                             + oidCol + " IN (SELECT SHKDeadlines.Process FROM SHKDeadlines "
-                             + " JOIN SHKActivities on SHKActivities."+oidCol+"=SHKDeadlines.Activity"
-                             + " WHERE SHKDeadlines.TimeLimit < " + timeLimitBoundary
-                             + " AND (SHKActivities.State=" + actNotStartedState + " OR SHKActivities.State=" + actRunningState + "))";
-         ProcessDO[] DOs = null;
-         ProcessQuery query = null;
-         query = new ProcessQuery();
-         QueryBuilder qb = query.getQueryBuilder();
-         qb.addWhere(sqlWherePS);
-         qb.addWhere(sqlWhereDL);
-         DOs = query.getDOArray();
-         if (DOs != null) {
-            for (int i = 0; i < DOs.length; i++) {
-               ret.add(DOs[i].getId());
+            BigDecimal procOpenRunningState = (BigDecimal) _prStates.get("open.running");
+            BigDecimal actNotStartedState = (BigDecimal) _acStates.get("open.not_running.not_started");
+            BigDecimal actRunningState = (BigDecimal) _acStates.get("open.running");
+            String oidCol = CoreDO.get_OIdColumnName();
+            String sqlWherePS = "SHKProcesses.State=" + procOpenRunningState;
+            String sqlWhereDL = "SHKProcesses."
+                    + oidCol + " IN (SELECT SHKDeadlines.Process FROM SHKDeadlines "
+                    + " JOIN SHKActivities on SHKActivities." + oidCol + "=SHKDeadlines.Activity"
+                    + " WHERE SHKDeadlines.TimeLimit < " + timeLimitBoundary
+                    + " AND (SHKActivities.State=" + actNotStartedState + " OR SHKActivities.State=" + actRunningState + "))";
+            ProcessDO[] DOs = null;
+            ProcessQuery query = null;
+            query = new ProcessQuery();
+            QueryBuilder qb = query.getQueryBuilder();
+            qb.addWhere(sqlWherePS);
+            qb.addWhere(sqlWhereDL);
+            DOs = query.getDOArray();
+            if (DOs != null) {
+                for (int i = 0; i < DOs.length; i++) {
+                    ret.add(DOs[i].getId());
+                }
             }
-         }
-         return ret;
-      } catch (Throwable t) {
-         throw new PersistenceException(t);
-      } finally {
-         cus.methodEnd(shandle,
-                       tStamp,
-                       "DODSPersistentManager.getAllIdsForProcessesWithExpiriedDeadlines()",
-                       "[timeLimitBoundary=" + timeLimitBoundary + "]",
-                       "TimeProfiler-InstancePersistence");
-      }
-   }    
-    
+            return ret;
+        } catch (Throwable t) {
+            throw new PersistenceException(t);
+        } finally {
+            cus.methodEnd(shandle,
+                    tStamp,
+                    "DODSPersistentManager.getAllIdsForProcessesWithExpiriedDeadlines()",
+                    "[timeLimitBoundary=" + timeLimitBoundary + "]",
+                    "TimeProfiler-InstancePersistence");
+        }
+    }
+
 }

@@ -86,7 +86,7 @@ public class XPILUtils {
 
             String[][] extAttribs = WMEntityUtilities.getExtAttribNVPairs(shandle,
                     SharkInterfaceWrapper.getShark()
-                    .getXPDLBrowser(),
+                            .getXPDLBrowser(),
                     actEnt);
 
             filterActivityVariables(mai.getDataInstances(), extAttribs, isDynamicVariableHandling, ignoreReadOnlyVars);
@@ -231,11 +231,11 @@ public class XPILUtils {
                     if (stradisa[i].getId()
                             .equals(SharkParamConsts.DYNAMIC_VARIABLE_IDS_VARIABLE)
                             || stradisa[i].getId()
-                            .equals(SharkParamConsts.DYNAMIC_VARIABLE_NAMES_VARIABLE)
+                                    .equals(SharkParamConsts.DYNAMIC_VARIABLE_NAMES_VARIABLE)
                             || stradisa[i].getId()
-                            .equals(SharkParamConsts.DYNAMIC_VARIABLE_MANDATORIES_VARIABLE)
+                                    .equals(SharkParamConsts.DYNAMIC_VARIABLE_MANDATORIES_VARIABLE)
                             || stradisa[i].getId()
-                            .equals(SharkParamConsts.DYNAMIC_VARIABLE_MAX_LENGTHS_VARIABLE)) {
+                                    .equals(SharkParamConsts.DYNAMIC_VARIABLE_MAX_LENGTHS_VARIABLE)) {
                         StringValue[] sva = stradisa[i].getStringValue1Array();
                         if (sva != null) {
                             sa = new String[sva.length];
@@ -284,9 +284,9 @@ public class XPILUtils {
                         fetchVarId = variableId.substring(indOfSC + 1);
                         variableId = variableId.substring(0, indOfSC);
                         int indOfFK = fetchVarId.indexOf(";");
-                        if(indOfFK>0){
-                            fetchVarKeys=fetchVarId.substring(indOfFK + 1);
-                            fetchVarId=fetchVarId.substring(0,indOfFK);
+                        if (indOfFK > 0) {
+                            fetchVarKeys = fetchVarId.substring(indOfFK + 1);
+                            fetchVarId = fetchVarId.substring(0, indOfFK);
                         }
                     }
                     if (xpilDis.containsKey(variableId)) {
@@ -318,7 +318,7 @@ public class XPILUtils {
                                 fetchiea.setValue("-1");
                                 fillInXPILDataInstance(ins, fetchdi);
                             }
-                            if(fetchVarKeys!=null && xpilDis.containsKey(fetchVarKeys)){
+                            if (fetchVarKeys != null && xpilDis.containsKey(fetchVarKeys)) {
                                 iea = ieas.addNewInstanceExtendedAttribute();
                                 iea.setName("fetch_marker_keys");
                                 iea.setValue(fetchVarKeys);
@@ -520,6 +520,5 @@ public class XPILUtils {
         }
 
     }
-
 
 }

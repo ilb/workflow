@@ -44,7 +44,7 @@ public class OrgTreeAssignmentManager extends HistoryRelatedAssignmentManager {
         try {
             defaultAssignments = super.getDefaultAssignments(shandle, procId, actId, processRequesterId, xpdlParticipant, xpdlResponsibleParticipants);
         } catch (Exception ex) {
-            cus.error(null, "getDefaultAssignments failed, using empty list procId="+procId+" actId="+actId+" xpdlParticipant="+xpdlParticipant.participantIdOrExpression, ex);
+            cus.error(null, "getDefaultAssignments failed, using empty list procId=" + procId + " actId=" + actId + " xpdlParticipant=" + xpdlParticipant.participantIdOrExpression, ex);
             defaultAssignments = new ArrayList();
         }
         WMAttribute orgunitId = wapi.getProcessInstanceAttributeValue(shandle, procId, orgunitIdVariable);

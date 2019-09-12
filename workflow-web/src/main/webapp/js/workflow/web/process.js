@@ -37,8 +37,12 @@
     function migrateProcessBtnOnClick(event) {
         processResource.migrateProcess(processId)
                 .then(workflow_lib_Common.checkStatus)
-                .then(function(response){return response.text();})
-                .then(function(responseText){ alert(responseText)})
+                .then(function (response) {
+                    return response.text();
+                })
+                .then(function (responseText) {
+                    alert(responseText)
+                })
                 .catch(workflow_lib_Common.errorHandler);
     }
     function checkProceessDeadlinesBtnOnClick(event) {

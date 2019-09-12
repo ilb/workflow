@@ -36,14 +36,13 @@ public class JsonMapObjectConverter extends MapObjectConverter {
 
     private final JsonMapObjectReaderWriter jsonreaderwriter = new JsonMapObjectReaderWriter();
 
-
     @Override
     protected void marshall(Map<String, Object> map, OutputStream os) {
         jsonreaderwriter.toJson(new JsonMapObject(map), os);
     }
 
     @Override
-    protected Map<String, Object> unmarshall(InputStream is)  throws IOException{
+    protected Map<String, Object> unmarshall(InputStream is) throws IOException {
         return jsonreaderwriter.fromJsonToJsonObject(is).asMap();
     }
 

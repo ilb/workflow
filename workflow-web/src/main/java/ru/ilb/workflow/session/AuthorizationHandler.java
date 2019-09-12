@@ -26,16 +26,16 @@ import static org.apache.commons.codec.digest.DigestUtils.sha1Hex;
 import org.apache.cxf.interceptor.security.AccessDeniedException;
 import org.slf4j.LoggerFactory;
 
-
 /**
  *
  * @author slavb
  */
 @Provider
 public class AuthorizationHandler implements ContainerRequestFilter {
+
     @Resource(mappedName = "autorizationKeySalt")
-    private String autorizationKeySalt;        
-    
+    private String autorizationKeySalt;
+
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(AuthorizationHandler.class);
 
     private static final ThreadLocal authorisedUser = new ThreadLocal();
@@ -55,8 +55,7 @@ public class AuthorizationHandler implements ContainerRequestFilter {
             if ("http".equals(xforwardedproto)) {
                 if (queryParams.getFirst("x-remote-user-key") == null) {
                     throw new AccessDeniedException("Access denied! x-remote-user not allowed without x-remote-user-key");
-                }
-                else {
+                } else {
                     String calcKey = sha1Hex(xremoteUserName + autorizationKeySalt);
                     String remoteKey = queryParams.getFirst("x-remote-user-key");
                     if (!remoteKey.equals(calcKey)) {

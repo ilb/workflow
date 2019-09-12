@@ -30,14 +30,14 @@ import ru.ilb.workflow.view.ProcessInstanceState;
  * @author slavb
  */
 @Mapper
-public abstract class ProcessInstanceStateMapper implements GenericMapperDto<WMProcessInstanceState,ProcessInstanceState>{
+public abstract class ProcessInstanceStateMapper implements GenericMapperDto<WMProcessInstanceState, ProcessInstanceState> {
 
     @Inject
     StateConvertor stateConvertor;
-    
+
     @Override
     @Mapping(target = "code",
-         expression = "java( ru.ilb.workflow.core.StateCode.fromValue(entity.stringValue()) )")
+            expression = "java( ru.ilb.workflow.core.StateCode.fromValue(entity.stringValue()) )")
     public abstract ProcessInstanceState createFromEntity(WMProcessInstanceState entity);
 
     @AfterMapping

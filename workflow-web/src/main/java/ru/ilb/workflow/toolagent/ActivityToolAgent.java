@@ -45,7 +45,7 @@ import ru.ilb.workflow.utils.WAPIUtils;
  */
 public class ActivityToolAgent extends AbstractToolAgent {
 
-    public static WMFilter getActivityFilter(WMSessionHandle shandle, String filter,String username) throws Exception {
+    public static WMFilter getActivityFilter(WMSessionHandle shandle, String filter, String username) throws Exception {
         WMFilter wmfilter;
         FiqlParser fiqlParser = new FiqlParser<>(SearchBean.class);
         SearchCondition<SearchBean> sc = fiqlParser.parse(filter);
@@ -54,7 +54,8 @@ public class ActivityToolAgent extends AbstractToolAgent {
         wmfilter = visitor.getQuery();
         return wmfilter;
     }
-    public static WMActivityInstance[] getActivityList(WMSessionHandle shandle, String filter,String username) throws Exception {
+
+    public static WMActivityInstance[] getActivityList(WMSessionHandle shandle, String filter, String username) throws Exception {
         WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
         WMFilter wmfilter = getActivityFilter(shandle, filter, username);
         WMActivityInstance[] acts = wapi.listActivityInstances(shandle, wmfilter, false).getArray();
@@ -108,14 +109,14 @@ public class ActivityToolAgent extends AbstractToolAgent {
         try {
             status = APP_STATUS_RUNNING;
             String setState = (String) AppParameterUtilities.getParameterByName(this.parameters, "setState").the_value;
-            AppParameter filter=AppParameterUtilities.getParameterByName(this.parameters, "filter");
+            AppParameter filter = AppParameterUtilities.getParameterByName(this.parameters, "filter");
             WMActivityInstance[] acts;
-            if(filter==null) {
+            if (filter == null) {
                 String state = (String) AppParameterUtilities.getParameterByName(this.parameters, "state").the_value;
                 String[] definitionIdList = (String[]) AppParameterUtilities.getParameterByName(this.parameters, "definitionId").the_value;
                 acts = getActivityList(shandle, procInstId, definitionIdList, state);
-            }else {
-                acts = getActivityList(shandle,(String)filter.the_value, null);
+            } else {
+                acts = getActivityList(shandle, (String) filter.the_value, null);
             }
 
             for (WMActivityInstance act : acts) {

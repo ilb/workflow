@@ -31,15 +31,16 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Path("heartbeat")
 public class Heartbeat {
+
     @Resource(mappedName = "jdbc/sharkdb")
     private DataSource ds;
-    
+
     @GET
     @Transactional
     public String heartbeat() {
         try (Connection connection = ds.getConnection()) {
         } catch (SQLException ex) {
-                throw new RuntimeException(ex);
+            throw new RuntimeException(ex);
         }
         return "OK";
     }

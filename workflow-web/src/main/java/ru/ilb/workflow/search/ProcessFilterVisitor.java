@@ -72,7 +72,7 @@ public class ProcessFilterVisitor<T> extends FilterVisitor<T> {
                 }
                 break;
             case "activeActivitiesCount":
-                long actCnt=Long.valueOf(varValue);
+                long actCnt = Long.valueOf(varValue);
                 switch (statement.getCondition()) {
                     case EQUALS:
                     case NOT_EQUALS:

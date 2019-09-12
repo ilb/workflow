@@ -32,27 +32,32 @@ public abstract class MapObjectConverter implements ObjectConverter {
 
     /**
      * Сериализация данных в выходной поток
+     *
      * @param map
      * @param os
      * @throws java.io.IOException
      */
     protected abstract void marshall(Map<String, Object> map, OutputStream os) throws IOException;
+
     /**
      * Десериализация входных данных из потока
+     *
      * @param is
      * @return
      * @throws IOException
      */
     protected abstract Map<String, Object> unmarshall(InputStream is) throws IOException;
+
     /**
      * Десериализация входных данных из строки
+     *
      * @param s
      * @return
      */
     protected abstract Map<String, Object> unmarshall(String s);
 
     @Override
-    public void marshall(AppParameter[] parameters, OutputStream os)  throws IOException {
+    public void marshall(AppParameter[] parameters, OutputStream os) throws IOException {
         Map<String, Object> map = parametersMap(parameters);
         marshall(map, os);
     }
@@ -97,7 +102,7 @@ public abstract class MapObjectConverter implements ObjectConverter {
      * @param jmo
      */
     private void mapToParameters(AppParameter[] parameters, Map<String, Object> jmo) {
-        
+
         if (parameters != null) {
             // ignore 1. param, this is ext. attribs.
             for (int i = 1; i < parameters.length; i++) {

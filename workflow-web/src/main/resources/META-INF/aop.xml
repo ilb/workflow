@@ -7,5 +7,5 @@
     <weaver options="-XnoInline -Xreweavable -verbose -showWeaveInfo">
         <include within="ru.ilb..*" />
     </weaver>
-    
+
 </aspectj>

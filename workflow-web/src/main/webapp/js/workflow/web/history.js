@@ -17,7 +17,7 @@
 (function () {
     var headTime = document.getElementById("headTime");
     if (headTime != null) {
-        headTime.addEventListener('click', function(e){
+        headTime.addEventListener('click', function (e) {
             var order = window.location.search;
             if (order == '?order=ascending') {
                 window.location.search = '?order=descending'

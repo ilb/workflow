@@ -132,7 +132,7 @@ public class ProcessInstancesResourceImpl extends JaxRsContextResource implement
                 filters.add(fb.addHasAssignmentForUser(shandle, sessionDataProvider.getSessionData().getAuthorisedUser(), WAPIUtils.acceptedStatus(assignment.value())));
             }
             WMFilter filter = fb.andForArray(shandle, filters.toArray(new WMFilter[filters.size()]));
-            if (limit!=null) {
+            if (limit != null) {
                 fb.setLimit(shandle, filter, limit);
             }
             WMActivityInstance[] entities = wapi.listActivityInstances(shandle, filter, false).getArray();

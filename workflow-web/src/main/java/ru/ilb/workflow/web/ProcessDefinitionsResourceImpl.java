@@ -45,7 +45,7 @@ public class ProcessDefinitionsResourceImpl extends JaxRsContextResource impleme
     private ProcessDefinitionMapper processDefinitionMapper;
 
     @Inject
-    private  ApplicationContext applicationContext;
+    private ApplicationContext applicationContext;
 
     @Override
     public ProcessDefinitionResource getProcessDefinitionResource(String x_remote_user, String processDefinitionId) {

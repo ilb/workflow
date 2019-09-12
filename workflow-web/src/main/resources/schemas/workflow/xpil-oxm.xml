@@ -1,14 +1,16 @@
 <?xml version="1.0"?>
-<xml-bindings xmlns="http://www.eclipse.org/eclipselink/xsds/persistence/oxm"
+<xml-bindings
+    xmlns="http://www.eclipse.org/eclipselink/xsds/persistence/oxm"
     package-name="at.together._2006.xpil1"
     xml-accessor-type="FIELD">
+
     <java-types>
         <java-type name="WorkflowProcessInstance">
             <xml-class-extractor class="ru.ilb.workflow.jaxb.WorkflowProcessClassExtractor"/>
         </java-type>
         <java-type name="DataInstance" xml-discriminator-node="@type">
             <!--<xml-class-extractor class="ru.ilb.workflow.jaxb.DataInstanceClassExtractor"/>-->
-        </java-type>        
+        </java-type>
         <java-type name="StringDataInstance" xml-discriminator-value="String"/>
         <java-type name="StringArrayDataInstance" xml-discriminator-value="StringArray"/>
         <java-type name="BooleanDataInstance" xml-discriminator-value="Boolean"/>
@@ -19,15 +21,16 @@
         <java-type name="DateTimeArrayDataInstance" xml-discriminator-value="DateTimeArray"/>
         <java-type name="TimeDataInstance" xml-discriminator-value="Time"/>
         <java-type name="TimeArrayDataInstance" xml-discriminator-value="TimeArray"/>
-        
+
         <java-type name="LongDataInstance" xml-discriminator-value="Long"/>
         <java-type name="LongArrayDataInstance" xml-discriminator-value="LongArray"/>
         <java-type name="DoubleDataInstance" xml-discriminator-value="Double"/>
         <java-type name="DoubleArrayDataInstance" xml-discriminator-value="DoubleArray"/>
-        
+
         <java-type name="ByteArrayDataInstance" xml-discriminator-value="ByteArray"/>
         <java-type name="SchemaDataInstance" xml-discriminator-value="Schema"/>
         <java-type name="ComplexDataInstance" xml-discriminator-value="Complex"/>
         <java-type name="AnyDataInstance" xml-discriminator-value="Any"/>
     </java-types>
+
 </xml-bindings>

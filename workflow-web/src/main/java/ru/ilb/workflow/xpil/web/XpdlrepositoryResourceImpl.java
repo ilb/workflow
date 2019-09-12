@@ -52,7 +52,8 @@ public class XpdlrepositoryResourceImpl implements XpdlrepositoryResource {
     private UriInfo uriInfo;
     private HttpServletRequest httpServletRequest;
 
-    @Autowired AsyncTaskManager asyncTaskManager;
+    @Autowired
+    AsyncTaskManager asyncTaskManager;
 
     @Context
     public void setUriInfo(UriInfo uriInfo) {
@@ -107,7 +108,7 @@ public class XpdlrepositoryResourceImpl implements XpdlrepositoryResource {
                     ut.commit();
                 } else {
                     try {
-                        
+
                         if (MigrationUtils.updatePackage(ut, shandle, pkgId, filePath, true)) {
                             if (migrate) {
                                 MigrationUtils.migratePackage(ut, shandle, pkgId);
@@ -124,6 +125,5 @@ public class XpdlrepositoryResourceImpl implements XpdlrepositoryResource {
             DBUtils.rollback(ut);
         }
     }
-
 
 }

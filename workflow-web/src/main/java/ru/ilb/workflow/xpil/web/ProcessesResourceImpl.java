@@ -129,19 +129,19 @@ public class ProcessesResourceImpl implements ProcessesResource {
     private MessageContext messageContext;
 
     private SearchContext searchContext;
-    
+
     private Map<String, Integer> activityStates;
-    
+
     private JdbcTemplate db;
-    
+
     @Resource(mappedName = "jdbc/sharkdb")
     public void setJT(DataSource datasource) {
         db = new JdbcTemplate(datasource);
     }
-    
+
     @Resource(name = "collectionProxy")
     private CollectcasesResource collectionProxy;
-    
+
     @Resource(mappedName = "xpdlRepository")
     private String xpdlRepository;
 
@@ -202,7 +202,6 @@ public class ProcessesResourceImpl implements ProcessesResource {
         }
 
     }
-
 
     private WMFilter getWorkListFilter(WMSessionHandle shandle, String filter) throws Exception {
         if ("plain".equals(filter)) {
@@ -348,8 +347,6 @@ public class ProcessesResourceImpl implements ProcessesResource {
         }
     }
 
-
-    
     private String constructPlainProcessFilter(String filter) {
         if ("plain".equals(filter)) {
             filter = "";
@@ -391,6 +388,7 @@ public class ProcessesResourceImpl implements ProcessesResource {
         }
 
     }
+
     @Transactional
     @Override
     public String deleteProcessInstanceList(String filter) {
@@ -408,7 +406,6 @@ public class ProcessesResourceImpl implements ProcessesResource {
             throw new RuntimeException(ex);
         }
     }
-    
 
     @Override
     @Transactional
@@ -754,13 +751,13 @@ public class ProcessesResourceImpl implements ProcessesResource {
                 value[value.length - 1] = comment;
             }
             wapi.assignProcessInstanceAttribute(shandle, processId, "comments", value);
-            
+
             WMProcessInstance proc = wapi.getProcessInstance(shandle, processId);
             WMProcessDefinition pdef = wapi.getProcessDefinition(shandle, proc.getProcessFactoryName());
             if ("collection_activity".equals(pdef.getId())) {
                 WMAttribute clientUUIDAttr = wapi.getProcessInstanceAttributeValue(shandle, processId, "clientUUID");
                 String clientUUID = clientUUIDAttr.getValue() != null ? ((String[]) clientUUIDAttr.getValue())[0] : null;
-                logger.info("setLastActivityCommentDate processId = "+ processId + " UID = " + clientUUID);
+                logger.info("setLastActivityCommentDate processId = " + processId + " UID = " + clientUUID);
                 collectionProxy.setLastActivityCommentDate(UUID.fromString(clientUUID), (new Date()));
             }
         } catch (Exception ex) {
@@ -899,7 +896,7 @@ public class ProcessesResourceImpl implements ProcessesResource {
                     wapi.changeWorkItemState(shandle, processId, wiList[0].getId(), WMWorkItemState.OPEN_RUNNING);
                     SharkInterfaceWrapper.getShark().getExecutionAdministration().reevaluateDeadlinesForProcesses(shandle, new String[]{processId});
                 } else if (!wi.getState().equals(WMWorkItemState.OPEN_RUNNING)) {
-                    throw new WebApplicationException("Некорретное состояние активности "+wi.getState().stringValue(), 450);
+                    throw new WebApplicationException("Некорретное состояние активности " + wi.getState().stringValue(), 450);
                 }
             } else {
                 throw new WebApplicationException("Нет доступа к процессу", 453);
@@ -909,8 +906,6 @@ public class ProcessesResourceImpl implements ProcessesResource {
             throw new RuntimeException(ex);
         }
     }
-
-  
 
     @Transactional
     @Override
@@ -1008,6 +1003,7 @@ public class ProcessesResourceImpl implements ProcessesResource {
             throw new RuntimeException(ex);
         }
     }
+
     @Override
     @Transactional
     public void setProcessLimit(String processId, LocalDateTime limit) {

@@ -73,11 +73,11 @@ public class CollectionEventAuditListener implements EventAuditListener {
                             Date EVENT_start = new Date(((Date) eventStartAttr.getValue()).getTime());
                             logger.info("new process EVENT_start = " + EVENT_start);
                             collectionProxy.setNextActivityDate(UUID.fromString(clientUUID), (Date) EVENT_start, Boolean.FALSE);
-                            logger.info("setLastActivityCommentDate processId = "+ processId + " UID = " + clientUUID);
+                            logger.info("setLastActivityCommentDate processId = " + processId + " UID = " + clientUUID);
                             collectionProxy.setLastActivityCommentDate(UUID.fromString(clientUUID), (new Date()));
                         }
                     }
-                    if ( ("closed.completed".equals(se.getNewState()) || "closed.terminated".equals(se.getNewState())) && clientUUID != null) {
+                    if (("closed.completed".equals(se.getNewState()) || "closed.terminated".equals(se.getNewState())) && clientUUID != null) {
                         //WMProcessInstance proc = wapi.getProcessInstance(shandle, processId);
                         //завершение процесса
                         if ("closed.completed".equals(se.getNewState())) {

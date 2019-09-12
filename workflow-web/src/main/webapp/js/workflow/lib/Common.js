@@ -26,7 +26,7 @@ var workflow_lib_Common = (function () {
             if (response.status >= 200 && response.status < 300) {
                 return response;
             } else {
-                var error = new Error(response.status+": "+  response.statusText + " url: "+response.url);
+                var error = new Error(response.status + ": " + response.statusText + " url: " + response.url);
                 error.response = response;
                 throw error;
             }
@@ -35,10 +35,10 @@ var workflow_lib_Common = (function () {
         reloadWindow: function (response) {
             window.location.reload();
         },
-        responseText: function(response){
+        responseText: function (response) {
             return response.text();
         },
-        responseJson: function(response){
+        responseJson: function (response) {
             return response.json();
         }
     };

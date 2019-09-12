@@ -31,7 +31,7 @@
     <!-- Ok this is where all the jobs are created: -->
 
     <schedule>
-<!--        <job>
+        <!--        <job>
             <name>CheckDeadlines</name>
             <group>System</group>
             <job-class>ru.ilb.workflow.job.CheckDeadlines</job-class>

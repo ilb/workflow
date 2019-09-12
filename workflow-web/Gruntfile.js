@@ -12,5 +12,5 @@ module.exports = function (grunt) {
     });
 
     grunt.loadNpmTasks('grunt-smush-components');
-    grunt.registerTask('default', [ 'smush-components' ]);
+    grunt.registerTask('default', ['smush-components']);
 };

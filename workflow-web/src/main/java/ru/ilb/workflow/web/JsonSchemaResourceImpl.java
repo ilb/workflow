@@ -60,9 +60,9 @@ public class JsonSchemaResourceImpl implements JsonSchemaResource {
         SharkConnection sc = Shark.getInstance().getSharkConnection();
         sc.attachToHandle(shandle);
 
-        JsonSchema jsonSchema = getJsonSchemaProcess(shandle,sc, processInstanceId);
+        JsonSchema jsonSchema = getJsonSchemaProcess(shandle, sc, processInstanceId);
         if (activityInstanceId != null) {
-            WfActivity activityInstance = sc.getActivity(processInstanceId,activityInstanceId);
+            WfActivity activityInstance = sc.getActivity(processInstanceId, activityInstanceId);
             jsonSchema.setTitle(activityInstance.name());
             jsonSchema.setDescription(activityInstance.description());
             filterActivityVariables(shandle, jsonSchema, processInstanceId, activityInstanceId);
@@ -87,7 +87,6 @@ public class JsonSchemaResourceImpl implements JsonSchemaResource {
 
         WorkflowProcess workflowProcess = XPDLUtils.getWorkflowProcess(shandle, processInstanceId, null);
         Map<String, String> dataFields = XPDLUtils.getDataFields(workflowProcess);
-
 
         WfProcess processInstance = sc.getProcess(processInstanceId);
 

@@ -37,14 +37,14 @@
     <context:spring-configured/>
 
     <cache:annotation-driven />
-    
+
     <!-- task execution -->
     <task:annotation-driven executor="taskExecutor" scheduler="taskScheduler"/>
     <task:executor id="taskExecutor" pool-size="5"/>
     <task:scheduler id="taskScheduler" pool-size="5"/>
 
     <bean id="storeFactory" class="ru.ilb.filedossier.store.StoreFactory">
-         <constructor-arg index="0" value="${ru.bystrobank.apps.workflow.processfilesbase}"/>
+        <constructor-arg index="0" value="${ru.bystrobank.apps.workflow.processfilesbase}"/>
     </bean>
 
     <bean id="checkDeadlines" class="ru.ilb.workflow.job.CheckDeadlines"/>
@@ -55,7 +55,7 @@
     </task:scheduled-tasks>
 
     <bean id="asyncTaskManager" class="ru.ilb.common.jaxrs.async.AsyncTaskManager" destroy-method="destroy"/>
-<!--    <bean id="cacheBuilder" class="com.google.common.cache.CacheBuilder" factory-method="from">
+    <!--    <bean id="cacheBuilder" class="com.google.common.cache.CacheBuilder" factory-method="from">
         <constructor-arg value="maximumSize=500, expireAfterAccess=60s, expireAfterWrite=60s" />
     </bean>
     <bean id="cacheManager" class="org.springframework.cache.guava.GuavaCacheManager">
@@ -126,12 +126,12 @@
     <bean id="jsonMapProvider" class="org.apache.cxf.jaxrs.provider.json.JsonMapObjectProvider">
     </bean>
 
-<!--    <bean id="jsonProvider" class="ru.ilb.common.jaxrs.json.MOXyJsonProvider">
+    <!--    <bean id="jsonProvider" class="ru.ilb.common.jaxrs.json.MOXyJsonProvider">
         <property name="formattedOutput" value="true"/>
         <property name="includeRoot" value="false"/>
     </bean>-->
     <bean id="moxyJsonProvider" class="ru.ilb.common.jaxrs.json.MOXyJsonProvider">
-<!--        <property name="namespacePrefixMapper" ref="namespaceMap"/>
+        <!--        <property name="namespacePrefixMapper" ref="namespaceMap"/>
         <property name="namespaceSeparator" value=":"/>-->
         <property name="formattedOutput" value="true"/>
         <!--<property name="attributePrefix" value="@"/>-->
@@ -140,7 +140,7 @@
         <!--<property name="schemaHandler" ref="schemaHandler"/>-->
     </bean>
     <bean id="jaxbContextResolver" class="ru.ilb.common.jaxrs.jaxb.JaxbContextResolver" >
-<!--        <property name="contextProperties" ref="contextProperties"/>
+        <!--        <property name="contextProperties" ref="contextProperties"/>
         <property name="extraClass" ref="extraClass"/>-->
     </bean>
 
@@ -157,9 +157,9 @@
         <entry key="http://www.w3.org/1999/xlink" value="xlink"/>
         <entry key="urn:ru:ilb:workflow:view" value="view"/>
     </util:map>
-    
+
     <!-- Configure param converters for jaxrs:server and jaxrs:client -->
-<!--    <util:map id="mapParamConverters">
+    <!--    <util:map id="mapParamConverters">
         <entry key="java.util.Date" value="ru.ilb.common.jaxrs.converters.DateParamConverter" value-type=""/>
     </util:map>
     <bean id="mapParamConverterProvider" class="ru.ilb.common.jaxrs.providers.MapParamConverterProvider">
@@ -208,7 +208,7 @@
         <jaxrs:features>
             <ref bean="swagger2Feature" />
         </jaxrs:features>
-        
+
         <jaxrs:inInterceptors>
             <ref bean="logInbound"/>
         </jaxrs:inInterceptors>
@@ -246,7 +246,7 @@
         </jaxrs:inInterceptors>
     </jaxrs:server>
     <http-conf:conduit name="*.http-conduit">
-<!--        <http-conf:tlsClientParameters>
+        <!--        <http-conf:tlsClientParameters>
             <sec:keyManagers keyPassword="${javax.net.ssl.keyStorePassword}">
                 <sec:keyStore
                     type="${javax.net.ssl.keyStoreType:JKS}"
@@ -254,7 +254,7 @@
                     file="${javax.net.ssl.keyStore}"/>
             </sec:keyManagers>
             <sec:trustManagers>
-                <sec:keyStore type="${javax.net.ssl.trustStoreType:JKS}" file="${javax.net.ssl.trustStore}" />  password="${javax.net.ssl.trustStorePassword:#{null}}" 
+                <sec:keyStore type="${javax.net.ssl.trustStoreType:JKS}" file="${javax.net.ssl.trustStore}" />  password="${javax.net.ssl.trustStorePassword:#{null}}"
             </sec:trustManagers>
         </http-conf:tlsClientParameters>-->
         <!-- disable chunking, not works everywhere -->
@@ -267,6 +267,6 @@
         <jaxrs-client:providers>
             <!--<ref bean="mapParamConverterProvider"/>-->
         </jaxrs-client:providers>
-    </jaxrs-client:client>    
+    </jaxrs-client:client>
 
 </beans>

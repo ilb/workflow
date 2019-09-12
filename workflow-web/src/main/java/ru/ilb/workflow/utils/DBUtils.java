@@ -25,6 +25,7 @@ import javax.transaction.UserTransaction;
  * @author slavb
  */
 public class DBUtils {
+
     public static void rollback(UserTransaction ut) {
         try {
             if (ut != null && ut.getStatus() != Status.STATUS_NO_TRANSACTION) {

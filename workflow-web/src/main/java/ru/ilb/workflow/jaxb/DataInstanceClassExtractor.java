@@ -30,5 +30,5 @@ public class DataInstanceClassExtractor extends ClassExtractor {
     public Class extractClassFromRow(Record record, Session sn) {
         return StringDataInstance.class;
     }
-    
+
 }

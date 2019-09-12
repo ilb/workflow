@@ -95,7 +95,7 @@ public class ActivityFormResourceImpl implements ActivityFormResource {
         JsonMapObject jsonFormData = ProcessContextResourceImpl.getProcessContext(shandle, processInstanceId, activityInstanceId);
         String jsonFormDataStr = JSONREADERWRITER.toJson(jsonFormData);
         //activityInstance.setActivityDossier(getActivityDossier(shandle, wmActivityInstance));
-        String output = activityFormStr.substring(0, activityFormStr.length()-1)
+        String output = activityFormStr.substring(0, activityFormStr.length() - 1)
                 + String.format(",\"jsonSchema\":%s,\"formData\":%s}", jsonSchemaStr, jsonFormDataStr);
         return output;
 

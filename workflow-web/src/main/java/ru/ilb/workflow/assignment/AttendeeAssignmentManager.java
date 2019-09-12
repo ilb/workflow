@@ -28,16 +28,17 @@ import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
  *
  * @author slavb
  */
-public class AttendeeAssignmentManager extends StandardAssignmentManager{
-    protected static final String ATTENDEE_RESPONSIBLE="ATTENDEE_responsible";
+public class AttendeeAssignmentManager extends StandardAssignmentManager {
+
+    protected static final String ATTENDEE_RESPONSIBLE = "ATTENDEE_responsible";
 
     @Override
     protected Set findResources(WMSessionHandle shandle, String procId, String actId, PerformerData p) throws Exception {
-        Set res=super.findResources(shandle, procId, actId, p);
+        Set res = super.findResources(shandle, procId, actId, p);
         WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
         WMAttribute wmAttendeeResponsible = wapi.getProcessInstanceAttributeValue(shandle, procId, ATTENDEE_RESPONSIBLE);
-        if(wmAttendeeResponsible!=null){
-            String[] attendeeResponsible=(String[])wmAttendeeResponsible.getValue();
+        if (wmAttendeeResponsible != null) {
+            String[] attendeeResponsible = (String[]) wmAttendeeResponsible.getValue();
             res.addAll(Arrays.asList(attendeeResponsible));
         }
         return res;

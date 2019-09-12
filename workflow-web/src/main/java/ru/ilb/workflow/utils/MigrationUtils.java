@@ -46,10 +46,10 @@ public class MigrationUtils {
 
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(MigrationUtils.class);
 
-    public static Boolean updatePackage(UserTransaction ut, WMSessionHandle shandle, String pkgId,String filePath, boolean disablePrevManagers) throws Exception {
+    public static Boolean updatePackage(UserTransaction ut, WMSessionHandle shandle, String pkgId, String filePath, boolean disablePrevManagers) throws Exception {
         PackageAdministration pa = SharkInterfaceWrapper.getShark().getPackageAdministration();
         WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
-        
+
         try {
             Boolean result = false;
             ut.begin();
@@ -83,7 +83,8 @@ public class MigrationUtils {
         }
 
     }
-/*
+
+    /*
     private static boolean isPackageChanged(byte[] utf8BytesOld, byte[] utf8BytesNew) {
         XMLSource xsOld = new XMLSource(new ByteArrayInputStream(utf8BytesOld));
         XMLSource xsNew = new XMLSource(new ByteArrayInputStream(utf8BytesNew));
@@ -96,7 +97,6 @@ public class MigrationUtils {
         String versionNew = xsNew.getValue("/xpdl:Package/xpdl:RedefinableHeader/xpdl:Version", pfx);
         return !versionOld.equals(versionNew);
     }*/
-
     public static void migrateAllPackages() {
         UserTransaction ut = null;
         try {

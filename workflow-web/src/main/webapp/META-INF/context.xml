@@ -1,13 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/workflow-web">
     <!--
-       NOTE
- 1. add to url "?serverTimezone=Europe/Samara" in case of Failed to grow the connection pool
- 2.  check tomcat bin rights chmod a+w /opt/tomcat-8/bin 
-          -->
-  <Resource auth="Container" factory="org.enhydra.jndi.UserTransactionFactory" name="UserTransaction" type="javax.transaction.UserTransaction"/>
-  <Resource driverClassName="com.mysql.jdbc.Driver" factory="org.enhydra.jndi.DataSourceFactory" max="50" min="10" name="jdbc/sharkdb" password="shark" type="javax.sql.DataSource" url="jdbc:mysql://localhost/workflow" username="workflow" validationQuery="SELECT 1"/>
-  <!--
+ NOTE
+1. add to url "?serverTimezone=Europe/Samara" in case of Failed to grow the connection pool
+2.  check tomcat bin rights chmod a+w /opt/tomcat-8/bin
+    -->
+    <Resource
+        auth="Container"
+        factory="org.enhydra.jndi.UserTransactionFactory"
+        name="UserTransaction"
+        type="javax.transaction.UserTransaction"
+    />
+    <Resource
+        name="jdbc/sharkdb"
+        type="javax.sql.DataSource"
+        factory="org.enhydra.jndi.DataSourceFactory"
+        max="50" min="10"
+        driverClassName="com.mysql.jdbc.Driver"
+        url="jdbc:mysql://localhost/workflow"
+        validationQuery="SELECT 1"
+        username="workflow"
+        password="shark"
+    />
+    <!--
  <Resource
     name="sharkdb"
     type="javax.sql.DataSource"
@@ -20,7 +35,7 @@
     url="jdbc:hsqldb:/tmp/hsql/hsql"
     _url="jdbc:hsqldb:${catalina.base}/webapps/workflow/db/hsql/hsql"/>
     -->
-  <!--Resource name="sharkdb" type="javax.sql.DataSource"
+    <!--Resource name="sharkdb" type="javax.sql.DataSource"
        factory="org.enhydra.jndi.DataSourceFactory"
        max="96"
        min="16"

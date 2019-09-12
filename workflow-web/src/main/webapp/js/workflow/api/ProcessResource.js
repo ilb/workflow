@@ -16,7 +16,7 @@
  * this program. If not, see http://www.gnu.org/licenses
  */
 function workflow_api_ProcessResource(baseAddress) {
-    this.baseAddress=baseAddress;
+    this.baseAddress = baseAddress;
 
     this.editActivity = function (processId, activityId, activityinstance) {
         var url = this.baseAddress + "/" + processId + "/activities/" + activityId;
@@ -30,7 +30,7 @@ function workflow_api_ProcessResource(baseAddress) {
         return fetch(url, opts);
     };
     this.startActivity = function (processId, activityId) {
-        var url = this.baseAddress + "/" + processId + "/activities/" + activityId+"/start";
+        var url = this.baseAddress + "/" + processId + "/activities/" + activityId + "/start";
         var opts = {
             method: 'post'
         };
@@ -60,4 +60,5 @@ function workflow_api_ProcessResource(baseAddress) {
         return fetch(url, opts);
     };
 
-};
+}
+;

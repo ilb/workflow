@@ -30,5 +30,5 @@ public class WorkflowProcessClassExtractor extends ClassExtractor {
     public Class extractClassFromRow(Record record, Session sn) {
         return MainWorkflowProcessInstance.class;
     }
-    
+
 }

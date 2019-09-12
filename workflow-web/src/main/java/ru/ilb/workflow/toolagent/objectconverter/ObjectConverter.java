@@ -27,7 +27,9 @@ import org.enhydra.shark.api.internal.toolagent.AppParameter;
 public interface ObjectConverter {
 
     public void marshall(AppParameter[] parameters, OutputStream os) throws IOException;
+
     public void unmarshall(AppParameter[] parameters, InputStream is) throws IOException;
+
     public void unmarshall(AppParameter[] parameters, String s);
 
 }

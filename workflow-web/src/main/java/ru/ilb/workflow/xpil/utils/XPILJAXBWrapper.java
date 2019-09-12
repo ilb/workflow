@@ -46,31 +46,33 @@ public class XPILJAXBWrapper {
             processcopy.setInstanceLimit(process.getInstanceLimit());
             processcopy.setInstancePriority(process.getInstancePriority());
             extendedworkflowfacilityinstance.getUsersAndUsersAndPackageInstances().add(processcopy);
-            String xpil=XPILJAXBUtils.toString(extendedworkflowfacilityinstance);
+            String xpil = XPILJAXBUtils.toString(extendedworkflowfacilityinstance);
             SharkInterfaceWrapper.getShark().getXPILHandler().setProcessInfo(shandle, xpil);
         }
-        if (process.getInstanceLimit()!=null) {
+        if (process.getInstanceLimit() != null) {
             SharkInterfaceWrapper.getShark().getExecutionAdministration().setProcessLimit(shandle, processId, process.getInstanceLimit().getTime());
         }
 
     }
+
     public static void setProcessVariables(WMSessionHandle shandle, DataInstances dataInstances, String processId) throws Exception {
-            ExtendedWorkflowFacilityInstance extendedworkflowfacilityinstance = new ExtendedWorkflowFacilityInstance();
-            for (DataInstance di : dataInstances.getStringDataInstancesAndStringArrayDataInstancesAndBooleanDataInstances()) {
-                extendedworkflowfacilityinstance.getUsersAndUsersAndPackageInstances().add(di);
-            }
-            String xpil=XPILJAXBUtils.toString(extendedworkflowfacilityinstance);
-            xpil=xpil.replace("+04:00\"", "\""); //FIXME
-            SharkInterfaceWrapper.getShark().getXPILHandler().setSpecifiedProcessVariables(shandle, processId, xpil);
+        ExtendedWorkflowFacilityInstance extendedworkflowfacilityinstance = new ExtendedWorkflowFacilityInstance();
+        for (DataInstance di : dataInstances.getStringDataInstancesAndStringArrayDataInstancesAndBooleanDataInstances()) {
+            extendedworkflowfacilityinstance.getUsersAndUsersAndPackageInstances().add(di);
+        }
+        String xpil = XPILJAXBUtils.toString(extendedworkflowfacilityinstance);
+        xpil = xpil.replace("+04:00\"", "\""); //FIXME
+        SharkInterfaceWrapper.getShark().getXPILHandler().setSpecifiedProcessVariables(shandle, processId, xpil);
     }
-    public static void editActivity(WMSessionHandle shandle, ActivityInstance activity,String processId, String activityId) throws Exception {
-        if(activity.getDataInstances()!=null){
+
+    public static void editActivity(WMSessionHandle shandle, ActivityInstance activity, String processId, String activityId) throws Exception {
+        if (activity.getDataInstances() != null) {
             ExtendedWorkflowFacilityInstance extendedworkflowfacilityinstance = new ExtendedWorkflowFacilityInstance();
             for (DataInstance di : activity.getDataInstances().getStringDataInstancesAndStringArrayDataInstancesAndBooleanDataInstances()) {
                 extendedworkflowfacilityinstance.getUsersAndUsersAndPackageInstances().add(di);
             }
-            String xpil=XPILJAXBUtils.toString(extendedworkflowfacilityinstance);
-            xpil=xpil.replace("+04:00\"", "\""); //FIXME
+            String xpil = XPILJAXBUtils.toString(extendedworkflowfacilityinstance);
+            xpil = xpil.replace("+04:00\"", "\""); //FIXME
             SharkInterfaceWrapper.getShark().getXPILHandler().setSpecifiedActivityVariables(shandle, processId, activityId, xpil);
         }
         if (activity.getName() != null || activity.getInstanceDescription() != null || activity.getInstancePriority() != null) {
@@ -82,13 +84,12 @@ public class XPILJAXBWrapper {
             activitycopy.setInstanceLimit(activity.getInstanceLimit());
             activitycopy.setInstancePriority(activity.getInstancePriority());
             extendedworkflowfacilityinstance.getUsersAndUsersAndPackageInstances().add(activitycopy);
-            String xpil=XPILJAXBUtils.toString(extendedworkflowfacilityinstance);
+            String xpil = XPILJAXBUtils.toString(extendedworkflowfacilityinstance);
             SharkInterfaceWrapper.getShark().getXPILHandler().setActivityInfo(shandle, xpil);
         }
-        if (activity.getInstanceLimit()!=null) {
+        if (activity.getInstanceLimit() != null) {
             SharkInterfaceWrapper.getShark().getExecutionAdministration().setActivityLimit(shandle, processId, activityId, activity.getInstanceLimit().getTime());
         }
-
 
     }
 

@@ -34,27 +34,26 @@ public class OrgTreeManager {
 
     @Resource(mappedName = "allOfficesGroup")
     String allOfficesGroup;
-    
+
     private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(OrgTreeManager.class);
 
     @Cacheable("orgtree")
-    public List<String> getAllOrgunitMembers(WMSessionHandle shandle,UserGroupManager ugm,String orgunitId) throws Exception{
-        List<String> result=null;
-        String group=orgunitId.replace("bank.sales", "ru.bystrobank.sales")+".users";
+    public List<String> getAllOrgunitMembers(WMSessionHandle shandle, UserGroupManager ugm, String orgunitId) throws Exception {
+        List<String> result = null;
+        String group = orgunitId.replace("bank.sales", "ru.bystrobank.sales") + ".users";
         try {
-            String[] users = ugm.getAllUsersForGroups(shandle, new String[] {group});
-            result=Arrays.asList(users);
+            String[] users = ugm.getAllUsersForGroups(shandle, new String[]{group});
+            result = Arrays.asList(users);
         } catch (Exception ex) {
-            LOG.error("Errror getting users group {}, error: {}",group,ex.getMessage());
-            result=new ArrayList<>();
+            LOG.error("Errror getting users group {}, error: {}", group, ex.getMessage());
+            result = new ArrayList<>();
         }
-        
+
         return result;
     }
 
     public String getAllOfficesGroup() {
         return allOfficesGroup;
     }
-
 
 }

@@ -24,7 +24,7 @@ import java.util.Map;
  */
 public class ObjectConverterFactory {
 
-    private final static Map<String,ObjectConverter> CONVERTERS = new HashMap<>();
+    private final static Map<String, ObjectConverter> CONVERTERS = new HashMap<>();
 
     static {
         CONVERTERS.put("application/xml", new XmlObjectConverter());

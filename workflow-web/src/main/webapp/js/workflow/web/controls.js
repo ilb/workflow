@@ -27,15 +27,15 @@
         for (var i = 0; i < buttons.length; i++) {
             var button = buttons[i];
             button.addEventListener('click', function () {
-                var inpId=this.parentNode.querySelector("input[type=hidden]");
-                var prefix=inpId.name.replace(/\[@Id\]$/,"");
-                var ol=this.parentNode.querySelector("ol");
+                var inpId = this.parentNode.querySelector("input[type=hidden]");
+                var prefix = inpId.name.replace(/\[@Id\]$/, "");
+                var ol = this.parentNode.querySelector("ol");
                 //alert(prefix);
                 var elementLi = document.createElement("li");
                 var input = document.createElement("input");
                 input.tyle = "text";
                 input.className = "pure-input-1-2";
-                input.name = prefix+"[StringValue][" + (ol.getElementsByTagName("li").length) + "][@Value]";
+                input.name = prefix + "[StringValue][" + (ol.getElementsByTagName("li").length) + "][@Value]";
                 elementLi.appendChild(input);
                 elementLi.appendChild(document.createTextNode("\n"));
                 var btn = document.createElement("button");

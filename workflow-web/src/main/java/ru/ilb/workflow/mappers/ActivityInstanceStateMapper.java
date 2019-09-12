@@ -28,20 +28,19 @@ import ru.ilb.workflow.view.ActivityInstanceState;
  * @author slavb
  */
 @Mapper
-public abstract class ActivityInstanceStateMapper implements GenericMapperDto<WMActivityInstanceState,ActivityInstanceState>{
+public abstract class ActivityInstanceStateMapper implements GenericMapperDto<WMActivityInstanceState, ActivityInstanceState> {
 
     @Inject
     StateConvertor stateConvertor;
 
     @Override
     @Mapping(target = "code",
-         expression = "java( ru.ilb.workflow.core.StateCode.fromValue(entity.stringValue()) )")
+            expression = "java( ru.ilb.workflow.core.StateCode.fromValue(entity.stringValue()) )")
     public abstract ActivityInstanceState createFromEntity(WMActivityInstanceState entity);
 
     @AfterMapping
     protected void afterMapping(@MappingTarget ActivityInstanceState state, WMActivityInstanceState dto) {
         state.setName(stateConvertor.convert(dto.stringValue()));
     }
-
 
 }

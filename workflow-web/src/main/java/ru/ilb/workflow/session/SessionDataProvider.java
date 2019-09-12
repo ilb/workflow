@@ -32,7 +32,7 @@ import org.apache.cxf.message.Message;
 @Provider
 @Named
 @PreMatching
-public class SessionDataProvider implements ContainerRequestFilter  { // ContextProvider<SessionData>
+public class SessionDataProvider implements ContainerRequestFilter { // ContextProvider<SessionData>
 
     private final ThreadLocal<SessionData> sessionData = new ThreadLocal<>();
 
@@ -58,10 +58,8 @@ public class SessionDataProvider implements ContainerRequestFilter  { // Context
 //    public SessionData getContext(Class<?> type) {
 //        return sessionData.get();
 //    }
-
 //    @Override
 //    public SessionData createContext(Message message) {
 //        return sessionData.get();
 //    }
-
 }

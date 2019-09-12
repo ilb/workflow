@@ -31,11 +31,11 @@ import static org.apache.commons.codec.digest.DigestUtils.sha1Hex;
 public class UsersResourceImpl implements UsersResource {
 
     @Resource(mappedName = "autorizationKeySalt")
-    private String autorizationKeySalt;    
-    
+    private String autorizationKeySalt;
+
     @Resource(mappedName = "ru.bystrobank.apps.workflow.ws")
     String workflowUrl;
-    
+
     private HttpServletRequest httpServletRequest;
 
     @Context
@@ -66,6 +66,5 @@ public class UsersResourceImpl implements UsersResource {
         String xremoteUserName = httpServletRequest.getHeader("X-Remote-User");
         return xremoteUserName != null ? xremoteUserName : userName;
     }
-
 
 }

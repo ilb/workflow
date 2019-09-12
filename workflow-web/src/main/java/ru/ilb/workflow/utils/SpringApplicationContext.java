@@ -21,8 +21,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 /**
- * Wrapper to always return a reference to the Spring Application Context from
- * within non-Spring enabled beans. 
+ * Wrapper to always return a reference to the Spring Application Context from within non-Spring enabled beans.
  */
 public class SpringApplicationContext implements ApplicationContextAware {
 
@@ -36,7 +35,5 @@ public class SpringApplicationContext implements ApplicationContextAware {
     public static ApplicationContext getApplicationContext() {
         return applicationContext;
     }
-
-
 
 }

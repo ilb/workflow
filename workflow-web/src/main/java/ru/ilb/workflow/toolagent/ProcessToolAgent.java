@@ -78,7 +78,7 @@ public class ProcessToolAgent extends AbstractToolAgent {
         }
     }
 
-    public static ExtendedAttribute getFirstExtendedAttributeByName (String attrName, List<ExtendedAttribute> sourceAttributes) {
+    public static ExtendedAttribute getFirstExtendedAttributeByName(String attrName, List<ExtendedAttribute> sourceAttributes) {
         for (ExtendedAttribute attribute : sourceAttributes) {
             if (attribute.getName().equals(attrName)) {
                 return attribute;

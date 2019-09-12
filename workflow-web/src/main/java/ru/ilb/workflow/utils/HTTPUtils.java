@@ -28,6 +28,7 @@ public class HTTPUtils {
 
     /**
      * Check if client is browser (true) or ajax (false)
+     *
      * @param httpHeaders
      * @return
      */
@@ -37,6 +38,7 @@ public class HTTPUtils {
 
     /**
      * Get Location header name for browser / ajax
+     *
      * @param httpHeaders
      * @return
      */
@@ -44,10 +46,10 @@ public class HTTPUtils {
         return isBrowser(httpHeaders) ? "Location" : "X-Location";
     }
 
-    public static void redirect(MessageContext messageContext, String uri ) throws IOException{
-        if (isBrowser(messageContext.getHttpHeaders())){
+    public static void redirect(MessageContext messageContext, String uri) throws IOException {
+        if (isBrowser(messageContext.getHttpHeaders())) {
             messageContext.getHttpServletResponse().sendRedirect(uri);
-        }else {
+        } else {
             messageContext.getHttpServletResponse().addHeader("X-Location", uri);
         }
 

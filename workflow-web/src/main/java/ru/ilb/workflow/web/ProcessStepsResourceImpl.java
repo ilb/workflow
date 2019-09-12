@@ -69,8 +69,7 @@ public class ProcessStepsResourceImpl implements ProcessStepsResource {
     }
 
     /**
-     * Making map where one activity definitions point to the corresponding list
-     * of activity instances.
+     * Making map where one activity definitions point to the corresponding list of activity instances.
      *
      * @param shandle
      * @param wp

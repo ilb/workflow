@@ -28,9 +28,8 @@ import ru.ilb.workflow.Application;
 public class TestApplication extends Application {
 
     public TestApplication() {
-        String a="123";
+        String a = "123";
     }
-
 
     @Bean
     public JndiMock jndiMock() {

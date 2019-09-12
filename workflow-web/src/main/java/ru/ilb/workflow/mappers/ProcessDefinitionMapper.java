@@ -27,14 +27,14 @@ import ru.ilb.workflow.view.ProcessDefinitions;
  * @author slavb
  */
 @Mapper
-public abstract class ProcessDefinitionMapper implements GenericMapperDto<WMProcessDefinition,ProcessDefinition>{
+public abstract class ProcessDefinitionMapper implements GenericMapperDto<WMProcessDefinition, ProcessDefinition> {
 
     @Override
     @Mapping(target = "enabled",
-         expression = "java( \"enabled\".equals(entity.getState().stringValue()) )")
+            expression = "java( \"enabled\".equals(entity.getState().stringValue()) )")
     public abstract ProcessDefinition createFromEntity(WMProcessDefinition entity);
 
-    public ProcessDefinitions createWrapperFromEntities(List<WMProcessDefinition> entities){
+    public ProcessDefinitions createWrapperFromEntities(List<WMProcessDefinition> entities) {
         return new ProcessDefinitions().withProcessDefinitions(createFromEntities(entities));
     }
 
