@@ -22,6 +22,7 @@ import java.util.Map;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.ws.rs.WebApplicationException;
+import org.apache.commons.text.StringSubstitutor;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.enhydra.shark.api.client.wfservice.WMEntity;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
@@ -57,11 +58,12 @@ public class WorkflowUtils {
             throw new RuntimeException(ex);
         }
         String activityFormUrl = XPDLUtils.getEAValue(shandle, WORKFLOW_FORM_RESOURCE_URL, procDefId, procId, actId, defaultActivityFormUrl);
-        TemplateEvaluator templateEvaluator = new SubstitutorTemplateEvaluator(ctx);
+
         Map<String, Object> params = new HashMap<>();
         params.put("processInstanceId", procId);
         params.put("activityInstanceId", actId);
-        activityFormUrl = templateEvaluator.evaluateStringExpression(activityFormUrl, params);
+        StringSubstitutor sub = new StringSubstitutor(params);
+        activityFormUrl = sub.replace(activityFormUrl);
         return activityFormUrl;
 
     }
