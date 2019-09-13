@@ -71,12 +71,12 @@ public class Application {
 //        return new DossierFactory(dossierModelRepository, storeFactory, dossierContextBuilder, templateEvaluator);
 //
 //    }
-    @Bean
-    public Context context() throws NamingException {
-        final Context context = new InitialContext();
-        context.bind("ru.bystrobank.apps.meta.url", "https://devel.net.ilb.ru/meta");
-        return context;
-    }
+//    @Bean
+//    public Context context() throws NamingException {
+//        final Context context = new InitialContext();
+//        context.bind("ru.bystrobank.apps.meta.url", "https://devel.net.ilb.ru/meta");
+//        return context;
+//    }
 
     @Bean
     public TemplateEvaluator templateEvaluator() throws NamingException {
