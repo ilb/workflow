@@ -19,6 +19,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import javax.annotation.Resource;
+import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.springframework.beans.factory.annotation.Value;
@@ -70,6 +71,12 @@ public class Application {
 //        return new DossierFactory(dossierModelRepository, storeFactory, dossierContextBuilder, templateEvaluator);
 //
 //    }
+    @Bean
+    public Context context() throws NamingException {
+        final Context context = new InitialContext();
+        context.bind("ru.bystrobank.apps.meta.url", "https://devel.net.ilb.ru/meta");
+        return context;
+    }
 
     @Bean
     public TemplateEvaluator templateEvaluator() throws NamingException {
