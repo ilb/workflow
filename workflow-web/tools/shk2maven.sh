@@ -1,18 +1,35 @@
 #!/bin/sh
 set -e
 MVN=mvn
-#CMD="install:install-file"
-CMD="-DrepositoryId=nexus-snapshots -Durl=http://devel.net.ilb.ru:28052/nexus/content/repositories/releases deploy:deploy-file"
+CMD="install:install-file"
+#CMD="-DrepositoryId=nexus-snapshots -Durl=http://devel.net.ilb.ru:28052/nexus/content/repositories/releases deploy:deploy-file"
 #CMD="-DrepositoryId=nexus-snapshots -Durl=http://devel.net.ilb.ru:28052/nexus/content/repositories/snapshots deploy:deploy-file"
-REPO=http://svn.code.sf.net/p/sharkwf/code/tags/releases/tws-6.3-4
-SRC=$HOME/work/sharkwf-code/tws
-svn revert -R $SRC
-svn up $SRC
+
+## svn mode
+#REPO=http://svn.code.sf.net/p/sharkwf/code/tags/releases/tws-6.3-4
+#BUILD_DIR=$HOME/work/sharkwf-code
+#if [ ! -d "$BUILD_DIR" ]; then
+#  svn co "$REPO" "$BUILD_DIR"
+#fi
+#SRC=$BUILD_DIR/tws
+#svn cleanup $SRC
+#svn revert -R $SRC
+#svn up $SRC
+
+## archive mode
+# visit https://sourceforge.net/p/sharkwf/code/HEAD/tarball?path=/tags/releases/tws-6.3-4
+# then download https://sourceforge.net/code-snapshots/svn/s/sh/sharkwf/code/sharkwf-code-r2175-tags-releases-tws-6.3-4.zip
+BUILD_DIR=$HOME/work/sharkwf-code-r2175-tags-releases-tws-6.3-4
+cd $HOME/work
+rm -rf sharkwf-code-r2175-tags-releases-tws-6.3-4
+unzip sharkwf-code-r2175-tags-releases-tws-6.3-4.zip
+SRC=$BUILD_DIR/tws
+
 TWS_VERSION=6.3-4
 echo building $TWS_VERSION
 cat SharkAPI.diff | patch -d $SRC -p0 # -N -r -
 sh $SRC/configure -jdkhome=$JDK_HOME
-make -C $SRC debug
+make -C $SRC debug # buildNoDoc
 OUT=$SRC/Shark/output/lib
 for jar in $OUT/sharkadminapi.jar $OUT/sharkclientapi.jar $OUT/sharkcommonapi.jar $OUT/sharkcorbaclientapi.jar $OUT/sharkinternalapi.jar $OUT/sharkwebservice-asapapi.jar  $OUT/sharkwebservice-wfxmlapi.jar; do
     jarfile=`basename $jar`
