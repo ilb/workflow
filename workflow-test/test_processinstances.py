@@ -51,6 +51,7 @@ class TestProcessInstances(unittest.TestCase):
         response=self.filedossier_api.download('fairpricecalc',activityDossier['dossierKey'],activityDossier['dossierPackage'],activityDossier['dossierCode'],_preload_content=False)
         f= open("/tmp/content.ods","wb")
         f.write(response.data)
+        print('content url',self.workflowUrl + '/dossiers/' + activityDossier['dossierKey'] + '/stockvaluation/stockvaluation_fairpricecalc/dossierfiles/fairpricecalc')
         print('done')
 if __name__ == '__main__':
     unittest.main()

@@ -16,6 +16,7 @@
  */
 package ru.ilb.workflow.xpil.web;
 
+import ch.qos.logback.classic.Level;
 import java.net.URI;
 import java.util.concurrent.Callable;
 import javax.naming.InitialContext;
@@ -23,7 +24,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Status;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
@@ -37,6 +41,7 @@ import org.enhydra.shark.api.common.ProcessFilterBuilder;
 import org.enhydra.shark.api.common.SharkConstants;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 import org.quartz.JobExecutionException;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.common.jaxrs.async.AsyncTaskManager;
@@ -187,5 +192,11 @@ public class AdminResourceImpl implements AdminResource {
         }
         return "ok";
     }
-
+    @POST
+    @Produces("text/plain")
+    @Path("/logging")
+    public Response setLogging(@QueryParam("logger") String logger, @QueryParam("level") String level) {
+        ((ch.qos.logback.classic.Logger) LoggerFactory.getLogger(logger)).setLevel(Level.valueOf(level));
+        return Response.ok("OK").build();
+    }
 }
