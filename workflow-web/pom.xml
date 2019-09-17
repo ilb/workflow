@@ -250,17 +250,17 @@
             <artifactId>common-jaxb</artifactId>
             <version>${ilb-common.version}</version>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>ical4j</groupId>
             <artifactId>ical4j</artifactId>
             <version>1.0-beta4</version>
             <type>jar</type>
-        </dependency>
-        <dependency>
+        </dependency>-->
+<!--        <dependency>
             <groupId>ru.ilb</groupId>
             <artifactId>common</artifactId>
             <version>1.21</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>ru.ilb.jsonschema</groupId>
             <artifactId>jsonschema</artifactId>
