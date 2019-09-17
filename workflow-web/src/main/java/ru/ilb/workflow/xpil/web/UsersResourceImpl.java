@@ -33,9 +33,6 @@ public class UsersResourceImpl implements UsersResource {
     @Resource(mappedName = "autorizationKeySalt")
     private String autorizationKeySalt;
 
-    @Resource(mappedName = "ru.bystrobank.apps.workflow.ws")
-    String workflowUrl;
-
     private HttpServletRequest httpServletRequest;
 
     @Context

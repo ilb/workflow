@@ -261,7 +261,7 @@
         <http-conf:client AllowChunking="false" />
     </http-conf:conduit>
 
-    <jaxrs-client:client address="${ru.bystrobank.apps.collection.ws}" username="ide" password="123" basePackages="ru.ilb.common.jaxrs.providers"
+    <jaxrs-client:client address="${ru.bystrobank.apps.collection.ws:http://localhost/collection-not-configured}" username="ide" password="123" basePackages="ru.ilb.common.jaxrs.providers"
                          id="collectionProxy"
                          serviceClass="ru.ilb.collection.api.CollectcasesResource">
         <jaxrs-client:providers>
