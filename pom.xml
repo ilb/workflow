@@ -14,7 +14,7 @@
     <name>workflow</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <apache-cxf.version>3.3.1</apache-cxf.version>
+        <apache-cxf.version>3.3.3</apache-cxf.version>
         <doclint>none</doclint>
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
         <maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
