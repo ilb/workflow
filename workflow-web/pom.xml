@@ -90,7 +90,7 @@
             <artifactId>cxf-rt-rs-service-description-swagger</artifactId>
             <version>${apache-cxf.version}</version>
         </dependency>
-<!--        <dependency>
+        <!--        <dependency>
             <groupId>ru.ilb.collection</groupId>
             <artifactId>collection-api</artifactId>
             <version>1.166</version>
@@ -250,13 +250,13 @@
             <artifactId>common-jaxb</artifactId>
             <version>${ilb-common.version}</version>
         </dependency>
-<!--        <dependency>
+        <!--        <dependency>
             <groupId>ical4j</groupId>
             <artifactId>ical4j</artifactId>
             <version>1.0-beta4</version>
             <type>jar</type>
         </dependency>-->
-<!--        <dependency>
+        <!--        <dependency>
             <groupId>ru.ilb</groupId>
             <artifactId>common</artifactId>
             <version>1.21</version>
@@ -403,20 +403,16 @@
             </build>
         </profile>
         <profile>
-            <id>static-weaving</id>
+            <id>static-weaving-jdk8</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <jdk>1.8</jdk>
             </activation>
             <build>
                 <plugins>
                     <plugin>
-                        <!-- https://github.com/mojohaus/aspectj-maven-plugin/pull/45 -->
-                        <groupId>com.nickwongdev</groupId>
+                        <groupId>org.codehaus.mojo</groupId>
                         <artifactId>aspectj-maven-plugin</artifactId>
-                        <version>1.12.1</version>
-                        <!--                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>aspectj-maven-plugin</artifactId>
-                        <version>1.11</version>-->
+                        <version>1.11</version>
                         <configuration>
                             <complianceLevel>${maven.compiler.source}</complianceLevel>
                             <source>${maven.compiler.source}</source>
@@ -452,5 +448,54 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>static-weaving-jdk11</id>
+            <activation>
+                <jdk>11</jdk>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <!-- https://github.com/mojohaus/aspectj-maven-plugin/pull/45 -->
+                        <groupId>com.nickwongdev</groupId>
+                        <artifactId>aspectj-maven-plugin</artifactId>
+                        <version>1.12.1</version>
+                        <configuration>
+                            <complianceLevel>${maven.compiler.source}</complianceLevel>
+                            <source>${maven.compiler.source}</source>
+                            <target>${maven.compiler.target}</target>
+                            <xmlConfigured>src/main/resources/META-INF/aop.xml</xmlConfigured>
+                            <aspectLibraries>
+                                <aspectLibrary>
+                                    <groupId>org.springframework</groupId>
+                                    <artifactId>spring-aspects</artifactId>
+                                </aspectLibrary>
+                                <!--                                <aspectLibrary>
+                                    <groupId>com.jcabi</groupId>
+                                    <artifactId>jcabi-aspects</artifactId>
+                                </aspectLibrary>
+                                <aspectLibrary>
+                                    <groupId>ru.ilb.aspectlock</groupId>
+                                    <artifactId>redisson-aspect-lock</artifactId>
+                                </aspectLibrary>-->
+                            </aspectLibraries>
+                            <verbose>true</verbose>
+                            <showWeaveInfo>true</showWeaveInfo>
+                            <privateScope>true</privateScope>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>compile</goal>
+                                    <goal>test-compile</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+
     </profiles>
 </project>
