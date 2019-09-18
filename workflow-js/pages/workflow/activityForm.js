@@ -1,14 +1,14 @@
 import { useRouter, useEffect } from 'next/router';
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ProcessInstancesApi } from '@ilb/workflow-api/dist';
+import { ProcessInstancesApi } from '@ilb/workflow-api';
 import config from '../../conf/config';
 import { Button, Step, Loader, Message, Segment } from 'semantic-ui-react';
 import JsonSchemaForm from '@bb/jsonschema-form';
 import '@bb/datetime-picker/lib/index.css';
 import '@bb/semantic-ui-css/semantic.min.css'
 import superagent from "superagent";
-import { DefaultApi as DossierApi} from '@ilb/filedossier-api/dist';
+import { DossiersApi} from '@ilb/filedossier-api';
 
 //import '@bb/datetime-picker/lib/index.css';
 import Dossier from '../../components/Dossier';
@@ -72,7 +72,7 @@ ActivityForm.getInitialProps = async function ({query,req}) {
     const activityInstanceId = query.activityInstanceId;
     const api = new ProcessInstancesApi(config.workflowApiClient(headers ? headers['x-remote-user'] : null));
     const activityFormData = await api.getActivityForm(activityInstanceId, processInstanceId);
-    const apiDossier = new DossierApi(config.dossierApiClient(headers ? headers['x-remote-user'] : null));
+    const apiDossier = new DossiersApi(config.dossierApiClient(headers ? headers['x-remote-user'] : null));
     if (activityFormData.activityDossier) {
       const {dossierKey, dossierPackage, dossierCode} = activityFormData.activityDossier;
       activityFormData.dossierData = await apiDossier.getDossier(dossierKey, dossierPackage, dossierCode);

@@ -1,4 +1,4 @@
-import { ProcessInstancesApi } from '@ilb/workflow-api/dist';
+import { ProcessInstancesApi } from '@ilb/workflow-api';
 import config from '../../conf/config';
 
 export default async ({query, headers, body}, res) => {

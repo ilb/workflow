@@ -1,6 +1,6 @@
 import React, { Suspense, useState, useEffect, useRef } from 'react';
 import { Table, Button, Message, Loader } from 'semantic-ui-react';
-import { DefaultApi as DossierApi} from '@ilb/filedossier-api/dist';
+import { DossiersApi} from '@ilb/filedossier-api';
 // import DossierResource from './DossierResource';
 import config from '../conf/config';
 
@@ -46,7 +46,7 @@ function getDownloadLink(dossier, fileCode) {
 function DossierFile( { file: { code, name, exists, readonly }, file, onChange, resource, link, dossier }) {
     const { dossierKey, dossierPackage, dossierCode, headers } = dossier.activityDossier;
     console.log('DossierFile headers', headers);
-    const api = new DossierApi(config.dossierApiClient(headers ? headers['x-remote-user'] : null));
+    const api = new DossiersApi(config.dossierApiClient(headers ? headers['x-remote-user'] : null));
 
     const inputFileEl = useRef(null);
     const [error, setError] = useState(null);
