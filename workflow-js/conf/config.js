@@ -1,4 +1,4 @@
-const context = require('../utils/context');
+const context = require('@ilb/node_context').context;
 const workflow_api = require('@ilb/workflow-api');
 const dossier_api = require('@ilb/filedossier-api');
 
