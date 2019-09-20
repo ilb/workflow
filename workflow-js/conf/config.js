@@ -1,4 +1,4 @@
-const context = require('@ilb/node_context').context;
+require('@ilb/node_context').config({debug:true});
 const workflow_api = require('@ilb/workflow-api');
 const dossier_api = require('@ilb/filedossier-api');
 
@@ -6,10 +6,10 @@ const dossier_api = require('@ilb/filedossier-api');
 let certfile, passphrase, cert, ca;
 
 if (!process.browser) {
-    certfile = context.lookup('ru.bystrobank.apps.workflow.certfile');
-    passphrase = context.lookup('ru.bystrobank.apps.workflow.cert_PASSWORD');
+    certfile = process.env['ru.bystrobank.apps.workflow.certfile'];
+    passphrase = process.env['ru.bystrobank.apps.workflow.cert_PASSWORD'];
     const fs = require('fs');
-    cert = certfile !== null ? fs.readFileSync(certfile) : null;
+    cert = certfile ? fs.readFileSync(certfile) : null;
     ca = process.env.NODE_EXTRA_CA_CERTS ? fs.readFileSync(process.env.NODE_EXTRA_CA_CERTS) : null;
 }
 
