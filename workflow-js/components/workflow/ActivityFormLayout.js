@@ -87,7 +87,7 @@ ActivityFormLayout.getInitialProps = async function (params) {
 
     const props = {activityFormData};
     const propsLayout = await Layout.getInitialProps(params);
-    console.log('propsLayout', propsLayout);
+    //console.log('propsLayout', propsLayout);
 
     return {...props, ...propsLayout};
 };
