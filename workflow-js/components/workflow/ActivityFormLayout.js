@@ -12,9 +12,8 @@ import { DossiersApi} from '@ilb/filedossier-api';
 
 //import '@bb/datetime-picker/lib/index.css';
 import Dossier from '../../components/Dossier';
-import Layout from '../../components/layout';
+import Layout from './Layout';
 import DefaultActivityForm from './DefaultActivityForm';
-import { getProcessDefinitions } from '../../components/header';
 
 /**
  * displays activity from with controls
@@ -53,12 +52,13 @@ function ActivityFormLayout(props) {
 //FIXME
     const props2 = {...props, submitHandler, error}
     return <Layout {...props} loader={loading}>
-    {props.children ? props.children : <DefaultActivityForm {...props2}/>}
+        {props.children ? props.children : <DefaultActivityForm {...props2}/>}
     </Layout>;
 }
 
 
-ActivityFormLayout.getInitialProps = async function ( {query, req}) {
+ActivityFormLayout.getInitialProps = async function (params) {
+    const {query, req} = params;
     const headers = req ? req.headers : {};
     const processInstanceId = query.processInstanceId;
     const activityInstanceId = query.activityInstanceId;
@@ -74,9 +74,6 @@ ActivityFormLayout.getInitialProps = async function ( {query, req}) {
         activityFormData.dossierData.activityDossier = activityFormData.activityDossier;
         activityFormData.dossierData.activityDossier.headers = headers;
     }
-    const processDefinitions = await getProcessDefinitions(headers);
-
-
     // TODO поменять на Link
     const url = "/workflow/activityForm?processInstanceId=" + processInstanceId + "&activityInstanceId=";
     activityFormData && activityFormData.processStep && activityFormData.processStep.forEach(el => {
@@ -88,7 +85,11 @@ ActivityFormLayout.getInitialProps = async function ( {query, req}) {
         el.active = el.activityId === activityInstanceId;
     });
 
-    return {activityFormData: activityFormData, processDefinitions};
+    const props = {activityFormData};
+    const propsLayout = await Layout.getInitialProps(params);
+    console.log('propsLayout', propsLayout);
+
+    return {...props, ...propsLayout};
 };
 
 export default ActivityFormLayout;
