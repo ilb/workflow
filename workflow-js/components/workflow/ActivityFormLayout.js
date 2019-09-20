@@ -11,7 +11,7 @@ import superagent from "superagent";
 import { DossiersApi} from '@ilb/filedossier-api';
 
 //import '@bb/datetime-picker/lib/index.css';
-import Dossier from '../../components/Dossier';
+import Dossier from '../filedossier/Dossier';
 import Layout from './Layout';
 import DefaultActivityForm from './DefaultActivityForm';
 
@@ -64,16 +64,6 @@ ActivityFormLayout.getInitialProps = async function (params) {
     const activityInstanceId = query.activityInstanceId;
     const api = new ProcessInstancesApi(config.workflowApiClient(headers ? headers['x-remote-user'] : null));
     const activityFormData = await api.getActivityForm(activityInstanceId, processInstanceId);
-    const apiDossier = new DossiersApi(config.dossierApiClient(headers ? headers['x-remote-user'] : null));
-    if (activityFormData.activityDossier) {
-        const {dossierKey, dossierPackage, dossierCode} = activityFormData.activityDossier;
-        activityFormData.dossierData = await apiDossier.getDossier(dossierKey, dossierPackage, dossierCode);
-        // TODO FIXME добавить в бэк dossierKey, dossierPackage. убрать этот код
-        activityFormData.dossierData.dossierKey = dossierKey;
-        activityFormData.dossierData.dossierPackage = dossierPackage;
-        activityFormData.dossierData.activityDossier = activityFormData.activityDossier;
-        activityFormData.dossierData.activityDossier.headers = headers;
-    }
     // TODO поменять на Link
     const url = "/workflow/activityForm?processInstanceId=" + processInstanceId + "&activityInstanceId=";
     activityFormData && activityFormData.processStep && activityFormData.processStep.forEach(el => {
@@ -86,10 +76,19 @@ ActivityFormLayout.getInitialProps = async function (params) {
     });
 
     const props = {activityFormData};
+    let propsDossier = {};
+
+    if (activityFormData.activityDossier) {
+        propsDossier = await Dossier.getInitialProps({query: activityFormData.activityDossier, req});
+    }
+
+    console.log('propsDossier', propsDossier);
+
+
     const propsLayout = await Layout.getInitialProps(params);
     //console.log('propsLayout', propsLayout);
 
-    return {...props, ...propsLayout};
+    return {...props, ...propsLayout, ...propsDossier};
 };
 
 export default ActivityFormLayout;

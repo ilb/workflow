@@ -1,4 +1,4 @@
-import Dossier from '../../components/Dossier';
+import Dossier from '../filedossier/Dossier';
 import JsonSchemaForm from '@bb/jsonschema-form';
 import { Button, Step, Loader, Message, Segment } from 'semantic-ui-react';
 
@@ -20,6 +20,6 @@ export default function DefaultActivityForm(props) {
             </div>
         </JsonSchemaForm>
         {props.error && <Message error visible header='Ошибка' content={props.error} />}
-        {activityFormData.dossierData && <Dossier {...activityFormData.dossierData}/>}
+        {props.dossierData && <Dossier {...props.dossierData}/>}
     </div>
 }
