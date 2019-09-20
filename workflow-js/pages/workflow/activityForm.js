@@ -1,7 +1,7 @@
 import ActivityFormLayout from '../../components/workflow/ActivityFormLayout';
 
 export default function activityForm(props) {
-        return <ActivityFormLayout {...props} />;
+        return <ActivityFormLayout {...props} ></ActivityFormLayout>;
 
 }
 

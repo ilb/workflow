@@ -16,7 +16,12 @@ import Layout from '../../components/layout';
 import DefaultActivityForm from './DefaultActivityForm';
 import { getProcessDefinitions } from '../../components/header';
 
-
+/**
+ * displays activity from with controls
+ * will show default form if no children elements supplied
+ * @param {type} props
+ * @return {ActivityFormLayout.props2}
+ */
 function ActivityFormLayout(props) {
     const [{loading, error}, setSubmitState] = useState({loading: false, error: null});
 
@@ -48,7 +53,7 @@ function ActivityFormLayout(props) {
 //FIXME
     const props2 = {...props, submitHandler, error}
     return <Layout {...props} loader={loading}>
-        <DefaultActivityForm {...props2}/>
+    {props.children ? props.children : <DefaultActivityForm {...props2}/>}
     </Layout>;
 }
 
