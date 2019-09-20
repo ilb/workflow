@@ -43,7 +43,7 @@ public abstract class ActivityInstanceMapper implements GenericMapperDto<WMActiv
     @AfterMapping
     protected void afterMapping(@MappingTarget ActivityInstance dto, WMActivityInstance entity) {
         WMSessionHandle shandle = sessionDataProvider.getSessionData().getSessionHandle();
-        String url = WorkflowUtils.getActivityFormUrl(shandle, null, entity.getProcessInstanceId(), entity.getId());
+        String url = WorkflowUtils.getActivityFormUrl(shandle, null, entity.getProcessInstanceId(), entity.getActivityDefinitionId(), entity.getId());
         dto.setActivityFormUrl(url);
     }
 

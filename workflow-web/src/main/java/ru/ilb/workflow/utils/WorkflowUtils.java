@@ -42,12 +42,13 @@ public class WorkflowUtils {
      * Get url to activity form
      *
      * @param shandle
-     * @param procDefId
-     * @param procId
-     * @param actId
+     * @param processDefinitionId
+     * @param processInstanceId
+     * @param activityDefinitionId
+     * @param activityInstanceId
      * @return
      */
-    public static String getActivityFormUrl(WMSessionHandle shandle, String procDefId, String procId, String actId) {
+    public static String getActivityFormUrl(WMSessionHandle shandle, String processDefinitionId, String processInstanceId, String activityDefinitionId, String activityInstanceId) {
         javax.naming.Context ctx;
         String defaultActivityFormUrl;
         try {
@@ -56,11 +57,23 @@ public class WorkflowUtils {
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        String activityFormUrl = XPDLUtils.getEAValue(shandle, WORKFLOW_FORM_RESOURCE_URL, procDefId, procId, actId, defaultActivityFormUrl);
+        String activityFormUrl = XPDLUtils.getEAValue(shandle, WORKFLOW_FORM_RESOURCE_URL, processDefinitionId, processInstanceId, activityInstanceId, defaultActivityFormUrl);
         TemplateEvaluator templateEvaluator = new SubstitutorTemplateEvaluator(ctx);
+        String[] items = activityDefinitionId.split("_");
         Map<String, Object> params = new HashMap<>();
-        params.put("processInstanceId", procId);
-        params.put("activityInstanceId", actId);
+        params.put("processDefinitionId", processDefinitionId);
+        params.put("activityDefinitionId", activityDefinitionId);
+        params.put("processInstanceId", processInstanceId);
+        params.put("activityInstanceId", activityInstanceId);
+        //FIXME HARD CODE
+        if (items.length == 3) {
+            String packageId = items[0];
+            String processShortId = items[1];
+            String activityShortId = items[2];
+            params.put("packageId", packageId);
+            params.put("processShortId", processShortId);
+            params.put("activityShortId", activityShortId);
+        }
         activityFormUrl = templateEvaluator.evaluateStringExpression(activityFormUrl, params);
         return activityFormUrl;
 
