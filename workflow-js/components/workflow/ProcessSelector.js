@@ -55,9 +55,10 @@ const ProcessSelector = (props) => {
               simple
               closeOnChange={true}
               >
-              <Dropdown.Menu>
+              <Dropdown.Menu id="ProcessSelectorMenu">
             {options && options.map((option) => (
                         <Dropdown.Item
+                            id={"ProcessSelectorItem_" +  option.key}
                             key={option.key}
                             text={option.text}
                             onClick={(e, data) => {

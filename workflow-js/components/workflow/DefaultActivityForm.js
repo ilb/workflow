@@ -15,7 +15,7 @@ export default function DefaultActivityForm(props) {
             >
             <div>
                 { ((activityFormData.activityInstance && activityFormData.activityInstance.state.open) || true) &&
-                    <button type="submit" className="ui green button">Выполнить</button>
+                    <button id="completeActivity" type="submit" className="ui green button">Выполнить</button>
                 }
             </div>
         </JsonSchemaForm>
