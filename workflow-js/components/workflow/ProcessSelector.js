@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Dropdown } from 'semantic-ui-react';
-import superagent from "superagent";
+import WorkflowResourceClient from '../../classes/workflow/WorkflowResourceClient';
 import config from '../../conf/config';
 import { ApiClient, ProcessDefinitionsApi, ProcessInstancesApi } from '@ilb/workflow-api';
 
@@ -9,17 +9,16 @@ const ProcessSelector = (props) => {
 
     const [{loading, error}, setSubmitState] = useState({loading: false, error: null});
 
-    const startProcess = async (optionValue) => {
+    const startProcess = async (processDefinitionId) => {
 
-        if (!optionValue) {
+        if (!processDefinitionId) {
             setSubmitState({loading: false, error: 'нет данных для отправки'});
         }
         setSubmitState({loading: true});
         try {
-            const res = await superagent.post(process.env.API_PATH + "/createProcessInstanceAndNext") // /api/createProcessInstanceAndNext.js
-                    .query({processDefinitionId: optionValue})
-                    .send({});
-            // .then(res => document.location=res.headers['x-location'].replace(/https:\/\/devel.net.ilb.ru\/workflow-js/,"http://" + document.location.host));
+            const api = new WorkflowResourceClient();
+            const res = await api.createProcessInstanceAndNext({processDefinitionId});
+
             if (res && (res.statusText !== "OK" || !res.headers)) {
                 setSubmitState({loading: false, error: res.status + ' ' + res.statusText});
             } else {

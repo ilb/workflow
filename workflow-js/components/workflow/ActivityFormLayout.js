@@ -7,7 +7,7 @@ import { Button, Step, Loader, Message, Segment } from 'semantic-ui-react';
 import JsonSchemaForm from '@bb/jsonschema-form';
 import '@bb/datetime-picker/lib/index.css';
 import '@bb/semantic-ui-css/semantic.min.css'
-import superagent from "superagent";
+import WorkflowResourceClient from '../../classes/workflow/WorkflowResourceClient';
 import { DossiersApi} from '@ilb/filedossier-api';
 
 //import '@bb/datetime-picker/lib/index.css';
@@ -35,9 +35,8 @@ function ActivityFormLayout(props) {
 
         setSubmitState({loading: true});
         try {
-            const res = await superagent.post(process.env.API_PATH + "/activityForm")
-                    .query({processInstanceId: processInstanceId, activityInstanceId: activityInstanceId})
-                    .send(data.formData);
+            const api = new WorkflowResourceClient();
+            const res = await api.completeAndNext({processInstanceId,activityInstanceId,processData:data.formData});
             if (res && (res.statusText !== "OK" || !res.headers)) {
                 setSubmitState({loading: false, error: res.status + ' ' + res.statusText});
             } else {
