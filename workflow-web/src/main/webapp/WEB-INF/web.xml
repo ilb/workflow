@@ -188,9 +188,9 @@
     </env-entry>
     <env-entry>
         <description>Включать корневой элемент json v2</description>
-        <env-entry-name>includeRoot</env-entry-name>
+        <env-entry-name>ru.bystrobank.apps.workflow.includeRoot</env-entry-name>
         <env-entry-type>java.lang.Boolean</env-entry-type>
-        <env-entry-value>true</env-entry-value>
+        <env-entry-value>false</env-entry-value>
     </env-entry>
     <env-entry>
         <description>Пересчет назначений по расписанию</description>

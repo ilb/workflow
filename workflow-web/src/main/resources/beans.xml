@@ -135,7 +135,7 @@
         <property name="namespaceSeparator" value=":"/>-->
         <property name="formattedOutput" value="true"/>
         <!--<property name="attributePrefix" value="@"/>-->
-        <property name="includeRoot" value="${includeRoot}"/>
+        <property name="includeRoot" value="${ru.bystrobank.apps.workflow.includeRoot}"/>
         <property name="marshalEmptyCollections" value="false"/>
         <!--<property name="schemaHandler" ref="schemaHandler"/>-->
     </bean>
@@ -175,7 +175,8 @@
     <bean id="authorizationHandler" class="ru.ilb.workflow.session.AuthorizationHandler"/>
     <bean id="sessionDataProvider" class="ru.ilb.workflow.session.SessionDataProvider"/>
     <bean id="searchContextProvider" class="org.apache.cxf.jaxrs.ext.search.SearchContextProvider"/>
-    <bean id="logInbound" class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+    <!--<bean id="logInbound" class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
+    <bean id="loggingFeature" class="org.apache.cxf.ext.logging.LoggingFeature"/>
     <bean class="ru.ilb.workflow.eventaudit.CollectionEventAuditListener"/>
     <bean class="ru.ilb.workflow.utils.InitUtils" init-method="initializeEngine" destroy-method="stopEngine" />
     <context:component-scan base-package="ru.ilb.workflow.web,ru.ilb.filedossier"/>
@@ -207,10 +208,11 @@
         </jaxrs:extensionMappings>
         <jaxrs:features>
             <ref bean="swagger2Feature" />
+            <ref bean="loggingFeature"/>
         </jaxrs:features>
 
         <jaxrs:inInterceptors>
-            <ref bean="logInbound"/>
+            <!--<ref bean="logInbound"/>-->
         </jaxrs:inInterceptors>
     </jaxrs:server>
     <jaxrs:server address="/v2" basePackages="ru.ilb.workflow.web,ru.ilb.workflow.xpil.web,ru.ilb.workflow.providers,ru.ilb.common.jaxrs.providers,ru.ilb.common.jaxrs.exceptionhandler,ru.ilb.filedossier.components">
@@ -239,10 +241,11 @@
         </jaxrs:extensionMappings>
         <jaxrs:features>
             <ref bean="swagger2Feature" />
+            <ref bean="loggingFeature"/>
         </jaxrs:features>
 
         <jaxrs:inInterceptors>
-            <ref bean="logInbound"/>
+            <!--<ref bean="logInbound"/>-->
         </jaxrs:inInterceptors>
     </jaxrs:server>
     <http-conf:conduit name="*.http-conduit">

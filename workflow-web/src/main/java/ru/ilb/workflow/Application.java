@@ -16,12 +16,10 @@
 package ru.ilb.workflow;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.file.Paths;
-import javax.annotation.Resource;
-import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import org.apache.cxf.ext.logging.LoggingFeature;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -29,7 +27,6 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 import ru.ilb.filedossier.context.DossierContextBuilder;
 import ru.ilb.filedossier.context.DossierContextImpl;
-import ru.ilb.filedossier.core.DossierFactory;
 import ru.ilb.filedossier.ddl.DossierDefinitionRepository;
 import ru.ilb.filedossier.ddl.FileDossierDefinitionRepository;
 import ru.ilb.filedossier.entities.DossierContext;
@@ -55,29 +52,11 @@ public class Application {
     String xpdlRepository;
 
 //    @Bean
-//    public DossierFactory dossierFactory() throws NamingException {
-//        DossierDefinitionRepository dossierModelRepository;
-//        StoreFactory storeFactory;
-//        dossierModelRepository = new FileDossierDefinitionRepository(Paths.get(xpdlRepository).resolve("packages").toUri());
-//        storeFactory = StoreFactory.newInstance(URI.create(processfilesbase));
-//
-//        DossierContextBuilder dossierContextBuilder = (String dossierKey, String dossierPackage, String dossierCode) -> {
-//            DossierContext dc = new DossierContextImpl();
-//            dc.setProperty("name", "Тест имя");
-//            dc.setProperty("prop", false);
-//            return dc;
-//        };
-//        TemplateEvaluator templateEvaluator = new SubstitutorTemplateEvaluator(new InitialContext());
-//        return new DossierFactory(dossierModelRepository, storeFactory, dossierContextBuilder, templateEvaluator);
-//
-//    }
-//    @Bean
 //    public Context context() throws NamingException {
 //        final Context context = new InitialContext();
 //        context.bind("ru.bystrobank.apps.meta.url", "https://devel.net.ilb.ru/meta");
 //        return context;
 //    }
-
     @Bean
     public TemplateEvaluator templateEvaluator() throws NamingException {
         return new SubstitutorTemplateEvaluator(new InitialContext());
@@ -103,4 +82,12 @@ public class Application {
     public DossierDefinitionRepository dossierDefinitionRepository() {
         return new FileDossierDefinitionRepository(Paths.get(xpdlRepository).resolve("packages").toUri());
     }
+
+// only works with auto-registered cxf jax-rs server
+//    @Bean
+//    public LoggingFeature loggingFeature() {
+//        LoggingFeature lf = new LoggingFeature();
+//        lf.addBinaryContentMediaTypes("application/vnd.oasis.opendocument.spreadsheet");
+//        return lf;
+//    }
 }
