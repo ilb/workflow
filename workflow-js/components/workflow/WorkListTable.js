@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Message, Loader, Select, Button, Header as HeaderUI, Icon } from 'semantic-ui-react';
 import { ProcessInstancesApi, ProcessDefinitionsApi } from '@ilb/workflow-api';
 import config from '../../conf/config';
-import '@bb/semantic-ui-css/semantic.min.css';
+import 'semantic-ui-css/semantic.min.css';
 import { Table, Header } from 'semantic-ui-react';
 import Link from 'next/link';
 function ActivityLink(props) {

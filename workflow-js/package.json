@@ -1,6 +1,6 @@
 {
   "name": "@ilb/workflow-js",
-  "version": "2.0.19",
+  "version": "2.0.20",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,6 @@
   "license": "ISC",
   "dependencies": {
     "@bb/jsonschema-form": "^1.0.2",
-    "@bb/semantic-ui-css": "^2.2.12",
     "@ilb/filedossier-api": "^1.0.1",
     "@ilb/node_context": "^1.0.1",
     "@ilb/workflow-api": "^2.0.2",
@@ -25,6 +24,7 @@
     "react-addons-shallow-compare": "^15.6.2",
     "react-dom": "^16.9.0",
     "react-notification-system": "^0.2.17",
+    "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.87.3"
   },
   "devDependencies": {

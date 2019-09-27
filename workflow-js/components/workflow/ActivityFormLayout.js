@@ -6,7 +6,7 @@ import config from '../../conf/config';
 import { Button, Step, Loader, Message, Segment } from 'semantic-ui-react';
 import JsonSchemaForm from '@bb/jsonschema-form';
 import '@bb/datetime-picker/lib/index.css';
-import '@bb/semantic-ui-css/semantic.min.css'
+import 'semantic-ui-css/semantic.min.css'
 import WorkflowResourceClient from '../../classes/workflow/WorkflowResourceClient';
 import { DossiersApi} from '@ilb/filedossier-api';
 
