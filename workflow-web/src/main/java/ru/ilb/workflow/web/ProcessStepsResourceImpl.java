@@ -33,6 +33,7 @@ import org.enhydra.shark.api.common.SharkConstants;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.workflow.api.ProcessStepsResource;
+import ru.ilb.workflow.utils.WorkflowUtils;
 import ru.ilb.workflow.view.ProcessStep;
 import ru.ilb.workflow.view.ProcessSteps;
 
@@ -64,7 +65,7 @@ public class ProcessStepsResourceImpl implements ProcessStepsResource {
     public static List<ProcessStep> getProcessSteps(WMSessionHandle shandle, String processInstanceId, String processDefinitionId) throws Exception {
         WorkflowProcess workflowProcess = XPDLUtils.getWorkflowProcess(shandle, processInstanceId, processDefinitionId);
         Map<String, ProcessStep> stepMap = makeStepMap(shandle, workflowProcess);
-        fillStepMap(shandle, stepMap, processInstanceId);
+        fillStepMap(shandle, stepMap, workflowProcess.getId(), processInstanceId);
         return new ArrayList<>(stepMap.values());
     }
 
@@ -96,14 +97,14 @@ public class ProcessStepsResourceImpl implements ProcessStepsResource {
         return stepMap;
     }
 
-    private static Map<String, ProcessStep> fillStepMap(WMSessionHandle shandle, Map<String, ProcessStep> stepMap, String procId) throws Exception {
+    private static Map<String, ProcessStep> fillStepMap(WMSessionHandle shandle, Map<String, ProcessStep> stepMap, String processDefinitionId, String processInstanceId) throws Exception {
 
-        if (procId != null) {
+        if (processInstanceId != null) {
             WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
             ActivityFilterBuilder fb = SharkInterfaceWrapper.getShark()
                     .getActivityFilterBuilder();
 
-            WMFilter filter = fb.addProcessIdEquals(shandle, procId);
+            WMFilter filter = fb.addProcessIdEquals(shandle, processInstanceId);
             WMActivityInstance[] activitiesInstances = wapi.listActivityInstances(shandle,
                     filter,
                     false)
@@ -112,10 +113,10 @@ public class ProcessStepsResourceImpl implements ProcessStepsResource {
             // Filling relationMap with list of activity instances.
             for (int i = 0; i < activitiesInstances.length; i++) {
                 WMActivityInstance wfActivity = activitiesInstances[i];
-                String definitionId = wfActivity.getActivityDefinitionId();
+                String activityDefinitionId = wfActivity.getActivityDefinitionId();
 
-                if (stepMap.containsKey(definitionId)) {
-                    ProcessStep step = stepMap.get(definitionId);
+                if (stepMap.containsKey(activityDefinitionId)) {
+                    ProcessStep step = stepMap.get(activityDefinitionId);
                     boolean active = wfActivity.getState()
                             .stringValue()
                             .startsWith(SharkConstants.STATEPREFIX_OPEN);
@@ -128,6 +129,8 @@ public class ProcessStepsResourceImpl implements ProcessStepsResource {
                         step.setActive(active ? true : null);
                         step.setCompleted(completed ? true : null);
                         step.setDisabled(null);
+                        String url = WorkflowUtils.getActivityFormUrl(shandle, processDefinitionId, processInstanceId, activityDefinitionId, wfActivity.getId());
+                        step.setActivityFormUrl(url);
                     }
                 }
             }
