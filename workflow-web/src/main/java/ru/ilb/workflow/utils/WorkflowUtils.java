@@ -15,18 +15,12 @@
  */
 package ru.ilb.workflow.utils;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.ws.rs.WebApplicationException;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
-import org.enhydra.shark.api.client.wfservice.WMEntity;
-import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
-import org.enhydra.shark.utilities.wmentity.WMEntityUtilities;
-import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.filedossier.scripting.SubstitutorTemplateEvaluator;
 import ru.ilb.filedossier.scripting.TemplateEvaluator;
 
@@ -36,7 +30,8 @@ import ru.ilb.filedossier.scripting.TemplateEvaluator;
  */
 public class WorkflowUtils {
 
-    private static final String WORKFLOW_FORM_RESOURCE_URL = "WORKFLOW_FORM_RESOURCE_URL";
+    private static final String WORKFLOW_ACTIVITYFORM = "WORKFLOW_ACTIVITYFORM";
+    private static final String WORKFLOW_ACTIVITYAPI = "WORKFLOW_ACTIVITYAPI";
 
     /**
      * Get url to activity form
@@ -53,13 +48,31 @@ public class WorkflowUtils {
         String defaultActivityFormUrl;
         try {
             ctx = new InitialContext();
-            defaultActivityFormUrl = (String) ctx.lookup("ru.bystrobank.apps.workflow.activityform.url");
+            defaultActivityFormUrl = (String) ctx.lookup("ru.bystrobank.apps.workflow.activityform");
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        String activityFormUrl = XPDLUtils.getEAValue(shandle, WORKFLOW_FORM_RESOURCE_URL, processDefinitionId, processInstanceId, activityInstanceId, defaultActivityFormUrl);
+        String activityFormUrl = XPDLUtils.getEAValue(shandle, WORKFLOW_ACTIVITYFORM, processDefinitionId, processInstanceId, activityInstanceId, defaultActivityFormUrl);
+        return paramSubstitution(ctx, activityFormUrl, processDefinitionId, processInstanceId, activityDefinitionId, activityInstanceId);
+    }
+
+    public static String getActivityApiUrl(WMSessionHandle shandle, String processDefinitionId, String processInstanceId, String activityDefinitionId, String activityInstanceId) {
+        javax.naming.Context ctx;
+        String defaultActivityFormUrl;
+        try {
+            ctx = new InitialContext();
+            defaultActivityFormUrl = (String) ctx.lookup("ru.bystrobank.apps.workflow.activityapi");
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        String activityFormUrl = XPDLUtils.getEAValue(shandle, WORKFLOW_ACTIVITYAPI, processDefinitionId, processInstanceId, activityInstanceId, defaultActivityFormUrl);
+        return paramSubstitution(ctx, activityFormUrl, processDefinitionId, processInstanceId, activityDefinitionId, activityInstanceId);
+    }
+
+
+
+    private static String paramSubstitution(Context ctx, String activityFormUrl, String processDefinitionId, String processInstanceId, String activityDefinitionId, String activityInstanceId) {
         TemplateEvaluator templateEvaluator = new SubstitutorTemplateEvaluator(ctx);
-        String[] items = activityDefinitionId.split("_");
         Map<String, Object> params = new HashMap<>();
         //FIXME HARD CODE cut process Id
         if (processDefinitionId == null) {
@@ -70,32 +83,14 @@ public class WorkflowUtils {
         params.put("activityDefinitionId", activityDefinitionId);
         params.put("processInstanceId", processInstanceId);
         params.put("activityInstanceId", activityInstanceId);
-        String activityShortId = activityDefinitionId;
+        String activityDefinitionShortId = activityDefinitionId;
         // HARD CODE CUT PROCESS DEF NAME
         if (activityDefinitionId.startsWith(processDefinitionId)) {
-            activityShortId = activityDefinitionId.substring(processDefinitionId.length() + 1);
+            activityDefinitionShortId = activityDefinitionId.substring(processDefinitionId.length() + 1);
         }
-        params.put("activityShortId", activityShortId);
+        params.put("activityDefinitionShortId", activityDefinitionShortId);
         activityFormUrl = templateEvaluator.evaluateStringExpression(activityFormUrl, params);
         return activityFormUrl;
-
-    }
-
-    @Transactional
-    public static void startActivity(WMSessionHandle shandle, String processId, String activityId) throws Exception {
-        WMEntity proc = SharkInterfaceWrapper.getShark().getAdminMisc().getProcessDefinitionInfo(null, processId);
-        List<WMEntity> acts = Arrays.asList(WMEntityUtilities.getOverallActivities(shandle, SharkInterfaceWrapper.getShark().getXPDLBrowser(), proc));
-        WMEntity actdef = null;
-        for (WMEntity act : acts) {
-            if (act.getId().equals(activityId)) {
-                actdef = act;
-                break;
-            }
-        }
-        if (actdef == null) {
-            throw new WebApplicationException("Этап не найден", 404);
-        }
-        SharkInterfaceWrapper.getShark().getExecutionAdministration().startActivity(shandle, processId, "", actdef);
 
     }
 

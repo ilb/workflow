@@ -61,10 +61,16 @@
         <env-entry-value>file:///tmp/workflow/files</env-entry-value>
     </env-entry>
     <env-entry>
-        <description>Путь к файлам процесса</description>
-        <env-entry-name>ru.bystrobank.apps.workflow.activityform.url</env-entry-name>
+        <description>URL формы активности</description>
+        <env-entry-name>ru.bystrobank.apps.workflow.activityform</env-entry-name>
         <env-entry-type>java.lang.String</env-entry-type>
         <env-entry-value>${ru.bystrobank.apps.workflow.js}/activityForm?processInstanceId=${processInstanceId}&amp;activityInstanceId=${activityInstanceId}</env-entry-value>
+    </env-entry>
+    <env-entry>
+        <description>URL API активности</description>
+        <env-entry-name>ru.bystrobank.apps.workflow.activityapi</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>${ru.bystrobank.apps.workflow.js}/api/activityApi?processInstanceId=${processInstanceId}&amp;activityInstanceId=${activityInstanceId}&amp;activityShortId=${activityShortId}</env-entry-value>
     </env-entry>
     <env-entry>
         <description>Группа, дающая доступ к процессу независимо от офиса</description>

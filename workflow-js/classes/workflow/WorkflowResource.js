@@ -9,7 +9,7 @@ export default class WorkflowResource {
         this.processInstancesApi = new ProcessInstancesApi(apiClient);
     }
 
-    async callApi(req, res) {
+    async execute(req, res) {
         const method = req.query.method;
         this[method](req, res);
     }
