@@ -23,8 +23,7 @@ const ProcessSelector = (props) => {
                 setSubmitState({loading: false, error: res.status + ' ' + res.statusText});
             } else {
                 setSubmitState({loading: false});
-                document.location = res.headers['x-location'].replace(/https:\/\/devel.net.ilb.ru\/workflow-js/, document.location.origin + "/workflow");
-                // document.location = res.headers['x-location'].replace('/workflow-js/', '/workflow/');
+                document.location = res.headers['x-location'];
             }
         } catch (e) {
             setSubmitState({loading: false, error: e.status + ' ' + e.message});
