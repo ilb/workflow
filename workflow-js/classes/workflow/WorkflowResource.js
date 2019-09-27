@@ -1,11 +1,17 @@
 import { ProcessInstancesApi } from '@ilb/workflow-api';
-import config from '../../conf/config';
 
+/**
+ * Workflow API handler
+ */
 export default class WorkflowResource {
+
+    constructor(apiClient) {
+        this.processInstancesApi = new ProcessInstancesApi(apiClient);
+    }
 
     async callApi(req, res) {
         const method = req.query.method;
-        this[method](req,res);
+        this[method](req, res);
     }
 
     /**
@@ -18,19 +24,14 @@ export default class WorkflowResource {
         const {query, headers, body} = req;
         const processInstanceId = query.processInstanceId;
         const activityInstanceId = query.activityInstanceId;
-        const api = new ProcessInstancesApi(config.workflowApiClient(headers ? headers['x-remote-user'] : null));
-        // console.log('api/activityForm api', api);
-        const act = await api.completeAndNext(activityInstanceId, processInstanceId, {body});
-
+        const act = await this.processInstancesApi.completeAndNext(activityInstanceId, processInstanceId, {body});
         if (act && act.activityFormUrl) {
             res.setHeader('X-Location', act.activityFormUrl);
         } else {
             res.setHeader('X-Location', "/workflow/workList");
         }
-
         res.statusCode = 200;
         res.end(JSON.stringify({}));
-
     }
 
     /**
@@ -42,18 +43,13 @@ export default class WorkflowResource {
     async createProcessInstanceAndNext(req, res) {
         const {query, headers, body} = req;
         const processDefinitionId = query.processDefinitionId;
-        const api = new ProcessInstancesApi(config.workflowApiClient(headers ? headers['x-remote-user'] : null));
-        const act = await api.createProcessInstanceAndNext({processDefinitionId, body});
-
+        const act = await this.processInstancesApi.createProcessInstanceAndNext({processDefinitionId, body});
         if (act.activityFormUrl) {
             res.setHeader('X-Location', act.activityFormUrl);
         } else {
             res.setHeader('X-Location', "workList");
         }
-
-
         res.statusCode = 200;
         res.end(JSON.stringify({}));
-
     }
 }
