@@ -162,6 +162,7 @@
         </xsd:annotation>
         <xsd:complexType>
             <xsd:sequence>
+                <xsd:element ref="processInstance"/>
                 <xsd:element ref="activityInstance"/>
                 <xsd:element ref="activityAction" minOccurs="0" maxOccurs="unbounded"/>
                 <xsd:element ref="activityDossier" minOccurs="0"/>

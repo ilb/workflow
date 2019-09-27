@@ -61,19 +61,21 @@ public class WorkflowUtils {
         TemplateEvaluator templateEvaluator = new SubstitutorTemplateEvaluator(ctx);
         String[] items = activityDefinitionId.split("_");
         Map<String, Object> params = new HashMap<>();
+        //FIXME HARD CODE cut process Id
+        if (processDefinitionId == null) {
+            processDefinitionId = processInstanceId.substring(processInstanceId.indexOf("_") + 1);
+            processDefinitionId = processDefinitionId.substring(processDefinitionId.indexOf("_") + 1);
+        }
         params.put("processDefinitionId", processDefinitionId);
         params.put("activityDefinitionId", activityDefinitionId);
         params.put("processInstanceId", processInstanceId);
         params.put("activityInstanceId", activityInstanceId);
-        //FIXME HARD CODE
-        if (items.length == 3) {
-            String packageId = items[0];
-            String processShortId = items[1];
-            String activityShortId = items[2];
-            params.put("packageId", packageId);
-            params.put("processShortId", processShortId);
-            params.put("activityShortId", activityShortId);
+        String activityShortId = activityDefinitionId;
+        // HARD CODE CUT PROCESS DEF NAME
+        if (activityDefinitionId.startsWith(processDefinitionId)) {
+            activityShortId = activityDefinitionId.substring(processDefinitionId.length() + 1);
         }
+        params.put("activityShortId", activityShortId);
         activityFormUrl = templateEvaluator.evaluateStringExpression(activityFormUrl, params);
         return activityFormUrl;
 

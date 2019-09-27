@@ -46,8 +46,8 @@ public class WebClientToolAgent extends AbstractToolAgent {
             if (appName == null || appName.trim().length() == 0) {
                 readParamsFromExtAttributes((String) parameters[0].the_value);
             }
-
-            cus.info(shandle, "appName = " + appName + " appMode = " + appMode + " appInfo=" + appInfo + " toolInfo=" + toolInfo);
+            cus.info(shandle, "procInstId=" + procInstId + " assId=" + assId + " appName=" + appName + " appMode=" + appMode + " wpId=" + toolInfo.getWpId() + " actiId=" + toolInfo.getActId());
+            //cus.info(shandle, "appName = " + appName + " appMode = " + appMode + " appInfo=" + appInfo + " toolInfo=" + toolInfo);
 
 //            if (appMode != null && appMode.intValue() == APP_MODE_SYNCHRONOUS) {
 //            }

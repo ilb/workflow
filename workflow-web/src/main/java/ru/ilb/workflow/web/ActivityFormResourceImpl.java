@@ -23,6 +23,7 @@ import org.apache.cxf.jaxrs.json.basic.JsonMapObjectReaderWriter;
 import org.enhydra.shark.Shark;
 import org.enhydra.shark.api.client.wfmc.wapi.WAPI;
 import org.enhydra.shark.api.client.wfmc.wapi.WMActivityInstance;
+import org.enhydra.shark.api.client.wfmc.wapi.WMProcessInstance;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.enhydra.shark.api.client.wfservice.AdminMisc;
 import org.enhydra.shark.api.client.wfservice.SharkConnection;
@@ -34,10 +35,12 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.jsonschema.jsonschema.JsonSchema;
 import ru.ilb.workflow.api.ActivityFormResource;
 import ru.ilb.workflow.mappers.ActivityInstanceMapper;
+import ru.ilb.workflow.mappers.ProcessInstanceMapper;
 import ru.ilb.workflow.utils.JaxbHelper;
 import ru.ilb.workflow.view.ActivityDossier;
 import ru.ilb.workflow.view.ActivityForm;
 import ru.ilb.workflow.view.ActivityInstance;
+import ru.ilb.workflow.view.ProcessInstance;
 
 public class ActivityFormResourceImpl implements ActivityFormResource {
 
@@ -56,6 +59,9 @@ public class ActivityFormResourceImpl implements ActivityFormResource {
 
     @Inject
     private ActivityInstanceMapper activityInstanceMapper;
+
+    @Inject
+    private ProcessInstanceMapper processInstanceMapper;
 
     public ActivityFormResourceImpl(Supplier<WMSessionHandle> sessionHandleSupplier, String processInstanceId, String activityInstanceId) {
         this.sessionHandleSupplier = sessionHandleSupplier;
@@ -79,6 +85,11 @@ public class ActivityFormResourceImpl implements ActivityFormResource {
 
         ActivityForm activityForm = new ActivityForm();
         WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
+        WMProcessInstance wmProcessInstance = wapi.getProcessInstance(shandle, processInstanceId);
+        ProcessInstance processInstance = processInstanceMapper.createFromEntity(wmProcessInstance);
+
+        activityForm.setProcessInstance(processInstance);
+
         WMActivityInstance wmActivityInstance = wapi.getActivityInstance(shandle, processInstanceId, activityInstanceId);
         ActivityInstance activityInstance = activityInstanceMapper.createFromEntity(wmActivityInstance);
 
