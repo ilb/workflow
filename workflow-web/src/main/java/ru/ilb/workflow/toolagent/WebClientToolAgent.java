@@ -26,6 +26,7 @@ import static org.enhydra.shark.api.internal.toolagent.ToolAgent.APP_STATUS_INVA
 import static org.enhydra.shark.api.internal.toolagent.ToolAgent.APP_STATUS_RUNNING;
 import org.enhydra.shark.api.internal.toolagent.ToolAgentGeneralException;
 import org.enhydra.shark.toolagent.AbstractToolAgent;
+import ru.ilb.workflow.utils.WorkflowUtils;
 
 /**
  *
@@ -46,7 +47,16 @@ public class WebClientToolAgent extends AbstractToolAgent {
             if (appName == null || appName.trim().length() == 0) {
                 readParamsFromExtAttributes((String) parameters[0].the_value);
             }
-            cus.info(shandle, "procInstId=" + procInstId + " assId=" + assId + " appName=" + appName + " appMode=" + appMode + " wpId=" + toolInfo.getWpId() + " actiId=" + toolInfo.getActId());
+
+            String activityId = assId.substring(0, assId.indexOf("#"));
+
+            String url = WorkflowUtils.getActivityApiUrl(shandle, toolInfo.getWpId(), procInstId, toolInfo.getActId(), activityId);
+
+            cus.info(shandle, "procInstId=" + procInstId + " assId=" + assId + " appName=" + appName + " appMode=" + appMode + " wpId=" + toolInfo.getWpId() + " actiId=" + toolInfo.getActId() + " url=" + url);
+
+            String[] headers = {"Content-Type: application/json"};
+
+            WebClient.execute("POST", url, headers, "{}");
             //cus.info(shandle, "appName = " + appName + " appMode = " + appMode + " appInfo=" + appInfo + " toolInfo=" + toolInfo);
 
 //            if (appMode != null && appMode.intValue() == APP_MODE_SYNCHRONOUS) {

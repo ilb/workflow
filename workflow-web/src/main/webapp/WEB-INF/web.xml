@@ -70,7 +70,7 @@
         <description>URL API активности</description>
         <env-entry-name>ru.bystrobank.apps.workflow.activityapi</env-entry-name>
         <env-entry-type>java.lang.String</env-entry-type>
-        <env-entry-value>${ru.bystrobank.apps.workflow.js}/api/activityApi?processInstanceId=${processInstanceId}&amp;activityInstanceId=${activityInstanceId}&amp;activityShortId=${activityShortId}</env-entry-value>
+        <env-entry-value>${ru.bystrobank.apps.workflow.js}/api/activityApi?processInstanceId=${processInstanceId}&amp;activityInstanceId=${activityInstanceId}&amp;activityDefinitionShortId=${activityDefinitionShortId}</env-entry-value>
     </env-entry>
     <env-entry>
         <description>Группа, дающая доступ к процессу независимо от офиса</description>
