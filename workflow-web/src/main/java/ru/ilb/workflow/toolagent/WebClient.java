@@ -29,7 +29,7 @@ import org.enhydra.shark.utilities.logging.LoggingUtilities;
  *
  * @author slavb
  */
-public class WebClient /*extends AbstractToolAgent*/ {
+public class WebClient {
 
     public static void execute(AppParameter method, AppParameter url, AppParameter headers, AppParameter data, AppParameter response_code, AppParameter response) throws ToolAgentGeneralException {
         response.the_value = execute(method.the_value.toString(), url.the_value.toString(), (String[]) headers.the_value, data.the_value);

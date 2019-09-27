@@ -218,7 +218,8 @@ class ProcessesResourceIntr {
 
     public UriBuilder getUriBuilder(ActivityInstance activity, WorkflowProcessInstance process, UriInfo uriInfo) {
         UriBuilder uriBuilder;
-        String resourceUrl = getResourceUrl(activity, process);
+        // disable WORKFLOW_FORM_RESOURCE_URL: IllegalArgumentException: Unresolved variables; only 0 value(s) given for 2 unique variable(s)
+        String resourceUrl = null; //getResourceUrl(activity, process);
         if (resourceUrl != null) {
             uriBuilder = UriBuilder.fromPath(resourceUrl);
         } else {
