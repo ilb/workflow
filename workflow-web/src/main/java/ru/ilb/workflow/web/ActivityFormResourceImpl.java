@@ -96,7 +96,7 @@ public class ActivityFormResourceImpl implements ActivityFormResource {
         activityForm.setActivityInstance(activityInstance);
 
         activityForm.setActivityDossier(getActivityDossier(shandle, wmActivityInstance));
-        activityForm.setProcessSteps(ProcessStepsResourceImpl.getProcessSteps(shandle, processInstanceId, null));
+        activityForm.setProcessSteps(ProcessStepsResourceImpl.getProcessSteps(shandle, processInstanceId, null, activityInstanceId));
 
         JsonSchema jsonSchema = JsonSchemaResourceImpl.getJsonSchemaActivity(shandle, processInstanceId, activityInstanceId);
         String jsonSchemaStr = jaxbHelper.marshal(jsonSchema, "application/json");

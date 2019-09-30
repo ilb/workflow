@@ -91,7 +91,7 @@ public class ProcessInstanceResourceImpl implements ProcessInstanceResource {
 
     @Override
     public ProcessStepsResource getProcessStepsResource() {
-        return resourceContext.initResource(new ProcessStepsResourceImpl(sessionHandleSupplier, processInstanceId, null));
+        return resourceContext.initResource(new ProcessStepsResourceImpl(sessionHandleSupplier, processInstanceId, null, null));
     }
 
     @Override

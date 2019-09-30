@@ -45,10 +45,13 @@ public class ProcessStepsResourceImpl implements ProcessStepsResource {
 
     private final String processInstanceId;
 
-    public ProcessStepsResourceImpl(Supplier<WMSessionHandle> sessionHandleSupplier, String processInstanceId, String processDefinitionId) {
+    private final String activityInstanceId;
+
+    public ProcessStepsResourceImpl(Supplier<WMSessionHandle> sessionHandleSupplier, String processInstanceId, String processDefinitionId, String activityInstanceId) {
         this.sessionHandleSupplier = sessionHandleSupplier;
         this.processDefinitionId = processDefinitionId;
         this.processInstanceId = processInstanceId;
+        this.activityInstanceId = activityInstanceId;
     }
 
     @Override
@@ -56,16 +59,16 @@ public class ProcessStepsResourceImpl implements ProcessStepsResource {
     public ProcessSteps getProcessSteps() {
         try {
             WMSessionHandle shandle = sessionHandleSupplier.get();
-            return new ProcessSteps().withProcessSteps(getProcessSteps(shandle, processInstanceId, processDefinitionId));
+            return new ProcessSteps().withProcessSteps(getProcessSteps(shandle, processInstanceId, processDefinitionId, activityInstanceId));
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
 
-    public static List<ProcessStep> getProcessSteps(WMSessionHandle shandle, String processInstanceId, String processDefinitionId) throws Exception {
+    public static List<ProcessStep> getProcessSteps(WMSessionHandle shandle, String processInstanceId, String processDefinitionId, String activityInstanceId) throws Exception {
         WorkflowProcess workflowProcess = XPDLUtils.getWorkflowProcess(shandle, processInstanceId, processDefinitionId);
         Map<String, ProcessStep> stepMap = makeStepMap(shandle, workflowProcess);
-        fillStepMap(shandle, stepMap, workflowProcess.getId(), processInstanceId);
+        fillStepMap(shandle, stepMap, workflowProcess.getId(), processInstanceId, activityInstanceId);
         return new ArrayList<>(stepMap.values());
     }
 
@@ -97,7 +100,7 @@ public class ProcessStepsResourceImpl implements ProcessStepsResource {
         return stepMap;
     }
 
-    private static Map<String, ProcessStep> fillStepMap(WMSessionHandle shandle, Map<String, ProcessStep> stepMap, String processDefinitionId, String processInstanceId) throws Exception {
+    private static Map<String, ProcessStep> fillStepMap(WMSessionHandle shandle, Map<String, ProcessStep> stepMap, String processDefinitionId, String processInstanceId, String activityInstanceId) throws Exception {
 
         if (processInstanceId != null) {
             WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
@@ -117,14 +120,16 @@ public class ProcessStepsResourceImpl implements ProcessStepsResource {
 
                 if (stepMap.containsKey(activityDefinitionId)) {
                     ProcessStep step = stepMap.get(activityDefinitionId);
-                    boolean active = wfActivity.getState()
+                    boolean open = wfActivity.getState()
                             .stringValue()
                             .startsWith(SharkConstants.STATEPREFIX_OPEN);
                     boolean completed = wfActivity.getState()
                             .stringValue()
                             .startsWith(SharkConstants.STATEPREFIX_CLOSED);
 
-                    if (step.getActivityId() == null || active) {
+                    if (step.getActivityId() == null || open) {
+                        // active: if activityInstanceId supplied, then supplied activity is active, else deteriminde by running activity
+                        boolean active = activityInstanceId != null ? activityInstanceId.equals(wfActivity.getId()) : open;
                         step.setActivityId(wfActivity.getId());
                         step.setActive(active ? true : null);
                         step.setCompleted(completed ? true : null);
