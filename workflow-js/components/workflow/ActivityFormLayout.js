@@ -9,6 +9,7 @@ import '@bb/datetime-picker/lib/index.css';
 import 'semantic-ui-css/semantic.min.css'
 import WorkflowResourceClient from '../../classes/workflow/WorkflowResourceClient';
 import { DossiersApi} from '@ilb/filedossier-api';
+import useSubmitHandler from '../../classes/workflow/SubmitHandler';
 
 //import '@bb/datetime-picker/lib/index.css';
 import Dossier from '../filedossier/Dossier';
@@ -22,32 +23,18 @@ import DefaultActivityForm from './DefaultActivityForm';
  * @return {ActivityFormLayout.props2}
  */
 function ActivityFormLayout(props) {
-    const [{loading, error}, setSubmitState] = useState({loading: false, error: null});
-
     const activityFormData = props && props.activityFormData;
     const activityInstanceId = props && props.activityFormData && props.activityFormData.activityInstance && props.activityFormData.activityInstance.id;
     const processInstanceId = props && props.activityFormData && props.activityFormData.activityInstance && props.activityFormData.activityInstance.processInstanceId;
 
-    const submitHandler = async (data) => {
-        if (!data) {
-            setSubmitState({loading: false, error: 'нет данных для отправки'});
-        }
-
-        setSubmitState({loading: true});
-        try {
-            const api = new WorkflowResourceClient();
-            const res = await api.completeAndNext({processInstanceId,activityInstanceId,processData:data.formData});
-            if (res && (res.statusText !== "OK" || !res.headers)) {
-                setSubmitState({loading: false, error: res.status + ' ' + res.statusText});
-            } else {
-                setSubmitState({loading: false});
-                document.location = res.headers['x-location'];
-            }
-        } catch (e) {
-            setSubmitState({loading: false, error: e.status + ' ' + e.message});
-        }
+    const completeAndNext = async (data) => {
+        const api = new WorkflowResourceClient();
+        const res = await api.completeAndNext({processInstanceId, activityInstanceId, processData: data.formData});
+        return res;
     };
-//FIXME
+
+    const {loading, error, submitHandler} = useSubmitHandler(completeAndNext);
+
     const props2 = {...props, submitHandler, error}
     return <Layout {...props} loader={loading}>
         {props.children ? props.children : <DefaultActivityForm {...props2}/>}
@@ -62,16 +49,6 @@ ActivityFormLayout.getInitialProps = async function (params) {
     const activityInstanceId = query.activityInstanceId;
     const api = new ProcessInstancesApi(config.workflowApiClient(headers ? headers['x-remote-user'] : null));
     const activityFormData = await api.getActivityForm(activityInstanceId, processInstanceId);
-    // TODO поменять на Link
-    const url = "/workflow/activityForm?processInstanceId=" + processInstanceId + "&activityInstanceId=";
-    activityFormData && activityFormData.processStep && activityFormData.processStep.forEach(el => {
-        // добавляем url для переключения между стадиями процесса
-        if (el.activityId !== activityInstanceId) {
-            el.href = url + el.activityId;
-        }
-        // active - выделяем активный шаг
-        el.active = el.activityId === activityInstanceId;
-    });
 
     const props = {activityFormData};
     let propsDossier = {};
@@ -79,13 +56,7 @@ ActivityFormLayout.getInitialProps = async function (params) {
     if (activityFormData.activityDossier) {
         propsDossier = await Dossier.getInitialProps({query: activityFormData.activityDossier, req});
     }
-
-    console.log('propsDossier', propsDossier);
-
-
     const propsLayout = await Layout.getInitialProps(params);
-    //console.log('propsLayout', propsLayout);
-
     return {...props, ...propsLayout, ...propsDossier};
 };
 
