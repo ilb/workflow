@@ -130,7 +130,7 @@ public class ProcessStepsResourceImpl implements ProcessStepsResource {
                         step.setCompleted(completed ? true : null);
                         step.setDisabled(null);
                         String url = WorkflowUtils.getActivityFormUrl(shandle, processDefinitionId, processInstanceId, activityDefinitionId, wfActivity.getId());
-                        step.setActivityFormUrl(url);
+                        step.setHref(url);
                     }
                 }
             }

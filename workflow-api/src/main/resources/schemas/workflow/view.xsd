@@ -186,7 +186,7 @@
                 <xsd:element name="title" type="xsd:string"/>
                 <xsd:element name="description" type="xsd:string" minOccurs="0"/>
                 <xsd:element name="activityId" type="xsd:string" minOccurs="0"/>
-                <xsd:element name="activityFormUrl" type="xsd:string"/>
+                <xsd:element name="href" type="xsd:string"/>
             </xsd:sequence>
         </xsd:complexType>
     </xsd:element>
