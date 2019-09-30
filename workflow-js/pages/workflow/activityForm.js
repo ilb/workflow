@@ -1,10 +1,17 @@
-import ActivityFormLayout from '../../components/workflow/ActivityFormLayout';
+import Layout from '../../components/workflow/Layout';
+import DefaultActivityForm from '../../components/workflow/DefaultActivityForm';
 
-export default function activityForm(props) {
-        return <ActivityFormLayout {...props} ></ActivityFormLayout>;
-
+const WorkList = (props) => {
+    return <Layout {...props}>
+        <DefaultActivityForm {...props}/>
+    </Layout>;
 }
 
-activityForm.getInitialProps = async function (params) {
-    return ActivityFormLayout.getInitialProps(params);
+export default WorkList;
+
+
+WorkList.getInitialProps = async function (params) {
+    const props = await DefaultActivityForm.getInitialProps(params);
+    const propsLayout = await Layout.getInitialProps(params);
+    return {...props, ...propsLayout};
 }
