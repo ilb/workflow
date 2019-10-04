@@ -1,17 +1,22 @@
+import PropTypes from 'prop-types';
 import Layout from '../../components/workflow/Layout';
 import WorkListTable from '../../components/workflow/WorkListTable';
 
-const WorkList = (props) => {
-    return <Layout {...props}>
-        <WorkListTable {...props}/>
-    </Layout>;
-}
+const WorkList = ({ workListProps, layoutProps }) => {
+  return <Layout {...layoutProps}>
+    <WorkListTable {...workListProps}/>
+  </Layout>;
+};
 
-export default WorkList;
-
+WorkList.propTypes = {
+  workListProps: PropTypes.object.isRequired,
+  layoutProps: PropTypes.object.isRequired,
+};
 
 WorkList.getInitialProps = async function (params) {
-    const props = await WorkListTable.getInitialProps(params);
-    const propsLayout = await Layout.getInitialProps(params);
-    return {...props, ...propsLayout};
-}
+  const workListProps = await WorkListTable.getInitialProps(params);
+  const layoutProps = await Layout.getInitialProps(params);
+  return { workListProps, layoutProps };
+};
+
+export default WorkList;
