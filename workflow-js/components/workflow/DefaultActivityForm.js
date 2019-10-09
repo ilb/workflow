@@ -3,7 +3,7 @@ import JsonSchemaForm from '@bb/jsonschema-form';
 import '@bb/datetime-picker/lib/index.css';
 import { Step, Message, Segment } from 'semantic-ui-react';
 
-import DossierTable from '@ilb/filedossier-js/components/DossierTable';
+import Dossier from '@ilb/filedossier-js/components/Dossier';
 import useSubmitHandler from '../../classes/workflow/SubmitHandler';
 import WorkflowResourceClient from '../../classes/workflow/WorkflowResourceClient';
 import ActivityFormHandler from '../../classes/workflow/ActivityFormHandler';
@@ -44,7 +44,7 @@ export default function DefaultActivityForm (props) {
         </div>
       </JsonSchemaForm>
       {error && <Message error visible header='Ошибка' content={error} />}
-      {dossierData && <DossierTable dossierData={dossierData}/>}
+      {dossierData && <Dossier dossierData={dossierData} mode="table" header/>}
     </Segment>
   );
 }
