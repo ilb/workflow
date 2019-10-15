@@ -1,5 +1,5 @@
 import { createDossierApi } from '@ilb/filedossier-js/conf/config';
-import { executeApi } from '@ilb/filedossier-js/classes/jsApiAutoProxy';
+import { executeApi } from '@ilb/js-auto-proxy';
 
 export default async (req, res) => {
   const apiDossier = createDossierApi((req && req.headers) ? req.headers['x-remote-user'] : null);
