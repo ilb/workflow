@@ -5,7 +5,7 @@ const isProd = process.env.NODE_ENV === 'production';
 const prefix = isProd ? '/workflow' : '';
 
 module.exports = withCSS(withTM({
-  transpileModules: ['@ilb/filedossier-js'],
+  transpileModules: ['@ilb/filedossier-js', '@ilb/js-auto-proxy'],
 
   assetPrefix: prefix, // affects page bundles and app/commons/vendor scripts
   env: {
