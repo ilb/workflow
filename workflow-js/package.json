@@ -1,6 +1,6 @@
 {
   "name": "@ilb/workflow-js",
-  "version": "2.0.29",
+  "version": "2.0.30",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,7 @@
   "dependencies": {
     "@bb/jsonschema-form": "^1.0.2",
     "@ilb/filedossier-api": "^1.0.1",
-    "@ilb/filedossier-js": "^1.0.7",
+    "@ilb/filedossier-js": "^1.0.8",
     "@ilb/js-auto-proxy": "^1.0.2",
     "@ilb/node_context": "^1.0.1",
     "@ilb/workflow-api": "^2.0.2",
