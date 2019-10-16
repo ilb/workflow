@@ -1,27 +1,18 @@
 import { useState } from 'react';
 
 export default function useSubmitHandler (handler) {
-  const [{ loading, error }, setSubmitState] = useState({ loading: false, error: null });
+  const [{ loading, error, response }, setSubmitState] = useState({ loading: false, error: null, response: null });
 
-  const submitHandler = async (data) => {
-    if (!data) {
-      setSubmitState({ loading: false, error: 'нет данных для отправки' });
-      return;
-    }
-
+  const submitHandler = async (...args) => {
     setSubmitState({ loading: true });
-    try {
-      const res = await handler(data);
-      if (res && (res.statusText !== 'OK' || !res.headers)) {
-        setSubmitState({ loading: false, error: res.status + ' ' + res.statusText });
-      } else {
-        setSubmitState({ loading: false });
-        document.location = res.headers['x-location'];
-      }
-    } catch (e) {
-      setSubmitState({ loading: false, error: e.status + ' ' + e.message });
+    const result = await handler(...args);
+    if (result.error || !result.response) {
+      setSubmitState({ loading: false, error: result.error || 'Нет данных' });
+    } else {
+      setSubmitState({ loading: false, response: result.response });
     }
+    return result;
   };
 
-  return { loading, error, submitHandler };
+  return { loading, error, response, submitHandler };
 }

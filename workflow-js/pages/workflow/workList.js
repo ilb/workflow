@@ -13,9 +13,9 @@ WorkList.propTypes = {
   layoutProps: PropTypes.object.isRequired,
 };
 
-WorkList.getInitialProps = async function (params) {
-  const workListProps = await WorkListTable.getInitialProps(params);
-  const layoutProps = await Layout.getInitialProps(params);
+WorkList.getInitialProps = async function (context) {
+  const workListProps = await WorkListTable.getInitialProps(context);
+  const layoutProps = await Layout.getInitialProps(context);
   return { workListProps, layoutProps };
 };
 

@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import Layout from '../../components/workflow/Layout';
-import DefaultActivityForm from '../../components/workflow/DefaultActivityForm';
+import ActivityFormComponent from '../../components/workflow/ActivityForm';
 
 const ActivityForm = ({ activityProps, layoutProps }) => {
   return <Layout {...layoutProps}>
-    <DefaultActivityForm {...activityProps}/>
+    <ActivityFormComponent {...activityProps}/>
   </Layout>;
 };
 
@@ -13,9 +13,9 @@ ActivityForm.propTypes = {
   layoutProps: PropTypes.object.isRequired,
 };
 
-ActivityForm.getInitialProps = async function (params) {
-  const activityProps = await DefaultActivityForm.getInitialProps(params);
-  const layoutProps = await Layout.getInitialProps(params);
+ActivityForm.getInitialProps = async function (context) {
+  const activityProps = await ActivityFormComponent.getInitialProps(context);
+  const layoutProps = await Layout.getInitialProps(context);
   return { activityProps, layoutProps };
 };
 

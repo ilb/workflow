@@ -1,5 +1,9 @@
+import { ProcessInstancesApi, ProcessDefinitionsApi } from '@ilb/workflow-api';
+import { createJsProxy } from '@ilb/js-auto-proxy';
 require('@ilb/node_context').config({ debug: true });
+
 const workflowApi = require('@ilb/workflow-api');
+workflowApi.ApiClient.instance.basePath = 'https://devel.net.ilb.ru/workflow-web/web/v2';
 
 let certfile, passphrase, cert, ca;
 
@@ -11,7 +15,9 @@ if (!process.browser) {
   ca = process.env.NODE_EXTRA_CA_CERTS ? fs.readFileSync(process.env.NODE_EXTRA_CA_CERTS) : null;
 }
 
-function workflowApiClient (xRemoteUser) {
+const getRemoteUser = req => req && req.headers && req.headers['x-remote-user'];
+
+export function getWorkflowApiClient (xRemoteUser) {
   const apiClient = new workflowApi.ApiClient();
   apiClient.basePath = 'https://devel.net.ilb.ru/workflow-web/web/v2';
   if (!process.browser) {
@@ -24,12 +30,24 @@ function workflowApiClient (xRemoteUser) {
   return apiClient;
 }
 
-workflowApi.ApiClient.instance.basePath = 'https://devel.net.ilb.ru/workflow-web/web/v2';
+export function getProcessInstancesApi ({ req, proxy }) {
+  const client = getWorkflowApiClient(getRemoteUser(req));
+  let api = new ProcessInstancesApi(client);
+  if (proxy) { api = createJsProxy(api, 'workflow/processinstances'); }
+  return api;
+}
 
-module.exports = {
+export function getProcessDefinitionsApi ({ req, proxy }) {
+  const client = getWorkflowApiClient(getRemoteUser(req));
+  let api = new ProcessDefinitionsApi(client);
+  if (proxy) { api = createJsProxy(api, 'workflow/processdefinitions'); }
+  return api;
+}
+
+const config = {
   certfile: certfile,
   passphrase: passphrase,
   cert: cert,
   ca: ca,
-  workflowApiClient: workflowApiClient,
 };
+export default config;

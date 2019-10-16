@@ -1,4 +1,4 @@
-// import Link from 'next/link';
+import Link from 'next/link';
 import { Menu } from 'semantic-ui-react';
 import ProcessSelector from './ProcessSelector';
 
@@ -6,13 +6,10 @@ import ProcessSelector from './ProcessSelector';
 const MainMenu = (props) => {
   return <div>
     <Menu>
-      {/* <Menu.Item> TODO use next/link, fix error on request
-        <Link href="/workflow/workList"><a>Рабочий лист</a></Link>
-      </Menu.Item> */}
-      <Menu.Item
-        name="Рабочий лист"
-        href="/workflow/workList"
-      />
+      <Link href="/workflow/workList">
+        <a className="item">Рабочий лист</a>
+      </Link>
+
       <ProcessSelector
         {...props}
       />

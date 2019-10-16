@@ -1,17 +1,18 @@
-import { ProcessInstancesApi } from '@ilb/workflow-api';
 import PropTypes from 'prop-types';
-import config from '../../conf/config';
-import { Table, Header } from 'semantic-ui-react';
+import { getProcessInstancesApi } from '../../conf/config';
+import { Table, Header, Message } from 'semantic-ui-react';
 // import Link from 'next/link';
 
 export default function WorkListTable ({ workList }) {
-  const activityInstanceData = workList && workList.activityInstance;
+  const { response, error } = workList;
+  const activityInstances = response && response.activityInstance;
   return (
     <div>
       <Header as='h3' icon textAlign='center'>
         <Header.Content>Рабочий лист</Header.Content>
       </Header>
-      <Table striped celled>
+      {error && <Message error visible header="Ошибка при получении данных рабочего листа" content={error}/>}
+      {response && !error && <Table striped celled>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Этап</Table.HeaderCell>
@@ -22,20 +23,20 @@ export default function WorkListTable ({ workList }) {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {activityInstanceData && Object.values(activityInstanceData).map((activity, index) => (
+          {(activityInstances || []).map((activity, index) => (
             <Table.Row key={index}>
               <Table.Cell>
                 <a href={activity.activityFormUrl}>{activity.name}</a>
                 <div>{activity.description}</div>
               </Table.Cell>
-              <Table.Cell collapsing>{activity.creationTime}</Table.Cell>
-              <Table.Cell collapsing>{activity.lastStateTime}</Table.Cell>
+              <Table.Cell collapsing>{dateToString(activity.creationTime)}</Table.Cell>
+              <Table.Cell collapsing>{dateToString(activity.lastStateTime)}</Table.Cell>
               <Table.Cell collapsing>{activity.priority}</Table.Cell>
               <Table.Cell>{activity.state && activity.state.name}</Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
-      </Table>
+      </Table>}
     </div>
   );
 }
@@ -45,19 +46,14 @@ WorkListTable.propTypes = {
 };
 
 WorkListTable.getInitialProps = async function ({ req }) {
-  const headers = req ? req.headers : {};
-  const api = new ProcessInstancesApi(config.workflowApiClient(headers ? headers['x-remote-user'] : null));
+  const api = getProcessInstancesApi({ req, proxy: true });
   const workList = await api.getWorkList({});
-  // convert dates
-  workList.activityInstance && workList.activityInstance.forEach(activity => {
-    activity.creationTime = dateToString(activity.creationTime);
-    activity.lastStateTime = dateToString(activity.lastStateTime);
-  });
   return { workList };
 };
 
 function dateToString (date) {
   if (!date) { return date; }
+  date = new Date(date);
   const yyyy = date.getFullYear();
   const mm = `0${date.getMonth() + 1}`.slice(-2);
   const dd = `0${date.getDate()}`.slice(-2);

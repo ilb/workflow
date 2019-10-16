@@ -1,40 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Dropdown } from 'semantic-ui-react';
-import WorkflowResourceClient from '../../classes/workflow/WorkflowResourceClient';
-import config from '../../conf/config';
-import { ProcessDefinitionsApi } from '@ilb/workflow-api';
+import { getProcessDefinitionsApi } from '../../conf/config';
+import useSubmitHandler from '../../classes/workflow/SubmitHandler';
+import { createProcessInstanceAndNext } from '../../classes/workflow';
 
 const ProcessSelector = (props) => {
   const { showPopup, processDefinitions } = props;
-  const [{ loading, error }, setSubmitState] = useState({ loading: false, error: null });
+  const { response, error: pdError } = processDefinitions;
+  const processes = response && response.processDefinition;
+
+  const startProcess = (event, { value }) => (createProcessInstanceAndNext({ processDefinitionId: value }));
+  const { loading, error, submitHandler } = useSubmitHandler(startProcess);
+
+  // popup на ошибки в getProcessDefinitions
+  useEffect(() => {
+    if (pdError) {
+      showPopup({ title: 'Ошибка при получении списка процессов', message: pdError, type: 'error', position: 'tr', autoDismiss: '30' });
+    }
+  }, [pdError]);
+
+  // popup на ошибки в startProcess
   useEffect(() => {
     if (error) {
       showPopup({ title: 'Ошибка при запуске процесса', message: error, type: 'error', position: 'tr', autoDismiss: '30' });
-      setSubmitState({ loading: false, error: null }); // reset error
+      // setSubmitState({ loading: false, error: null }); // reset error
     }
   }, [error]);
-
-  const startProcess = async (event, { value: processDefinitionId }) => {
-    if (!processDefinitionId) {
-      setSubmitState({ loading: false, error: 'Не указан идентификатор процесса' });
-      return;
-    }
-    setSubmitState({ loading: true, error: null }); // reset error important
-    try {
-      const api = new WorkflowResourceClient();
-      const res = await api.createProcessInstanceAndNext({ processDefinitionId });
-
-      if (res && (res.statusText !== 'OK' || !res.headers)) {
-        setSubmitState({ loading: false, error: res.status + ' ' + res.statusText });
-      } else {
-        setSubmitState({ loading: false });
-        document.location = res.headers['x-location'];
-      }
-    } catch (e) {
-      setSubmitState({ loading: false, error: e.status + ' ' + e.message });
-    }
-  };
 
   return (
     <Dropdown loading={loading}
@@ -42,12 +34,12 @@ const ProcessSelector = (props) => {
       text="Запустить процесс"
     >
       <Dropdown.Menu>
-        {(processDefinitions || []).map((pd) => (
+        {(processes || []).map((pd) => (
           <Dropdown.Item
             key={pd.id}
             text={pd.definitionName}
             value={pd.id}
-            onClick={startProcess}
+            onClick={submitHandler}
           />
         ))}
       </Dropdown.Menu>
@@ -56,14 +48,13 @@ const ProcessSelector = (props) => {
 };
 
 ProcessSelector.propTypes = {
-  processDefinitions: PropTypes.array,
+  processDefinitions: PropTypes.object.isRequired,
   showPopup: PropTypes.func.isRequired,
 };
 
 ProcessSelector.getInitialProps = async function ({ req }) {
-  const headers = req ? req.headers : {};
-  const api = new ProcessDefinitionsApi(config.workflowApiClient(headers ? headers['x-remote-user'] : null));
-  const { processDefinition: processDefinitions } = await api.getProcessDefinitions({ enabled: true });
+  const api = getProcessDefinitionsApi({ req, proxy: true });
+  const processDefinitions = await api.getProcessDefinitions({ enabled: true });
   return { processDefinitions };
 };
 
