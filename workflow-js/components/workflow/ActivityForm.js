@@ -35,7 +35,8 @@ export default function ActivityForm (props) {
   return (
     <Segment loading={loading} basic style={{ padding: 0 }}>
       {!children && <DefaultActivityForm {...activityProps}/>}
-      {children && React.cloneElement(children, activityProps)}
+      {children && typeof children === 'function' && children(activityProps)}
+      {children && typeof children === 'object' && React.cloneElement(children, activityProps)}
     </Segment>
   );
 }
