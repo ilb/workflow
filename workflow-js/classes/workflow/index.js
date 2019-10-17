@@ -33,7 +33,7 @@ export async function getActivityForm ({ processInstanceId, activityInstanceId, 
 // submit form handler - complete activity
 export async function completeAndNext ({ processInstanceId, activityInstanceId, processData, req }) {
   const api = getProcessInstancesApi({ req, proxy: true });
-  const result = await api.completeAndNext(activityInstanceId, processInstanceId, { body: processData });
+  const result = await api.completeAndNext(activityInstanceId, processInstanceId, { body: processData || {} });
   proceedToNextUrl(result.response);
   return result;
 }

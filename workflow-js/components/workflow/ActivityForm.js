@@ -18,13 +18,14 @@ export default function ActivityForm (props) {
   const { id: activityInstanceId, processInstanceId } = activityInstance || {};
 
   // submit form handler - complete activity
-  const { loading, error, submitHandler } = useSubmitHandler(({ processData }) => (
+  const { loading, error, submitHandler } = useSubmitHandler(({ processData } = {}) => (
     completeAndNext({ processInstanceId, activityInstanceId, processData })
   ));
 
   const activityProps = {
     activityFormData,
     dossierData,
+    submitLoading: loading,
     submitError: error,
     submitHandler,
     activityInstanceId,
