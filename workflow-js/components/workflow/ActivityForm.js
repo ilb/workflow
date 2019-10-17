@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Message, Segment } from 'semantic-ui-react';
 import useSubmitHandler from '../../classes/workflow/SubmitHandler';
-import { completeAndNext, getActivityInitialProps } from '../../classes/workflow';
+import { proceedToNextUrl, getActivityInitialProps } from '../../classes/workflow';
 import DefaultActivityForm from './DefaultActivityForm';
+import { getProcessInstancesApi } from '../../conf/config';
 
 
 export default function ActivityForm (props) {
@@ -18,9 +19,31 @@ export default function ActivityForm (props) {
   const { id: activityInstanceId, processInstanceId } = activityInstance || {};
 
   // submit form handler - complete activity
-  const { loading, error, submitHandler } = useSubmitHandler(({ processData } = {}) => (
-    completeAndNext({ processInstanceId, activityInstanceId, processData })
-  ));
+  const { loading, error, submitHandler } = useSubmitHandler(
+    async ({ state, processData, beforeAction, callback } = {}) => {
+      // do some actions before submit (async)
+      if (beforeAction && typeof beforeAction === 'function') {
+        const beforeResponse = await beforeAction();
+        if (beforeResponse && beforeResponse.error) { return beforeResponse; } // stop here if error
+      }
+
+      // define submit method
+      const api = getProcessInstancesApi({ proxy: true });
+      const method = state || 'completeAndNext'; // default completeAndNext
+      const states = ['complete', 'completeAndNext', 'terminate', 'abort'];
+      if (states.indexOf(method) === -1) { return { error: `Passed invalid state: ${state}` }; }
+      // call submit
+      const result = await api[method](activityInstanceId, processInstanceId, { body: processData || {} });
+
+      // proceed to next step
+      if (callback && typeof callback === 'function') {
+        callback(callback);
+      } else {
+        proceedToNextUrl(result.response);
+      }
+      return result;
+    }
+  );
 
   const activityProps = {
     activityFormData,
