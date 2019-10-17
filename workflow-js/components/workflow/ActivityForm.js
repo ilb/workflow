@@ -44,7 +44,7 @@ export default function ActivityForm (props) {
 ActivityForm.propTypes = {
   activityFormData: PropTypes.object.isRequired,
   dossierData: PropTypes.object,
-  children: PropTypes.element,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
 };
 
 ActivityForm.getInitialProps = async function (context) {
