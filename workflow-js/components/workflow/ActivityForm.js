@@ -30,10 +30,13 @@ export default function ActivityForm (props) {
       // define submit method
       const api = getProcessInstancesApi({ proxy: true });
       const method = state || 'completeAndNext'; // default completeAndNext
-      const states = ['complete', 'completeAndNext', 'terminate', 'abort'];
-      if (states.indexOf(method) === -1) { return { error: `Passed invalid state: ${state}` }; }
+      const activityMethods = ['complete', 'completeAndNext', 'terminate1', 'abort1'];
+      const processMethods = ['terminate', 'abort1'];
+      if (activityMethods.indexOf(method) === -1 && processMethods.indexOf(method) === -1) { return { error: `Passed invalid state: ${state}` }; }
       // call submit
-      const result = await api[method](activityInstanceId, processInstanceId, { body: processData || {} });
+      const args = processMethods.indexOf(method) !== -1 ? [processInstanceId, { body: processData || {} }]
+        : [activityInstanceId, { body: processData || {} }];
+      const result = await api[method](...args);
 
       // proceed to next step
       if (callback && typeof callback === 'function') {
