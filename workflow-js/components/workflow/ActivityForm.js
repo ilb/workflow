@@ -31,11 +31,11 @@ export default function ActivityForm (props) {
       const api = getProcessInstancesApi({ proxy: true });
       const method = state || 'completeAndNext'; // default completeAndNext
       const activityMethods = ['complete', 'completeAndNext', 'terminate1', 'abort1'];
-      const processMethods = ['terminate', 'abort1'];
+      const processMethods = ['terminate', 'abort'];
       if (activityMethods.indexOf(method) === -1 && processMethods.indexOf(method) === -1) { return { error: `Passed invalid state: ${state}` }; }
-      // call submit
       const args = processMethods.indexOf(method) !== -1 ? [processInstanceId, { body: processData || {} }]
-        : [activityInstanceId, { body: processData || {} }];
+        : [activityInstanceId, processInstanceId, { body: processData || {} }];
+        // call submit with args
       const result = await api[method](...args);
 
       // proceed to next step
