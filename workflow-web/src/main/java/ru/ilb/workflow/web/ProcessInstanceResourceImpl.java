@@ -28,10 +28,10 @@ import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.workflow.api.ActivityDefinitionResource;
-import ru.ilb.workflow.api.ActivityInstanceResource;
-import ru.ilb.workflow.api.ProcessContextResource;
 import ru.ilb.workflow.api.ActivityFormResource;
+import ru.ilb.workflow.api.ActivityInstanceResource;
 import ru.ilb.workflow.api.JsonSchemaResource;
+import ru.ilb.workflow.api.ProcessContextResource;
 import ru.ilb.workflow.api.ProcessDefinitionResource;
 import ru.ilb.workflow.api.ProcessInstanceResource;
 import ru.ilb.workflow.api.ProcessStepsResource;
@@ -131,7 +131,16 @@ public class ProcessInstanceResourceImpl implements ProcessInstanceResource {
     @Override
     @Transactional
     public boolean terminate(JsonMapObject jsonmapobject) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            WMSessionHandle shandle = sessionHandleSupplier.get();
+            WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
+            wapi.terminateProcessInstance(shandle, processInstanceId);
+        } catch (Exception ex) {
+            if (!ex.getMessage().contains("closed")) {
+                throw new RuntimeException(ex);
+            }
+        }
+        return true;
     }
 
     @Override
