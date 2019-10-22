@@ -10,12 +10,18 @@ import { getProcessInstancesApi } from '../../conf/config';
 export default function ActivityForm (props) {
   const { dossierData, children } = props;
   const { response: activityFormData, error: activityFormDataError } = props.activityFormData || {};
+  const { activityInstance, processInstance } = activityFormData;
 
-  if (activityFormDataError || !activityFormData || !activityFormData.activityInstance) {
+  if (activityFormDataError || !activityFormData || !activityInstance) {
     return <Message error visible header="Ошибка при получении данных процесса" content={activityFormDataError || 'Нет данных'}/>;
   }
+  if (processInstance.state && !processInstance.state.open) {
+    return <Message error visible header="Процесс завершен"/>;
+  }
+  if (activityInstance.state && !activityInstance.state.open) {
+    return <Message error visible header="Активность завершена"/>;
+  }
 
-  const { activityInstance } = activityFormData;
   const { id: activityInstanceId, processInstanceId } = activityInstance || {};
 
   // submit form handler - complete activity
