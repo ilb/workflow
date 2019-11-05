@@ -38,6 +38,12 @@ export async function createProcessInstanceAndNext ({ processDefinitionId, body,
   return result;
 }
 
+export async function getProcessSteps ({ processInstanceId, req }) {
+  const api = getProcessInstancesApi({ req, proxy: true });
+  const processSteps = await api.getProcessSteps(processInstanceId);
+  return processSteps;
+}
+
 export async function getActivityInitialProps ({ query, req }) {
   const props = {};
   const { processInstanceId, activityInstanceId } = query;
