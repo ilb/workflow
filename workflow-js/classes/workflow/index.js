@@ -12,9 +12,10 @@ export const fixDevelmentUrl = (urlstr) => {
   return urlstr;
 };
 
-export const proceedToNextUrl = (response) => {
-  if (response) {
-    const nextUrl = response.activityFormUrl || '/workflow/workList';
+export const proceedToNextUrl = (result) => {
+  const { response, error } = result || {};
+  if (!error) {
+    const nextUrl = (response && response.activityFormUrl) || '/workflow/workList';
     if (process.browser) {
       document.location = fixDevelmentUrl(nextUrl);
     } else {
@@ -34,7 +35,7 @@ export async function getActivityForm ({ processInstanceId, activityInstanceId, 
 export async function createProcessInstanceAndNext ({ processDefinitionId, body, req }) {
   const api = getProcessInstancesApi({ req, proxy: true });
   const result = await api.createProcessInstanceAndNext({ processDefinitionId, body: body || {} });
-  proceedToNextUrl(result.response);
+  proceedToNextUrl(result);
   return result;
 }
 
