@@ -6,8 +6,8 @@ export default function useSubmitHandler (handler) {
   const submitHandler = async (...args) => {
     setSubmitState({ loading: true });
     const result = await handler(...args);
-    if (result.error || !result.response) {
-      setSubmitState({ loading: false, error: result.error || 'Нет данных' });
+    if (result.error) {
+      setSubmitState({ loading: false, error: result.error });
     } else {
       setSubmitState({ loading: false, response: result.response });
     }
