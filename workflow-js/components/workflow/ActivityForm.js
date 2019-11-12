@@ -26,11 +26,23 @@ export default function ActivityForm (props) {
 
   // submit form handler - complete activity
   const { loading, error, submitHandler } = useSubmitHandler(
+    /**
+     * Process submit handler
+     * @param {string} state - status of current activity/process, default = 'complete'
+     * @param {mixed} processData - body to send in method, default empty object
+     * @param {function or array} beforeAction - async function or array of async functions that will be called before submitting process
+     *     each function prefered to return standart object like { response, error }, in that case submit will be aborted on action errors
+     * @param {function} callback - a callback to intercept default behavior
+     */
     async ({ state, processData, beforeAction, callback } = {}) => {
       // do some actions before submit (async)
-      if (beforeAction && typeof beforeAction === 'function') {
-        const beforeResponse = await beforeAction();
-        if (beforeResponse && beforeResponse.error) { return beforeResponse; } // stop here if error
+      if (beforeAction) {
+        let actionsArray = beforeAction;
+        if (typeof actionsArray === 'function') { actionsArray = [actionsArray]; }
+        for (let i = 0; i < actionsArray.length; i++) {
+          const actionResponse = await actionsArray[i]();
+          if (actionResponse && actionResponse.error) { return actionResponse; } // stop here if error
+        }
       }
 
       // define submit method
@@ -46,7 +58,7 @@ export default function ActivityForm (props) {
 
       // proceed to next step
       if (callback && typeof callback === 'function') {
-        callback(callback);
+        callback({ result, proceedToNextUrl });
       } else {
         proceedToNextUrl(result);
       }
