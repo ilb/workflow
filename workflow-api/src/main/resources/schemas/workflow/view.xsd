@@ -219,6 +219,13 @@
                 <xsd:element name="dossierKey" type="xsd:string"/>
                 <xsd:element name="dossierPackage" type="xsd:string"/>
                 <xsd:element name="dossierCode" type="xsd:string"/>
+                <xsd:element name="dossierMode" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>Режим досье
+                            Используется для отображения различных досье на разных активностях
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
             </xsd:sequence>
         </xsd:complexType>
     </xsd:element>

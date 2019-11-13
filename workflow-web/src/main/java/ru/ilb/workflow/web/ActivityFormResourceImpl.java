@@ -124,6 +124,7 @@ public class ActivityFormResourceImpl implements ActivityFormResource {
 
             activityDossier.setDossierPackage(processDefinition.getPkgId());
             activityDossier.setDossierCode(processDefinition.getId());
+            activityDossier.setDossierMode(wmActivityInstance.getActivityDefinitionId());
         }
         return activityDossier;
     }
