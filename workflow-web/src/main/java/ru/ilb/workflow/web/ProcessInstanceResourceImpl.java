@@ -173,7 +173,7 @@ public class ProcessInstanceResourceImpl implements ProcessInstanceResource {
     public ActivityInstance goAnywhere(String activityInstanceId, String activityDefinitionId, JsonMapObject jsonmapobject) {
         try {
             WMSessionHandle shandle = sessionHandleSupplier.get();
-            WMActivityInstance activityInstance = SharkInterfaceWrapper.getShark().getExecutionAdministrationExtension().goAnywhere(shandle, processInstanceId, activityDefinitionId, activityInstanceId, null);
+            WMActivityInstance activityInstance = SharkInterfaceWrapper.getShark().getExecutionAdministrationExtension().goAnywhere(shandle, processInstanceId, activityInstanceId, activityDefinitionId, null);
             return activityInstanceMapper.createFromEntity(activityInstance);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
