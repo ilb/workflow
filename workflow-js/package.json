@@ -1,6 +1,6 @@
 {
   "name": "@ilb/workflow-js",
-  "version": "2.0.60",
+  "version": "2.0.61",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -21,7 +21,7 @@
     "@ilb/workflow-api": "^2.0.2",
     "@zeit/next-css": "^1.0.1",
     "babel-plugin-css-modules-transform": "^1.6.2",
-    "next": "^9.0.6",
+    "next": "^9.1.4",
     "next-transpile-modules": "^2.3.1",
     "react": "^16.9.0",
     "react-addons-shallow-compare": "^15.6.2",
