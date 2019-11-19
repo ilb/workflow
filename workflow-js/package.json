@@ -1,6 +1,6 @@
 {
   "name": "@ilb/workflow-js",
-  "version": "2.0.62",
+  "version": "2.0.63",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,7 @@
     "@ilb/filedossier-js": "^1.0.28",
     "@ilb/js-auto-proxy": "^1.0.6",
     "@ilb/node_context": "^1.0.1",
-    "@ilb/workflow-api": "^2.0.2",
+    "@ilb/workflow-api": "^2.0.3",
     "@zeit/next-css": "^1.0.1",
     "babel-plugin-css-modules-transform": "^1.6.2",
     "next": "^9.1.4",

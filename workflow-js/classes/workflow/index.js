@@ -45,6 +45,13 @@ export async function getProcessSteps ({ processInstanceId, req }) {
   return processSteps;
 }
 
+export async function goAnywhere ({ processInstanceId, activityDefinitionId, activityInstanceId, req }) {
+  const api = getProcessInstancesApi({ req, proxy: true });
+  const result = await api.goAnywhere(processInstanceId, { activityDefinitionId, activityInstanceId, body: {} });
+  proceedToNextUrl(result);
+  return result;
+}
+
 export async function getActivityInitialProps ({ query, req }) {
   const props = {};
   const { processInstanceId, activityInstanceId } = query;
