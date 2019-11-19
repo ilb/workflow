@@ -171,8 +171,13 @@ public class ProcessInstanceResourceImpl implements ProcessInstanceResource {
     @Override
     @Transactional
     public ActivityInstance goAnywhere(String activityInstanceId, String activityDefinitionId, JsonMapObject jsonmapobject) {
-        // use SharkInterfaceWrapper.getShark().getExecutionAdministrationExtension().goAnywhere
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            WMSessionHandle shandle = sessionHandleSupplier.get();
+            WMActivityInstance activityInstance = SharkInterfaceWrapper.getShark().getExecutionAdministrationExtension().goAnywhere(shandle, processInstanceId, activityInstanceId, activityDefinitionId, null);
+            return activityInstanceMapper.createFromEntity(activityInstance);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
