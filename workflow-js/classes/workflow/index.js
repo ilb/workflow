@@ -27,7 +27,7 @@ export const proceedToNextUrl = (result) => {
 
 export async function getActivityForm ({ processInstanceId, activityInstanceId, req }) {
   const api = getProcessInstancesApi({ req, proxy: true });
-  const activityFormData = await api.getActivityForm(activityInstanceId, processInstanceId);
+  const activityFormData = await api.getActivityForm1(activityInstanceId, processInstanceId);
   return activityFormData;
 }
 
