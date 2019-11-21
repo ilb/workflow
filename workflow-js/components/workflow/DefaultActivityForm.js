@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import JsonSchemaForm from '@bb/jsonschema-form';
 import '@bb/datetime-picker/lib/index.css';
 import { Step, Divider, Message } from 'semantic-ui-react';
-import Dossier from '@ilb/filedossier-js/components/Dossier';
+import Dossier from '@ilb/filedossier-js';
 
 
 /**

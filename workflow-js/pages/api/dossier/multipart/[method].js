@@ -1,4 +1,4 @@
-import { createDossierApi } from '@ilb/filedossier-js/conf/config';
+import { createDossierApi } from '@ilb/filedossier-js/lib/conf/config';
 import { executeFileApi } from '@ilb/js-auto-proxy';
 
 export default async (req, res) => {

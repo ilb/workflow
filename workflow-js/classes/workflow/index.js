@@ -1,4 +1,4 @@
-import FileDossier from '@ilb/filedossier-js/classes/FileDossier';
+import FileDossier from '@ilb/filedossier-js/lib/classes/FileDossier';
 import { getProcessInstancesApi } from '../../conf/config';
 
 
