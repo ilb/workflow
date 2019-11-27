@@ -35,14 +35,17 @@ public class CallContextImpl implements CallContext {
     @Override
     public String getCallbackUrlWithParams() {
         String callbackUrl = getCallbackUrl();
-        StringBuilder sb = new StringBuilder();
-        sb.append(callbackUrl);
-        sb.append(callbackUrl.contains("?") ? "&" : "?");
-        sb.append("callId=");
-        sb.append(getCallId());
-        sb.append("&resultUrl=");
-        sb.append(getResultUrl());
-        return sb.toString();
+        if (callbackUrl != null) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(callbackUrl);
+            sb.append(callbackUrl.contains("?") ? "&" : "?");
+            sb.append("callId=");
+            sb.append(getCallId());
+            sb.append("&resultUrl=");
+            sb.append(getResultUrl());
+            callbackUrl = sb.toString();
+        }
+        return callbackUrl;
     }
 
     @Override

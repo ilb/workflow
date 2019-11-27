@@ -23,6 +23,8 @@ import javax.naming.NamingException;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import ru.ilb.filedossier.scripting.SubstitutorTemplateEvaluator;
 import ru.ilb.filedossier.scripting.TemplateEvaluator;
+import ru.ilb.workflow.core.ProcessContextImpl;
+import ru.ilb.workflow.entities.ProcessContext;
 
 /**
  *
@@ -53,7 +55,7 @@ public class WorkflowUtils {
             throw new RuntimeException(ex);
         }
         String activityFormUrl = XPDLUtils.getEAValue(shandle, WORKFLOW_ACTIVITYFORM, processDefinitionId, processInstanceId, activityInstanceId, defaultActivityFormUrl);
-        return paramSubstitution(ctx, activityFormUrl, processDefinitionId, processInstanceId, activityDefinitionId, activityInstanceId);
+        return paramSubstitution(shandle, ctx, activityFormUrl, processDefinitionId, processInstanceId, activityDefinitionId, activityInstanceId);
     }
 
     public static String getActivityApiUrl(WMSessionHandle shandle, String processDefinitionId, String processInstanceId, String activityDefinitionId, String activityInstanceId) {
@@ -66,12 +68,12 @@ public class WorkflowUtils {
             throw new RuntimeException(ex);
         }
         String activityFormUrl = XPDLUtils.getEAValue(shandle, WORKFLOW_ACTIVITYAPI, processDefinitionId, processInstanceId, activityInstanceId, defaultActivityFormUrl);
-        return paramSubstitution(ctx, activityFormUrl, processDefinitionId, processInstanceId, activityDefinitionId, activityInstanceId);
+        return paramSubstitution(shandle, ctx, activityFormUrl, processDefinitionId, processInstanceId, activityDefinitionId, activityInstanceId);
     }
 
 
 
-    private static String paramSubstitution(Context ctx, String activityFormUrl, String processDefinitionId, String processInstanceId, String activityDefinitionId, String activityInstanceId) {
+    private static String paramSubstitution(WMSessionHandle shandle, Context ctx, String activityFormUrl, String processDefinitionId, String processInstanceId, String activityDefinitionId, String activityInstanceId) {
         TemplateEvaluator templateEvaluator = new SubstitutorTemplateEvaluator(ctx);
         Map<String, Object> params = new HashMap<>();
         //FIXME HARD CODE cut process Id
@@ -79,10 +81,12 @@ public class WorkflowUtils {
             processDefinitionId = processInstanceId.substring(processInstanceId.indexOf("_") + 1);
             processDefinitionId = processDefinitionId.substring(processDefinitionId.indexOf("_") + 1);
         }
+        ProcessContext processContext = new ProcessContextImpl(shandle, processInstanceId);
         params.put("processDefinitionId", processDefinitionId);
         params.put("activityDefinitionId", activityDefinitionId);
         params.put("processInstanceId", processInstanceId);
         params.put("activityInstanceId", activityInstanceId);
+        params.putAll(processContext.asMap());
         String activityDefinitionShortId = activityDefinitionId;
         // HARD CODE CUT PROCESS DEF NAME
         if (activityDefinitionId.startsWith(processDefinitionId)) {

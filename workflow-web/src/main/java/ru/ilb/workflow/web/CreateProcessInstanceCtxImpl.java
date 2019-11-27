@@ -61,7 +61,7 @@ public class CreateProcessInstanceCtxImpl implements CreateProcessInstanceCtx {
             builder.location(URI.create(url));
         }
 
-        return null;
+        return builder.build();
     }
 
 }

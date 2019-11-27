@@ -39,11 +39,15 @@ public class ProcessContextImpl implements ProcessContext {
     private Map<String, Object> processContext;
     private Map<String, String> contextSignature;
 
-    public ProcessContextImpl(WMSessionHandle shandle, String processInstanceId) throws Exception {
-        this.shandle = shandle;
-        sc = Shark.getInstance().getSharkConnection();
-        sc.attachToHandle(shandle);
-        processInstance = sc.getProcess(processInstanceId);
+    public ProcessContextImpl(WMSessionHandle shandle, String processInstanceId) {
+        try {
+            this.shandle = shandle;
+            sc = Shark.getInstance().getSharkConnection();
+            sc.attachToHandle(shandle);
+            processInstance = sc.getProcess(processInstanceId);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     private Map<String, Object> getProcessContext() {

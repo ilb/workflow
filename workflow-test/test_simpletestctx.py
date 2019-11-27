@@ -37,8 +37,8 @@ class TestProcessInstances(unittest.TestCase):
         auth_header='Basic ' + base64.b64encode(bytes(configuration.username+':'+configuration.password, 'utf-8')).decode("utf-8")
         self.filedossier_api = DossiersApi(FiledossierApiClient(configuration=configuration,header_name="Authorization",header_value=auth_header))
     def test_createProcessInstanceAndNext(self):
-        self.nextActivity = self.process_api.create_process_instance_and_next(process_definition_id="simpletest",body={})
-        print('nextActivity', self.nextActivity)
+        self.nextActivity = self.process_api.create_process_instance_ctx(process_definition_id="simpletest",call_id="process123",callback_url="http://localhost",context_url="http://localhost",_preload_content=False)
+        print('nextActivity', self.nextActivity.headers)
         processInstanceId = self.nextActivity.process_instance_id #.processInstance.id
         print('processInstanceId',processInstanceId)
         body={'x':2}
