@@ -11,8 +11,8 @@
     <version>2.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <properties>
-        <swagger-version>2.0.8</swagger-version>
-        <generated-api-version>2.0.2</generated-api-version>
+        <swagger-version>2.1.0</swagger-version>
+        <generated-api-version>2.0.3</generated-api-version>
     </properties>
     <dependencies>
         <dependency>
@@ -175,7 +175,7 @@
                     <plugin>
                         <groupId>org.openapitools</groupId>
                         <artifactId>openapi-generator-maven-plugin</artifactId>
-                        <version>4.0.0</version>
+                        <version>4.2.1</version>
                         <executions>
                             <execution>
                                 <id>generate_javascript</id>

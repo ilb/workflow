@@ -36,6 +36,10 @@ import ru.ilb.workflow.api.ActivityInstanceResource;
 import ru.ilb.workflow.api.ProcessContextResource;
 import ru.ilb.workflow.api.ActivityFormResource;
 import ru.ilb.workflow.api.JsonSchemaResource;
+import ru.ilb.workflow.core.CallContextImpl;
+import ru.ilb.workflow.core.ProcessContextImpl;
+import ru.ilb.workflow.entities.CallContext;
+import ru.ilb.workflow.entities.ProcessContext;
 import ru.ilb.workflow.mappers.ActivityInstanceMapper;
 import ru.ilb.workflow.session.AuthorizationHandler;
 import ru.ilb.workflow.utils.SharkUtils;
@@ -127,6 +131,12 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
             WMActivityInstance nextAct = WAPIUtils.findNextActivity(shandle, AuthorizationHandler.getAuthorisedUser(), processInstanceId);
             if (nextAct != null) {
                 nextActivityInstance = activityInstanceMapper.createFromEntity(nextAct);
+            } else {
+                // TODO FIXME REPLACE
+                ProcessContext processContext = new ProcessContextImpl(shandle, processInstanceId);
+                CallContext callContext = new CallContextImpl(processContext);
+                nextActivityInstance = new ActivityInstance();
+                nextActivityInstance.setActivityFormUrl(callContext.getCallbackUrlWithParams());;
             }
             return nextActivityInstance;
         } catch (Exception ex) {

@@ -15,22 +15,16 @@
  */
 package ru.ilb.workflow.eventaudit;
 
-import at.together._2006.xpil1.WorkflowProcessInstance;
-import at.together._2006.xpil1.WorkflowProcessInstances;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
-import java.util.logging.Logger;
 import javax.annotation.Resource;
 import org.enhydra.shark.api.client.wfmc.wapi.WAPI;
 import org.enhydra.shark.api.client.wfmc.wapi.WMAttribute;
 import org.enhydra.shark.api.client.wfmc.wapi.WMProcessInstance;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
-import org.enhydra.shark.api.internal.eventaudit.CreateProcessEventAuditPersistenceObject;
 import org.enhydra.shark.api.internal.eventaudit.StateEventAuditPersistenceObject;
 import org.enhydra.shark.eventaudit.notifying.EventAuditEvent;
 import org.enhydra.shark.eventaudit.notifying.EventAuditListener;
-import org.enhydra.shark.eventaudit.notifying.NotifyingEventAuditManager;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,9 +41,6 @@ public class CollectionEventAuditListener implements EventAuditListener {
 
     @Resource(name = "collectionProxy")
     private CollectcasesResource collectionProxy;
-
-    @Autowired
-    ProcessesResourceImpl processesProxy;
 
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ReevaluateAssignments.class);
 

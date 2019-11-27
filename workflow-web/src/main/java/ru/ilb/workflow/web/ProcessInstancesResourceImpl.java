@@ -36,6 +36,7 @@ import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import ru.ilb.workflow.api.CreateProcessInstanceCtx;
 import ru.ilb.workflow.api.ProcessInstanceResource;
 import ru.ilb.workflow.api.ProcessInstancesResource;
 import ru.ilb.workflow.core.AcceptedStatus;
@@ -71,6 +72,13 @@ public class ProcessInstancesResourceImpl extends JaxRsContextResource implement
     }
 
     @Override
+    public CreateProcessInstanceCtx getCreateProcessInstanceCtx() {
+        CreateProcessInstanceCtx resource = new CreateProcessInstanceCtxImpl(sessionDataProvider.getSessionData().getSessionHandleSupplier());
+        applicationContext.getAutowireCapableBeanFactory().autowireBean(resource);
+        return resourceContext.initResource(resource);
+    }
+
+    @Override
     @Transactional
     public ProcessInstances getProcessInstances(String x_remote_user, Boolean open, String packageId, String versionId, String processDefinitionId) {
         try {
@@ -86,24 +94,8 @@ public class ProcessInstancesResourceImpl extends JaxRsContextResource implement
     @Override
     @Transactional
     public String createProcessInstance(String x_remote_user, String packageId, String versionId, String processDefinitionId, JsonMapObject jsonmapobject) {
-        try {
-            WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
-            WMSessionHandle shandle = sessionDataProvider.getSessionData().getSessionHandleSupplier().get();
-            WMProcessDefinition wmProcessDefinition = WAPIUtils.getProcessDefinitions(shandle, true, packageId, versionId, processDefinitionId)[0];
-
-            String processInstanceId = wapi.createProcessInstance(shandle, wmProcessDefinition.getName(), null);
-            // update variables if set
-            if (jsonmapobject != null && !jsonmapobject.asMap().isEmpty()) {
-                SharkUtils.updateProcessInfo(shandle, processInstanceId, jsonmapobject.asMap());
-            }
-            wapi.startProcess(shandle, processInstanceId);
-            return processInstanceId;
-        } catch (ToolAgentGeneralException ex) {
-            throw ExceptionUtils.exceptionConverter(ex);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-
+        WMSessionHandle shandle = sessionDataProvider.getSessionData().getSessionHandleSupplier().get();
+        return WAPIUtils.createProcessInstance(shandle, packageId, versionId, processDefinitionId, jsonmapobject);
     }
 
     @Override

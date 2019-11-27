@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.core.MultivaluedMap;
+import org.apache.cxf.jaxrs.json.basic.JsonMapObject;
 import org.enhydra.shark.api.client.wfmc.wapi.WAPI;
 import org.enhydra.shark.api.client.wfmc.wapi.WMActivityInstance;
 import org.enhydra.shark.api.client.wfmc.wapi.WMActivityInstanceState;
@@ -37,14 +38,36 @@ import org.enhydra.shark.api.common.AssignmentFilterBuilder;
 import org.enhydra.shark.api.common.ProcessFilterBuilder;
 import org.enhydra.shark.api.common.ProcessMgrFilterBuilder;
 import org.enhydra.shark.api.common.SharkConstants;
+import org.enhydra.shark.api.internal.toolagent.ToolAgentGeneralException;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 import org.enhydra.shark.utilities.namevalue.NameValueUtilities;
 
 /**
- *
+ * TODO: refactor to class instance methods
  * @author slavb
  */
 public class WAPIUtils {
+
+    public static String createProcessInstance(WMSessionHandle shandle,String packageId, String versionId, String processDefinitionId, JsonMapObject processData)  {
+        try {
+
+            WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
+            WMProcessDefinition wmProcessDefinition = WAPIUtils.getProcessDefinitions(shandle, true, packageId, versionId, processDefinitionId)[0];
+
+            String processInstanceId = wapi.createProcessInstance(shandle, wmProcessDefinition.getName(), null);
+            // update variables if set
+            if (processData != null && !processData.asMap().isEmpty()) {
+                SharkUtils.updateProcessInfo(shandle, processInstanceId, processData.asMap());
+            }
+            wapi.startProcess(shandle, processInstanceId);
+            return processInstanceId;
+        } catch (ToolAgentGeneralException ex) {
+            throw ExceptionUtils.exceptionConverter(ex);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+
+    }
 
     public static WMProcessDefinition[] getProcessDefinitions(WMSessionHandle shandle, Boolean enabled, String packageId, String versionId, String processDefinitionId) throws Exception {
         //PackageAdministration pa = SharkInterfaceWrapper.getShark().getPackageAdministration();

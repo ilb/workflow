@@ -106,6 +106,46 @@
         </method>
     </resource_type>
 
+    <resource_type id="createProcessInstanceCtx">
+        <param name="x-remote-user" style="header" type="xsd:string">
+            <doc>remote authenticated user</doc>
+        </param>
+        <method name="GET" id="createProcessInstanceCtx">
+            <doc>create process instance with context</doc>
+            <request>
+                <param name="packageId" style="query" type="xsd:string">
+                    <doc>packageId</doc>
+                </param>
+                <param name="versionId" style="query" type="xsd:string">
+                    <doc>versionId</doc>
+                </param>
+                <param name="processDefinitionId" style="query" type="xsd:string">
+                    <doc>processDefinitionId</doc>
+                </param>
+                <param name="callId" style="query" type="xsd:string">
+                    <doc>Call identificator</doc>
+                </param>
+                <param name="callbackUrl" style="query" type="xsd:string">
+                    <doc>URL to return service results</doc>
+                </param>
+                <param name="contextUrl" style="query" type="xsd:string">
+                    <doc>URL to get request parameters</doc>
+                </param>
+                <param name="callerId" style="query" type="xsd:string">
+                    <doc>Caller identificator</doc>
+                </param>
+            </request>
+            <response status="200">
+                <representation>
+<!--                    <param name="Location" style="header" type="xsd:string">
+                        <doc>Redirect location to activity form service</doc>
+                    </param>-->
+                </representation>
+            </response>
+        </method>
+
+    </resource_type>
+
     <resource_type id="processInstanceResource">
         <doc title="processInstance resource"></doc>
         <method name="GET" id="getProcessInstance">
@@ -612,6 +652,7 @@
                     </representation>
                 </response>
             </method>
+            <resource path="createProcessInstanceCtx" id="createProcessInstanceCtx" type="#createProcessInstanceCtx"/>
             <method name="POST" id="createProcessInstance">
                 <doc>create process instance</doc>
                 <request>
