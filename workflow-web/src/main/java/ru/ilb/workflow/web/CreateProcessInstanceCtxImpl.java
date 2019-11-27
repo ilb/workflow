@@ -56,9 +56,10 @@ public class CreateProcessInstanceCtxImpl implements CreateProcessInstanceCtx {
         String processInstanceId = WAPIUtils.createProcessInstance(shandle, packageId, versionId, processDefinitionId, processData);
         WMActivityInstance nextAct = WAPIUtils.findNextActivity(shandle, AuthorizationHandler.getAuthorisedUser(), processInstanceId);
         Response.ResponseBuilder builder = Response.ok(processInstanceId);
+        //FIXME реализовать ветку когда активность не найдена. Переход в callback?
         if (nextAct != null) {
             String url = WorkflowUtils.getActivityFormUrl(shandle, null, nextAct.getProcessInstanceId(), nextAct.getActivityDefinitionId(), nextAct.getId());
-            builder.location(URI.create(url));
+            builder = Response.temporaryRedirect(URI.create(url));
         }
 
         return builder.build();
