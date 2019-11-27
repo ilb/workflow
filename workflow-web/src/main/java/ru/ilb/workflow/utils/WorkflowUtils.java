@@ -23,7 +23,9 @@ import javax.naming.NamingException;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import ru.ilb.filedossier.scripting.SubstitutorTemplateEvaluator;
 import ru.ilb.filedossier.scripting.TemplateEvaluator;
+import ru.ilb.workflow.core.CallContextImpl;
 import ru.ilb.workflow.core.ProcessContextImpl;
+import ru.ilb.workflow.entities.CallContext;
 import ru.ilb.workflow.entities.ProcessContext;
 
 /**
@@ -71,8 +73,6 @@ public class WorkflowUtils {
         return paramSubstitution(shandle, ctx, activityFormUrl, processDefinitionId, processInstanceId, activityDefinitionId, activityInstanceId);
     }
 
-
-
     private static String paramSubstitution(WMSessionHandle shandle, Context ctx, String activityFormUrl, String processDefinitionId, String processInstanceId, String activityDefinitionId, String activityInstanceId) {
         TemplateEvaluator templateEvaluator = new SubstitutorTemplateEvaluator(ctx);
         Map<String, Object> params = new HashMap<>();
@@ -82,6 +82,7 @@ public class WorkflowUtils {
             processDefinitionId = processDefinitionId.substring(processDefinitionId.indexOf("_") + 1);
         }
         ProcessContext processContext = new ProcessContextImpl(shandle, processInstanceId);
+
         params.put("processDefinitionId", processDefinitionId);
         params.put("activityDefinitionId", activityDefinitionId);
         params.put("processInstanceId", processInstanceId);
@@ -94,6 +95,13 @@ public class WorkflowUtils {
         }
         params.put("activityDefinitionShortId", activityDefinitionShortId);
         activityFormUrl = templateEvaluator.evaluateStringExpression(activityFormUrl, params);
+
+        CallContext callContext = new CallContextImpl(processContext);
+        //FIXME прямой проброс contextUrl! временное решение!
+        if (callContext.getContextUrl()!=null) {
+            activityFormUrl = activityFormUrl + "&contextUrl=" + callContext.getContextUrl();
+        }
+
         return activityFormUrl;
 
     }
