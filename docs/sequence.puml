@@ -1,0 +1,80 @@
+@startuml
+actor BROWSER
+BROWSER->CALLER : GET activity_point?activityID=...
+note right
+    адрес cтраницы, с которой начинает пользователь
+end note
+CALLER->BROWSER : 200 OK
+note right
+    переадресация в интерфейс WORKFLOW
+    с указанием в ссылке адреса для возврата, идентификатора,
+    адреса для получения контекстной информации
+    start_mini_process_point?callbackUrl=...&callId=...&contextUrl=...
+end note
+BROWSER->WORKFLOW : GET start_mini_process_point?callback=...&callId=...&contextUrl=...
+note right
+    Пользователь переходит по предоставленной ссылке
+    Машина минипроцесса может получить дополнительные данные context
+    для чего делает скрытый для пользователя запрос в приложение CALLER
+end note
+WORKFLOW->CALLER : POST contextUrl
+note right
+    callId=...
+    передаем полученный идентификатор, чтобы выбрать нужные данные
+end note
+CALLER->WORKFLOW : 200 OK
+note right
+    получаем контекстную информацию.
+    это может  быть набор ссылок для отображения в интерфейсе
+    тут надо быть очень внимательным. Мы не можем передавать информацию
+    которая представляет из себя предметную область CALLER. Потому что если мы сделаем это,
+    то все другие приложения вплетающие приложение WORKFLOW в свою работу будут вынуждены
+    знать ее. А это плохая архитектура. С другой стороны мы понимаем, что
+    наш минипроцесс работает с сервисом обработки ПТС, и каждый кто будет работать с ним
+    должен будет знать в какой то части предметную область ПТС. таким образом например номер ПТС
+    - это вполне сквозная предметная область для всех участников и передавать ее в контексте не страшно.
+end note
+loop
+WORKFLOW->BROWSER : HEADER Redirect-to service url
+BROWSER->SERVICE : GET service_url?callbackUrl=...&callId=...&contextUrl=...
+note right
+    Теперь уже WORKFLOW вперекидывает пользователя на страницу сервиса работы с ПТС
+    и указывает свои адреса для callback и получения контекста
+    а так же свой callId. Они должны отличаться от того, что было получено в CALLER
+end note
+SERVICE->WORKFLOW : POST contextUrl
+note right
+    тоже идем за контекстной информацией
+end note
+WORKFLOW->SERVICE : 200 ok
+BROWSER->SERVICE : POST service_url
+note right
+    Пользователь заполняет форму, и отправляет данные на сервер
+    сервис сохраняет данные в базе считаем что этим и ограничивается
+    его функциональность. соответственно работа выполнена,
+    пора возвращаться назад.
+    Делаем редирект на предоставленный ранее callbackUrl
+    с указанием идентификатора и адреса для получения результата resultUrl.
+end note
+SERVICE->BROWSER : HEADER Redirect-to callbackUrl
+BROWSER->WORKFLOW : GET callbackUrl?callId=...&resultUrl=...
+WORKFLOW->SERVICE : POST resultUrl
+SERVICE->WORKFLOW : 200 OK
+note right
+    тут WORKFLOW забирает результаты работы сервиса
+    обрабатывает их и решает завершить активити и запустить следующую,
+    а может решить закончить минимпроцесс и вернуться в CALLER
+end note
+end
+WORKFLOW->BROWSER : HEADER Redirect-to initial callbackUrl
+BROWSER->CALLER : GET callbackUrl?callId=...&resultUrl=...
+CALLER->WORKFLOW : POST resultUrl
+WORKFLOW->CALLER : 200 OK
+note right
+    получаем наконец то результаты в CALLER
+end note
+CALLER->BROWSER : 200 OK
+note right
+    CALLER дальше уже что-то решает с полученными данными
+end note
+@enduml
