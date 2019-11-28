@@ -48,8 +48,8 @@ export default function ActivityForm (props) {
       // define submit method
       const api = getProcessInstancesApi({ proxy: true });
       const method = state || 'completeAndNext'; // default completeAndNext
-      const activityMethods = ['complete', 'completeAndNext', 'terminate1', 'abort1'];
-      const processMethods = ['terminate', 'abort'];
+      const activityMethods = ['complete', 'completeAndNext', 'terminate', 'abort'];
+      const processMethods = ['terminate1', 'abort1'];
       if (activityMethods.indexOf(method) === -1 && processMethods.indexOf(method) === -1) { return { error: `Passed invalid state: ${state}` }; }
       const args = processMethods.indexOf(method) !== -1 ? [processInstanceId, { body: processData || {} }]
         : [activityInstanceId, processInstanceId, { body: processData || {} }];
