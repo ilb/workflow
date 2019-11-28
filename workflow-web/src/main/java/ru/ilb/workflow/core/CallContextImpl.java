@@ -15,57 +15,52 @@
  */
 package ru.ilb.workflow.core;
 
-import ru.ilb.workflow.context.ContextConstants;
+import java.net.URI;
 import ru.ilb.workflow.entities.CallContext;
-import ru.ilb.workflow.entities.ProcessContext;
 
 public class CallContextImpl implements CallContext {
 
-    private final ProcessContext processContext;
+    private final String callId;
 
-    public CallContextImpl(ProcessContext processContext) {
-        this.processContext = processContext;
-    }
+    private final String callerId;
 
-    @Override
-    public String getCallbackUrl() {
-        return processContext.getStringValue(ContextConstants.CALLBACKURL_VARIABLE);
-    }
+    private final URI callbackUrl;
 
-    @Override
-    public String getCallbackUrlWithParams() {
-        String callbackUrl = getCallbackUrl();
-        if (callbackUrl != null) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(callbackUrl);
-            sb.append(callbackUrl.contains("?") ? "&" : "?");
-            sb.append("callId=");
-            sb.append(getCallId());
-            sb.append("&resultUrl=");
-            sb.append(getResultUrl());
-            callbackUrl = sb.toString();
-        }
-        return callbackUrl;
+    private final URI contextUrl;
+
+    private final URI resultUrl;
+
+    public CallContextImpl(String callId, String callerId, URI callbackUrl, URI contextUrl, URI resultUrl) {
+        this.callId = callId;
+        this.callbackUrl = callbackUrl;
+        this.contextUrl = contextUrl;
+        this.callerId = callerId;
+        this.resultUrl = resultUrl;
     }
 
     @Override
     public String getCallId() {
-        return processContext.getStringValue(ContextConstants.CALLID_VARIABLE);
-    }
-
-    @Override
-    public String getContextUrl() {
-        return processContext.getStringValue(ContextConstants.CONTEXTURL_VARIABLE);
+        return callId;
     }
 
     @Override
     public String getCallerId() {
-        return processContext.getStringValue(ContextConstants.CALLERID_VARIABLE);
+        return callerId;
     }
 
     @Override
-    public String getResultUrl() {
-        return processContext.getStringValue(ContextConstants.RESULTURL_VARIABLE);
+    public URI getCallbackUrl() {
+        return callbackUrl;
+    }
+
+    @Override
+    public URI getContextUrl() {
+        return contextUrl;
+    }
+
+    @Override
+    public URI getResultUrl() {
+        return resultUrl;
     }
 
 }

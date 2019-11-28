@@ -59,7 +59,7 @@ public class CreateProcessInstanceCtxImpl implements CreateProcessInstanceCtx {
         //FIXME реализовать ветку когда активность не найдена. Переход в callback?
         if (nextAct != null) {
             String url = WorkflowUtils.getActivityFormUrl(shandle, null, nextAct.getProcessInstanceId(), nextAct.getActivityDefinitionId(), nextAct.getId());
-            builder = Response.temporaryRedirect(URI.create(url));
+            builder = Response.seeOther(URI.create(url));
         }
 
         return builder.build();

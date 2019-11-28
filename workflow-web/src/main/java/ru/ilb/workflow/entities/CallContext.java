@@ -15,7 +15,7 @@
  */
 package ru.ilb.workflow.entities;
 
-import java.net.URL;
+import java.net.URI;
 
 /**
  *
@@ -25,15 +25,13 @@ public interface CallContext {
 
     public String getCallId();
 
-    public String getCallbackUrl();
-
-    public String getContextUrl();
-
     public String getCallerId();
 
-    public String getResultUrl();
+    public URI getCallbackUrl();
 
-    public String getCallbackUrlWithParams();
+    public URI getContextUrl();
+
+    public URI getResultUrl();
 
 }
 
