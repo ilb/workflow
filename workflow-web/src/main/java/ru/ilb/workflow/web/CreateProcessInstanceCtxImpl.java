@@ -50,7 +50,7 @@ public class CreateProcessInstanceCtxImpl implements CreateProcessInstanceCtx {
         processData.setProperty(ContextConstants.CALLID_VARIABLE, callId);
         processData.setProperty(ContextConstants.CALLBACKURL_VARIABLE, callbackUrl);
         processData.setProperty(ContextConstants.CONTEXTURL_VARIABLE, contextUrl);
-        processData.setProperty(ContextConstants.CALLID_VARIABLE, callerId);
+        processData.setProperty(ContextConstants.CALLERID_VARIABLE, callerId);
 
         WMSessionHandle shandle = sessionHandleSupplier.get();
         String processInstanceId = WAPIUtils.createProcessInstance(shandle, packageId, versionId, processDefinitionId, processData);
