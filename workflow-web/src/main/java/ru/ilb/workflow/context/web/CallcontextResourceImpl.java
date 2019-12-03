@@ -28,17 +28,19 @@ import ru.ilb.workflow.session.SessionDataProvider;
 
 @Named
 public class CallcontextResourceImpl implements CallcontextResource {
-    protected final ResourceContext resourceContext;
+    protected ResourceContext resourceContext;
     private final SessionDataProvider sessionDataProvider;
     private final ApplicationContext applicationContext;
 
     @Inject
-    public CallcontextResourceImpl(SessionDataProvider sessionDataProvider, ApplicationContext applicationContext, @Context ResourceContext resourceContext) {
+    public CallcontextResourceImpl(SessionDataProvider sessionDataProvider, ApplicationContext applicationContext) {
         this.sessionDataProvider = sessionDataProvider;
         this.applicationContext = applicationContext;
+    }
+    @Context
+    public void setResourceContext(ResourceContext resourceContext) {
         this.resourceContext = resourceContext;
     }
-
     private<T> T initResource(T resource) {
         applicationContext.getAutowireCapableBeanFactory().autowireBean(resource);
         return resourceContext.initResource(resource);
