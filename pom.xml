@@ -10,6 +10,7 @@
         <module>workflow-api</module>
         <module>workflow-xpil-api</module>
         <module>workflow-web</module>
+        <module>workflow-context-api</module>
     </modules>
     <name>workflow</name>
     <properties>

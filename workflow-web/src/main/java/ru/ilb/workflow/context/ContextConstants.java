@@ -21,15 +21,9 @@ package ru.ilb.workflow.context;
  */
 public class ContextConstants {
 
-    final public static String CALLID_VARIABLE = "CONTEXT_callId";
+    final public static String CONTEXTURL_VARIABLE = "contextUrl";
 
-    final public static String CALLBACKURL_VARIABLE = "CONTEXT_callbackUrl";
-
-    final public static String CONTEXTURL_VARIABLE = "CONTEXT_contextUrl";
-
-    final public static String CALLERID_VARIABLE = "CONTEXT_callerId";
-
-    final public static String RESULTURL_VARIABLE = "CONTEXT_resultUrl";
+    final public static String RESULTURL_VARIABLE = "resultUrl";
 
 }
 
