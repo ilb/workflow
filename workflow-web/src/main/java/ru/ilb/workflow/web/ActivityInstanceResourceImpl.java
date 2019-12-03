@@ -36,8 +36,7 @@ import ru.ilb.workflow.api.ActivityInstanceResource;
 import ru.ilb.workflow.api.ProcessContextResource;
 import ru.ilb.workflow.api.ActivityFormResource;
 import ru.ilb.workflow.api.JsonSchemaResource;
-import ru.ilb.workflow.core.CallContextFactory;
-import ru.ilb.workflow.core.CallContextImpl;
+import ru.ilb.workflow.context.ContextConstants;
 import ru.ilb.workflow.core.ProcessContextImpl;
 import ru.ilb.workflow.entities.CallContext;
 import ru.ilb.workflow.entities.ProcessContext;
@@ -67,9 +66,6 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
 
     @Inject
     private ActivityInstanceMapper activityInstanceMapper;
-
-    @Inject
-    private CallContextFactory callContextFactory;
 
     public ActivityInstanceResourceImpl(Supplier<WMSessionHandle> sessionHandleSupplier, String processInstanceId, String activityInstanceId) {
         this.sessionHandleSupplier = sessionHandleSupplier;
@@ -136,18 +132,16 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
             if (nextAct != null) {
                 nextActivityInstance = activityInstanceMapper.createFromEntity(nextAct);
             } else {
-                // TODO FIXME TEMP REPLACE
+                // TODO FIXME TEMP
                 ProcessContext processContext = new ProcessContextImpl(shandle, processInstanceId);
-                CallContext callContext = callContextFactory.createCallContext(processContext);
-                if (callContext.getCallbackUrl() != null) {
-                    String callbackUrl = callContext.getCallbackUrl().toString();
+                String callbackUrl = processContext.getStringValue(ContextConstants.CALLBACKURL_VARIABLE);
+                String resultUrl = processContext.getStringValue(ContextConstants.RESULTURL_VARIABLE);
+                if (callbackUrl != null) {
                     StringBuilder sb = new StringBuilder();
                     sb.append(callbackUrl);
                     sb.append(callbackUrl.contains("?") ? "&" : "?");
-                    sb.append("callId=");
-                    sb.append(callContext.getCallId());
                     sb.append("&resultUrl=");
-                    sb.append(callContext.getResultUrl());
+                    sb.append(resultUrl);
                     callbackUrl = sb.toString();
                     nextActivityInstance = new ActivityInstance();
                     nextActivityInstance.setActivityFormUrl(callbackUrl);

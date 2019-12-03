@@ -23,8 +23,7 @@ import javax.naming.NamingException;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import ru.ilb.filedossier.scripting.SubstitutorTemplateEvaluator;
 import ru.ilb.filedossier.scripting.TemplateEvaluator;
-import ru.ilb.workflow.core.CallContextFactory;
-import ru.ilb.workflow.core.CallContextImpl;
+import ru.ilb.workflow.context.ContextConstants;
 import ru.ilb.workflow.core.ProcessContextImpl;
 import ru.ilb.workflow.entities.CallContext;
 import ru.ilb.workflow.entities.ProcessContext;
@@ -34,8 +33,6 @@ import ru.ilb.workflow.entities.ProcessContext;
  * @author slavb
  */
 public class WorkflowUtils {
-
-    private static final CallContextFactory callContextFactory = new CallContextFactory();
 
     private static final String WORKFLOW_ACTIVITYFORM = "WORKFLOW_ACTIVITYFORM";
     private static final String WORKFLOW_ACTIVITYAPI = "WORKFLOW_ACTIVITYAPI";
@@ -99,11 +96,11 @@ public class WorkflowUtils {
         params.put("activityDefinitionShortId", activityDefinitionShortId);
         activityFormUrl = templateEvaluator.evaluateStringExpression(activityFormUrl, params);
 
-        CallContext callContext = callContextFactory.createCallContext(processContext);
-
         //FIXME прямой проброс contextUrl! временное решение!
-        if (callContext.getContextUrl() != null) {
-            activityFormUrl = activityFormUrl + "&contextUrl=" + callContext.getContextUrl();
+        String contextUrl = processContext.getStringValue(ContextConstants.CONTEXTURL_VARIABLE);
+
+        if (contextUrl != null) {
+            activityFormUrl = activityFormUrl + "&contextUrl=" + contextUrl;
         }
 
         return activityFormUrl;

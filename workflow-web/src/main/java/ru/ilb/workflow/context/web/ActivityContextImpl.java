@@ -13,20 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ru.ilb.workflow.context;
+package ru.ilb.workflow.context.web;
 
-/**
- *
- * @author slavb
- */
-public class ContextConstants {
+import java.net.URI;
+import javax.ws.rs.core.Response;
+import ru.ilb.workflow.api.ActivityContext;
 
-    final public static String CALLBACKURL_VARIABLE = "callbackUrl";
 
-    final public static String CONTEXTURL_VARIABLE = "contextUrl";
+public class ActivityContextImpl implements ActivityContext {
 
-    final public static String RESULTURL_VARIABLE = "resultUrl";
+    @Override
+    public Response activityContext(String x_remote_user, String callId, String callerId, URI responseUrl) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }
-
-

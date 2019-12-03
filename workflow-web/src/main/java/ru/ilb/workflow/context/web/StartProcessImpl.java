@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ru.ilb.workflow.web;
+package ru.ilb.workflow.context.web;
 
 import java.net.URI;
 import java.util.function.Supplier;
@@ -24,28 +24,24 @@ import org.apache.cxf.jaxrs.json.basic.JsonMapObject;
 import org.enhydra.shark.api.client.wfmc.wapi.WMActivityInstance;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.springframework.transaction.annotation.Transactional;
-import ru.ilb.workflow.api.CreateProcessInstanceCtx;
+import ru.ilb.workflow.api.StartProcess;
 import ru.ilb.workflow.context.ContextConstants;
 import ru.ilb.workflow.session.AuthorizationHandler;
 import ru.ilb.workflow.utils.WAPIUtils;
 import ru.ilb.workflow.utils.WorkflowUtils;
 
 
-public class CreateProcessInstanceCtxImpl implements CreateProcessInstanceCtx {
+public class StartProcessImpl implements StartProcess {
 
     private final Supplier<WMSessionHandle> sessionHandleSupplier;
 
-    @Context
-    protected MessageContext messageContext;
-
-
-    public CreateProcessInstanceCtxImpl(Supplier<WMSessionHandle> sessionHandleSupplier) {
+    public StartProcessImpl(Supplier<WMSessionHandle> sessionHandleSupplier) {
         this.sessionHandleSupplier = sessionHandleSupplier;
     }
 
     @Override
     @Transactional
-    public Response createProcessInstanceCtx(String x_remote_user, String packageId, String versionId, String processDefinitionId, String callId, String callbackUrl, String contextUrl, String callerId) {
+    public Response startProcess(String x_remote_user, String packageId, String versionId, String processDefinitionId, URI contextUrl) {
         JsonMapObject processData = new JsonMapObject();
         processData.setProperty(ContextConstants.CONTEXTURL_VARIABLE, contextUrl);
 
@@ -58,8 +54,6 @@ public class CreateProcessInstanceCtxImpl implements CreateProcessInstanceCtx {
             String url = WorkflowUtils.getActivityFormUrl(shandle, null, nextAct.getProcessInstanceId(), nextAct.getActivityDefinitionId(), nextAct.getId());
             builder = Response.seeOther(URI.create(url));
         }
-
         return builder.build();
     }
-
 }
