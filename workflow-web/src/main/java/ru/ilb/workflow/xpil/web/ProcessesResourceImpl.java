@@ -26,7 +26,6 @@ import at.together._2006.xpil1.StringArrayDataInstance;
 import at.together._2006.xpil1.StringValue;
 import at.together._2006.xpil1.WorkflowProcessInstance;
 import at.together._2006.xpil1.WorkflowProcessInstances;
-import com.google.common.util.concurrent.Striped;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -145,7 +144,6 @@ public class ProcessesResourceImpl implements ProcessesResource {
     @Resource(mappedName = "xpdlRepository")
     private String xpdlRepository;
 
-    private Striped<ReadWriteLock> processLock = Striped.lazyWeakReadWriteLock(50);
 
     @Context
     public void setUriInfo(UriInfo uriInfo) {

@@ -62,7 +62,6 @@
         <property name="cacheBuilder" ref="cacheBuilder"/>
     </bean>-->
     <bean id="springApplicationContext" class="ru.ilb.workflow.utils.SpringApplicationContext"/>
-    <!--<bean id="orgTreeManager" class="ru.ilb.workflow.orgtree.OrgTreeManager"/>-->
     <tx:jta-transaction-manager />
     <tx:annotation-driven mode="aspectj"/>
     <!--
