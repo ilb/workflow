@@ -15,11 +15,18 @@
  */
 package ru.ilb.workflow.context.web;
 
+import java.util.function.Supplier;
 import javax.ws.rs.core.Response;
+import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import ru.ilb.workflow.api.ActivityCallback;
 
 
 public class ActivityCallbackImpl implements ActivityCallback {
+    private final Supplier<WMSessionHandle> sessionHandleSupplier;
+
+    public ActivityCallbackImpl(Supplier<WMSessionHandle> sessionHandleSupplier) {
+        this.sessionHandleSupplier = sessionHandleSupplier;
+    }
 
     @Override
     public Response activityCallback(String x_remote_user, String callId, String callerId) {

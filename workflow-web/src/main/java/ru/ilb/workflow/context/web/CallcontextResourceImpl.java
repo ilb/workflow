@@ -15,27 +15,48 @@
  */
 package ru.ilb.workflow.context.web;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.ws.rs.container.ResourceContext;
+import javax.ws.rs.core.Context;
+import org.springframework.context.ApplicationContext;
 import ru.ilb.workflow.api.ActivityCallback;
 import ru.ilb.workflow.api.ActivityContext;
 import ru.ilb.workflow.api.CallcontextResource;
 import ru.ilb.workflow.api.StartProcess;
+import ru.ilb.workflow.session.SessionDataProvider;
 
-
+@Named
 public class CallcontextResourceImpl implements CallcontextResource {
+    protected final ResourceContext resourceContext;
+    private final SessionDataProvider sessionDataProvider;
+    private final ApplicationContext applicationContext;
+
+    @Inject
+    public CallcontextResourceImpl(SessionDataProvider sessionDataProvider, ApplicationContext applicationContext, @Context ResourceContext resourceContext) {
+        this.sessionDataProvider = sessionDataProvider;
+        this.applicationContext = applicationContext;
+        this.resourceContext = resourceContext;
+    }
+
+    private<T> T initResource(T resource) {
+        applicationContext.getAutowireCapableBeanFactory().autowireBean(resource);
+        return resourceContext.initResource(resource);
+    }
 
     @Override
     public StartProcess getStartProcess() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return initResource(new StartProcessImpl(sessionDataProvider.getSessionData().getSessionHandleSupplier()));
     }
 
     @Override
     public ActivityContext getActivityContext() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return initResource(new ActivityContextImpl(sessionDataProvider.getSessionData().getSessionHandleSupplier()));
     }
 
     @Override
     public ActivityCallback getActivityCallback() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return initResource(new ActivityCallbackImpl(sessionDataProvider.getSessionData().getSessionHandleSupplier()));
     }
 
 }

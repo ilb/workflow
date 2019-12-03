@@ -16,11 +16,18 @@
 package ru.ilb.workflow.context.web;
 
 import java.net.URI;
+import java.util.function.Supplier;
 import javax.ws.rs.core.Response;
+import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import ru.ilb.workflow.api.ActivityContext;
 
 
 public class ActivityContextImpl implements ActivityContext {
+    private final Supplier<WMSessionHandle> sessionHandleSupplier;
+
+    public ActivityContextImpl(Supplier<WMSessionHandle> sessionHandleSupplier) {
+        this.sessionHandleSupplier = sessionHandleSupplier;
+    }
 
     @Override
     public Response activityContext(String x_remote_user, String callId, String callerId, URI responseUrl) {
