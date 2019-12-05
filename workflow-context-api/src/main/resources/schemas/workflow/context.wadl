@@ -36,7 +36,7 @@
             </request>
             <response status="200">
                 <representation>
-<!--                    <param name="Location" style="header" type="xsd:string">
+                    <!--                    <param name="Location" style="header" type="xsd:string">
                         <doc>Redirect location to activity form service</doc>
                     </param>-->
                 </representation>
@@ -58,9 +58,6 @@
                 <param name="callerId" style="query" type="xsd:string">
                     <doc>caller identificator (equals to process id)</doc>
                 </param>
-                <param name="responseUrl" style="query" type="xsd:anyURI">
-                    <doc>URL to get response context</doc>
-                </param>
             </request>
             <response status="200">
                 <representation mediaType="application/json"/>
@@ -80,6 +77,9 @@
                 </param>
                 <param name="callerId" style="query" type="xsd:string">
                     <doc>caller identificator (equals to process id)</doc>
+                </param>
+                <param name="responseUrl" style="query" type="xsd:anyURI">
+                    <doc>URL to get response context</doc>
                 </param>
             </request>
             <response status="200">

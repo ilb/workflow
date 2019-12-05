@@ -16,14 +16,14 @@
 package ru.ilb.workflow.session;
 
 import java.io.IOException;
+import java.util.function.Supplier;
 import javax.inject.Named;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.PreMatching;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.Provider;
-import org.apache.cxf.jaxrs.ext.ContextProvider;
-import org.apache.cxf.message.Message;
+import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 
 /**
  *
@@ -32,7 +32,7 @@ import org.apache.cxf.message.Message;
 @Provider
 @Named
 @PreMatching
-public class SessionDataProvider implements ContainerRequestFilter { // ContextProvider<SessionData>
+public class SessionDataProvider implements ContainerRequestFilter, Supplier<WMSessionHandle> { // ContextProvider<SessionData>
 
     private final ThreadLocal<SessionData> sessionData = new ThreadLocal<>();
 
@@ -62,4 +62,8 @@ public class SessionDataProvider implements ContainerRequestFilter { // ContextP
 //    public SessionData createContext(Message message) {
 //        return sessionData.get();
 //    }
+    @Override
+    public WMSessionHandle get() {
+        return getSessionData().getSessionHandle();
+    }
 }

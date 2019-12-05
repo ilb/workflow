@@ -15,28 +15,34 @@
  */
 package ru.ilb.workflow.context.web;
 
+import java.util.function.Supplier;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.container.ResourceContext;
 import javax.ws.rs.core.Context;
+import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.springframework.context.ApplicationContext;
 import ru.ilb.workflow.api.ActivityCallback;
 import ru.ilb.workflow.api.ActivityContext;
 import ru.ilb.workflow.api.CallcontextResource;
 import ru.ilb.workflow.api.StartProcess;
-import ru.ilb.workflow.session.SessionDataProvider;
+import ru.ilb.workflow.entities.ProcessContextFactory;
 
 @Named
 public class CallcontextResourceImpl implements CallcontextResource {
     protected ResourceContext resourceContext;
-    private final SessionDataProvider sessionDataProvider;
     private final ApplicationContext applicationContext;
+    private final ProcessContextFactory processContextFactory;
+    private final Supplier<WMSessionHandle> sessionHandleSupplier;
 
-    @Inject
-    public CallcontextResourceImpl(SessionDataProvider sessionDataProvider, ApplicationContext applicationContext) {
-        this.sessionDataProvider = sessionDataProvider;
+    public CallcontextResourceImpl(ApplicationContext applicationContext, ProcessContextFactory processContextFactory, Supplier<WMSessionHandle> sessionHandleSupplier) {
         this.applicationContext = applicationContext;
+        this.processContextFactory = processContextFactory;
+        this.sessionHandleSupplier = sessionHandleSupplier;
     }
+
+
+
     @Context
     public void setResourceContext(ResourceContext resourceContext) {
         this.resourceContext = resourceContext;
@@ -48,17 +54,17 @@ public class CallcontextResourceImpl implements CallcontextResource {
 
     @Override
     public StartProcess getStartProcess() {
-        return initResource(new StartProcessImpl(sessionDataProvider.getSessionData().getSessionHandleSupplier()));
+        return initResource(new StartProcessImpl(sessionHandleSupplier));
     }
 
     @Override
     public ActivityContext getActivityContext() {
-        return initResource(new ActivityContextImpl(sessionDataProvider.getSessionData().getSessionHandleSupplier()));
+        return initResource(new ActivityContextImpl(processContextFactory));
     }
 
     @Override
     public ActivityCallback getActivityCallback() {
-        return initResource(new ActivityCallbackImpl(sessionDataProvider.getSessionData().getSessionHandleSupplier()));
+        return initResource(new ActivityCallbackImpl(sessionHandleSupplier));
     }
 
 }

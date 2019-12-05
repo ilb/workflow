@@ -13,28 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ru.ilb.workflow.context.web;
+package ru.ilb.workflow.core;
 
+import java.util.function.Supplier;
 import javax.inject.Inject;
-import javax.ws.rs.core.Response;
-import ru.ilb.workflow.api.ActivityContext;
+import javax.inject.Named;
+import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
+import ru.ilb.workflow.entities.ProcessContext;
 import ru.ilb.workflow.entities.ProcessContextFactory;
 
+@Named
+public class ProcessContextFactoryImpl implements ProcessContextFactory {
 
-public class ActivityContextImpl implements ActivityContext {
-
-    private final ProcessContextFactory processContextFactory;
+    private final Supplier<WMSessionHandle> sessionHandleSupplier;
 
     @Inject
-    public ActivityContextImpl(ProcessContextFactory processContextFactory) {
-        this.processContextFactory = processContextFactory;
+    public ProcessContextFactoryImpl(Supplier<WMSessionHandle> sessionHandleSupplier) {
+        this.sessionHandleSupplier = sessionHandleSupplier;
     }
 
 
     @Override
-    public Response activityContext(String x_remote_user, String callId, String callerId) {
-        String processInstanceId = callerId, activityInstanceId = callId;
-        return null;
+    public ProcessContext getProcessContext(String processId) {
+        return new ProcessContextImpl(sessionHandleSupplier.get(), processId);
     }
 
 }

@@ -15,6 +15,7 @@
  */
 package ru.ilb.workflow.context.web;
 
+import java.net.URI;
 import java.util.function.Supplier;
 import javax.ws.rs.core.Response;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
@@ -29,7 +30,7 @@ public class ActivityCallbackImpl implements ActivityCallback {
     }
 
     @Override
-    public Response activityCallback(String x_remote_user, String callId, String callerId) {
+    public Response activityCallback(String x_remote_user, String callId, String callerId, URI responseUrl) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
