@@ -26,6 +26,7 @@ import ru.ilb.workflow.api.ActivityCallback;
 import ru.ilb.workflow.api.ActivityContext;
 import ru.ilb.workflow.api.CallcontextResource;
 import ru.ilb.workflow.api.StartProcess;
+import ru.ilb.workflow.entities.ActivityDefinitionFactory;
 import ru.ilb.workflow.entities.ProcessContextFactory;
 
 @Named
@@ -35,10 +36,14 @@ public class CallcontextResourceImpl implements CallcontextResource {
     private final ProcessContextFactory processContextFactory;
     private final Supplier<WMSessionHandle> sessionHandleSupplier;
 
-    public CallcontextResourceImpl(ApplicationContext applicationContext, ProcessContextFactory processContextFactory, Supplier<WMSessionHandle> sessionHandleSupplier) {
+    private final ActivityDefinitionFactory activityDefinitionFactory;
+
+    @Inject
+    public CallcontextResourceImpl(ApplicationContext applicationContext, ProcessContextFactory processContextFactory, Supplier<WMSessionHandle> sessionHandleSupplier, ActivityDefinitionFactory activityDefinitionFactory) {
         this.applicationContext = applicationContext;
         this.processContextFactory = processContextFactory;
         this.sessionHandleSupplier = sessionHandleSupplier;
+        this.activityDefinitionFactory = activityDefinitionFactory;
     }
 
 
