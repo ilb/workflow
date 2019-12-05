@@ -48,6 +48,7 @@ public class CreateProcessInstanceCtxImpl implements CreateProcessInstanceCtx {
     public Response createProcessInstanceCtx(String x_remote_user, String packageId, String versionId, String processDefinitionId, String callId, String callbackUrl, String contextUrl, String callerId) {
         JsonMapObject processData = new JsonMapObject();
         processData.setProperty(ContextConstants.CONTEXTURL_VARIABLE, contextUrl);
+        processData.setProperty(ContextConstants.CALLBACKURL_VARIABLE, callbackUrl);
 
         WMSessionHandle shandle = sessionHandleSupplier.get();
         String processInstanceId = WAPIUtils.createProcessInstance(shandle, packageId, versionId, processDefinitionId, processData);
