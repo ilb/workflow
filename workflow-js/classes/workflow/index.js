@@ -57,8 +57,10 @@ export async function getActivityInitialProps ({ query, req }) {
   const { processInstanceId, activityInstanceId } = query;
   props.activityFormData = await getActivityForm({ processInstanceId, activityInstanceId, req });
 
-  if (props.activityFormData.response && props.activityFormData.response.activityDossier) {
-    const dossier = new FileDossier({ ...props.activityFormData.response.activityDossier, req }); // { dossierKey, dossierPackage, dossierCode, req }
+  const dossierParams = props.activityFormData.response && props.activityFormData.response.activityDossier;
+  if (dossierParams) {
+    const xRemoteUser = req && req.headers && req.headers['x-remote-user'];
+    const dossier = new FileDossier({ dossierParams, xRemoteUser });
     props.dossierData = await dossier.getDossier();
   }
   return props;
