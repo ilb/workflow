@@ -31,6 +31,7 @@ import org.enhydra.shark.api.common.SharkConstants;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
+import ru.ilb.jfunction.map.accessors.MapAccessor;
 import ru.ilb.jsonschema.utils.JsonMapMarshaller;
 import ru.ilb.workflow.api.ActivityInstanceResource;
 import ru.ilb.workflow.api.ProcessContextResource;
@@ -40,6 +41,7 @@ import ru.ilb.workflow.context.ContextConstants;
 import ru.ilb.workflow.core.ProcessContextImpl;
 import ru.ilb.workflow.entities.CallContext;
 import ru.ilb.workflow.entities.ProcessContext;
+import ru.ilb.workflow.entities.ProcessContextFactory;
 import ru.ilb.workflow.mappers.ActivityInstanceMapper;
 import ru.ilb.workflow.session.AuthorizationHandler;
 import ru.ilb.workflow.utils.SharkUtils;
@@ -66,6 +68,9 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
 
     @Inject
     private ActivityInstanceMapper activityInstanceMapper;
+
+    @Inject
+    private ProcessContextFactory processContextFactory;
 
     public ActivityInstanceResourceImpl(Supplier<WMSessionHandle> sessionHandleSupplier, String processInstanceId, String activityInstanceId) {
         this.sessionHandleSupplier = sessionHandleSupplier;
@@ -133,9 +138,10 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
                 nextActivityInstance = activityInstanceMapper.createFromEntity(nextAct);
             } else {
                 // TODO FIXME TEMP
-                ProcessContext processContext = new ProcessContextImpl(shandle, processInstanceId);
-                String callbackUrl = processContext.getStringValue(ContextConstants.CALLBACKURL_VARIABLE);
-                String resultUrl = processContext.getStringValue(ContextConstants.RESULTURL_VARIABLE);
+                MapAccessor processContext = processContextFactory.getContextAccessor(processInstanceId);
+
+                String callbackUrl = processContext.getStringProperty(ContextConstants.CALLBACKURL_VARIABLE);
+                String resultUrl = processContext.getStringProperty(ContextConstants.RESULTURL_VARIABLE);
                 if (callbackUrl != null) {
                     StringBuilder sb = new StringBuilder();
                     sb.append(callbackUrl);

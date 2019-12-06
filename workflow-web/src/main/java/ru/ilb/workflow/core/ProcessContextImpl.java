@@ -20,8 +20,6 @@ import org.enhydra.shark.Shark;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.enhydra.shark.api.client.wfmodel.WfProcess;
 import org.enhydra.shark.api.client.wfservice.SharkConnection;
-import ru.ilb.jsonschema.utils.JsonMapMarshaller;
-import ru.ilb.jsonschema.utils.JsonTypeMarshaller;
 import ru.ilb.workflow.entities.ProcessContext;
 
 /**
@@ -36,7 +34,7 @@ public class ProcessContextImpl implements ProcessContext {
 
     private final WfProcess processInstance;
 
-    private Map<String, Object> processContext;
+    private Map<String, Object> context;
     private Map<String, String> contextSignature;
 
     public ProcessContextImpl(WMSessionHandle shandle, String processInstanceId) {
@@ -46,51 +44,32 @@ public class ProcessContextImpl implements ProcessContext {
             sc.attachToHandle(shandle);
             processInstance = sc.getProcess(processInstanceId);
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            throw new WorkflowException(ex);
         }
     }
 
-    private Map<String, Object> getProcessContext() {
-        if (processContext == null) {
+    @Override
+    public Map<String, Object> getContext() {
+        if (context == null) {
             try {
-                processContext = processInstance.process_context();
+                context = processInstance.process_context();
             } catch (Exception ex) {
-                throw new RuntimeException(ex);
+                throw new WorkflowException(ex);
             }
         }
-        return processContext;
+        return context;
     }
 
-    private Map<String, String> getContextSignature() {
+    @Override
+    public Map<String, String> getContextSignature() {
         if (contextSignature == null) {
             try {
                 contextSignature = processInstance.manager().context_signature();
             } catch (Exception ex) {
-                throw new RuntimeException(ex);
+                throw new WorkflowException(ex);
             }
         }
         return contextSignature;
-    }
-
-
-    @Override
-    public Object getValue(String name) {
-        return getProcessContext().get(name);
-    }
-
-    @Override
-    public String getStringValue(String name) {
-        return JsonTypeMarshaller.toString(getValue(name), getContextSignature().get(name));
-    }
-
-    @Override
-    public Map<String, Object> asMap() {
-        return getProcessContext();
-    }
-
-    @Override
-    public Map<String, Object> asSerializedMap() {
-        return JsonMapMarshaller.marshallMap(getProcessContext(), getContextSignature());
     }
 
 }

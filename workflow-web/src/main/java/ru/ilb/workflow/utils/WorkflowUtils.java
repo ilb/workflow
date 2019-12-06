@@ -87,7 +87,6 @@ public class WorkflowUtils {
         params.put("activityDefinitionId", activityDefinitionId);
         params.put("processInstanceId", processInstanceId);
         params.put("activityInstanceId", activityInstanceId);
-        params.putAll(processContext.asMap());
         String activityDefinitionShortId = activityDefinitionId;
         // HARD CODE CUT PROCESS DEF NAME
         if (activityDefinitionId.startsWith(processDefinitionId)) {
@@ -97,7 +96,7 @@ public class WorkflowUtils {
         activityFormUrl = templateEvaluator.evaluateStringExpression(activityFormUrl, params);
 
         //FIXME прямой проброс contextUrl! временное решение!
-        String contextUrl = processContext.getStringValue(ContextConstants.CONTEXTURL_VARIABLE);
+        String contextUrl = (String) processContext.getContext().get(ContextConstants.CONTEXTURL_VARIABLE);
 
         if (contextUrl != null) {
             activityFormUrl = activityFormUrl + "&contextUrl=" + contextUrl;

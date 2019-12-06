@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package ru.ilb.workflow.entities;
+import ru.ilb.jfunction.map.accessors.MapAccessor;
 
 /**
  *
@@ -21,6 +22,8 @@ package ru.ilb.workflow.entities;
  */
 public interface ProcessContextFactory {
 
-    ProcessContext getProcessContext(String processId);
+    ProcessContext getProcessContext(String processInstanceId);
+
+    MapAccessor getContextAccessor(String processInstanceId);
 
 }

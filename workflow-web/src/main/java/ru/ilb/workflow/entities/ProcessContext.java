@@ -18,17 +18,13 @@ package ru.ilb.workflow.entities;
 import java.util.Map;
 
 /**
- *
+ * Process context
  * @author slavb
  */
 public interface ProcessContext {
 
-    public Object getValue(String name);
+    public Map<String, Object> getContext();
 
-    public String getStringValue(String name);
-
-    public Map<String, Object> asMap();
-
-    public Map<String, Object> asSerializedMap();
+    public Map<String, String> getContextSignature();
 
 }

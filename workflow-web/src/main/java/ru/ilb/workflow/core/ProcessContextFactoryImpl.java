@@ -19,6 +19,8 @@ import java.util.function.Supplier;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
+import ru.ilb.jfunction.map.accessors.MapAccessor;
+import ru.ilb.jfunction.map.accessors.MapAccessorImpl;
 import ru.ilb.workflow.entities.ProcessContext;
 import ru.ilb.workflow.entities.ProcessContextFactory;
 
@@ -34,8 +36,13 @@ public class ProcessContextFactoryImpl implements ProcessContextFactory {
 
 
     @Override
-    public ProcessContext getProcessContext(String processId) {
-        return new ProcessContextImpl(sessionHandleSupplier.get(), processId);
+    public ProcessContext getProcessContext(String processInstanceId) {
+        return new ProcessContextImpl(sessionHandleSupplier.get(), processInstanceId);
+    }
+
+    @Override
+    public MapAccessor getContextAccessor(String processInstanceId) {
+        return new MapAccessorImpl(getProcessContext(processInstanceId).getContext());
     }
 
 }
