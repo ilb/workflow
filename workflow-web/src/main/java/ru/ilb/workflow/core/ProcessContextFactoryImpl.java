@@ -21,6 +21,7 @@ import javax.inject.Named;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import ru.ilb.jfunction.map.accessors.MapAccessor;
 import ru.ilb.jfunction.map.accessors.MapAccessorImpl;
+import ru.ilb.workflow.entities.ActivityDefinitionFactory;
 import ru.ilb.workflow.entities.ProcessContext;
 import ru.ilb.workflow.entities.ProcessContextFactory;
 
@@ -29,11 +30,13 @@ public class ProcessContextFactoryImpl implements ProcessContextFactory {
 
     private final Supplier<WMSessionHandle> sessionHandleSupplier;
 
-    @Inject
-    public ProcessContextFactoryImpl(Supplier<WMSessionHandle> sessionHandleSupplier) {
-        this.sessionHandleSupplier = sessionHandleSupplier;
-    }
+    private final ActivityDefinitionFactory activityDefinitionFactory;
 
+    @Inject
+    public ProcessContextFactoryImpl(Supplier<WMSessionHandle> sessionHandleSupplier, ActivityDefinitionFactory activityDefinitionFactory) {
+        this.sessionHandleSupplier = sessionHandleSupplier;
+        this.activityDefinitionFactory = activityDefinitionFactory;
+    }
 
     @Override
     public ProcessContext getProcessContext(String processInstanceId) {
@@ -41,8 +44,18 @@ public class ProcessContextFactoryImpl implements ProcessContextFactory {
     }
 
     @Override
-    public MapAccessor getContextAccessor(String processInstanceId) {
+    public MapAccessor getProcessContextAccessor(String processInstanceId) {
         return new MapAccessorImpl(getProcessContext(processInstanceId).getContext());
+    }
+
+    @Override
+    public ProcessContext getActivityContext(String processInstanceId, String activityInstanceId) {
+        return new ActivityContextImpl(getProcessContext(processInstanceId), activityDefinitionFactory.getActivityDefinition(processInstanceId, activityInstanceId));
+    }
+
+    @Override
+    public MapAccessor getActivityContextAccessor(String processInstanceId, String activityInstanceId) {
+        return new MapAccessorImpl(getActivityContext(processInstanceId, activityInstanceId).getContext());
     }
 
 }

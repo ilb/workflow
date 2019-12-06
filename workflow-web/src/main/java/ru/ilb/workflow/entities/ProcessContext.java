@@ -23,8 +23,18 @@ import java.util.Map;
  */
 public interface ProcessContext {
 
+    /**
+     * returns key-value process context properties
+     * @return
+     */
     public Map<String, Object> getContext();
 
+    /**
+     * returns property types
+     * map key is property name
+     * map value is property java class
+     * @return
+     */
     public Map<String, String> getContextSignature();
 
 }

@@ -24,6 +24,10 @@ public interface ProcessContextFactory {
 
     ProcessContext getProcessContext(String processInstanceId);
 
-    MapAccessor getContextAccessor(String processInstanceId);
+    MapAccessor getProcessContextAccessor(String processInstanceId);
+
+    ProcessContext getActivityContext(String processInstanceId, String activityInstanceId);
+
+    MapAccessor getActivityContextAccessor(String processInstanceId, String activityInstanceId);
 
 }

@@ -138,7 +138,7 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
                 nextActivityInstance = activityInstanceMapper.createFromEntity(nextAct);
             } else {
                 // TODO FIXME TEMP
-                MapAccessor processContext = processContextFactory.getContextAccessor(processInstanceId);
+                MapAccessor processContext = processContextFactory.getProcessContextAccessor(processInstanceId);
 
                 String callbackUrl = processContext.getStringProperty(ContextConstants.CALLBACKURL_VARIABLE);
                 String resultUrl = processContext.getStringProperty(ContextConstants.RESULTURL_VARIABLE);
