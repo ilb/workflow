@@ -25,6 +25,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
+import ru.ilb.callcontext.core.CallContextFactoryImpl;
+import ru.ilb.callcontext.core.ContextParserFactoryImpl;
+import ru.ilb.callcontext.core.ContextReaderFactoryImpl;
+import ru.ilb.callcontext.entities.CallContextFactory;
 import ru.ilb.filedossier.context.DossierContextBuilder;
 import ru.ilb.filedossier.context.DossierContextImpl;
 import ru.ilb.filedossier.ddl.DossierDefinitionRepository;
@@ -60,6 +64,15 @@ public class Application {
     @Bean
     public TemplateEvaluator templateEvaluator() throws NamingException {
         return new SubstitutorTemplateEvaluator(new InitialContext());
+    }
+
+    /**
+//     * TODO spring boot autoconfiguration
+     * @return
+     */
+    @Bean
+    CallContextFactory callContextFactory() {
+        return new CallContextFactoryImpl(new ContextReaderFactoryImpl(), new ContextParserFactoryImpl());
     }
 
     @Bean

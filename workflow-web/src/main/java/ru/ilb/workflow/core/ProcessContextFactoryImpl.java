@@ -21,21 +21,19 @@ import javax.inject.Named;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import ru.ilb.jfunction.map.accessors.MapAccessor;
 import ru.ilb.jfunction.map.accessors.MapAccessorImpl;
-import ru.ilb.workflow.entities.ActivityDefinitionFactory;
+import ru.ilb.workflow.entities.ActivityDefinition;
 import ru.ilb.workflow.entities.ProcessContext;
 import ru.ilb.workflow.entities.ProcessContextFactory;
+import ru.ilb.workflow.entities.ProcessInstance;
 
 @Named
 public class ProcessContextFactoryImpl implements ProcessContextFactory {
 
     private final Supplier<WMSessionHandle> sessionHandleSupplier;
 
-    private final ActivityDefinitionFactory activityDefinitionFactory;
-
     @Inject
-    public ProcessContextFactoryImpl(Supplier<WMSessionHandle> sessionHandleSupplier, ActivityDefinitionFactory activityDefinitionFactory) {
+    public ProcessContextFactoryImpl(Supplier<WMSessionHandle> sessionHandleSupplier) {
         this.sessionHandleSupplier = sessionHandleSupplier;
-        this.activityDefinitionFactory = activityDefinitionFactory;
     }
 
     @Override
@@ -49,13 +47,8 @@ public class ProcessContextFactoryImpl implements ProcessContextFactory {
     }
 
     @Override
-    public ProcessContext getActivityContext(String processInstanceId, String activityInstanceId) {
-        return new ActivityContextImpl(getProcessContext(processInstanceId), activityDefinitionFactory.getActivityDefinition(processInstanceId, activityInstanceId));
-    }
-
-    @Override
-    public MapAccessor getActivityContextAccessor(String processInstanceId, String activityInstanceId) {
-        return new MapAccessorImpl(getActivityContext(processInstanceId, activityInstanceId).getContext());
+    public ProcessInstance getProcessInstance(String processInstanceId) {
+        return new ProcessInstanceImpl(sessionHandleSupplier.get(), processInstanceId);
     }
 
 }

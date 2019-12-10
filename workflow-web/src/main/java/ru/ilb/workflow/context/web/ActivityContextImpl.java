@@ -15,26 +15,47 @@
  */
 package ru.ilb.workflow.context.web;
 
+import java.net.URI;
+import java.util.Map;
 import javax.inject.Inject;
-import javax.ws.rs.core.Response;
+import ru.ilb.callcontext.entities.CallContextFactory;
+import ru.ilb.jfunction.map.converters.MapToJsonFunction;
+import ru.ilb.jfunction.map.converters.ObjectMapToSerializedMapFunction;
 import ru.ilb.workflow.api.ActivityContext;
+import ru.ilb.workflow.context.ContextConstants;
+import ru.ilb.workflow.entities.ProcessContext;
 import ru.ilb.workflow.entities.ProcessContextFactory;
+import ru.ilb.workflow.entities.ProcessInstance;
 
 
 public class ActivityContextImpl implements ActivityContext {
 
     private final ProcessContextFactory processContextFactory;
 
+    private final CallContextFactory callContextFactory;
+
     @Inject
-    public ActivityContextImpl(ProcessContextFactory processContextFactory) {
+    public ActivityContextImpl(ProcessContextFactory processContextFactory, CallContextFactory callContextFactory) {
         this.processContextFactory = processContextFactory;
+        this.callContextFactory = callContextFactory;
     }
 
-
     @Override
-    public Response activityContext(String x_remote_user, String callId, String callerId) {
+    public String activityContext(String x_remote_user, String callId, String callerId) {
         String processInstanceId = callerId, activityInstanceId = callId;
-        return null;
+
+        ProcessInstance processInstance = processContextFactory.getProcessInstance(processInstanceId);
+
+        ProcessContext activityContext = processInstance.getActivityInstance(activityInstanceId).getContext();
+
+        String contextUrl = processInstance.getContextAccessor().getStringProperty(ContextConstants.CONTEXTURL_VARIABLE);
+
+
+        callContextFactory.getCallContext(URI.create(contextUrl));
+
+        Map<String, Object> serializedContext = ObjectMapToSerializedMapFunction.INSTANCE.apply(activityContext.getContext(), activityContext.getContextSignature());
+        String json = MapToJsonFunction.INSTANCE.apply(serializedContext);
+        return json;
     }
 
 }

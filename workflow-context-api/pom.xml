@@ -9,11 +9,11 @@
     <artifactId>workflow-context-api</artifactId>
     <packaging>jar</packaging>
     <dependencies>
-        <dependency>
+<!--        <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-rs-json-basic</artifactId>
             <version>${apache-cxf.version}</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
@@ -52,10 +52,10 @@
                                         <extraarg>{http://www.w3.org/2001/XMLSchema}time=java.time.LocalTime</extraarg>
                                         <extraarg>-tMap</extraarg>
                                         <extraarg>{http://www.w3.org/2001/XMLSchema}anyURI=java.net.URI</extraarg>
-                                        <extraarg>-tMap</extraarg>
-                                        <extraarg>{urn:ru:ilb:global}map=org.apache.cxf.jaxrs.json.basic.JsonMapObject</extraarg>
+<!--                                        <extraarg>-tMap</extraarg>
+                                        <extraarg>{urn:ru:ilb:global}map=org.apache.cxf.jaxrs.json.basic.JsonMapObject</extraarg>-->
                                         <extraarg>-repMap</extraarg>
-                                        <extraarg>text/calendar=java.lang.String</extraarg>
+                                        <extraarg>application/json=java.lang.String</extraarg>
                                         <extraarg>-xjc-Xannotate</extraarg>
                                         <extraarg>-xjc-Xsetters</extraarg>
                                         <extraarg>-xjc-Xsetters-mode=direct</extraarg>

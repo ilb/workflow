@@ -15,11 +15,19 @@
  */
 package ru.ilb.workflow.entities;
 
+import ru.ilb.jfunction.map.accessors.MapAccessor;
+
 /**
  *
  * @author slavb
  */
-public interface ActivityDefinitionFactory {
+public interface ProcessInstance {
 
-    public ActivityDefinition getActivityDefinition(String processInstanceId, String activityInstanceId);
+    public String getId();
+
+    public ProcessContext getContext();
+
+    public MapAccessor getContextAccessor();
+
+    public ActivityInstance getActivityInstance(String activityInstanceId);
 }

@@ -22,37 +22,37 @@ import javax.ws.rs.container.ResourceContext;
 import javax.ws.rs.core.Context;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.springframework.context.ApplicationContext;
+import ru.ilb.callcontext.entities.CallContextFactory;
 import ru.ilb.workflow.api.ActivityCallback;
 import ru.ilb.workflow.api.ActivityContext;
 import ru.ilb.workflow.api.CallcontextResource;
 import ru.ilb.workflow.api.StartProcess;
-import ru.ilb.workflow.entities.ActivityDefinitionFactory;
 import ru.ilb.workflow.entities.ProcessContextFactory;
 
 @Named
 public class CallcontextResourceImpl implements CallcontextResource {
+
     protected ResourceContext resourceContext;
     private final ApplicationContext applicationContext;
     private final ProcessContextFactory processContextFactory;
     private final Supplier<WMSessionHandle> sessionHandleSupplier;
 
-    private final ActivityDefinitionFactory activityDefinitionFactory;
+    private final CallContextFactory callContextFactory;
 
     @Inject
-    public CallcontextResourceImpl(ApplicationContext applicationContext, ProcessContextFactory processContextFactory, Supplier<WMSessionHandle> sessionHandleSupplier, ActivityDefinitionFactory activityDefinitionFactory) {
+    public CallcontextResourceImpl(ApplicationContext applicationContext, ProcessContextFactory processContextFactory, Supplier<WMSessionHandle> sessionHandleSupplier, CallContextFactory callContextFactory) {
         this.applicationContext = applicationContext;
         this.processContextFactory = processContextFactory;
         this.sessionHandleSupplier = sessionHandleSupplier;
-        this.activityDefinitionFactory = activityDefinitionFactory;
+        this.callContextFactory = callContextFactory;
     }
-
-
 
     @Context
     public void setResourceContext(ResourceContext resourceContext) {
         this.resourceContext = resourceContext;
     }
-    private<T> T initResource(T resource) {
+
+    private <T> T initResource(T resource) {
         applicationContext.getAutowireCapableBeanFactory().autowireBean(resource);
         return resourceContext.initResource(resource);
     }
@@ -64,7 +64,7 @@ public class CallcontextResourceImpl implements CallcontextResource {
 
     @Override
     public ActivityContext getActivityContext() {
-        return initResource(new ActivityContextImpl(processContextFactory));
+        return initResource(new ActivityContextImpl(processContextFactory, callContextFactory));
     }
 
     @Override

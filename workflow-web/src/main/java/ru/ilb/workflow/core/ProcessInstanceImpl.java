@@ -1,0 +1,58 @@
+/*
+ * Copyright 2019 slavb.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package ru.ilb.workflow.core;
+
+import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
+import ru.ilb.jfunction.map.accessors.MapAccessor;
+import ru.ilb.jfunction.map.accessors.MapAccessorImpl;
+import ru.ilb.workflow.entities.ActivityInstance;
+import ru.ilb.workflow.entities.ProcessContext;
+import ru.ilb.workflow.entities.ProcessInstance;
+
+
+public class ProcessInstanceImpl implements ProcessInstance {
+
+    private final WMSessionHandle shandle;
+
+    private final String id;
+
+    public ProcessInstanceImpl(WMSessionHandle shandle, String processInstanceId) {
+        this.shandle = shandle;
+        this.id = processInstanceId;
+    }
+
+
+    @Override
+    public ProcessContext getContext() {
+        return new ProcessContextImpl(shandle, id);
+    }
+
+    @Override
+    public ActivityInstance getActivityInstance(String activityInstanceId) {
+        return new ActivityInstanceImpl(shandle, this, activityInstanceId);
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public MapAccessor getContextAccessor() {
+        return new MapAccessorImpl(getContext().getContext());
+    }
+
+}
