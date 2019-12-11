@@ -18,6 +18,7 @@ package ru.ilb.workflow.context.web;
 import java.net.URI;
 import java.util.Map;
 import javax.inject.Inject;
+import ru.ilb.callcontext.entities.CallContext;
 import ru.ilb.callcontext.entities.CallContextFactory;
 import ru.ilb.jfunction.map.converters.MapToJsonFunction;
 import ru.ilb.jfunction.map.converters.ObjectMapToSerializedMapFunction;
@@ -51,7 +52,10 @@ public class ActivityContextImpl implements ActivityContext {
         String contextUrl = processInstance.getContextAccessor().getStringProperty(ContextConstants.CONTEXTURL_VARIABLE);
 
 
-        callContextFactory.getCallContext(URI.create(contextUrl));
+        CallContext callContext = callContextFactory.getCallContext(URI.create(contextUrl));
+
+        // add activity context to supplied context
+        callContext.getContext().putAll(activityContext.getContext());
 
         Map<String, Object> serializedContext = ObjectMapToSerializedMapFunction.INSTANCE.apply(activityContext.getContext(), activityContext.getContextSignature());
         String json = MapToJsonFunction.INSTANCE.apply(serializedContext);
