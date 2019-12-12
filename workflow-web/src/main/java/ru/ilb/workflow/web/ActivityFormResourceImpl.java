@@ -34,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.jsonschema.jsonschema.JsonSchema;
 import ru.ilb.workflow.api.ActivityFormResource;
+import ru.ilb.workflow.core.SessionData;
 import ru.ilb.workflow.mappers.ActivityInstanceMapper;
 import ru.ilb.workflow.mappers.ProcessInstanceMapper;
 import ru.ilb.workflow.utils.JaxbHelper;
@@ -48,7 +49,7 @@ public class ActivityFormResourceImpl implements ActivityFormResource {
 
     private final static JsonMapObjectReaderWriter JSONREADERWRITER = new JsonMapObjectReaderWriter();
 
-    private final Supplier<WMSessionHandle> sessionHandleSupplier;
+    private final Supplier <SessionData> sessionHandleSupplier;
 
     private final String processInstanceId;
 
@@ -63,7 +64,7 @@ public class ActivityFormResourceImpl implements ActivityFormResource {
     @Inject
     private ProcessInstanceMapper processInstanceMapper;
 
-    public ActivityFormResourceImpl(Supplier<WMSessionHandle> sessionHandleSupplier, String processInstanceId, String activityInstanceId) {
+    public ActivityFormResourceImpl(Supplier <SessionData> sessionHandleSupplier, String processInstanceId, String activityInstanceId) {
         this.sessionHandleSupplier = sessionHandleSupplier;
         this.processInstanceId = processInstanceId;
         this.activityInstanceId = activityInstanceId;
@@ -73,7 +74,8 @@ public class ActivityFormResourceImpl implements ActivityFormResource {
     @Transactional
     public Response getActivityForm() {
         try {
-            return Response.ok(getActivityForm(sessionHandleSupplier.get(), processInstanceId, activityInstanceId)).build();
+            WMSessionHandle shandle = sessionHandleSupplier.get().getSessionHandle();
+            return Response.ok(getActivityForm(shandle, processInstanceId, activityInstanceId)).build();
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }

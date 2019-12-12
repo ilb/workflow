@@ -18,8 +18,10 @@ package ru.ilb.workflow.context.web;
 import java.util.function.Supplier;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.ws.rs.Path;
 import javax.ws.rs.container.ResourceContext;
 import javax.ws.rs.core.Context;
+import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.springframework.context.ApplicationContext;
 import ru.ilb.callcontext.entities.CallContextFactory;
@@ -27,22 +29,25 @@ import ru.ilb.workflow.api.ActivityCallback;
 import ru.ilb.workflow.api.ActivityContext;
 import ru.ilb.workflow.api.CallcontextResource;
 import ru.ilb.workflow.api.StartProcess;
-import ru.ilb.workflow.entities.ProcessContextFactory;
+import ru.ilb.workflow.core.SessionData;
+import ru.ilb.workflow.entities.ProcessInstanceFactory;
 
 @Named
+@Path("callcontext")
 public class CallcontextResourceImpl implements CallcontextResource {
 
     protected ResourceContext resourceContext;
+    protected MessageContext messageContext;
     private final ApplicationContext applicationContext;
-    private final ProcessContextFactory processContextFactory;
-    private final Supplier<WMSessionHandle> sessionHandleSupplier;
+    private final ProcessInstanceFactory processInstanceFactory;
+    private final Supplier<SessionData> sessionHandleSupplier;
 
     private final CallContextFactory callContextFactory;
 
     @Inject
-    public CallcontextResourceImpl(ApplicationContext applicationContext, ProcessContextFactory processContextFactory, Supplier<WMSessionHandle> sessionHandleSupplier, CallContextFactory callContextFactory) {
+    public CallcontextResourceImpl(ApplicationContext applicationContext, ProcessInstanceFactory processInstanceFactory, Supplier<SessionData> sessionHandleSupplier, CallContextFactory callContextFactory) {
         this.applicationContext = applicationContext;
-        this.processContextFactory = processContextFactory;
+        this.processInstanceFactory = processInstanceFactory;
         this.sessionHandleSupplier = sessionHandleSupplier;
         this.callContextFactory = callContextFactory;
     }
@@ -52,6 +57,11 @@ public class CallcontextResourceImpl implements CallcontextResource {
         this.resourceContext = resourceContext;
     }
 
+    @Context
+    public void setMessageContext(MessageContext messageContext) {
+        this.messageContext = messageContext;
+    }
+
     private <T> T initResource(T resource) {
         applicationContext.getAutowireCapableBeanFactory().autowireBean(resource);
         return resourceContext.initResource(resource);
@@ -59,12 +69,12 @@ public class CallcontextResourceImpl implements CallcontextResource {
 
     @Override
     public StartProcess getStartProcess() {
-        return initResource(new StartProcessImpl(sessionHandleSupplier));
+        return initResource(new StartProcessImpl(processInstanceFactory, messageContext.getUriInfo().getAbsolutePath()));
     }
 
     @Override
     public ActivityContext getActivityContext() {
-        return initResource(new ActivityContextImpl(processContextFactory, callContextFactory));
+        return initResource(new ActivityContextImpl(processInstanceFactory, callContextFactory, messageContext.getUriInfo().getAbsolutePath()));
     }
 
     @Override

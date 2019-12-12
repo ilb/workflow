@@ -19,12 +19,13 @@ import java.net.URI;
 import java.util.function.Supplier;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import ru.ilb.workflow.api.ActivityCallback;
+import ru.ilb.workflow.core.SessionData;
 
 public class ActivityCallbackImpl implements ActivityCallback {
 
-    private final Supplier<WMSessionHandle> sessionHandleSupplier;
+    private final Supplier<SessionData> sessionHandleSupplier;
 
-    public ActivityCallbackImpl(Supplier<WMSessionHandle> sessionHandleSupplier) {
+    public ActivityCallbackImpl(Supplier<SessionData> sessionHandleSupplier) {
         this.sessionHandleSupplier = sessionHandleSupplier;
     }
 

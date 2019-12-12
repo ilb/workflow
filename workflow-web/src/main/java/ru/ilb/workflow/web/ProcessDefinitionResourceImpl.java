@@ -24,13 +24,14 @@ import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.workflow.api.ActivityDefinitionResource;
 import ru.ilb.workflow.api.ProcessDefinitionResource;
+import ru.ilb.workflow.core.SessionData;
 import ru.ilb.workflow.mappers.ProcessDefinitionMapper;
 import ru.ilb.workflow.utils.WAPIUtils;
 import ru.ilb.workflow.view.ProcessDefinition;
 
 public class ProcessDefinitionResourceImpl implements ProcessDefinitionResource {
 
-    private final Supplier<WMSessionHandle> sessionHandleSupplier;
+    private final Supplier<SessionData> sessionHandleSupplier;
 
     private final String processDefinitionId;
 
@@ -42,7 +43,7 @@ public class ProcessDefinitionResourceImpl implements ProcessDefinitionResource 
     @Inject
     ProcessDefinitionMapper processDefinitionMapper;
 
-    public ProcessDefinitionResourceImpl(Supplier<WMSessionHandle> sessionHandleSupplier, String processInstanceId, String processDefinitionId) {
+    public ProcessDefinitionResourceImpl(Supplier<SessionData> sessionHandleSupplier, String processInstanceId, String processDefinitionId) {
         this.sessionHandleSupplier = sessionHandleSupplier;
         this.processDefinitionId = processDefinitionId;
         this.processInstanceId = processInstanceId;
@@ -52,7 +53,7 @@ public class ProcessDefinitionResourceImpl implements ProcessDefinitionResource 
     @Transactional
     public ProcessDefinition getProcessDefinition() {
         try {
-            WMSessionHandle shandle = sessionHandleSupplier.get();
+            WMSessionHandle shandle = sessionHandleSupplier.get().getSessionHandle();
             WMProcessDefinition wmProcessDefinition = WAPIUtils.getProcessDefinitions(shandle, true, null, null, processDefinitionId)[0];
 //            WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
 //            WMProcessDefinition wmProcessDefinition = wapi.getProcessDefinition(shandle, XPDLUtils.getUniqueProcessDefinitionName(shandle, processDefinitionId));

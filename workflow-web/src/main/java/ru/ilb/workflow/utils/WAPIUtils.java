@@ -20,6 +20,7 @@ import at.together._2006.xpil1.StringDataInstance;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.core.MultivaluedMap;
@@ -49,12 +50,16 @@ import org.enhydra.shark.utilities.namevalue.NameValueUtilities;
 public class WAPIUtils {
 
     public static String createProcessInstance(WMSessionHandle shandle,String packageId, String versionId, String processDefinitionId, JsonMapObject processData)  {
+        Objects.requireNonNull(processDefinitionId, "processDefinitionId required");
         try {
 
             WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
-            WMProcessDefinition wmProcessDefinition = WAPIUtils.getProcessDefinitions(shandle, true, packageId, versionId, processDefinitionId)[0];
+            WMProcessDefinition[] wmProcessDefinition = WAPIUtils.getProcessDefinitions(shandle, true, packageId, versionId, processDefinitionId);
+            if (wmProcessDefinition.length==0) {
+                throw new IllegalArgumentException("Process definition not found [packageId=" + packageId + " versionId=" + versionId+ " processDefinitionId="+processDefinitionId);
+            }
 
-            String processInstanceId = wapi.createProcessInstance(shandle, wmProcessDefinition.getName(), null);
+            String processInstanceId = wapi.createProcessInstance(shandle, wmProcessDefinition[0].getName(), null);
             // update variables if set
             if (processData != null && !processData.asMap().isEmpty()) {
                 SharkUtils.updateProcessInfo(shandle, processInstanceId, processData.asMap());

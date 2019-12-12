@@ -20,12 +20,13 @@ import org.apache.cxf.jaxrs.json.basic.JsonMapObject;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.workflow.api.ActivityDefinitionResource;
+import ru.ilb.workflow.core.SessionData;
 import ru.ilb.workflow.utils.SharkUtils;
 import ru.ilb.workflow.view.ActivityDefinition;
 
 public class ActivityDefinitionResourceImpl implements ActivityDefinitionResource {
 
-    private final Supplier<WMSessionHandle> sessionHandleSupplier;
+    private final Supplier <SessionData> sessionHandleSupplier;
 
     private final String processInstanceId;
 
@@ -33,7 +34,7 @@ public class ActivityDefinitionResourceImpl implements ActivityDefinitionResourc
 
     private final String activityDefinitionId;
 
-    public ActivityDefinitionResourceImpl(Supplier<WMSessionHandle> sessionHandleSupplier, String processDefinitionId, String activityDefinitionId, String processInstanceId) {
+    public ActivityDefinitionResourceImpl(Supplier <SessionData> sessionHandleSupplier, String processDefinitionId, String activityDefinitionId, String processInstanceId) {
         this.sessionHandleSupplier = sessionHandleSupplier;
         this.processDefinitionId = processDefinitionId;
         this.activityDefinitionId = activityDefinitionId;
@@ -49,7 +50,7 @@ public class ActivityDefinitionResourceImpl implements ActivityDefinitionResourc
     @Override
     @Transactional
     public void start(JsonMapObject jsonmapobject) {
-        WMSessionHandle shandle = sessionHandleSupplier.get();
+        WMSessionHandle shandle = sessionHandleSupplier.get().getSessionHandle();
         try {
             SharkUtils.startActivity(shandle, processDefinitionId, activityDefinitionId);
         } catch (Exception ex) {

@@ -33,13 +33,14 @@ import org.enhydra.shark.api.common.SharkConstants;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.workflow.api.ProcessStepsResource;
+import ru.ilb.workflow.core.SessionData;
 import ru.ilb.workflow.utils.WorkflowUtils;
 import ru.ilb.workflow.view.ProcessStep;
 import ru.ilb.workflow.view.ProcessSteps;
 
 public class ProcessStepsResourceImpl implements ProcessStepsResource {
 
-    private final Supplier<WMSessionHandle> sessionHandleSupplier;
+    private final Supplier<SessionData> sessionHandleSupplier;
 
     private final String processDefinitionId;
 
@@ -47,7 +48,7 @@ public class ProcessStepsResourceImpl implements ProcessStepsResource {
 
     private final String activityInstanceId;
 
-    public ProcessStepsResourceImpl(Supplier<WMSessionHandle> sessionHandleSupplier, String processInstanceId, String processDefinitionId, String activityInstanceId) {
+    public ProcessStepsResourceImpl(Supplier<SessionData> sessionHandleSupplier, String processInstanceId, String processDefinitionId, String activityInstanceId) {
         this.sessionHandleSupplier = sessionHandleSupplier;
         this.processDefinitionId = processDefinitionId;
         this.processInstanceId = processInstanceId;
@@ -58,7 +59,7 @@ public class ProcessStepsResourceImpl implements ProcessStepsResource {
     @Transactional
     public ProcessSteps getProcessSteps() {
         try {
-            WMSessionHandle shandle = sessionHandleSupplier.get();
+            WMSessionHandle shandle = sessionHandleSupplier.get().getSessionHandle();
             return new ProcessSteps().withProcessSteps(getProcessSteps(shandle, processInstanceId, processDefinitionId, activityInstanceId));
         } catch (Exception ex) {
             throw new RuntimeException(ex);

@@ -24,6 +24,7 @@ import javax.ws.rs.container.PreMatching;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.Provider;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
+import ru.ilb.workflow.core.SessionData;
 
 /**
  *
@@ -32,7 +33,7 @@ import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 @Provider
 @Named
 @PreMatching
-public class SessionDataProvider implements ContainerRequestFilter, Supplier<WMSessionHandle> { // ContextProvider<SessionData>
+public class SessionDataProvider implements ContainerRequestFilter, Supplier<SessionData> { // ContextProvider<SessionData>
 
     private final ThreadLocal<SessionData> sessionData = new ThreadLocal<>();
 
@@ -63,7 +64,7 @@ public class SessionDataProvider implements ContainerRequestFilter, Supplier<WMS
 //        return sessionData.get();
 //    }
     @Override
-    public WMSessionHandle get() {
-        return getSessionData().getSessionHandle();
+    public SessionData get() {
+        return sessionData.get();
     }
 }

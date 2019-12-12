@@ -49,7 +49,7 @@ public class ProcessDefinitionsResourceImpl extends JaxRsContextResource impleme
 
     @Override
     public ProcessDefinitionResource getProcessDefinitionResource(String x_remote_user, String processDefinitionId) {
-        ProcessDefinitionResourceImpl resource = new ProcessDefinitionResourceImpl(sessionDataProvider.getSessionData().getSessionHandleSupplier(), null, processDefinitionId);
+        ProcessDefinitionResourceImpl resource = new ProcessDefinitionResourceImpl(sessionDataProvider, null, processDefinitionId);
         applicationContext.getAutowireCapableBeanFactory().autowireBean(resource);
         return resourceContext.initResource(resource);
     }
@@ -58,7 +58,7 @@ public class ProcessDefinitionsResourceImpl extends JaxRsContextResource impleme
     @Transactional
     public ProcessDefinitions getProcessDefinitions(String x_remote_user, Boolean enabled, String packageId, String versionId, String processDefinitionId) {
         try {
-            WMSessionHandle shandle = sessionDataProvider.getSessionData().getSessionHandleSupplier().get();
+            WMSessionHandle shandle = sessionDataProvider.getSessionData().getSessionHandle();
             WMProcessDefinition[] wmProcessDefinitions = WAPIUtils.getProcessDefinitions(shandle, enabled, packageId, versionId, processDefinitionId);
             String userName = sessionDataProvider.getSessionData().getAuthorisedUser();
             wmProcessDefinitions = processDefinitionFilter.filterAccessible(wmProcessDefinitions, userName, shandle);

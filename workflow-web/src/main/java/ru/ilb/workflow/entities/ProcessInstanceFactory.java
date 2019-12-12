@@ -15,21 +15,18 @@
  */
 package ru.ilb.workflow.entities;
 
-import java.net.URI;
+import java.util.Map;
 
 /**
  *
  * @author slavb
  */
-public interface ActivityInstance {
+public interface ProcessInstanceFactory {
 
-    public String getId();
+    ProcessInstance getProcessInstance(String processInstanceId);
 
-    public ActivityDefinition getActivityDefinition();
+    ProcessInstance createProcessInstance(String packageId, String versionId, String processDefinitionId, Map<String, Object> context);
 
-    public ProcessContext getContext();
+    ProcessInstance createProcessInstance(ProcessDefinition processDefinition, Map<String, Object> context);
 
-    public URI getActivityFormUrl();
-
-    public String getActivityDefinitionId();
 }

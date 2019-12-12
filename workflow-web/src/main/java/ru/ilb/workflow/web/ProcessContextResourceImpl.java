@@ -26,17 +26,18 @@ import org.enhydra.shark.api.client.wfservice.SharkConnection;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.jsonschema.utils.JsonMapMarshaller;
 import ru.ilb.workflow.api.ProcessContextResource;
+import ru.ilb.workflow.core.SessionData;
 import ru.ilb.workflow.utils.XPDLUtils;
 
 public class ProcessContextResourceImpl implements ProcessContextResource {
 
-    private final Supplier<WMSessionHandle> sessionHandleSupplier;
+    private final Supplier<SessionData> sessionHandleSupplier;
 
     private final String processInstanceId;
 
     private final String activityInstanceId;
 
-    public ProcessContextResourceImpl(Supplier<WMSessionHandle> sessionHandleSupplier, String processInstanceId, String activityInstanceId) {
+    public ProcessContextResourceImpl(Supplier<SessionData> sessionHandleSupplier, String processInstanceId, String activityInstanceId) {
         this.sessionHandleSupplier = sessionHandleSupplier;
         this.processInstanceId = processInstanceId;
         this.activityInstanceId = activityInstanceId;
@@ -46,7 +47,8 @@ public class ProcessContextResourceImpl implements ProcessContextResource {
     @Transactional
     public Response getProcessContext() {
         try {
-            return Response.ok(getProcessContext(sessionHandleSupplier.get(), processInstanceId, activityInstanceId)).build();
+            WMSessionHandle shandle = sessionHandleSupplier.get().getSessionHandle();
+            return Response.ok(getProcessContext(shandle, processInstanceId, activityInstanceId)).build();
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }

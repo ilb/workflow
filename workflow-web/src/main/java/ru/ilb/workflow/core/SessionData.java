@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ru.ilb.workflow.session;
+package ru.ilb.workflow.core;
 
 import java.util.function.Supplier;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
@@ -35,10 +35,6 @@ public class SessionData {
 
     public void setAuthorisedUser(String authorisedUser) {
         this.authorisedUser = authorisedUser;
-    }
-
-    public Supplier<WMSessionHandle> getSessionHandleSupplier() {
-        return () -> getSessionHandle();
     }
 
     public WMSessionHandle getSessionHandle() {

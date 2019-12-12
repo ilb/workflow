@@ -27,7 +27,7 @@
                 <param name="versionId" style="query" type="xsd:string">
                     <doc>process definition versionId</doc>
                 </param>
-                <param name="processDefinitionId" style="query" type="xsd:string">
+                <param name="processDefinitionId" style="query" type="xsd:string" required="true">
                     <doc>process definition id</doc>
                 </param>
                 <param name="contextUrl" style="query" type="xsd:anyURI">

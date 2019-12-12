@@ -24,6 +24,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import ru.ilb.filedossier.context.DossierContextBuilder;
 import ru.ilb.filedossier.context.DossierContextImpl;
 import ru.ilb.filedossier.ddl.DossierDefinitionRepository;
@@ -80,6 +81,11 @@ public class Application {
     @Bean
     public DossierDefinitionRepository dossierDefinitionRepository() {
         return new FileDossierDefinitionRepository(Paths.get(xpdlRepository).resolve("packages").toUri());
+    }
+
+    @Bean
+    public javax.validation.Validator localValidatorFactoryBean() {
+        return new LocalValidatorFactoryBean();
     }
 
 // only works with auto-registered cxf jax-rs server

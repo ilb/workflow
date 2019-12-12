@@ -15,22 +15,32 @@
  */
 package ru.ilb.workflow.core;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.enhydra.shark.api.client.wfmc.wapi.WAPI;
+import org.enhydra.shark.api.client.wfmc.wapi.WMActivityInstance;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
+import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 import ru.ilb.jfunction.map.accessors.MapAccessor;
 import ru.ilb.jfunction.map.accessors.MapAccessorImpl;
 import ru.ilb.workflow.entities.ActivityInstance;
 import ru.ilb.workflow.entities.ProcessContext;
 import ru.ilb.workflow.entities.ProcessInstance;
+import ru.ilb.workflow.session.AuthorizationHandler;
+import ru.ilb.workflow.utils.WAPIUtils;
 
 
 public class ProcessInstanceImpl implements ProcessInstance {
+
+    private final SessionData sessionData;
 
     private final WMSessionHandle shandle;
 
     private final String id;
 
-    public ProcessInstanceImpl(WMSessionHandle shandle, String processInstanceId) {
-        this.shandle = shandle;
+    public ProcessInstanceImpl(SessionData sessionData, String processInstanceId) {
+        this.sessionData = sessionData;
+        this.shandle = sessionData.getSessionHandle();
         this.id = processInstanceId;
     }
 
@@ -53,6 +63,22 @@ public class ProcessInstanceImpl implements ProcessInstance {
     @Override
     public MapAccessor getContextAccessor() {
         return new MapAccessorImpl(getContext().getContext());
+    }
+
+    @Override
+    public ActivityInstance getNextActivityInstance() {
+        WMActivityInstance nextAct = WAPIUtils.findNextActivity(shandle, sessionData.getAuthorisedUser(), id);
+        return nextAct!=null ? new ActivityInstanceImpl(shandle, this, nextAct) : null;
+    }
+
+    @Override
+    public void start() {
+        try {
+            WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
+            wapi.startProcess(shandle, id);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
 }

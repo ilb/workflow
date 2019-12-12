@@ -17,8 +17,6 @@ package ru.ilb.workflow.web;
 
 import java.util.Map;
 import java.util.function.Supplier;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.ws.rs.container.ResourceContext;
 import javax.ws.rs.core.Context;
@@ -33,25 +31,23 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.jfunction.map.accessors.MapAccessor;
 import ru.ilb.jsonschema.utils.JsonMapMarshaller;
-import ru.ilb.workflow.api.ActivityInstanceResource;
-import ru.ilb.workflow.api.ProcessContextResource;
 import ru.ilb.workflow.api.ActivityFormResource;
+import ru.ilb.workflow.api.ActivityInstanceResource;
 import ru.ilb.workflow.api.JsonSchemaResource;
+import ru.ilb.workflow.api.ProcessContextResource;
 import ru.ilb.workflow.context.ContextConstants;
-import ru.ilb.workflow.core.ProcessContextImpl;
-import ru.ilb.workflow.entities.CallContext;
-import ru.ilb.workflow.entities.ProcessContext;
-import ru.ilb.workflow.entities.ProcessContextFactory;
+import ru.ilb.workflow.core.SessionData;
+import ru.ilb.workflow.entities.ProcessInstance;
+import ru.ilb.workflow.entities.ProcessInstanceFactory;
 import ru.ilb.workflow.mappers.ActivityInstanceMapper;
 import ru.ilb.workflow.session.AuthorizationHandler;
 import ru.ilb.workflow.utils.SharkUtils;
 import ru.ilb.workflow.utils.WAPIUtils;
-import ru.ilb.workflow.utils.WorkflowUtils;
 import ru.ilb.workflow.view.ActivityInstance;
 
 public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
 
-    private final Supplier<WMSessionHandle> sessionHandleSupplier;
+    private final Supplier <SessionData> sessionHandleSupplier;
 
     private final String processInstanceId;
 
@@ -70,9 +66,9 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
     private ActivityInstanceMapper activityInstanceMapper;
 
     @Inject
-    private ProcessContextFactory processContextFactory;
+    private ProcessInstanceFactory processContextFactory;
 
-    public ActivityInstanceResourceImpl(Supplier<WMSessionHandle> sessionHandleSupplier, String processInstanceId, String activityInstanceId) {
+    public ActivityInstanceResourceImpl(Supplier <SessionData> sessionHandleSupplier, String processInstanceId, String activityInstanceId) {
         this.sessionHandleSupplier = sessionHandleSupplier;
         this.processInstanceId = processInstanceId;
         this.activityInstanceId = activityInstanceId;
@@ -82,7 +78,7 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
     @Transactional
     public ActivityInstance getActivityInstance() {
         try {
-            WMSessionHandle shandle = sessionHandleSupplier.get();
+            WMSessionHandle shandle = sessionHandleSupplier.get().getSessionHandle();
             WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
             WMActivityInstance wmActivityInstance = wapi.getActivityInstance(shandle, processInstanceId, activityInstanceId);
             ActivityInstance activityInstance = activityInstanceMapper.createFromEntity(wmActivityInstance);
@@ -130,7 +126,7 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
     @Transactional
     public ActivityInstance completeAndNext(JsonMapObject jsonmapobject) {
         try {
-            WMSessionHandle shandle = sessionHandleSupplier.get();
+            WMSessionHandle shandle = sessionHandleSupplier.get().getSessionHandle();
             changeActivityState(shandle, jsonmapobject, SharkConstants.STATE_CLOSED_COMPLETED);
             ActivityInstance nextActivityInstance = null;
             WMActivityInstance nextAct = WAPIUtils.findNextActivity(shandle, AuthorizationHandler.getAuthorisedUser(), processInstanceId);
@@ -138,7 +134,8 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
                 nextActivityInstance = activityInstanceMapper.createFromEntity(nextAct);
             } else {
                 // TODO FIXME TEMP
-                MapAccessor processContext = processContextFactory.getProcessContextAccessor(processInstanceId);
+                ProcessInstance processInstance = processContextFactory.getProcessInstance(processInstanceId);
+                MapAccessor processContext = processInstance.getContextAccessor();
 
                 String callbackUrl = processContext.getStringProperty(ContextConstants.CALLBACKURL_VARIABLE);
                 String resultUrl = processContext.getStringProperty(ContextConstants.RESULTURL_VARIABLE);
@@ -180,7 +177,7 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
 
     @SuppressWarnings("unchecked")
     private boolean changeActivityState(JsonMapObject jsonmapobject, String state) throws Exception {
-        WMSessionHandle shandle = sessionHandleSupplier.get();
+        WMSessionHandle shandle = sessionHandleSupplier.get().getSessionHandle();
         return changeActivityState(shandle, jsonmapobject, state);
     }
 
@@ -218,7 +215,7 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
     @Transactional
     public boolean resume(JsonMapObject jsonmapobject) {
         try {
-            WMSessionHandle shandle = sessionHandleSupplier.get();
+            WMSessionHandle shandle = sessionHandleSupplier.get().getSessionHandle();
             updateVariables(shandle, jsonmapobject);
             WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
             WMActivityInstance activityinstance = wapi.getActivityInstance(shandle, processInstanceId, activityInstanceId);

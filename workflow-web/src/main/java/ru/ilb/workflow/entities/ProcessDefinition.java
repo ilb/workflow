@@ -14,18 +14,39 @@
  * limitations under the License.
  */
 package ru.ilb.workflow.entities;
-import ru.ilb.jfunction.map.accessors.MapAccessor;
 
 /**
  *
  * @author slavb
  */
-public interface ProcessContextFactory {
+public interface ProcessDefinition {
 
-    ProcessInstance getProcessInstance(String processInstanceId);
+    String getDefinitionName();
 
-    ProcessContext getProcessContext(String processInstanceId);
+    String getDescription();
 
-    MapAccessor getProcessContextAccessor(String processInstanceId);
+    String getId();
+
+    String getName();
+
+    String getPackageId();
+
+    String getVersion();
+
+    Boolean getEnabled();
+
+//    void setDefinitionName(String definitionName);
+//
+//    void setDescription(String description);
+//
+//    void setId(String id);
+//
+//    void setName(String name);
+//
+//    void setPackageId(String packageId);
+//
+//    void setVersion(String version);
+//
+//    void setEnabled(Boolean enabled);
 
 }

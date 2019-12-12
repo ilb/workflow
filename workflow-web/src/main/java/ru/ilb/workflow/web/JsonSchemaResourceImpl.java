@@ -31,16 +31,17 @@ import ru.ilb.jsonschema.jsonschema.JsonType;
 import ru.ilb.jsonschema.jsonschema.Property;
 import ru.ilb.jsonschema.utils.JsonTypeConverter;
 import ru.ilb.workflow.api.JsonSchemaResource;
+import ru.ilb.workflow.core.SessionData;
 
 public class JsonSchemaResourceImpl implements JsonSchemaResource {
 
-    private final Supplier<WMSessionHandle> sessionHandleSupplier;
+    private final Supplier <SessionData> sessionHandleSupplier;
 
     private final String processInstanceId;
 
     private final String activityInstanceId;
 
-    public JsonSchemaResourceImpl(Supplier<WMSessionHandle> sessionHandleSupplier, String processInstanceId, String activityInstanceId) {
+    public JsonSchemaResourceImpl(Supplier <SessionData> sessionHandleSupplier, String processInstanceId, String activityInstanceId) {
         this.sessionHandleSupplier = sessionHandleSupplier;
         this.processInstanceId = processInstanceId;
         this.activityInstanceId = activityInstanceId;
@@ -50,7 +51,8 @@ public class JsonSchemaResourceImpl implements JsonSchemaResource {
     @Transactional
     public Response getJsonSchema() {
         try {
-            return Response.ok(getJsonSchemaActivity(sessionHandleSupplier.get(), processInstanceId, activityInstanceId)).build();
+            WMSessionHandle shandle = sessionHandleSupplier.get().getSessionHandle();
+            return Response.ok(getJsonSchemaActivity(shandle, processInstanceId, activityInstanceId)).build();
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }

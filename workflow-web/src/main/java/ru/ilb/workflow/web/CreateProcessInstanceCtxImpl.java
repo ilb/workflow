@@ -26,20 +26,19 @@ import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.workflow.api.CreateProcessInstanceCtx;
 import ru.ilb.workflow.context.ContextConstants;
+import ru.ilb.workflow.core.SessionData;
 import ru.ilb.workflow.session.AuthorizationHandler;
 import ru.ilb.workflow.utils.WAPIUtils;
 import ru.ilb.workflow.utils.WorkflowUtils;
 
-
 public class CreateProcessInstanceCtxImpl implements CreateProcessInstanceCtx {
 
-    private final Supplier<WMSessionHandle> sessionHandleSupplier;
+    private final Supplier<SessionData> sessionHandleSupplier;
 
     @Context
     protected MessageContext messageContext;
 
-
-    public CreateProcessInstanceCtxImpl(Supplier<WMSessionHandle> sessionHandleSupplier) {
+    public CreateProcessInstanceCtxImpl(Supplier<SessionData> sessionHandleSupplier) {
         this.sessionHandleSupplier = sessionHandleSupplier;
     }
 
@@ -50,7 +49,7 @@ public class CreateProcessInstanceCtxImpl implements CreateProcessInstanceCtx {
         processData.setProperty(ContextConstants.CONTEXTURL_VARIABLE, contextUrl);
         processData.setProperty(ContextConstants.CALLBACKURL_VARIABLE, callbackUrl);
 
-        WMSessionHandle shandle = sessionHandleSupplier.get();
+        WMSessionHandle shandle = sessionHandleSupplier.get().getSessionHandle();
         String processInstanceId = WAPIUtils.createProcessInstance(shandle, packageId, versionId, processDefinitionId, processData);
         WMActivityInstance nextAct = WAPIUtils.findNextActivity(shandle, AuthorizationHandler.getAuthorisedUser(), processInstanceId);
         Response.ResponseBuilder builder = Response.ok(processInstanceId);

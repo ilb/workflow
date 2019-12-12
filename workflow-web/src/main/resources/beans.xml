@@ -179,7 +179,7 @@
     <bean class="ru.ilb.workflow.eventaudit.CollectionEventAuditListener"/>
     <bean class="ru.ilb.workflow.utils.InitUtils" init-method="initializeEngine" destroy-method="stopEngine" />
     <context:component-scan base-package="ru.ilb.workflow.web,ru.ilb.filedossier,ru.ilb.callcontext.core"/>
-    <jaxrs:server address="/" basePackages="ru.ilb.workflow.web,ru.ilb.workflow.xpil.web,ru.ilb.workflow.providers,ru.ilb.common.jaxrs.providers,ru.ilb.common.jaxrs.exceptionhandler">
+    <jaxrs:server address="/" basePackages="ru.ilb.workflow.web,ru.ilb.workflow.xpil.web,ru.ilb.workflow.context.web,ru.ilb.workflow.providers,ru.ilb.common.jaxrs.providers,ru.ilb.common.jaxrs.exceptionhandler">
         <jaxrs:properties>
             <entry key="search.lax.property.match" value="true" />
         </jaxrs:properties>

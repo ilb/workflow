@@ -26,6 +26,7 @@ class TestProcessInstances(unittest.TestCase):
         configuration.username =  os.environ.get('USER')
         configuration.password = "123"
         configuration.debug=True
+        configuration.client_side_validation=False
         auth_header='Basic ' + base64.b64encode(bytes(configuration.username+':'+configuration.password, 'utf-8')).decode("utf-8")
         self.process_api = ProcessInstancesApi(WorkflowApiClient(configuration=configuration,header_name="Authorization",header_value=auth_header))
     def setUpFiledossier(self):
@@ -34,6 +35,7 @@ class TestProcessInstances(unittest.TestCase):
         configuration.username =  os.environ.get('USER')
         configuration.password = "123"
         configuration.debug=True
+        configuration.client_side_validation=False
         auth_header='Basic ' + base64.b64encode(bytes(configuration.username+':'+configuration.password, 'utf-8')).decode("utf-8")
         self.filedossier_api = DossiersApi(FiledossierApiClient(configuration=configuration,header_name="Authorization",header_value=auth_header))
     def test_createProcessInstanceAndNext(self):
@@ -46,9 +48,9 @@ class TestProcessInstances(unittest.TestCase):
         print('activityForm!!!', self.activityForm)
         activityDossier=self.activityForm['activityDossier']
         print('activityDossier', activityDossier)
-        dossier = self.filedossier_api.get_dossier(activityDossier['dossierKey'],activityDossier['dossierPackage'],activityDossier['dossierCode'])
+        dossier = self.filedossier_api.get_dossier(activityDossier['dossierKey'],activityDossier['dossierPackage'],activityDossier['dossierCode'],activityDossier['dossierMode'])
         print('dossier', dossier)
-        response=self.filedossier_api.download('fairpricecalc',activityDossier['dossierKey'],activityDossier['dossierPackage'],activityDossier['dossierCode'],_preload_content=False)
+        response=self.filedossier_api.download('fairpricecalc',activityDossier['dossierKey'],activityDossier['dossierPackage'],activityDossier['dossierCode'],activityDossier['dossierMode'],_preload_content=False)
         f= open("/tmp/content.ods","wb")
         f.write(response.data)
         print('content url',self.workflowUrl + '/dossiers/' + activityDossier['dossierKey'] + '/stockvaluation/stockvaluation_fairpricecalc/dossierfiles/fairpricecalc')

@@ -15,21 +15,15 @@
  */
 package ru.ilb.workflow.entities;
 
-import java.net.URI;
+import java.util.stream.Stream;
 
 /**
  *
  * @author slavb
  */
-public interface ActivityInstance {
+public interface ProcessDefinitionFactory {
 
-    public String getId();
+    Stream<ProcessDefinition> getProcessDefinitions(Boolean enabled, String packageId, String versionId, String processDefinitionId);
 
-    public ActivityDefinition getActivityDefinition();
 
-    public ProcessContext getContext();
-
-    public URI getActivityFormUrl();
-
-    public String getActivityDefinitionId();
 }

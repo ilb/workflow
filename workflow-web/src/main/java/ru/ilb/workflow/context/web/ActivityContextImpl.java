@@ -16,6 +16,7 @@
 package ru.ilb.workflow.context.web;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
 import ru.ilb.callcontext.entities.CallContext;
@@ -25,20 +26,22 @@ import ru.ilb.jfunction.map.converters.ObjectMapToSerializedMapFunction;
 import ru.ilb.workflow.api.ActivityContext;
 import ru.ilb.workflow.context.ContextConstants;
 import ru.ilb.workflow.entities.ProcessContext;
-import ru.ilb.workflow.entities.ProcessContextFactory;
 import ru.ilb.workflow.entities.ProcessInstance;
-
+import ru.ilb.workflow.entities.ProcessInstanceFactory;
 
 public class ActivityContextImpl implements ActivityContext {
 
-    private final ProcessContextFactory processContextFactory;
+    private final ProcessInstanceFactory processContextFactory;
 
     private final CallContextFactory callContextFactory;
 
+    private final URI resourceUri;
+
     @Inject
-    public ActivityContextImpl(ProcessContextFactory processContextFactory, CallContextFactory callContextFactory) {
+    public ActivityContextImpl(ProcessInstanceFactory processContextFactory, CallContextFactory callContextFactory, URI resourceUri) {
         this.processContextFactory = processContextFactory;
         this.callContextFactory = callContextFactory;
+        this.resourceUri = resourceUri;
     }
 
     @Override
@@ -49,16 +52,23 @@ public class ActivityContextImpl implements ActivityContext {
 
         ProcessContext activityContext = processInstance.getActivityInstance(activityInstanceId).getContext();
 
-        String contextUrl = processInstance.getContextAccessor().getStringProperty(ContextConstants.CONTEXTURL_VARIABLE);
+        Map<String, Object> contextData = new HashMap<>();
 
+        String parentContextUrl = processInstance.getContextAccessor().getStringProperty(ContextConstants.CONTEXTURL_VARIABLE);
+        if (parentContextUrl != null) {
+            CallContext parentContext = callContextFactory.getCallContext(URI.create(parentContextUrl));
+            // add parent context to result context
+            contextData.putAll(parentContext.getContext());
+        }
 
-        CallContext callContext = callContextFactory.getCallContext(URI.create(contextUrl));
+        Map<String, Object> serializedActivityContext = ObjectMapToSerializedMapFunction.INSTANCE.apply(activityContext.getContext(), activityContext.getContextSignature());
+        // add activity context to result context
+        contextData.putAll(serializedActivityContext);
 
-        // add activity context to supplied context
-        callContext.getContext().putAll(activityContext.getContext());
+        CallContext callContext = callContextFactory.createCallContext(null, contextData);
+        //callContext.setCallbackUri(uri);
 
-        Map<String, Object> serializedContext = ObjectMapToSerializedMapFunction.INSTANCE.apply(activityContext.getContext(), activityContext.getContextSignature());
-        String json = MapToJsonFunction.INSTANCE.apply(serializedContext);
+        String json = MapToJsonFunction.INSTANCE.apply(callContext.getContext());
         return json;
     }
 

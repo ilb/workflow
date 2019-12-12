@@ -35,6 +35,7 @@ import ru.ilb.workflow.api.ProcessContextResource;
 import ru.ilb.workflow.api.ProcessDefinitionResource;
 import ru.ilb.workflow.api.ProcessInstanceResource;
 import ru.ilb.workflow.api.ProcessStepsResource;
+import ru.ilb.workflow.core.SessionData;
 import ru.ilb.workflow.mappers.ActivityInstanceMapper;
 import ru.ilb.workflow.mappers.ProcessInstanceMapper;
 import ru.ilb.workflow.view.ActivityInstance;
@@ -42,7 +43,7 @@ import ru.ilb.workflow.view.ProcessInstance;
 
 public class ProcessInstanceResourceImpl implements ProcessInstanceResource {
 
-    private Supplier<WMSessionHandle> sessionHandleSupplier;
+    private Supplier<SessionData> sessionHandleSupplier;
 
     private String processInstanceId;
 
@@ -58,7 +59,7 @@ public class ProcessInstanceResourceImpl implements ProcessInstanceResource {
     @Inject
     private ActivityInstanceMapper activityInstanceMapper;
 
-    public ProcessInstanceResourceImpl(Supplier<WMSessionHandle> sessionHandleSupplier, String processInstanceId) {
+    public ProcessInstanceResourceImpl(Supplier<SessionData> sessionHandleSupplier, String processInstanceId) {
         this.sessionHandleSupplier = sessionHandleSupplier;
         this.processInstanceId = processInstanceId;
     }
@@ -67,7 +68,7 @@ public class ProcessInstanceResourceImpl implements ProcessInstanceResource {
     @Transactional
     public ProcessInstance getProcessInstance() {
         try {
-            WMSessionHandle shandle = sessionHandleSupplier.get();
+            WMSessionHandle shandle = sessionHandleSupplier.get().getSessionHandle();
             WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
             WMProcessInstance wmProcessInstance = wapi.getProcessInstance(shandle, processInstanceId);
             return processInstanceMapper.createFromEntity(wmProcessInstance);
@@ -132,7 +133,7 @@ public class ProcessInstanceResourceImpl implements ProcessInstanceResource {
     @Transactional
     public boolean terminate(JsonMapObject jsonmapobject) {
         try {
-            WMSessionHandle shandle = sessionHandleSupplier.get();
+            WMSessionHandle shandle = sessionHandleSupplier.get().getSessionHandle();
             WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
             wapi.terminateProcessInstance(shandle, processInstanceId);
         } catch (Exception ex) {
@@ -153,7 +154,7 @@ public class ProcessInstanceResourceImpl implements ProcessInstanceResource {
     @Transactional
     public ActivityInstance goBack(JsonMapObject jsonmapobject) {
         try {
-            WMSessionHandle shandle = sessionHandleSupplier.get();
+            WMSessionHandle shandle = sessionHandleSupplier.get().getSessionHandle();
             WMActivityInstance activityInstance = SharkInterfaceWrapper.getShark().getExecutionAdministrationExtension().goBack(shandle, processInstanceId, true, null);
             return activityInstanceMapper.createFromEntity(activityInstance);
         } catch (Exception ex) {
@@ -172,7 +173,7 @@ public class ProcessInstanceResourceImpl implements ProcessInstanceResource {
     @Transactional
     public ActivityInstance goAnywhere(String activityInstanceId, String activityDefinitionId, JsonMapObject jsonmapobject) {
         try {
-            WMSessionHandle shandle = sessionHandleSupplier.get();
+            WMSessionHandle shandle = sessionHandleSupplier.get().getSessionHandle();
             WMActivityInstance activityInstance = SharkInterfaceWrapper.getShark().getExecutionAdministrationExtension().goAnywhere(shandle, processInstanceId, activityInstanceId, activityDefinitionId, null);
             return activityInstanceMapper.createFromEntity(activityInstance);
         } catch (Exception ex) {

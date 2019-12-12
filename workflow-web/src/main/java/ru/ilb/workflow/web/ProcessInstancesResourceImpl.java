@@ -66,14 +66,14 @@ public class ProcessInstancesResourceImpl extends JaxRsContextResource implement
 
     @Override
     public ProcessInstanceResource getProcessInstanceResource(String x_remote_user, String processInstanceId) {
-        ProcessInstanceResource resource = new ProcessInstanceResourceImpl(sessionDataProvider.getSessionData().getSessionHandleSupplier(), processInstanceId);
+        ProcessInstanceResource resource = new ProcessInstanceResourceImpl(sessionDataProvider, processInstanceId);
         applicationContext.getAutowireCapableBeanFactory().autowireBean(resource);
         return resourceContext.initResource(resource);
     }
 
     @Override
     public CreateProcessInstanceCtx getCreateProcessInstanceCtx() {
-        CreateProcessInstanceCtx resource = new CreateProcessInstanceCtxImpl(sessionDataProvider.getSessionData().getSessionHandleSupplier());
+        CreateProcessInstanceCtx resource = new CreateProcessInstanceCtxImpl(sessionDataProvider);
         applicationContext.getAutowireCapableBeanFactory().autowireBean(resource);
         return resourceContext.initResource(resource);
     }
@@ -82,7 +82,7 @@ public class ProcessInstancesResourceImpl extends JaxRsContextResource implement
     @Transactional
     public ProcessInstances getProcessInstances(String x_remote_user, Boolean open, String packageId, String versionId, String processDefinitionId) {
         try {
-            WMSessionHandle shandle = sessionDataProvider.getSessionData().getSessionHandleSupplier().get();
+            WMSessionHandle shandle = sessionDataProvider.get().getSessionHandle();
             WMProcessInstance[] wmProcessInstances = WAPIUtils.getProcessInstances(shandle, open, packageId, versionId, processDefinitionId);
             return processInstanceMapper.createWrapperFromEntities(Arrays.asList(wmProcessInstances));
         } catch (Exception ex) {
@@ -94,7 +94,7 @@ public class ProcessInstancesResourceImpl extends JaxRsContextResource implement
     @Override
     @Transactional
     public String createProcessInstance(String x_remote_user, String packageId, String versionId, String processDefinitionId, JsonMapObject jsonmapobject) {
-        WMSessionHandle shandle = sessionDataProvider.getSessionData().getSessionHandleSupplier().get();
+        WMSessionHandle shandle = sessionDataProvider.get().getSessionHandle();
         return WAPIUtils.createProcessInstance(shandle, packageId, versionId, processDefinitionId, jsonmapobject);
     }
 
@@ -103,7 +103,7 @@ public class ProcessInstancesResourceImpl extends JaxRsContextResource implement
     public ActivityInstance createProcessInstanceAndNext(String x_remote_user, String packageId, String versionId, String processDefinitionId, JsonMapObject jsonmapobject) {
         String processInstanceId = createProcessInstance(x_remote_user, packageId, versionId, processDefinitionId, jsonmapobject);
         ActivityInstance nextActivityInstance = null;
-        WMSessionHandle shandle = sessionDataProvider.getSessionData().getSessionHandleSupplier().get();
+        WMSessionHandle shandle = sessionDataProvider.get().getSessionHandle();
         WMActivityInstance nextAct = WAPIUtils.findNextActivity(shandle, AuthorizationHandler.getAuthorisedUser(), processInstanceId);
         if (nextAct != null) {
             nextActivityInstance = activityInstanceMapper.createFromEntity(nextAct);
@@ -116,7 +116,7 @@ public class ProcessInstancesResourceImpl extends JaxRsContextResource implement
     public ActivityInstances getWorkList(String x_remote_user, AcceptedStatus assignment, Integer limit) {
         try {
             WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
-            WMSessionHandle shandle = sessionDataProvider.getSessionData().getSessionHandleSupplier().get();
+            WMSessionHandle shandle = sessionDataProvider.get().getSessionHandle();
             ActivityFilterBuilder fb = SharkInterfaceWrapper.getShark().getActivityFilterBuilder();
             List<WMFilter> filters = new ArrayList<>();
             filters.add(fb.addStateStartsWith(shandle, SharkConstants.STATEPREFIX_OPEN));

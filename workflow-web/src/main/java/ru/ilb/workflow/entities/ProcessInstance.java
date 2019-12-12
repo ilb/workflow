@@ -25,9 +25,33 @@ public interface ProcessInstance {
 
     public String getId();
 
+    /**
+     * get activity context
+     * @return
+     */
     public ProcessContext getContext();
 
+    /**
+     * get activity context accessor
+     * @return
+     */
     public MapAccessor getContextAccessor();
 
+    /**
+     * get activity instance by id
+     * @param activityInstanceId
+     * @return
+     */
     public ActivityInstance getActivityInstance(String activityInstanceId);
+
+    /**
+     * get next running accessible activity for session user
+     * @return
+     */
+    public ActivityInstance getNextActivityInstance();
+
+    /**
+     * starts the process
+     */
+    public void start();
 }

@@ -16,6 +16,8 @@
 package ru.ilb.workflow.context.web;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
@@ -26,33 +28,42 @@ import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.workflow.api.StartProcess;
 import ru.ilb.workflow.context.ContextConstants;
+import ru.ilb.workflow.core.SessionData;
+import ru.ilb.workflow.entities.ActivityInstance;
+import ru.ilb.workflow.entities.ProcessInstance;
+import ru.ilb.workflow.entities.ProcessInstanceFactory;
 import ru.ilb.workflow.session.AuthorizationHandler;
 import ru.ilb.workflow.utils.WAPIUtils;
 import ru.ilb.workflow.utils.WorkflowUtils;
 
-
 public class StartProcessImpl implements StartProcess {
 
-    private final Supplier<WMSessionHandle> sessionHandleSupplier;
+    private final ProcessInstanceFactory processInstanceFactory;
 
-    public StartProcessImpl(Supplier<WMSessionHandle> sessionHandleSupplier) {
-        this.sessionHandleSupplier = sessionHandleSupplier;
+    private final URI resourceUri;
+
+    public StartProcessImpl(ProcessInstanceFactory processInstanceFactory, URI resourceUri) {
+        this.processInstanceFactory = processInstanceFactory;
+        this.resourceUri = resourceUri;
     }
 
     @Override
     @Transactional
     public Response startProcess(String x_remote_user, String packageId, String versionId, String processDefinitionId, URI contextUrl) {
-        JsonMapObject processData = new JsonMapObject();
-        processData.setProperty(ContextConstants.CONTEXTURL_VARIABLE, contextUrl);
+        Map<String, Object> context = new HashMap<>();
+        if (contextUrl != null) {
+            context.put(ContextConstants.CONTEXTURL_VARIABLE, contextUrl);
+        }
 
-        WMSessionHandle shandle = sessionHandleSupplier.get();
-        String processInstanceId = WAPIUtils.createProcessInstance(shandle, packageId, versionId, processDefinitionId, processData);
-        WMActivityInstance nextAct = WAPIUtils.findNextActivity(shandle, AuthorizationHandler.getAuthorisedUser(), processInstanceId);
-        Response.ResponseBuilder builder = Response.ok(processInstanceId);
+        ProcessInstance processInstance = processInstanceFactory.createProcessInstance(packageId, versionId, processDefinitionId, context);
+        processInstance.start();
+
+        ActivityInstance nextActivityInstance = processInstance.getNextActivityInstance();
+
+        Response.ResponseBuilder builder = Response.ok(processInstance.getId());
         //FIXME реализовать ветку когда активность не найдена. Переход в callback?
-        if (nextAct != null) {
-            String url = WorkflowUtils.getActivityFormUrl(shandle, null, nextAct.getProcessInstanceId(), nextAct.getActivityDefinitionId(), nextAct.getId());
-            builder = Response.seeOther(URI.create(url));
+        if (nextActivityInstance != null) {
+            builder = Response.seeOther(nextActivityInstance.getActivityFormUrl());
         }
         return builder.build();
     }
