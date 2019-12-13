@@ -58,7 +58,7 @@ export async function goAnywhere ({ processInstanceId, activityDefinitionId, act
   const api = getProcessInstancesApi({ req, proxy: true });
   const result = await api.goAnywhere(processInstanceId, { activityDefinitionId, activityInstanceId, body: {} });
   proceedToNextUrl(result);
-  return result;
+  return result || {};
 }
 
 export async function getActivityInitialProps ({ query, req }) {
