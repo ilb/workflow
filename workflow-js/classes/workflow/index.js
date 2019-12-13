@@ -45,6 +45,15 @@ export async function getProcessSteps ({ processInstanceId, req }) {
   return processSteps;
 }
 
+export async function completeAndNext ({ processInstanceId, activityInstanceId, processData, req }) {
+  const api = getProcessInstancesApi({ req, proxy: true });
+  const result = await api.completeAndNext(activityInstanceId, processInstanceId, { body: processData || {} });
+  if (process.browser) {
+    proceedToNextUrl(result);
+  }
+  return result || {};
+}
+
 export async function goAnywhere ({ processInstanceId, activityDefinitionId, activityInstanceId, req }) {
   const api = getProcessInstancesApi({ req, proxy: true });
   const result = await api.goAnywhere(processInstanceId, { activityDefinitionId, activityInstanceId, body: {} });
