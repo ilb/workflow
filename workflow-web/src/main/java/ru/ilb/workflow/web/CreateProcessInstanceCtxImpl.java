@@ -15,8 +15,12 @@
  */
 package ru.ilb.workflow.web;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLDecoder;
 import java.util.function.Supplier;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import org.apache.cxf.jaxrs.ext.MessageContext;
@@ -46,8 +50,12 @@ public class CreateProcessInstanceCtxImpl implements CreateProcessInstanceCtx {
     @Transactional
     public Response createProcessInstanceCtx(String x_remote_user, String packageId, String versionId, String processDefinitionId, String callId, String callbackUrl, String contextUrl, String callerId) {
         JsonMapObject processData = new JsonMapObject();
-        processData.setProperty(ContextConstants.CONTEXTURL_VARIABLE, contextUrl);
-        processData.setProperty(ContextConstants.CALLBACKURL_VARIABLE, callbackUrl);
+        try {
+            processData.setProperty(ContextConstants.CONTEXTURL_VARIABLE, URLDecoder.decode(contextUrl, "UTF-8"));
+            processData.setProperty(ContextConstants.CALLBACKURL_VARIABLE, URLDecoder.decode(callbackUrl, "UTF-8"));
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(CreateProcessInstanceCtxImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         WMSessionHandle shandle = sessionHandleSupplier.get().getSessionHandle();
         String processInstanceId = WAPIUtils.createProcessInstance(shandle, packageId, versionId, processDefinitionId, processData);
