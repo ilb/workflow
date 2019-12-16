@@ -15,8 +15,12 @@
  */
 package ru.ilb.workflow.utils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -25,7 +29,6 @@ import ru.ilb.filedossier.scripting.SubstitutorTemplateEvaluator;
 import ru.ilb.filedossier.scripting.TemplateEvaluator;
 import ru.ilb.workflow.context.ContextConstants;
 import ru.ilb.workflow.core.ProcessContextImpl;
-import ru.ilb.workflow.entities.CallContext;
 import ru.ilb.workflow.entities.ProcessContext;
 
 /**
@@ -99,7 +102,11 @@ public class WorkflowUtils {
         String contextUrl = (String) processContext.getContext().get(ContextConstants.CONTEXTURL_VARIABLE);
 
         if (contextUrl != null) {
-            activityFormUrl = activityFormUrl + "&contextUrl=" + contextUrl;
+            try {
+            activityFormUrl = activityFormUrl + "&contextUrl=" + URLEncoder.encode(contextUrl, "UTF-8");
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(WorkflowUtils.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         return activityFormUrl;
