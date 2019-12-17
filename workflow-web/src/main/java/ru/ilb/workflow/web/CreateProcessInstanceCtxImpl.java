@@ -49,16 +49,8 @@ public class CreateProcessInstanceCtxImpl implements CreateProcessInstanceCtx {
     @Override
     @Transactional
     public Response createProcessInstanceCtx(String x_remote_user, String packageId, String versionId, String processDefinitionId, String callId, String callbackUrl, String contextUrl, String callerId) {
-        JsonMapObject processData = new JsonMapObject();
-        try {
-            processData.setProperty(ContextConstants.CONTEXTURL_VARIABLE, URLDecoder.decode(contextUrl, "UTF-8"));
-            processData.setProperty(ContextConstants.CALLBACKURL_VARIABLE, URLDecoder.decode(callbackUrl, "UTF-8"));
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(CreateProcessInstanceCtxImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
         WMSessionHandle shandle = sessionHandleSupplier.get().getSessionHandle();
-        String processInstanceId = WAPIUtils.createProcessInstance(shandle, packageId, versionId, processDefinitionId, processData);
+        String processInstanceId = WAPIUtils.createProcessInstanceCtx(shandle, packageId, versionId, processDefinitionId, callbackUrl, contextUrl);
         WMActivityInstance nextAct = WAPIUtils.findNextActivity(shandle, AuthorizationHandler.getAuthorisedUser(), processInstanceId);
         Response.ResponseBuilder builder = Response.ok(processInstanceId);
         //FIXME реализовать ветку когда активность не найдена. Переход в callback?

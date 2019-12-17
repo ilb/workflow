@@ -17,6 +17,8 @@
 package ru.ilb.workflow.utils;
 
 import at.together._2006.xpil1.StringDataInstance;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -42,21 +44,73 @@ import org.enhydra.shark.api.common.SharkConstants;
 import org.enhydra.shark.api.internal.toolagent.ToolAgentGeneralException;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 import org.enhydra.shark.utilities.namevalue.NameValueUtilities;
+import ru.ilb.workflow.context.ContextConstants;
+import ru.ilb.workflow.web.CreateProcessInstanceCtxImpl;
 
 /**
  * TODO: refactor to class instance methods
+ *
  * @author slavb
  */
 public class WAPIUtils {
 
-    public static String createProcessInstance(WMSessionHandle shandle,String packageId, String versionId, String processDefinitionId, JsonMapObject processData)  {
+    /**
+     * TEMP realization
+     *
+     * @param shandle
+     * @param packageId
+     * @param versionId
+     * @param processDefinitionId
+     * @param callbackUrl
+     * @param contextUrl
+     * @return
+     */
+    public static String createProcessInstanceCtx(WMSessionHandle shandle, String packageId, String versionId, String processDefinitionId, String callbackUrl, String contextUrl) {
+        JsonMapObject processData = new JsonMapObject();
+        try {
+            processData.setProperty(ContextConstants.CONTEXTURL_VARIABLE, URLDecoder.decode(contextUrl, "UTF-8"));
+            processData.setProperty(ContextConstants.CALLBACKURL_VARIABLE, URLDecoder.decode(callbackUrl, "UTF-8"));
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(CreateProcessInstanceCtxImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String processId = findProcessInstanceCtx(shandle, packageId, versionId, processDefinitionId, callbackUrl, contextUrl);
+        if (processId == null) {
+            processId = createProcessInstance(shandle, packageId, versionId, processDefinitionId, processData);;
+        }
+
+        return processId;
+    }
+
+    public static String findProcessInstanceCtx(WMSessionHandle shandle, String packageId, String versionId, String processDefinitionId, String callbackUrl, String contextUrl) {
+        try {
+            ProcessFilterBuilder pfb = SharkInterfaceWrapper.getShark().getProcessFilterBuilder();
+            WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
+            WMFilter processfilter = pfb.addStateStartsWith(shandle, SharkConstants.STATEPREFIX_OPEN);
+            if (packageId != null) {
+                processfilter = pfb.and(shandle, processfilter, pfb.addPackageIdEquals(shandle, packageId));
+            }
+            processfilter = pfb.and(shandle, processfilter, pfb.addProcessDefIdEquals(shandle, processDefinitionId));
+            processfilter = pfb.and(shandle, processfilter, pfb.addVariableStringEquals(shandle, ContextConstants.CONTEXTURL_VARIABLE, contextUrl));
+            WMProcessInstance[] procsInst = wapi.listProcessInstances(shandle, processfilter, false).getArray();
+            String processId = null;
+            if (procsInst.length > 0) {
+                processId = procsInst[0].getId();
+            }
+            return processId;
+
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public static String createProcessInstance(WMSessionHandle shandle, String packageId, String versionId, String processDefinitionId, JsonMapObject processData) {
         Objects.requireNonNull(processDefinitionId, "processDefinitionId required");
         try {
 
             WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
             WMProcessDefinition[] wmProcessDefinition = WAPIUtils.getProcessDefinitions(shandle, true, packageId, versionId, processDefinitionId);
-            if (wmProcessDefinition.length==0) {
-                throw new IllegalArgumentException("Process definition not found [packageId=" + packageId + " versionId=" + versionId+ " processDefinitionId="+processDefinitionId);
+            if (wmProcessDefinition.length == 0) {
+                throw new IllegalArgumentException("Process definition not found [packageId=" + packageId + " versionId=" + versionId + " processDefinitionId=" + processDefinitionId);
             }
 
             String processInstanceId = wapi.createProcessInstance(shandle, wmProcessDefinition[0].getName(), null);
