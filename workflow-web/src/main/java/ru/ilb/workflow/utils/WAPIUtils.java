@@ -16,21 +16,17 @@
  */
 package ru.ilb.workflow.utils;
 
-import at.together._2006.xpil1.StringDataInstance;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ws.rs.core.MultivaluedMap;
 import org.apache.cxf.jaxrs.json.basic.JsonMapObject;
 import org.enhydra.shark.api.client.wfmc.wapi.WAPI;
 import org.enhydra.shark.api.client.wfmc.wapi.WMActivityInstance;
 import org.enhydra.shark.api.client.wfmc.wapi.WMActivityInstanceState;
-import org.enhydra.shark.api.client.wfmc.wapi.WMAttribute;
 import org.enhydra.shark.api.client.wfmc.wapi.WMFilter;
 import org.enhydra.shark.api.client.wfmc.wapi.WMProcessDefinition;
 import org.enhydra.shark.api.client.wfmc.wapi.WMProcessInstance;
@@ -66,18 +62,19 @@ public class WAPIUtils {
      * @return
      */
     public static String createProcessInstanceCtx(WMSessionHandle shandle, String packageId, String versionId, String processDefinitionId, String callbackUrl, String contextUrl) {
-        JsonMapObject processData = new JsonMapObject();
+        String processId = null;
         try {
-            processData.setProperty(ContextConstants.CONTEXTURL_VARIABLE, URLDecoder.decode(contextUrl, "UTF-8"));
-            processData.setProperty(ContextConstants.CALLBACKURL_VARIABLE, URLDecoder.decode(callbackUrl, "UTF-8"));
+            String contextUrlDecode = URLDecoder.decode(contextUrl, "UTF-8");
+            processId = findProcessInstanceCtx(shandle, packageId, versionId, processDefinitionId, callbackUrl, contextUrlDecode);
+            if (processId == null) {
+                JsonMapObject processData = new JsonMapObject();
+                processData.setProperty(ContextConstants.CONTEXTURL_VARIABLE, contextUrlDecode);
+                processData.setProperty(ContextConstants.CALLBACKURL_VARIABLE, URLDecoder.decode(callbackUrl, "UTF-8"));
+                processId = createProcessInstance(shandle, packageId, versionId, processDefinitionId, processData);
+            }
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(CreateProcessInstanceCtxImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        String processId = findProcessInstanceCtx(shandle, packageId, versionId, processDefinitionId, callbackUrl, contextUrl);
-        if (processId == null) {
-            processId = createProcessInstance(shandle, packageId, versionId, processDefinitionId, processData);;
-        }
-
         return processId;
     }
 
