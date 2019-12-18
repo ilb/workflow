@@ -41,6 +41,7 @@ import ru.ilb.workflow.entities.ProcessInstance;
 import ru.ilb.workflow.entities.ProcessInstanceFactory;
 import ru.ilb.workflow.mappers.ActivityInstanceMapper;
 import ru.ilb.workflow.session.AuthorizationHandler;
+import ru.ilb.workflow.toolagent.WebClient;
 import ru.ilb.workflow.utils.SharkUtils;
 import ru.ilb.workflow.utils.WAPIUtils;
 import ru.ilb.workflow.view.ActivityInstance;
@@ -146,8 +147,7 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
                     sb.append("&resultUrl=");
                     sb.append(resultUrl);
                     callbackUrl = sb.toString();
-                    nextActivityInstance = new ActivityInstance();
-                    nextActivityInstance.setActivityFormUrl(callbackUrl);
+                    WebClient.execute("GET", callbackUrl, null, null);
                 }
             }
             return nextActivityInstance;
