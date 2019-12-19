@@ -15,7 +15,14 @@ export const fixDevelmentUrl = (urlstr) => {
 export const proceedToNextUrl = (result) => {
   const { response, error } = result || {};
   if (!error) {
-    const nextUrl = (response && response.activityFormUrl) || '/workflow/workList';
+    let nextUrl = response && response.activityFormUrl;
+    if (!nextUrl) {
+      try {
+        window.close();
+      } finally {
+        nextUrl = '/workflow/workList';
+      }
+    }
     if (process.browser) {
       document.location = fixDevelmentUrl(nextUrl);
     } else {
