@@ -15,6 +15,7 @@
  */
 package ru.ilb.workflow.web;
 
+import java.net.URLEncoder;
 import java.util.Map;
 import java.util.function.Supplier;
 import javax.inject.Inject;
@@ -145,7 +146,7 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
                     sb.append(callbackUrl);
                     sb.append(callbackUrl.contains("?") ? "&" : "?");
                     sb.append("&resultUrl=");
-                    sb.append(resultUrl);
+                    sb.append(URLEncoder.encode(resultUrl, "UTF-8"));
                     callbackUrl = sb.toString();
                     WebClient.execute("GET", callbackUrl, null, null);
                 }
