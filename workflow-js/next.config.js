@@ -11,7 +11,14 @@ module.exports = withCSS(withTM({
   env: {
     API_PATH: prefix + '/api',
   },
-  webpack: (config) => {
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.node = {
+        fs: 'empty',
+        net: 'empty',
+        tls: 'empty',
+      };
+    }
     config.module.rules.unshift({
       test: /\.(js|jsx)$/,
       exclude: /node_modules/,

@@ -7,7 +7,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "nbignore": "mkdir -p node_modules && touch node_modules/.nbignore",
+    "nbignore": "mkdir -p node_modules && touch node_modules/.nbignore && mkdir -p .next && touch .next/.nbignore",
     "versionpatch": "npm version patch",
     "lint": "eslint ./pages ./components ./classes ./conf ./next.config.js --ext .js --ext .jsx || true"
   },
@@ -15,9 +15,9 @@
   "license": "ISC",
   "dependencies": {
     "@bb/jsonschema-form": "^1.0.2",
-    "@ilb/filedossier-js": "^1.0.41",
+    "@ilb/filedossier-js": "^1.0.42",
     "@ilb/js-auto-proxy": "^1.0.10",
-    "@ilb/node_context": "^1.0.1",
+    "@ilb/node_context": "^1.0.5",
     "@ilb/workflow-api": "2.0.3",
     "@zeit/next-css": "^1.0.1",
     "next": "^9.1.4",

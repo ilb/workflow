@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import Layout from '../../components/workflow/Layout';
 import WorkListTable from '../../components/workflow/WorkListTable';
+import config from '../../conf/config';
 
 const WorkList = ({ workListProps, layoutProps }) => {
   return <Layout {...layoutProps}>
@@ -14,6 +15,7 @@ WorkList.propTypes = {
 };
 
 WorkList.getInitialProps = async function (context) {
+  await config.init();
   const workListProps = await WorkListTable.getInitialProps(context);
   const layoutProps = await Layout.getInitialProps(context);
   return { workListProps, layoutProps };

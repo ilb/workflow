@@ -1,18 +1,22 @@
 import { ProcessInstancesApi, ProcessDefinitionsApi } from '@ilb/workflow-api';
+import ContextFactory from '@ilb/node_context';
 import { createJsProxy } from '@ilb/js-auto-proxy';
-require('@ilb/node_context').config({ debug: true });
 
 const workflowApi = require('@ilb/workflow-api');
 workflowApi.ApiClient.instance.basePath = 'https://devel.net.ilb.ru/workflow-web/web/v2';
 
-let certfile, passphrase, cert, ca;
+let certfile, passphrase, cert, ca, paramsloaded = false, initialized=false;;
 
-if (!process.browser) {
-  certfile = process.env['ru.bystrobank.apps.workflow.certfile'];
-  passphrase = process.env['ru.bystrobank.apps.workflow.cert_PASSWORD'];
-  const fs = require('fs');
-  cert = certfile ? fs.readFileSync(certfile) : null;
-  ca = process.env.NODE_EXTRA_CA_CERTS ? fs.readFileSync(process.env.NODE_EXTRA_CA_CERTS) : null;
+function fillparams() {
+  if(!paramsloaded) {
+    certfile = process.env['ru.bystrobank.apps.workflow.certfile'];
+    console.log('fillparams',certfile);
+    passphrase = process.env['ru.bystrobank.apps.workflow.cert_PASSWORD'];
+    const fs = require('fs');
+    cert = certfile ? fs.readFileSync(certfile) : null;
+    ca = process.env.NODE_EXTRA_CA_CERTS ? fs.readFileSync(process.env.NODE_EXTRA_CA_CERTS) : null;
+    paramsloaded = true;
+  }
 }
 
 const getRemoteUser = req => req && req.headers && req.headers['x-remote-user'];
@@ -44,7 +48,17 @@ export function getProcessDefinitionsApi ({ req, proxy }) {
   return api;
 }
 
+async function init() {
+    if (!process.browser && !initialized) {
+        const cf = new ContextFactory();
+        const tmp = await cf.build();
+        fillparams();
+        initialized = true;
+    }
+}
+
 const config = {
+  init,
   certfile: certfile,
   passphrase: passphrase,
   cert: cert,
