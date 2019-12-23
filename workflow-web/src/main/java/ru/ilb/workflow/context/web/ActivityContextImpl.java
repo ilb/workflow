@@ -31,15 +31,18 @@ import ru.ilb.workflow.entities.ProcessInstanceFactory;
 
 public class ActivityContextImpl implements ActivityContext {
 
-    private final ProcessInstanceFactory processContextFactory;
+    private final ProcessInstanceFactory processInstanceFactory;
 
     private final CallContextFactory callContextFactory;
 
+    /**
+     * Resource uri for relative links
+     */
     private final URI resourceUri;
 
     @Inject
     public ActivityContextImpl(ProcessInstanceFactory processContextFactory, CallContextFactory callContextFactory, URI resourceUri) {
-        this.processContextFactory = processContextFactory;
+        this.processInstanceFactory = processContextFactory;
         this.callContextFactory = callContextFactory;
         this.resourceUri = resourceUri;
     }
@@ -48,7 +51,7 @@ public class ActivityContextImpl implements ActivityContext {
     public String activityContext(String x_remote_user, String callId, String callerId) {
         String processInstanceId = callerId, activityInstanceId = callId;
 
-        ProcessInstance processInstance = processContextFactory.getProcessInstance(processInstanceId);
+        ProcessInstance processInstance = processInstanceFactory.getProcessInstance(processInstanceId);
 
         ProcessContext activityContext = processInstance.getActivityInstance(activityInstanceId).getContext();
 
