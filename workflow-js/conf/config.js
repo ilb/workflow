@@ -10,7 +10,6 @@ let certfile, passphrase, cert, ca, paramsloaded = false, initialized=false;;
 function fillparams() {
   if(!paramsloaded) {
     certfile = process.env['ru.bystrobank.apps.workflow.certfile'];
-    console.log('fillparams',certfile);
     passphrase = process.env['ru.bystrobank.apps.workflow.cert_PASSWORD'];
     const fs = require('fs');
     cert = certfile ? fs.readFileSync(certfile) : null;
@@ -26,6 +25,7 @@ export function getWorkflowApiClient (xRemoteUser) {
   apiClient.basePath = 'https://devel.net.ilb.ru/workflow-web/web/v2';
   if (!process.browser) {
     apiClient.applyAuthToRequest = (request/* , authNames */) => {
+      fillparams();
       request.ca(ca).key(cert).cert(cert);
       request._passphrase = passphrase;
       request.set('x-remote-user', xRemoteUser || process.env.USER);
@@ -51,7 +51,7 @@ export function getProcessDefinitionsApi ({ req, proxy }) {
 async function init() {
     if (!process.browser && !initialized) {
         const cf = new ContextFactory();
-        const tmp = await cf.build();
+        await cf.build();
         fillparams();
         initialized = true;
     }
