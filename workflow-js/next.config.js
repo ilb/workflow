@@ -5,7 +5,7 @@ const isProd = process.env.NODE_ENV === 'production';
 const prefix = isProd ? '/workflow' : '';
 
 module.exports = withCSS(withTM({
-  transpileModules: ['@ilb/filedossier-js'], // TODO without it build crashes on css files imported inside npm package
+  transpileModules: ['@ilb/filedossier-js', '@ilb/node_context', '@ilb/node_ldap', 'ldapjs-client'], // TODO without it build crashes on css files imported inside npm package
 
   assetPrefix: prefix, // affects page bundles and app/commons/vendor scripts
   env: {
