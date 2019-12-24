@@ -18,23 +18,13 @@ package ru.ilb.workflow.context.web;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-import org.apache.cxf.jaxrs.ext.MessageContext;
-import org.apache.cxf.jaxrs.json.basic.JsonMapObject;
-import org.enhydra.shark.api.client.wfmc.wapi.WMActivityInstance;
-import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.workflow.api.StartProcess;
 import ru.ilb.workflow.context.ContextConstants;
-import ru.ilb.workflow.core.SessionData;
 import ru.ilb.workflow.entities.ActivityInstance;
 import ru.ilb.workflow.entities.ProcessInstance;
 import ru.ilb.workflow.entities.ProcessInstanceFactory;
-import ru.ilb.workflow.session.AuthorizationHandler;
-import ru.ilb.workflow.utils.WAPIUtils;
-import ru.ilb.workflow.utils.WorkflowUtils;
 
 public class StartProcessImpl implements StartProcess {
 

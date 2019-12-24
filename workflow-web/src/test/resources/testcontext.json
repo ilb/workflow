@@ -2,7 +2,7 @@
     "k": 1,
     "link": [{
             "rel": "callback",
-            "href": "http://localhost/callback_url"
+            "href": "http://localhost/caller/callback_url"
         }
     ]
 }

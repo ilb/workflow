@@ -57,8 +57,8 @@ public class ActivityContextImplTest {
     public void testActivityContext() throws URISyntaxException {
         System.out.println("activityContext");
         String x_remote_user = "";
-        String callId = "";
-        String callerId = "";
+        String callId = "123";
+        String callerId = "456";
         URI contextUri = this.getClass().getClassLoader().getResource("testcontext.json").toURI();
         CallContextFactory callContextFactory = new CallContextFactoryImpl(new ContextReaderImpl(), new ContextParserImpl());
         SessionData sessionData = new SessionDataImpl(authorisedUser -> new WMSessionHandle());
@@ -76,8 +76,12 @@ public class ActivityContextImplTest {
         ProcessInstance processInstance = new ProcessInstanceMock(processContext, activityInstance);
         ProcessInstanceFactory processInstanceFactory = new ProcessInstanceFactoryMock(processInstance);
 
-        ActivityContextImpl instance = new ActivityContextImpl(processInstanceFactory, callContextFactory, contextUri);
-        String expResult = "{\"link\":[{\"rel\":\"callback\",\"href\":\"http://localhost/callback_url\"}],\"key\":\"value\",\"k\":1}";
+        URI resourceUri = URI.create("http://localhost/workflow/web/callcontext/activityContext");
+
+        ActivityContextImpl instance = new ActivityContextImpl(processInstanceFactory, callContextFactory, resourceUri);
+        String expCallbackUrl = "http://localhost/workflow/web/callcontext/activityCallback?callId=" + callId + "&callerId=" + callerId;
+        String expResult = "{\"link\":[{\"rel\":\"callback\",\"href\":\"" + expCallbackUrl + "\"}],\"key\":\"value\",\"k\":1}";
+        //String expResult = "";
         String result = instance.activityContext(x_remote_user, callId, callerId);
         assertEquals(expResult, result);
     }

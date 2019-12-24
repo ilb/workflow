@@ -69,7 +69,7 @@ public class ActivityContextImpl implements ActivityContext {
         contextData.putAll(serializedActivityContext);
 
         CallContext callContext = callContextFactory.createCallContext(null, contextData);
-        //callContext.setCallbackUri(uri);
+        callContext.setCallbackUri(resourceUri.resolve("activityCallback?callId=" + callId + "&callerId=" + callerId));
 
         String json = MapToJsonFunction.INSTANCE.apply(callContext.getContext());
         return json;

@@ -22,7 +22,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.container.ResourceContext;
 import javax.ws.rs.core.Context;
 import org.apache.cxf.jaxrs.ext.MessageContext;
-import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.springframework.context.ApplicationContext;
 import ru.ilb.callcontext.entities.CallContextFactory;
 import ru.ilb.workflow.api.ActivityCallback;
