@@ -15,8 +15,6 @@
  */
 package ru.ilb.workflow.core;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.enhydra.shark.api.client.wfmc.wapi.WAPI;
 import org.enhydra.shark.api.client.wfmc.wapi.WMActivityInstance;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
@@ -26,7 +24,6 @@ import ru.ilb.jfunction.map.accessors.MapAccessorImpl;
 import ru.ilb.workflow.entities.ActivityInstance;
 import ru.ilb.workflow.entities.ProcessContext;
 import ru.ilb.workflow.entities.ProcessInstance;
-import ru.ilb.workflow.session.AuthorizationHandler;
 import ru.ilb.workflow.utils.WAPIUtils;
 
 

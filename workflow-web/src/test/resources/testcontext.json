@@ -1,0 +1,8 @@
+{
+    "k": 1,
+    "link": [{
+            "rel": "callback",
+            "href": "http://localhost/callback_url"
+        }
+    ]
+}

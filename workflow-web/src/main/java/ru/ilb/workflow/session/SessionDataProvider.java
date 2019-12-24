@@ -25,6 +25,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.Provider;
 import ru.ilb.workflow.core.SessionData;
 import ru.ilb.workflow.core.SessionDataImpl;
+import ru.ilb.workflow.core.SessionHandleFunction;
 
 /**
  *
@@ -39,7 +40,7 @@ public class SessionDataProvider implements ContainerRequestFilter, Supplier<Ses
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        SessionData sd = new SessionDataImpl();
+        SessionData sd = new SessionDataImpl(new SessionHandleFunction());
         sessionData.set(sd);
 
         String userName = requestContext.getSecurityContext().getUserPrincipal().getName();

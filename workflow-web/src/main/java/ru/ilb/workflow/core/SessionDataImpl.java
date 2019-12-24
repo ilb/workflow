@@ -15,8 +15,8 @@
  */
 package ru.ilb.workflow.core;
 
+import java.util.function.Function;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
-import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 
 /**
  *
@@ -27,6 +27,12 @@ public class SessionDataImpl implements SessionData {
     String authorisedUser;
 
     WMSessionHandle sessionHandle;
+
+    Function<String, WMSessionHandle> sessionHandleFunction;
+
+    public SessionDataImpl(Function<String, WMSessionHandle> sessionHandleFunction) {
+        this.sessionHandleFunction = sessionHandleFunction;
+    }
 
     @Override
     public String getAuthorisedUser() {
@@ -41,11 +47,7 @@ public class SessionDataImpl implements SessionData {
     @Override
     public WMSessionHandle getSessionHandle() {
         if (sessionHandle == null) {
-            try {
-                sessionHandle = SharkInterfaceWrapper.getSessionHandle(authorisedUser, null);
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
+            sessionHandle = sessionHandleFunction.apply(authorisedUser);
         }
         return sessionHandle;
     }
