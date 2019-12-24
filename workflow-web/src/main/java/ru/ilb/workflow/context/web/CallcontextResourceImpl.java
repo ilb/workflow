@@ -78,7 +78,7 @@ public class CallcontextResourceImpl implements CallcontextResource {
 
     @Override
     public ActivityCallback getActivityCallback() {
-        return initResource(new ActivityCallbackImpl(sessionHandleSupplier));
+        return initResource(new ActivityCallbackImpl(processInstanceFactory, callContextFactory, messageContext.getUriInfo().getAbsolutePath()));
     }
 
 }

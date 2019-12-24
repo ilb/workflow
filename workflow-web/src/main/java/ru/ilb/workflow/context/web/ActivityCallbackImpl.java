@@ -16,17 +16,27 @@
 package ru.ilb.workflow.context.web;
 
 import java.net.URI;
-import java.util.function.Supplier;
-import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
+import javax.inject.Inject;
+import ru.ilb.callcontext.entities.CallContextFactory;
 import ru.ilb.workflow.api.ActivityCallback;
-import ru.ilb.workflow.core.SessionData;
+import ru.ilb.workflow.entities.ProcessInstanceFactory;
 
 public class ActivityCallbackImpl implements ActivityCallback {
 
-    private final Supplier<SessionData> sessionHandleSupplier;
+    private final ProcessInstanceFactory processInstanceFactory;
 
-    public ActivityCallbackImpl(Supplier<SessionData> sessionHandleSupplier) {
-        this.sessionHandleSupplier = sessionHandleSupplier;
+    private final CallContextFactory callContextFactory;
+
+    /**
+     * Resource uri for relative links
+     */
+    private final URI resourceUri;
+
+    @Inject
+    public ActivityCallbackImpl(ProcessInstanceFactory processInstanceFactory, CallContextFactory callContextFactory, URI resourceUri) {
+        this.processInstanceFactory = processInstanceFactory;
+        this.callContextFactory = callContextFactory;
+        this.resourceUri = resourceUri;
     }
 
     @Override
