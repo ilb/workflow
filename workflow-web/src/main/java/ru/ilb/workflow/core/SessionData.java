@@ -15,41 +15,20 @@
  */
 package ru.ilb.workflow.core;
 
-import java.util.function.Supplier;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
-import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 
 /**
  *
  * @author slavb
  */
-public class SessionData {
+public interface SessionData {
 
-    String authorisedUser;
+    String getAuthorisedUser();
 
-    WMSessionHandle sessionHandle;
+    WMSessionHandle getSessionHandle();
 
-    public String getAuthorisedUser() {
-        return authorisedUser;
-    }
+    void setAuthorisedUser(String authorisedUser);
 
-    public void setAuthorisedUser(String authorisedUser) {
-        this.authorisedUser = authorisedUser;
-    }
-
-    public WMSessionHandle getSessionHandle() {
-        if (sessionHandle == null) {
-            try {
-                sessionHandle = SharkInterfaceWrapper.getSessionHandle(authorisedUser, null);
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-        }
-        return sessionHandle;
-    }
-
-    public void setSessionHandle(WMSessionHandle sessionHandle) {
-        this.sessionHandle = sessionHandle;
-    }
+    void setSessionHandle(WMSessionHandle sessionHandle);
 
 }

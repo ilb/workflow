@@ -23,8 +23,8 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.PreMatching;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.Provider;
-import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import ru.ilb.workflow.core.SessionData;
+import ru.ilb.workflow.core.SessionDataImpl;
 
 /**
  *
@@ -39,7 +39,7 @@ public class SessionDataProvider implements ContainerRequestFilter, Supplier<Ses
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        SessionData sd = new SessionData();
+        SessionData sd = new SessionDataImpl();
         sessionData.set(sd);
 
         String userName = requestContext.getSecurityContext().getUserPrincipal().getName();

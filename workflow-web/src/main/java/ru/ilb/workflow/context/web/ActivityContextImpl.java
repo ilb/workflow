@@ -41,8 +41,8 @@ public class ActivityContextImpl implements ActivityContext {
     private final URI resourceUri;
 
     @Inject
-    public ActivityContextImpl(ProcessInstanceFactory processContextFactory, CallContextFactory callContextFactory, URI resourceUri) {
-        this.processInstanceFactory = processContextFactory;
+    public ActivityContextImpl(ProcessInstanceFactory processInstanceFactory, CallContextFactory callContextFactory, URI resourceUri) {
+        this.processInstanceFactory = processInstanceFactory;
         this.callContextFactory = callContextFactory;
         this.resourceUri = resourceUri;
     }
