@@ -61,9 +61,9 @@ async function init () {
 
 const config = {
   init,
-  // getCertfile,
-  // getPassphrase,
-  // getCert,
-  // getCa,
+  certfile: certfile,
+  passphrase: passphrase,
+  cert: cert,
+  ca: ca,
 };
 export default config;
