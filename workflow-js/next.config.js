@@ -17,6 +17,7 @@ module.exports = withCSS(withTM({
         fs: 'empty',
         net: 'empty',
         tls: 'empty',
+        'ldapjs-client': 'empty',
       };
     }
     config.module.rules.unshift({
