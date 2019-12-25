@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.ws.rs.core.Response;
 import org.springframework.transaction.annotation.Transactional;
+import ru.ilb.callcontext.entities.CallContextFactory;
 import ru.ilb.workflow.api.StartProcess;
 import ru.ilb.workflow.context.ContextConstants;
 import ru.ilb.workflow.entities.ActivityInstance;
@@ -30,11 +31,14 @@ public class StartProcessImpl implements StartProcess {
 
     private final ProcessInstanceFactory processInstanceFactory;
 
+    private final CallContextFactory callContextFactory;
+
     private final URI resourceUri;
 
-    public StartProcessImpl(ProcessInstanceFactory processInstanceFactory, URI resourceUri) {
+    public StartProcessImpl(ProcessInstanceFactory processInstanceFactory, CallContextFactory callContextFactory, URI resourceUri) {
         this.processInstanceFactory = processInstanceFactory;
         this.resourceUri = resourceUri;
+        this.callContextFactory = callContextFactory;
     }
 
     @Override
@@ -44,7 +48,7 @@ public class StartProcessImpl implements StartProcess {
         if (contextUrl != null) {
             context.put(ContextConstants.CONTEXTURL_VARIABLE, contextUrl);
         }
-
+        //TODO read context to process formal parameters
         ProcessInstance processInstance = processInstanceFactory.createProcessInstance(packageId, versionId, processDefinitionId, context);
         processInstance.start();
 

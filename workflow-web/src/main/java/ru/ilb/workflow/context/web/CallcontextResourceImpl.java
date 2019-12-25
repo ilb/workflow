@@ -39,15 +39,13 @@ public class CallcontextResourceImpl implements CallcontextResource {
     protected MessageContext messageContext;
     private final ApplicationContext applicationContext;
     private final ProcessInstanceFactory processInstanceFactory;
-    private final Supplier<SessionData> sessionHandleSupplier;
 
     private final CallContextFactory callContextFactory;
 
     @Inject
-    public CallcontextResourceImpl(ApplicationContext applicationContext, ProcessInstanceFactory processInstanceFactory, Supplier<SessionData> sessionHandleSupplier, CallContextFactory callContextFactory) {
+    public CallcontextResourceImpl(ApplicationContext applicationContext, ProcessInstanceFactory processInstanceFactory, CallContextFactory callContextFactory) {
         this.applicationContext = applicationContext;
         this.processInstanceFactory = processInstanceFactory;
-        this.sessionHandleSupplier = sessionHandleSupplier;
         this.callContextFactory = callContextFactory;
     }
 
@@ -68,7 +66,7 @@ public class CallcontextResourceImpl implements CallcontextResource {
 
     @Override
     public StartProcess getStartProcess() {
-        return initResource(new StartProcessImpl(processInstanceFactory, messageContext.getUriInfo().getAbsolutePath()));
+        return initResource(new StartProcessImpl(processInstanceFactory, callContextFactory, messageContext.getUriInfo().getAbsolutePath()));
     }
 
     @Override
