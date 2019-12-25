@@ -16,16 +16,19 @@
 package ru.ilb.workflow.core;
 
 import java.net.URI;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.enhydra.shark.api.client.wfmc.wapi.WAPI;
 import org.enhydra.shark.api.client.wfmc.wapi.WMActivityInstance;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
+import org.enhydra.shark.api.common.SharkConstants;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 import ru.ilb.workflow.entities.ActivityDefinition;
 import ru.ilb.workflow.entities.ActivityInstance;
 import ru.ilb.workflow.entities.ProcessContext;
 import ru.ilb.workflow.entities.ProcessInstance;
+import ru.ilb.workflow.utils.WAPIUtils;
 import ru.ilb.workflow.utils.WorkflowUtils;
 
 public class ActivityInstanceImpl implements ActivityInstance {
@@ -57,11 +60,12 @@ public class ActivityInstanceImpl implements ActivityInstance {
 
     /**
      * lazy load delegate
+     *
      * @return
      */
     private WMActivityInstance getDelegate() {
 
-        if (delegate==null) {
+        if (delegate == null) {
             try {
                 WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
                 delegate = wapi.getActivityInstance(shandle, processInstance.getId(), id);
@@ -71,8 +75,6 @@ public class ActivityInstanceImpl implements ActivityInstance {
         }
         return delegate;
     }
-
-
 
     @Override
     public ActivityDefinition getActivityDefinition() {
@@ -85,7 +87,7 @@ public class ActivityInstanceImpl implements ActivityInstance {
     @Override
     public ProcessContext getContext() {
         if (context == null) {
-            context = new ActivityContextImpl(processInstance.getContext(), getActivityDefinition());
+            context = new ActivityContextImpl(shandle, this);
         }
         return context;
     }
@@ -104,6 +106,20 @@ public class ActivityInstanceImpl implements ActivityInstance {
     @Override
     public String getActivityDefinitionId() {
         return getDelegate().getActivityDefinitionId();
+    }
+
+    @Override
+    public boolean complete() {
+        try {
+            return WAPIUtils.changeActivityState(shandle, getDelegate(), SharkConstants.STATE_CLOSED_COMPLETED);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
+    public ProcessInstance getProcessInstance() {
+        return processInstance;
     }
 
 }

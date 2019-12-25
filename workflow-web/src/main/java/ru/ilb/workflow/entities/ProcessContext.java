@@ -30,6 +30,12 @@ public interface ProcessContext {
     public Map<String, Object> getContext();
 
     /**
+     * updates context by provided variables
+     * @param context
+     */
+    public void setContext(Map<String, Object> context);
+
+    /**
      * returns property types
      * map key is property name
      * map value is property java class

@@ -27,9 +27,31 @@ public interface ActivityInstance {
 
     public ActivityDefinition getActivityDefinition();
 
+    /**
+     * get process instance of activity
+     *
+     * @return
+     */
+    public ProcessInstance getProcessInstance();
+
+    /**
+     * get context of activity
+     * @return
+     */
     public ProcessContext getContext();
 
+    /**
+     * get link to activity form
+     * @return
+     */
     public URI getActivityFormUrl();
 
     public String getActivityDefinitionId();
+
+    /**
+     * completes the activity
+     *
+     * @return is state changed (e.g. complete completed activity result = false)
+     */
+    public boolean complete();
 }

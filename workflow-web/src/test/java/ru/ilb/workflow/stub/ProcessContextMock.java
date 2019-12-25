@@ -51,4 +51,9 @@ public class ProcessContextMock implements ProcessContext {
         return contextSignature;
     }
 
+    @Override
+    public void setContext(Map<String, Object> context) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

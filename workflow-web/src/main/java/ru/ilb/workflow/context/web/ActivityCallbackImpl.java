@@ -16,9 +16,15 @@
 package ru.ilb.workflow.context.web;
 
 import java.net.URI;
+import java.util.Optional;
 import javax.inject.Inject;
+import javax.ws.rs.core.Response;
+import ru.ilb.callcontext.entities.CallContext;
 import ru.ilb.callcontext.entities.CallContextFactory;
 import ru.ilb.workflow.api.ActivityCallback;
+import ru.ilb.workflow.context.ContextConstants;
+import ru.ilb.workflow.entities.ActivityInstance;
+import ru.ilb.workflow.entities.ProcessInstance;
 import ru.ilb.workflow.entities.ProcessInstanceFactory;
 
 public class ActivityCallbackImpl implements ActivityCallback {
@@ -40,7 +46,28 @@ public class ActivityCallbackImpl implements ActivityCallback {
     }
 
     @Override
-    public void activityCallback(String x_remote_user, String callId, String callerId, URI responseUrl) {
+    public Response activityCallback(String x_remote_user, String callId, String callerId, URI responseUrl) {
         String processInstanceId = callerId, activityInstanceId = callId;
+
+        ProcessInstance processInstance = processInstanceFactory.getProcessInstance(processInstanceId);
+
+        ActivityInstance activityInstance = processInstance.getActivityInstance(activityInstanceId);
+
+        if (responseUrl != null) {
+            CallContext responseContext = callContextFactory.getCallContext(responseUrl);
+            activityInstance.getContext().setContext(responseContext.getContext());
+        }
+
+        activityInstance.complete();
+
+        Response.ResponseBuilder builder = Response.ok(processInstance.getId());
+        String parentContextUrl = processInstance.getContextAccessor().getStringProperty(ContextConstants.CONTEXTURL_VARIABLE);
+        if (parentContextUrl != null) {
+            CallContext parentContext = callContextFactory.getCallContext(URI.create(parentContextUrl));
+
+            Optional<URI> callbackUri = parentContext.getCallbackUri();
+
+        }
+        return builder.build();
     }
 }

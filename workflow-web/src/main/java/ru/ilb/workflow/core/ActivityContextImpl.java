@@ -17,8 +17,13 @@ package ru.ilb.workflow.core;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import ru.ilb.workflow.entities.ActivityDefinition;
+import ru.ilb.workflow.entities.ActivityInstance;
 import ru.ilb.workflow.entities.ProcessContext;
+import ru.ilb.workflow.utils.SharkUtils;
 
 /**
  *
@@ -26,23 +31,23 @@ import ru.ilb.workflow.entities.ProcessContext;
  */
 public class ActivityContextImpl implements ProcessContext {
 
-    private final ProcessContext processContext;
+    private final WMSessionHandle shandle;
 
-    private final ActivityDefinition activityDefinition;
+    private final ActivityInstance activityInstance;
 
     private Map<String, Object> context;
     private Map<String, String> contextSignature;
 
-    public ActivityContextImpl(ProcessContext processContext, ActivityDefinition activityDefinition) {
-        this.processContext = processContext;
-        this.activityDefinition = activityDefinition;
+    public ActivityContextImpl(WMSessionHandle shandle, ActivityInstance activityInstance) {
+        this.shandle = shandle;
+        this.activityInstance = activityInstance;
     }
 
     @Override
     public Map<String, Object> getContext() {
         if (context == null) {
-            context = new HashMap<>(processContext.getContext());
-            Map<String, Boolean> activityVariables = activityDefinition.getActivityVariables();
+            context = new HashMap<>(activityInstance.getProcessInstance().getContext().getContext());
+            Map<String, Boolean> activityVariables = activityInstance.getActivityDefinition().getActivityVariables();
             context.entrySet().removeIf(e -> !activityVariables.containsKey(e.getKey()));
 
         }
@@ -52,11 +57,25 @@ public class ActivityContextImpl implements ProcessContext {
     @Override
     public Map<String, String> getContextSignature() {
         if (contextSignature == null) {
-            contextSignature = new HashMap<>(processContext.getContextSignature());
-            Map<String, Boolean> activityVariables = activityDefinition.getActivityVariables();
+            contextSignature = new HashMap<>(activityInstance.getProcessInstance().getContext().getContextSignature());
+            Map<String, Boolean> activityVariables = activityInstance.getActivityDefinition().getActivityVariables();
             contextSignature.entrySet().removeIf(e -> !activityVariables.containsKey(e.getKey()));
         }
         return contextSignature;
+    }
+
+    @Override
+    public void setContext(Map<String, Object> context) {
+        Map<String, Boolean> activityVariables = activityInstance.getActivityDefinition().getActivityVariables();
+        Map<String, Object> contextCopy = new HashMap<>(context);
+        //remove all not existent or readonly variables
+        contextCopy.entrySet().removeIf(e -> !Boolean.FALSE.equals(activityVariables.get(e.getKey())));
+
+        try {
+            SharkUtils.updateActivityInfo(shandle, activityInstance.getProcessInstance().getId(), activityInstance.getId(), context);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
 }
