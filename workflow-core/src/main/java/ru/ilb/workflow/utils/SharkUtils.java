@@ -22,8 +22,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import javax.ws.rs.WebApplicationException;
-import org.apache.cxf.jaxrs.json.basic.JsonMapObject;
 import org.enhydra.shark.Shark;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.enhydra.shark.api.client.wfmodel.WfActivity;
@@ -32,7 +30,6 @@ import org.enhydra.shark.api.client.wfservice.SharkConnection;
 import org.enhydra.shark.api.client.wfservice.WMEntity;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 import org.enhydra.shark.utilities.wmentity.WMEntityUtilities;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -172,7 +169,6 @@ public class SharkUtils {
             }
         }
     }
-    @Transactional
     public static void startActivity(WMSessionHandle shandle, String processId, String activityId) throws Exception {
         WMEntity proc = SharkInterfaceWrapper.getShark().getAdminMisc().getProcessDefinitionInfo(null, processId);
         List<WMEntity> acts = Arrays.asList(WMEntityUtilities.getOverallActivities(shandle, SharkInterfaceWrapper.getShark().getXPDLBrowser(), proc));
@@ -184,7 +180,7 @@ public class SharkUtils {
             }
         }
         if (actdef == null) {
-            throw new WebApplicationException("Этап не найден", 404);
+            throw new RuntimeException("Этап не найден");
         }
         SharkInterfaceWrapper.getShark().getExecutionAdministration().startActivity(shandle, processId, "", actdef);
 

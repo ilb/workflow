@@ -12,6 +12,8 @@
         <module>workflow-web</module>
         <module>workflow-context-api</module>
         <module>workflow-entities</module>
+        <module>workflow-core</module>
+        <module>workflow-shark-webclient</module>
     </modules>
     <name>workflow</name>
     <properties>

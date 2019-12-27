@@ -18,6 +18,7 @@ package ru.ilb.workflow.core;
 import java.net.URI;
 import org.enhydra.shark.api.client.wfmc.wapi.WAPI;
 import org.enhydra.shark.api.client.wfmc.wapi.WMActivityInstance;
+import org.enhydra.shark.api.client.wfmc.wapi.WMActivityInstanceState;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.enhydra.shark.api.common.SharkConstants;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
@@ -25,7 +26,6 @@ import ru.ilb.workflow.entities.ActivityDefinition;
 import ru.ilb.workflow.entities.ActivityInstance;
 import ru.ilb.workflow.entities.ProcessContext;
 import ru.ilb.workflow.entities.ProcessInstance;
-import ru.ilb.workflow.utils.WAPIUtils;
 import ru.ilb.workflow.utils.WorkflowUtils;
 
 public class ActivityInstanceImpl implements ActivityInstance {
@@ -112,7 +112,7 @@ public class ActivityInstanceImpl implements ActivityInstance {
     @Override
     public boolean complete() {
         try {
-            return WAPIUtils.changeActivityState(shandle, getDelegate(), SharkConstants.STATE_CLOSED_COMPLETED);
+            return changeActivityState(shandle, getDelegate(), SharkConstants.STATE_CLOSED_COMPLETED);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -121,6 +121,26 @@ public class ActivityInstanceImpl implements ActivityInstance {
     @Override
     public ProcessInstance getProcessInstance() {
         return processInstance;
+    }
+
+    private  static Boolean changeActivityState(WMSessionHandle shandle, WMActivityInstance act, String state) throws Exception {
+        Boolean changed = false;
+        if (state != null) {
+            WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
+            String procId = act.getProcessInstanceId();
+            String actId = act.getId();
+            String oldState = act.getState().stringValue();
+
+            if (!oldState.equals(state)) {
+                if (oldState.equals(SharkConstants.STATE_OPEN_NOT_RUNNING_NOT_STARTED) && state.equals(SharkConstants.STATE_CLOSED_COMPLETED)) {
+                    wapi.changeActivityInstanceState(shandle, procId, actId, WMActivityInstanceState.valueOf(SharkConstants.STATE_OPEN_RUNNING));
+                }
+                wapi.changeActivityInstanceState(shandle, procId, actId, WMActivityInstanceState.valueOf(state));
+                act.setState(WMActivityInstanceState.valueOf(state));
+                changed = true;
+            }
+        }
+        return changed;
     }
 
 }

@@ -30,6 +30,7 @@ import ru.ilb.filedossier.scripting.TemplateEvaluator;
 import ru.ilb.workflow.context.ContextConstants;
 import ru.ilb.workflow.core.ProcessContextImpl;
 import ru.ilb.workflow.entities.ProcessContext;
+import ru.ilb.workflow.utils.XPDLUtils;
 
 /**
  *
