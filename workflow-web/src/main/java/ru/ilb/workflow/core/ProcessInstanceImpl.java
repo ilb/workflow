@@ -15,8 +15,11 @@
  */
 package ru.ilb.workflow.core;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.enhydra.shark.api.client.wfmc.wapi.WAPI;
 import org.enhydra.shark.api.client.wfmc.wapi.WMActivityInstance;
+import org.enhydra.shark.api.client.wfmc.wapi.WMProcessInstance;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 import ru.ilb.jfunction.map.accessors.MapAccessor;
@@ -26,7 +29,6 @@ import ru.ilb.workflow.entities.ProcessContext;
 import ru.ilb.workflow.entities.ProcessInstance;
 import ru.ilb.workflow.utils.WAPIUtils;
 
-
 public class ProcessInstanceImpl implements ProcessInstance {
 
     private final SessionData sessionData;
@@ -35,12 +37,30 @@ public class ProcessInstanceImpl implements ProcessInstance {
 
     private final String id;
 
+    private WMProcessInstance delegate;
+
     public ProcessInstanceImpl(SessionData sessionData, String processInstanceId) {
         this.sessionData = sessionData;
         this.shandle = sessionData.getSessionHandle();
         this.id = processInstanceId;
     }
 
+    /**
+     * lazy loaded WMProcessInstance delegate
+     *
+     * @return
+     */
+    private WMProcessInstance getDelegate() {
+        if (delegate == null) {
+            try {
+                WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
+                delegate = wapi.getProcessInstance(shandle, id);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        return delegate;
+    }
 
     @Override
     public ProcessContext getContext() {
@@ -65,7 +85,7 @@ public class ProcessInstanceImpl implements ProcessInstance {
     @Override
     public ActivityInstance getNextActivityInstance() {
         WMActivityInstance nextAct = WAPIUtils.findNextActivity(shandle, sessionData.getAuthorisedUser(), id);
-        return nextAct!=null ? new ActivityInstanceImpl(shandle, this, nextAct) : null;
+        return nextAct != null ? new ActivityInstanceImpl(shandle, this, nextAct) : null;
     }
 
     @Override

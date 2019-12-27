@@ -37,7 +37,7 @@ public class ProcessDefinitionFactoryImpl implements ProcessDefinitionFactory {
         try {
             WMSessionHandle shandle = sessionHandleSupplier.get().getSessionHandle();
             return Stream.of(WAPIUtils.getProcessDefinitions(shandle, enabled, packageId, versionId, processDefinitionId))
-                    .map(wmpd -> new ProcessDefinitionImpl(wmpd));
+                    .map(wmpd -> new ProcessDefinitionImpl(shandle, wmpd));
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }

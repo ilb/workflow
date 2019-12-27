@@ -13,28 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ru.ilb.workflow.entities;
+package ru.ilb.workflow.core;
 
-import java.util.List;
-import java.util.Map;
+import ru.ilb.workflow.entities.FormalParameter;
 
 /**
  *
  * @author slavb
  */
-public interface ActivityDefinition {
-    /**
-     * Get activity definition variables
-     * map key is variable name
-     * map value is "readonly" state: true - variable is readonly, false - variable can be updated
-     * @return
-     */
-    Map<String, Boolean> getActivityVariables();
+public class FormalParameterImpl extends DataFieldImpl implements FormalParameter {
+
+    private final Mode mode;
+
+    public FormalParameterImpl(String id, String name, boolean isArray, Mode mode) {
+        super(id, name, isArray);
+        this.mode = mode;
+    }
 
 
-    /**
-     * get activity formal parameters
-     * @return
-     */
-    List<FormalParameter> getFormalParameters();
+
+    @Override
+    public Mode getMode() {
+        return mode;
+    }
+
+//    @Override
+//    public void setMode(Mode mode) {
+//        this.mode = mode;
+//    }
+
 }

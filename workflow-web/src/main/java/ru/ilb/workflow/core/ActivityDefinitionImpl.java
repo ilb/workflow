@@ -15,6 +15,7 @@
  */
 package ru.ilb.workflow.core;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -24,6 +25,7 @@ import org.enhydra.shark.api.client.wfservice.WMEntity;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 import org.enhydra.shark.utilities.wmentity.WMEntityUtilities;
 import ru.ilb.workflow.entities.ActivityDefinition;
+import ru.ilb.workflow.entities.FormalParameter;
 
 public class ActivityDefinitionImpl implements ActivityDefinition {
 
@@ -62,6 +64,11 @@ public class ActivityDefinitionImpl implements ActivityDefinition {
             }
         }
         return activityVariables;
+    }
+
+    @Override
+    public List<FormalParameter> getFormalParameters() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

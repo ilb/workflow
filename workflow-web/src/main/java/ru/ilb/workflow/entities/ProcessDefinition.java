@@ -15,6 +15,9 @@
  */
 package ru.ilb.workflow.entities;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  *
  * @author slavb
@@ -34,6 +37,18 @@ public interface ProcessDefinition {
     String getVersion();
 
     Boolean getEnabled();
+
+    /**
+     * get process formal parameters
+     * @return
+     */
+    Map<String, FormalParameter> getFormalParameters();
+
+    /**
+     * get process variables
+     * @return
+     */
+    Map<String, DataField> getDataFields();
 
 //    void setDefinitionName(String definitionName);
 //
