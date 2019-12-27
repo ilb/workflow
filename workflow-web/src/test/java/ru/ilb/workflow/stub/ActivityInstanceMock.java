@@ -16,6 +16,7 @@
 package ru.ilb.workflow.stub;
 
 import java.net.URI;
+import ru.ilb.workflow.core.SerializedContextAccessor;
 import ru.ilb.workflow.entities.ActivityDefinition;
 import ru.ilb.workflow.entities.ActivityInstance;
 import ru.ilb.workflow.entities.ProcessContext;
@@ -66,6 +67,11 @@ public class ActivityInstanceMock implements ActivityInstance{
     @Override
     public boolean complete() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ProcessContext getSerializedContext() {
+        return new SerializedContextAccessor(getContext());
     }
 
 }

@@ -35,10 +35,16 @@ public interface ActivityInstance {
     public ProcessInstance getProcessInstance();
 
     /**
-     * get context of activity
+     * get context of activity (values as raw objects, e.g. dates)
      * @return
      */
     public ProcessContext getContext();
+
+    /**
+     * get serialized context of activity (values as primitives / strings)
+     * @return
+     */
+    public ProcessContext getSerializedContext();
 
     /**
      * get link to activity form

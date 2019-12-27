@@ -16,9 +16,6 @@
 package ru.ilb.workflow.core;
 
 import java.net.URI;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.enhydra.shark.api.client.wfmc.wapi.WAPI;
 import org.enhydra.shark.api.client.wfmc.wapi.WMActivityInstance;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
@@ -90,6 +87,10 @@ public class ActivityInstanceImpl implements ActivityInstance {
             context = new ActivityContextImpl(shandle, this);
         }
         return context;
+    }
+    @Override
+    public ProcessContext getSerializedContext() {
+        return new SerializedContextAccessor(getContext());
     }
 
     @Override

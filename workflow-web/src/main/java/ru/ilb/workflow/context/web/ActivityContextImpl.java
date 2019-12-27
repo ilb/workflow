@@ -25,6 +25,7 @@ import ru.ilb.jfunction.map.converters.MapToJsonFunction;
 import ru.ilb.jfunction.map.converters.ObjectMapToSerializedMapFunction;
 import ru.ilb.workflow.api.ActivityContext;
 import ru.ilb.workflow.context.ContextConstants;
+import ru.ilb.workflow.entities.ActivityInstance;
 import ru.ilb.workflow.entities.ProcessContext;
 import ru.ilb.workflow.entities.ProcessInstance;
 import ru.ilb.workflow.entities.ProcessInstanceFactory;
@@ -52,8 +53,8 @@ public class ActivityContextImpl implements ActivityContext {
         String processInstanceId = callerId, activityInstanceId = callId;
 
         ProcessInstance processInstance = processInstanceFactory.getProcessInstance(processInstanceId);
+        ActivityInstance activityInstance = processInstance.getActivityInstance(activityInstanceId);
 
-        ProcessContext activityContext = processInstance.getActivityInstance(activityInstanceId).getContext();
 
         Map<String, Object> contextData = new HashMap<>();
 
@@ -64,7 +65,7 @@ public class ActivityContextImpl implements ActivityContext {
             contextData.putAll(parentContext.getContext());
         }
 
-        Map<String, Object> serializedActivityContext = ObjectMapToSerializedMapFunction.INSTANCE.apply(activityContext.getContext(), activityContext.getContextSignature());
+        Map<String, Object> serializedActivityContext = activityInstance.getSerializedContext().getContext();
         // add activity context to result context
         contextData.putAll(serializedActivityContext);
 
