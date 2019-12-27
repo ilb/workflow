@@ -58,7 +58,7 @@ public class ActivityContextImpl implements ActivityContext {
 
         Map<String, Object> contextData = new HashMap<>();
 
-        String parentContextUrl = processInstance.getContextAccessor().getStringProperty(ContextConstants.CONTEXTURL_VARIABLE);
+        String parentContextUrl = processInstance.getContext().accessor().getStringProperty(ContextConstants.CONTEXTURL_VARIABLE);
         if (parentContextUrl != null) {
             CallContext parentContext = callContextFactory.getCallContext(URI.create(parentContextUrl));
             // add parent context to result context

@@ -18,6 +18,7 @@ package ru.ilb.workflow.core;
 import java.util.Map;
 import ru.ilb.jfunction.map.converters.ObjectMapToSerializedMapFunction;
 import ru.ilb.workflow.entities.ProcessContext;
+import ru.ilb.workflow.entities.ProcessContextAccessor;
 
 /**
  *
@@ -44,6 +45,11 @@ public class SerializedContextAccessor implements ProcessContext {
     @Override
     public Map<String, String> getContextSignature() {
         return delegate.getContextSignature();
+    }
+
+    @Override
+    public ProcessContextAccessor accessor() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

@@ -23,6 +23,7 @@ import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import ru.ilb.workflow.entities.ActivityDefinition;
 import ru.ilb.workflow.entities.ActivityInstance;
 import ru.ilb.workflow.entities.ProcessContext;
+import ru.ilb.workflow.entities.ProcessContextAccessor;
 import ru.ilb.workflow.utils.SharkUtils;
 
 /**
@@ -37,6 +38,8 @@ public class ActivityContextImpl implements ProcessContext {
 
     private Map<String, Object> context;
     private Map<String, String> contextSignature;
+
+    private ProcessContextAccessor accessor;
 
     public ActivityContextImpl(WMSessionHandle shandle, ActivityInstance activityInstance) {
         this.shandle = shandle;
@@ -76,6 +79,15 @@ public class ActivityContextImpl implements ProcessContext {
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    @Override
+    public ProcessContextAccessor accessor() {
+        if (accessor==null) {
+            accessor = new ProcessContextAccessorImpl(this);;
+        }
+        return accessor;
+
     }
 
 }

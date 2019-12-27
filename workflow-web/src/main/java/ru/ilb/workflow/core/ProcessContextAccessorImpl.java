@@ -13,34 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ru.ilb.workflow.entities;
+package ru.ilb.workflow.core;
 
-import java.util.Map;
+import ru.ilb.jfunction.map.accessors.MapAccessor;
+import ru.ilb.jfunction.map.accessors.MapAccessorImpl;
+import ru.ilb.workflow.entities.ProcessContext;
+import ru.ilb.workflow.entities.ProcessContextAccessor;
 
 /**
- * Process context
+ *
  * @author slavb
  */
-public interface ProcessContext {
+public class ProcessContextAccessorImpl implements ProcessContextAccessor{
 
-    /**
-     * returns key-value process context properties
-     * @return
-     */
-    public Map<String, Object> getContext();
+    private final MapAccessor accessor;
 
-    /**
-     * updates context by provided variables
-     * @param context
-     */
-    public void setContext(Map<String, Object> context);
+    public ProcessContextAccessorImpl(ProcessContext context) {
+        accessor = new MapAccessorImpl(context.getContext());
+    }
 
-    /**
-     * returns property types
-     * map key is property name
-     * map value is property java class
-     * @return
-     */
-    public Map<String, String> getContextSignature();
+
+
+    @Override
+    public String getStringProperty(String string) {
+        return accessor.getStringProperty(string);
+    }
 
 }

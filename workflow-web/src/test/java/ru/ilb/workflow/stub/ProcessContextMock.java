@@ -17,7 +17,9 @@ package ru.ilb.workflow.stub;
 
 import java.util.HashMap;
 import java.util.Map;
+import ru.ilb.workflow.core.ProcessContextAccessorImpl;
 import ru.ilb.workflow.entities.ProcessContext;
+import ru.ilb.workflow.entities.ProcessContextAccessor;
 
 /**
  *
@@ -28,6 +30,7 @@ public class ProcessContextMock implements ProcessContext {
     final Map<String, Object> context;
 
     final Map<String, String> contextSignature;
+    private ProcessContextAccessor accessor;
 
     public ProcessContextMock(Map<String, Object> context) {
         this.context = context;
@@ -36,6 +39,7 @@ public class ProcessContextMock implements ProcessContext {
             contextSignature.put(entry.getKey(), entry.getValue().getClass().getCanonicalName());
         });
     }
+
     public ProcessContextMock(Map<String, Object> context, Map<String, String> contextSignature) {
         this.context = context;
         this.contextSignature = contextSignature;
@@ -54,6 +58,14 @@ public class ProcessContextMock implements ProcessContext {
     @Override
     public void setContext(Map<String, Object> context) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ProcessContextAccessor accessor() {
+        if (accessor == null) {
+            accessor = new ProcessContextAccessorImpl(this);;
+        }
+        return accessor;
     }
 
 }

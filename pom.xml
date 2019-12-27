@@ -11,6 +11,7 @@
         <module>workflow-xpil-api</module>
         <module>workflow-web</module>
         <module>workflow-context-api</module>
+        <module>workflow-entities</module>
     </modules>
     <name>workflow</name>
     <properties>

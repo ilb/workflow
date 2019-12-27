@@ -61,7 +61,7 @@ public class ActivityCallbackImpl implements ActivityCallback {
         activityInstance.complete();
 
         Response.ResponseBuilder builder = Response.ok(processInstance.getId());
-        String parentContextUrl = processInstance.getContextAccessor().getStringProperty(ContextConstants.CONTEXTURL_VARIABLE);
+        String parentContextUrl = processInstance.getContext().accessor().getStringProperty(ContextConstants.CONTEXTURL_VARIABLE);
         if (parentContextUrl != null) {
             CallContext parentContext = callContextFactory.getCallContext(URI.create(parentContextUrl));
 

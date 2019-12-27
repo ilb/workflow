@@ -15,43 +15,34 @@
  */
 package ru.ilb.workflow.entities;
 
-import ru.ilb.jfunction.map.accessors.MapAccessor;
+import java.util.Map;
 
 /**
- *
+ * Process context
  * @author slavb
  */
-public interface ProcessInstance {
-
-    public String getId();
+public interface ProcessContext {
 
     /**
-     * get activity context
+     * returns key-value process context properties
      * @return
      */
-    public ProcessContext getContext();
+    public Map<String, Object> getContext();
 
     /**
-     * get activity context accessor
+     * updates context by provided variables
+     * @param context
+     */
+    public void setContext(Map<String, Object> context);
+
+    /**
+     * returns property types
+     * map key is property name
+     * map value is property java class
      * @return
      */
-    public MapAccessor getContextAccessor();
+    public Map<String, String> getContextSignature();
 
-    /**
-     * get activity instance by id
-     * @param activityInstanceId
-     * @return
-     */
-    public ActivityInstance getActivityInstance(String activityInstanceId);
+    public ProcessContextAccessor accessor();
 
-    /**
-     * get next running accessible activity for session user
-     * @return
-     */
-    public ActivityInstance getNextActivityInstance();
-
-    /**
-     * starts the process
-     */
-    public void start();
 }

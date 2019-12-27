@@ -21,6 +21,7 @@ import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.enhydra.shark.api.client.wfmodel.WfProcess;
 import org.enhydra.shark.api.client.wfservice.SharkConnection;
 import ru.ilb.workflow.entities.ProcessContext;
+import ru.ilb.workflow.entities.ProcessContextAccessor;
 
 /**
  *
@@ -36,6 +37,8 @@ public class ProcessContextImpl implements ProcessContext {
 
     private Map<String, Object> context;
     private Map<String, String> contextSignature;
+
+    private ProcessContextAccessor accessor;
 
     public ProcessContextImpl(WMSessionHandle shandle, String processInstanceId) {
         try {
@@ -75,6 +78,14 @@ public class ProcessContextImpl implements ProcessContext {
     @Override
     public void setContext(Map<String, Object> context) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ProcessContextAccessor accessor() {
+        if (accessor==null) {
+            accessor = new ProcessContextAccessorImpl(this);;
+        }
+        return accessor;
     }
 
 }

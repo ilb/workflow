@@ -78,11 +78,6 @@ public class ProcessInstanceImpl implements ProcessInstance {
     }
 
     @Override
-    public MapAccessor getContextAccessor() {
-        return new MapAccessorImpl(getContext().getContext());
-    }
-
-    @Override
     public ActivityInstance getNextActivityInstance() {
         WMActivityInstance nextAct = WAPIUtils.findNextActivity(shandle, sessionData.getAuthorisedUser(), id);
         return nextAct != null ? new ActivityInstanceImpl(shandle, this, nextAct) : null;

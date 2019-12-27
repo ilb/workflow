@@ -47,11 +47,6 @@ public class ProcessInstanceMock implements ProcessInstance{
     }
 
     @Override
-    public MapAccessor getContextAccessor() {
-        return new MapAccessorImpl(getContext().getContext());
-    }
-
-    @Override
     public ActivityInstance getActivityInstance(String activityInstanceId) {
         return this.activityInstance;
     }

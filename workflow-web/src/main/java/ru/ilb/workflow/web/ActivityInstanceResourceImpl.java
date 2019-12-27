@@ -38,6 +38,7 @@ import ru.ilb.workflow.api.JsonSchemaResource;
 import ru.ilb.workflow.api.ProcessContextResource;
 import ru.ilb.workflow.context.ContextConstants;
 import ru.ilb.workflow.core.SessionData;
+import ru.ilb.workflow.entities.ProcessContextAccessor;
 import ru.ilb.workflow.entities.ProcessInstance;
 import ru.ilb.workflow.entities.ProcessInstanceFactory;
 import ru.ilb.workflow.mappers.ActivityInstanceMapper;
@@ -137,7 +138,8 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
             } else {
                 // TODO FIXME TEMP
                 ProcessInstance processInstance = processContextFactory.getProcessInstance(processInstanceId);
-                MapAccessor processContext = processInstance.getContextAccessor();
+
+                ProcessContextAccessor processContext = processInstance.getContext().accessor();
 
                 String callbackUrl = processContext.getStringProperty(ContextConstants.CALLBACKURL_VARIABLE);
                 String resultUrl = processContext.getStringProperty(ContextConstants.RESULTURL_VARIABLE);
