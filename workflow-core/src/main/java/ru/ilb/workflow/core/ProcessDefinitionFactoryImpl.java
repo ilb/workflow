@@ -32,16 +32,16 @@ import ru.ilb.workflow.entities.ProcessDefinitionFactory;
 @Named
 public class ProcessDefinitionFactoryImpl implements ProcessDefinitionFactory {
 
-    private final Supplier<SessionData> sessionHandleSupplier;
+    private final Supplier<SessionData> sessionDataSupplier;
 
-    public ProcessDefinitionFactoryImpl(Supplier<SessionData> sessionHandleSupplier) {
-        this.sessionHandleSupplier = sessionHandleSupplier;
+    public ProcessDefinitionFactoryImpl(Supplier<SessionData> sessionDataSupplier) {
+        this.sessionDataSupplier = sessionDataSupplier;
     }
 
     @Override
     public Stream<ProcessDefinition> getProcessDefinitions(Boolean enabled, String packageId, String versionId, String processDefinitionId) {
         try {
-            WMSessionHandle shandle = sessionHandleSupplier.get().getSessionHandle();
+            WMSessionHandle shandle = sessionDataSupplier.get().getSessionHandle();
             return Stream.of(getProcessDefinitions(shandle, enabled, packageId, versionId, processDefinitionId))
                     .map(wmpd -> new ProcessDefinitionImpl(shandle, wmpd));
         } catch (Exception ex) {

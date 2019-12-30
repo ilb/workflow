@@ -34,6 +34,11 @@ public class SessionDataImpl implements SessionData {
         this.sessionHandleFunction = sessionHandleFunction;
     }
 
+    public SessionDataImpl(String authorisedUser, Function<String, WMSessionHandle> sessionHandleFunction) {
+        this.authorisedUser = authorisedUser;
+        this.sessionHandleFunction = sessionHandleFunction;
+    }
+
     @Override
     public String getAuthorisedUser() {
         return authorisedUser;

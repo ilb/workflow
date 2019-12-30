@@ -11,7 +11,7 @@
     <properties>
         <shark.version>6.3-4</shark.version>
         <twe.version>5.3.1</twe.version>
-        <atomikos.version>3.9.1</atomikos.version>
+        <atomikos.version>4.0.6</atomikos.version>
     </properties>
     <dependencies>
         <!-- JDK 11 -->
@@ -32,7 +32,7 @@
             <version>2.0b1</version>
             <type>jar</type>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>com.atomikos</groupId>
             <artifactId>transactions</artifactId>
             <version>${atomikos.version}</version>
@@ -56,7 +56,7 @@
             <groupId>com.atomikos</groupId>
             <artifactId>atomikos-util</artifactId>
             <version>${atomikos.version}</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
