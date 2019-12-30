@@ -61,8 +61,15 @@ public class InitUtils {
 
     public void initializeEngine() {
         contextPath = context.getRealPath("/");
-        setSharkProperties();
-        setXpdlRepository();
+        setSharkProperties(contextPath);
+        String XPDLRepositoryPath = null;
+        try {
+            javax.naming.Context ctx = new InitialContext();
+            XPDLRepositoryPath = (String) ctx.lookup("java:comp/env/xpdlRepository");
+        } catch (NamingException ex) {
+            logger.error("xpdlRepository env is not set!", ex);
+        }
+        setXpdlRepository(XPDLRepositoryPath);
         setSnapshotImageCreator();
         initEventListeners();
     }
@@ -91,7 +98,7 @@ public class InitUtils {
 
     }
 
-    private void setLDAPProperties(Properties p) {
+    private static void setLDAPProperties(Properties p) {
         try {
             if (System.getProperty(Context.PROVIDER_URL) != null && System.getProperty(Context.PROVIDER_URL).startsWith("ldap")) {
                 StringTokenizer st = new StringTokenizer(System.getProperty(Context.PROVIDER_URL));
@@ -109,7 +116,7 @@ public class InitUtils {
         }
     }
 
-    private void setRealPath(Properties p, String contextPath) {
+    private static void setRealPath(Properties p, String contextPath) {
         for (Iterator it = p.keySet().iterator(); it.hasNext();) {
             String key = (String) it.next();
             String value = p.getProperty(key);
@@ -122,7 +129,7 @@ public class InitUtils {
         }
     }
 
-    private void setQuartzProperties(Properties p, String contextPath) {
+    private static void setQuartzProperties(Properties p, String contextPath) {
         String quartzConf = p.getProperty("SharkKernel.Quartz.confPath");
         Properties quartzProps = new Properties();
         if (quartzConf != null) {
@@ -146,7 +153,7 @@ public class InitUtils {
         }
     }
 
-    private void setSharkProperties() {
+    private static void setSharkProperties(String contextPath) {
         Properties properties = new Properties();
         String confPath = contextPath + "conf/Shark.conf";
         try (FileInputStream fis = new FileInputStream(confPath)) {
@@ -170,7 +177,7 @@ public class InitUtils {
         }
     }
 
-    private UserTransaction getUserTransaction() {
+    private static UserTransaction getUserTransaction() {
         try {
             javax.naming.Context ctx = new InitialContext();
             return (UserTransaction) ctx.lookup("java:comp/env/UserTransaction");
@@ -179,14 +186,8 @@ public class InitUtils {
         }
     }
 
-    private void setXpdlRepository() {
-        String XPDLRepositoryPath = null;
-        try {
-            javax.naming.Context ctx = new InitialContext();
-            XPDLRepositoryPath = (String) ctx.lookup("java:comp/env/xpdlRepository");
-        } catch (NamingException ex) {
-            logger.error("xpdlRepository env is not set!", ex);
-        }
+    private static void setXpdlRepository(String XPDLRepositoryPath) {
+
 
         if (XPDLRepositoryPath != null) {
             /*try {
