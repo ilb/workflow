@@ -21,9 +21,11 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import ru.ilb.filedossier.context.DossierContextBuilder;
 import ru.ilb.filedossier.context.DossierContextImpl;
@@ -41,6 +43,7 @@ import ru.ilb.filedossier.store.StoreFactory;
 @SpringBootApplication
 @EnableJdbcRepositories(basePackages = "ru.ilb.filedossier.context.persistence.repositories")
 @ImportResource("classpath:beans.xml")
+@EnableTransactionManagement(mode=AdviceMode.ASPECTJ)
 public class Application {
 
     //@Resource(mappedName = "ru.bystrobank.apps.workflow.processfilesbase")
