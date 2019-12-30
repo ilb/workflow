@@ -43,10 +43,6 @@
     <task:executor id="taskExecutor" pool-size="5"/>
     <task:scheduler id="taskScheduler" pool-size="5"/>
 
-    <bean id="storeFactory" class="ru.ilb.filedossier.store.StoreFactory">
-        <constructor-arg index="0" value="${ru.bystrobank.apps.workflow.processfilesbase}"/>
-    </bean>
-
     <bean id="checkDeadlines" class="ru.ilb.workflow.job.CheckDeadlines"/>
     <bean id="reevaluateAssignments" class="ru.ilb.workflow.job.ReevaluateAssignments"/>
     <task:scheduled-tasks scheduler="taskScheduler">
@@ -62,42 +58,27 @@
         <property name="cacheBuilder" ref="cacheBuilder"/>
     </bean>-->
     <bean id="springApplicationContext" class="ru.ilb.workflow.utils.SpringApplicationContext"/>
-    <!--<tx:jta-transaction-manager />-->
+
+    <!-- configure atomikos. replaced by spring -->
+<!--    <tx:jta-transaction-manager />
     <tx:annotation-driven mode="aspectj"/>
-    <!--
-         Construct Atomikos UserTransactionManager,
-         needed to configure Spring
-    -->
-<!--    <bean id="AtomikosTransactionManager"
+    <bean id="AtomikosTransactionManager"
           class="com.atomikos.icatch.jta.UserTransactionManager"
           init-method="init" destroy-method="close">
-
-
-              when close is called, should we force
-              transactions to terminate or not?
-
         <property name="forceShutdown" value="true" />
     </bean>
 
-
-         Also use Atomikos UserTransactionImp,
-         needed to configure Spring
-
     <bean id="AtomikosUserTransaction"
           class="com.atomikos.icatch.jta.UserTransactionImp">
-
         <property name="transactionTimeout" value="300" />
     </bean>
-
-
-         Configure the Spring framework to use
-         JTA transactions from Atomikos
 
     <bean id="transactionManager"
           class="org.springframework.transaction.jta.JtaTransactionManager">
         <property name="transactionManager" ref="AtomikosTransactionManager" />
         <property name="userTransaction" ref="AtomikosUserTransaction" />
     </bean>-->
+
     <bean id="uriResolver" class="ru.ilb.common.jaxrs.xml.transform.ServletContextURIResolver"/>
 
     <bean id="xsltProvider" class="org.apache.cxf.jaxrs.provider.XSLTJaxbProvider" >
