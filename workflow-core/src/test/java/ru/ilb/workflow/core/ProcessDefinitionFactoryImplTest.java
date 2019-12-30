@@ -16,24 +16,31 @@
 package ru.ilb.workflow.core;
 
 import java.util.stream.Stream;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import org.junit.jupiter.api.AfterEach;
+import javax.inject.Inject;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.ilb.jndicontext.core.JNDIInitialContextFactory;
 import ru.ilb.workflow.entities.ProcessDefinition;
+import ru.ilb.workflow.entities.ProcessDefinitionFactory;
 import ru.ilb.workflow.utils.EngineUtils;
 
 /**
  *
  * @author slavb
  */
+@ExtendWith(SpringExtension.class)
+@SpringBootTest // webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 public class ProcessDefinitionFactoryImplTest {
+
+    @Inject
+    ProcessDefinitionFactory instance;
 
     public ProcessDefinitionFactoryImplTest() {
     }
@@ -44,9 +51,9 @@ public class ProcessDefinitionFactoryImplTest {
 
     private static void setupShark() {
         System.setProperty("java.naming.factory.initial", JNDIInitialContextFactory.class.getName());
-        String contextPath = ProcessDefinitionFactoryImplTest.class.getClassLoader().getResource("shark").toString().substring(5)+"/";
+        String contextPath = ProcessDefinitionFactoryImplTest.class.getClassLoader().getResource("shark").toString().substring(5) + "/";
         EngineUtils.setSharkProperties(contextPath);
-        EngineUtils.setXpdlRepository(contextPath+"xpdlrepository");
+        EngineUtils.setXpdlRepository(contextPath + "xpdlrepository");
         EngineUtils.setSnapshotImageCreator();
 
     }
@@ -66,18 +73,18 @@ public class ProcessDefinitionFactoryImplTest {
     /**
      * Test of getProcessDefinitions method, of class ProcessDefinitionFactoryImpl.
      */
-//    @Test
-//    public void testGetProcessDefinitions() {
-//        System.out.println("getProcessDefinitions");
-//        setupShark();
-//        Boolean enabled = null;
-//        String packageId = "";
-//        String versionId = "";
-//        String processDefinitionId = "simpletest";
-//        ProcessDefinitionFactoryImpl instance = new ProcessDefinitionFactoryImpl(() -> new SessionDataImpl(System.getProperty("user.name"), new SessionHandleFunction()));
-//        Stream<ProcessDefinition> expResult = null;
-//        Stream<ProcessDefinition> result = instance.getProcessDefinitions(enabled, packageId, versionId, processDefinitionId);
-//        assertEquals(expResult, result);
-//    }
+    @Test
+    public void testGetProcessDefinitions() {
+        System.out.println("getProcessDefinitions");
+        //setupShark();
+        Boolean enabled = null;
+        String packageId = "";
+        String versionId = "";
+        String processDefinitionId = "simpletest";
+        //ProcessDefinitionFactoryImpl instance = new ProcessDefinitionFactoryImpl(() -> new SessionDataImpl(System.getProperty("user.name"), new SessionHandleFunction()));
+        Stream<ProcessDefinition> expResult = null;
+        Stream<ProcessDefinition> result = instance.getProcessDefinitions(enabled, packageId, versionId, processDefinitionId);
+        assertEquals(expResult, result);
+    }
 
 }
