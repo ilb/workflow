@@ -58,7 +58,6 @@ public class AppInitializer {
 
     private void initShark() {
         String contextPath = ProcessDefinitionFactoryImplTest.class.getClassLoader().getResource("shark").toString().substring(5) + "/";
-        System.setProperty( "user.dir", contextPath);
         EngineUtils.setSharkProperties(contextPath);
         EngineUtils.setXpdlRepository(contextPath + "xpdlrepository");
         EngineUtils.setSnapshotImageCreator();
