@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ru.ilb.workflow.instancepersistence;
+package ru.ilb.workflow.core.instancepersistence;
 
 import com.lutris.appserver.server.sql.CoreDO;
 import com.lutris.dods.builder.generator.query.QueryBuilder;

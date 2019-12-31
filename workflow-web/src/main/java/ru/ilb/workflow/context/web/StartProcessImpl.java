@@ -22,7 +22,7 @@ import javax.ws.rs.core.Response;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.callcontext.entities.CallContextFactory;
 import ru.ilb.workflow.api.StartProcess;
-import ru.ilb.workflow.context.ContextConstants;
+import ru.ilb.workflow.core.context.ContextConstants;
 import ru.ilb.workflow.entities.ActivityInstance;
 import ru.ilb.workflow.entities.ProcessInstance;
 import ru.ilb.workflow.entities.ProcessInstanceFactory;

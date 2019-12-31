@@ -13,26 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ru.ilb.workflow;
-
-import java.util.function.Supplier;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import ru.ilb.workflow.core.SessionData;
-import ru.ilb.workflow.core.SessionDataImpl;
-import ru.ilb.workflow.core.SessionHandleFunction;
+package ru.ilb.workflow.core.context;
 
 /**
  *
  * @author slavb
  */
-@SpringBootApplication
-public class Application {
+public class ContextConstants {
 
+    final public static String CALLBACKURL_VARIABLE = "callbackUrl";
 
-    @Bean
-    Supplier<SessionData> sessionData() {
-        return () -> new SessionDataImpl(System.getProperty("user.name"), new SessionHandleFunction());
-    }
+    final public static String CONTEXTURL_VARIABLE = "contextUrl";
+
+    final public static String RESULTURL_VARIABLE = "resultUrl";
 
 }
+
+

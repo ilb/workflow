@@ -26,7 +26,6 @@ import java.util.Properties;
 import java.util.StringTokenizer;
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.transaction.UserTransaction;
 import org.enhydra.shark.admin.repositorymanagement.RepositoryManager;
 import org.enhydra.shark.api.admin.RepositoryMgr;
@@ -37,7 +36,6 @@ import org.enhydra.shark.webclient.business.prof.graph.SnapshotImageCreator;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.slf4j.LoggerFactory;
-import ru.ilb.workflow.utils.DBUtils;
 
 /**
  *
@@ -137,6 +135,11 @@ public class EngineUtils {
         setLDAPProperties(properties);
         setRealPath(properties, contextPath);
         setQuartzProperties(properties, contextPath);
+//        try {
+//            SharkInterfaceWrapper.setProperties(properties, true);
+//        } catch (Exception ex) {
+//            throw new RuntimeException(ex);
+//        }
         UserTransaction ut = null;
         try {
             ut = getUserTransaction();
@@ -152,9 +155,10 @@ public class EngineUtils {
 
     public static UserTransaction getUserTransaction() {
         try {
+//             return SharkInterfaceWrapper.getUserTransaction();
             javax.naming.Context ctx = new InitialContext();
             return (UserTransaction) ctx.lookup("java:comp/env/UserTransaction");
-        } catch (NamingException ex) {
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }

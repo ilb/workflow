@@ -29,7 +29,7 @@ import org.enhydra.shark.api.client.wfmc.wapi.WMActivityInstance;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.workflow.api.CreateProcessInstanceCtx;
-import ru.ilb.workflow.context.ContextConstants;
+import ru.ilb.workflow.core.context.ContextConstants;
 import ru.ilb.workflow.core.SessionData;
 import ru.ilb.workflow.session.AuthorizationHandler;
 import ru.ilb.workflow.utils.WAPIUtils;

@@ -26,10 +26,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ru.ilb.jndicontext.core.JNDIInitialContextFactory;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.support.TransactionTemplate;
 import ru.ilb.workflow.entities.ProcessDefinition;
 import ru.ilb.workflow.entities.ProcessDefinitionFactory;
-import ru.ilb.workflow.utils.EngineUtils;
 
 /**
  *
@@ -42,20 +42,14 @@ public class ProcessDefinitionFactoryImplTest {
     @Inject
     ProcessDefinitionFactory instance;
 
+    @Inject
+    private PlatformTransactionManager transactionManager;
+
     public ProcessDefinitionFactoryImplTest() {
     }
 
     @BeforeAll
     public static void setUpClass() {
-    }
-
-    private static void setupShark() {
-        System.setProperty("java.naming.factory.initial", JNDIInitialContextFactory.class.getName());
-        String contextPath = ProcessDefinitionFactoryImplTest.class.getClassLoader().getResource("shark").toString().substring(5) + "/";
-        EngineUtils.setSharkProperties(contextPath);
-        EngineUtils.setXpdlRepository(contextPath + "xpdlrepository");
-        EngineUtils.setSnapshotImageCreator();
-
     }
 
     @AfterAll
@@ -78,13 +72,15 @@ public class ProcessDefinitionFactoryImplTest {
         System.out.println("getProcessDefinitions");
         //setupShark();
         Boolean enabled = null;
-        String packageId = "";
-        String versionId = "";
+        String packageId = null;
+        String versionId = null;
         String processDefinitionId = "simpletest";
         //ProcessDefinitionFactoryImpl instance = new ProcessDefinitionFactoryImpl(() -> new SessionDataImpl(System.getProperty("user.name"), new SessionHandleFunction()));
-        Stream<ProcessDefinition> expResult = null;
-        Stream<ProcessDefinition> result = instance.getProcessDefinitions(enabled, packageId, versionId, processDefinitionId);
-        assertEquals(expResult, result);
+        String expResult = "simpletest";
+        TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
+        Stream<ProcessDefinition> result = transactionTemplate.execute((status)
+                -> instance.getProcessDefinitions(enabled, packageId, versionId, processDefinitionId));
+        assertEquals(expResult, result.findFirst().get().getId());
     }
 
 }

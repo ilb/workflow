@@ -40,7 +40,7 @@ import org.enhydra.shark.api.common.SharkConstants;
 import org.enhydra.shark.api.internal.toolagent.ToolAgentGeneralException;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 import org.enhydra.shark.utilities.namevalue.NameValueUtilities;
-import ru.ilb.workflow.context.ContextConstants;
+import ru.ilb.workflow.core.context.ContextConstants;
 import ru.ilb.workflow.web.CreateProcessInstanceCtxImpl;
 
 /**

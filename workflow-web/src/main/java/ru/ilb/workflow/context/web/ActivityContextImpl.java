@@ -24,7 +24,7 @@ import ru.ilb.callcontext.entities.CallContextFactory;
 import ru.ilb.jfunction.map.converters.MapToJsonFunction;
 import ru.ilb.jfunction.map.converters.ObjectMapToSerializedMapFunction;
 import ru.ilb.workflow.api.ActivityContext;
-import ru.ilb.workflow.context.ContextConstants;
+import ru.ilb.workflow.core.context.ContextConstants;
 import ru.ilb.workflow.entities.ActivityInstance;
 import ru.ilb.workflow.entities.ProcessContext;
 import ru.ilb.workflow.entities.ProcessInstance;

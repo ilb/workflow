@@ -27,10 +27,9 @@ import javax.naming.NamingException;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import ru.ilb.filedossier.scripting.SubstitutorTemplateEvaluator;
 import ru.ilb.filedossier.scripting.TemplateEvaluator;
-import ru.ilb.workflow.context.ContextConstants;
 import ru.ilb.workflow.core.ProcessContextImpl;
+import ru.ilb.workflow.core.context.ContextConstants;
 import ru.ilb.workflow.entities.ProcessContext;
-import ru.ilb.workflow.utils.XPDLUtils;
 
 /**
  *

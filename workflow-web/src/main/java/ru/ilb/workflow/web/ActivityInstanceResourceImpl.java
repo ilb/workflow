@@ -36,7 +36,7 @@ import ru.ilb.workflow.api.ActivityFormResource;
 import ru.ilb.workflow.api.ActivityInstanceResource;
 import ru.ilb.workflow.api.JsonSchemaResource;
 import ru.ilb.workflow.api.ProcessContextResource;
-import ru.ilb.workflow.context.ContextConstants;
+import ru.ilb.workflow.core.context.ContextConstants;
 import ru.ilb.workflow.core.SessionData;
 import ru.ilb.workflow.entities.ProcessContextAccessor;
 import ru.ilb.workflow.entities.ProcessInstance;

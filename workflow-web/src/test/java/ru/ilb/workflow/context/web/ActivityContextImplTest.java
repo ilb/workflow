@@ -25,7 +25,7 @@ import ru.ilb.callcontext.core.CallContextFactoryImpl;
 import ru.ilb.callcontext.core.ContextParserImpl;
 import ru.ilb.callcontext.core.ContextReaderImpl;
 import ru.ilb.callcontext.entities.CallContextFactory;
-import ru.ilb.workflow.context.ContextConstants;
+import ru.ilb.workflow.core.context.ContextConstants;
 import ru.ilb.workflow.entities.ActivityInstance;
 import ru.ilb.workflow.entities.ProcessContext;
 import ru.ilb.workflow.entities.ProcessInstance;
