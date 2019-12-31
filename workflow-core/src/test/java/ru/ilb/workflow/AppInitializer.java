@@ -36,13 +36,16 @@ public class AppInitializer {
     @Inject
     DataSource dataSource;
 
+    @Inject
+    UserTransactionManager tm;
+
     private void initJndi() {
         try {
             SimpleNamingContextBuilder builder = new SimpleNamingContextBuilder();
 
 //            Reference userTransaction = new Reference("javax.transaction.UserTransaction", "org.enhydra.jndi.UserTransactionFactory", null);
-            UserTransactionManager tm = new UserTransactionManager();
-            tm.setForceShutdown(true);
+            //UserTransactionManager tm = new UserTransactionManager();
+            //tm.setForceShutdown(true);
             builder.bind("java:comp/env/UserTransaction", tm);
 //            builder.bind("javax.transaction.TransactionManager", tm);
             builder.bind("java:comp/env/jdbc/sharkdb", dataSource);
