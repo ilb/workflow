@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
  */
 public class EngineUtils {
 
-    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(EngineUtils.class);
+    private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(EngineUtils.class);
 
     public static void stopEngine() {
         Scheduler scheduler = QuartzInitializer.getScheduler();
@@ -51,7 +51,7 @@ public class EngineUtils {
             try {
                 scheduler.shutdown();
             } catch (SchedulerException ex) {
-                logger.error("scheduler.shutdown", ex);
+                LOG.error("scheduler.shutdown", ex);
             }
         }
         SharkInterfaceWrapper.shutdown();
@@ -95,7 +95,7 @@ public class EngineUtils {
                 String newValue = MiscUtilities.replaceAll(value, "@@/", contextPath);
                 newValue = newValue.replace('\\', '/');
                 p.setProperty(key, newValue);
-                logger.debug("key is: " + key + ", old value is: " + value + ", new value is: " + newValue);
+                LOG.debug("key is: " + key + ", old value is: " + value + ", new value is: " + newValue);
             }
         }
     }
@@ -181,7 +181,7 @@ public class EngineUtils {
                 repMgr.setPathToXPDLRepositoryFolder(XPDLRepositoryPath + "/packages");
                 ut.commit();
             } catch (Exception ex) {
-                logger.error("Cannot setPathToXPDLRepositoryFolder ", ex);
+                LOG.error("Cannot setPathToXPDLRepositoryFolder ", ex);
             } finally {
                 DBUtils.rollback(ut);
             }
@@ -201,7 +201,7 @@ public class EngineUtils {
             SnapshotImageCreator.init(null, props);
             ut.commit();
         } catch (Exception ex) {
-            logger.error("Problems while setting up SnapshotImageCreator!", ex);
+            LOG.error("Problems while setting up SnapshotImageCreator!", ex);
         } finally {
             DBUtils.rollback(ut);
         }
