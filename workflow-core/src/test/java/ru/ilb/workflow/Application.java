@@ -32,7 +32,8 @@ public class Application {
 
     @Bean
     Supplier<SessionData> sessionData() {
-        return () -> new SessionDataImpl(System.getProperty("user.name"), new SessionHandleFunction());
+        // System.getProperty("user.name")
+        return () -> new SessionDataImpl("slavb", new SessionHandleFunction());
     }
 
 }
