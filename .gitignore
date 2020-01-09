@@ -6,3 +6,4 @@ workflow-shark/target/
 .svn
 /workflow-web/target/
 /workflow-web/bower_components/
+/workflow-js/.next

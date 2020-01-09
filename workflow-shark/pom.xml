@@ -438,11 +438,11 @@
             <artifactId>tro-dbmanager</artifactId>
             <version>${shark.version}</version>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>org.enhydra.shark.contrib</groupId>
             <artifactId>tro-localcontext</artifactId>
             <version>${shark.version}</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.enhydra.shark.contrib</groupId>
             <artifactId>tro-dbvendors</artifactId>
