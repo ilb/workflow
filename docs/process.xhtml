@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="/oooxhtml/oooxhtml.css"/>
     <style type="text/css">@page {margin-top:2cm;margin-bottom:2cm;margin-left:2cm;margin-right:2cm;}</style>
     <title>Бизнес-процессы</title>
-    <meta name="generator" content="oooxhtml/1.2"/>
+    <meta name="generator" content="oooxhtml/1.3"/>
     <meta name="HeadURL" content="$HeadURL$"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   </head>
@@ -22,9 +22,12 @@
       <h3 id="sozdat__paket_processov">
         <a class="anchor" href="#sozdat__paket_processov">Создать пакет процессов</a>
       </h3>
-      <p>Меню File-&gt;New (<b>Ctrl-N</b>) <br/>В свойствах вкладки <b>General</b>указать <br/>Id - латинский идентификатор, например «<i>stockvaluation</i><br/>Name - заполнить русское название процесса, например «<i>Оценка активности рынка по ЦБ»</i></p>
+      <p>Меню File-&gt;New (<b>Ctrl-N</b>) </p>
       <p>
         <img alt="Изображение1" style="width:15.342cm;height:9.021cm" src="images/package_processes.png"/>
+      </p>
+      <p>В свойствах вкладки <b>General</b> указать <br/>Id - латинский идентификатор, например "<i>stockvaluation"</i><br/>Name - заполнить русское название процесса, например "<i>Оценка активности рынка по ЦБ"</i></p>
+      <p>
         <img alt="Изображение2" style="width:17cm;height:6.807cm" src="images/package_general.png"/>
       </p>
       <h3 id="s">
@@ -34,7 +37,7 @@
       <h3 id="sozdat__process">
         <a class="anchor" href="#sozdat__process">Создать процесс</a>
       </h3>
-      <p>Меню Package -&gt; Processes, кнопка New<br/>В свойствах вкладки <b>General </b>указать<br/>Id - латинский идентификатор, например «<i>fairpricecalc»</i><br/>Name - заполнить русское имя, например «<i>Определение справедливой стоимости ценных бумаг</i>»</p>
+      <p>Меню Package -&gt; Processes, кнопка New<br/>В свойствах вкладки <b>General </b>указать<br/>Id - латинский идентификатор, например "<i>fairpricecalc"</i><br/>Name - заполнить русское имя, например "<i>Определение справедливой стоимости ценных бумаг</i>"</p>
       <p>
         <img alt="Изображение4" style="width:17cm;height:6.976cm" src="images/process_general.png"/>
       </p>
@@ -43,8 +46,8 @@
       </h3>
       <p>Меню: Package -&gt; Participants добавить вручную кнопкой New, выбрать тип <b>Role</b></p>
       <p>Заполнить id = LDAP идентификатор группы, например <i>ru.bystrobank.apps.stockvaluation.securityaccounters</i></p>
-      <p>name = название группы, например «<i>Специалист по учету ценных бумаг</i>»<br/>Так же можно использовать <i>импорт во вкладке LDAP: Unique attribute search criteria: ввести полное имя группы, например ru.bystrobank.apps.stockvaluation.securityaccounters и нажать кнопку Import. </i></p>
-      <p>Для того, чтобы добавить исполнителя «Система» нужно выбрать тип <b>System</b>, ввести наименование «Система»</p>
+      <p>name = название группы, например "<i>Специалист по учету ценных бумаг</i>"<br/>Так же можно использовать <i>импорт во вкладке LDAP: Unique attribute search criteria: ввести полное имя группы, например ru.bystrobank.apps.stockvaluation.securityaccounters и нажать кнопку Import. </i></p>
+      <p>Для того, чтобы добавить исполнителя "Система" нужно выбрать тип <b>System</b>, ввести наименование "Система"</p>
       <h3 id="dobavit__dorozki">
         <a class="anchor" href="#dobavit__dorozki">Добавить дорожки</a>
       </h3>
@@ -70,7 +73,7 @@
       <h3 id="dobavit_perehody">
         <a class="anchor" href="#dobavit_perehody">Добавить переходы</a>
       </h3>
-      <p>Добавить переходы между активностями (условные и безусловные). Для задания условий условного перехода (Conditioal Flow) в поле Expression нажать вторую слева кнопку ">>" и выбирать переменную. Можно писать выражения на javascript.</p>
+      <p>Добавить переходы между активностями (условные и безусловные). Для задания условий условного перехода (Conditioal Flow) в поле Expression нажать вторую слева кнопку "&gt;&gt;" и выбирать переменную. Можно писать выражения на javascript.</p>
       <p>Для отображений на диаграмме процессов условий переходов нужно нажать кнопку отмеченную "Отображать условия" на рисунке ниже (Show transtion conditions).</p>
       <p>
         <img alt="Изображение5" style="width:18cm;height:1.115cm" src="images/activities.png"/>
@@ -78,8 +81,7 @@
       <h3 id="dobavit__peremenn_e">
         <a class="anchor" href="#dobavit__peremenn_e">Добавить переменные</a>
       </h3>
-      <p>Меню Process -&gt; Workflow variables. Добавить переменную.  В свойствах переменной указать<br/>Id - латинский идентификатор, например «<i>decision»</i><br/>Name - заполнить русское имя, например «<i>Решение</i>». Если значения Да/Нет то нужно выбирать тип Boolean.</p>
-      <p></p>
+      <p>Меню Process -&gt; Workflow variables. Добавить переменную. В свойствах переменной указать<br/>Id - латинский идентификатор, например "<i>decision"</i><br/>Name - заполнить русское имя, например "<i>Решение</i>". Если значения Да/Нет то нужно выбирать тип Boolean.</p>
       <h2 id="primer__processov">
         <a class="anchor" href="#primer__processov">Примеры процессов</a>
       </h2>
