@@ -209,7 +209,7 @@
                                     <configOptions>
                                         <packageName>workflow</packageName>
                                         <packageVersion>${generated-api-version}</packageVersion>
-                                        <projectName>${project.name}</projectName>
+                                        <projectName>ilb-${project.name}</projectName>
                                     </configOptions>
                                 </configuration>
                             </execution>
