@@ -42,14 +42,14 @@ export function getWorkflowApiClient (xRemoteUser) {
 export function getProcessInstancesApi ({ req, proxy }) {
   const client = getWorkflowApiClient(getRemoteUser(req));
   let api = new ProcessInstancesApi(client);
-  if (proxy) { api = createJsProxy(api, 'workflow/processinstances'); }
+  if (proxy) { api = createJsProxy(api, 'proxies/workflow/processinstances'); }
   return api;
 }
 
 export function getProcessDefinitionsApi ({ req, proxy }) {
   const client = getWorkflowApiClient(getRemoteUser(req));
   let api = new ProcessDefinitionsApi(client);
-  if (proxy) { api = createJsProxy(api, 'workflow/processdefinitions'); }
+  if (proxy) { api = createJsProxy(api, 'proxies/workflow/processdefinitions'); }
   return api;
 }
 
