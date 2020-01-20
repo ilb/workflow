@@ -13,6 +13,9 @@
     <properties>
         <apache-cxf.version>3.2.9</apache-cxf.version>
         <swagger-version>2.0.8</swagger-version>
+<!--        <ilb-common.version>1.32</ilb-common.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>-->
     </properties>
     <dependencies>
         <dependency>
@@ -29,6 +32,14 @@
         </dependency>
     </dependencies>
     <build>
+<!--        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.2</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>-->
         <plugins>
             <plugin>
                 <groupId>org.apache.cxf</groupId>
