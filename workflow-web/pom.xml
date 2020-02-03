@@ -282,7 +282,7 @@
         <dependency>
             <groupId>ru.ilb.callcontext</groupId>
             <artifactId>callcontext</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -309,7 +309,7 @@
         <dependency>
             <groupId>ru.ilb.jfunction</groupId>
             <artifactId>jfunction-map</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
