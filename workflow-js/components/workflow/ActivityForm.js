@@ -34,7 +34,7 @@ export default function ActivityForm (props) {
      *     each function prefered to return standart object like { response, error }, in that case submit will be aborted on action errors
      * @param {function} callback - a callback to intercept default behavior
      */
-    async ({ state, processData, beforeAction, callback } = {}) => {
+    async ({ state, processData, beforeAction, callback, defaultNextUrl } = {}) => {
       // do some actions before submit (async)
       if (beforeAction) {
         let actionsArray = beforeAction;
@@ -58,9 +58,9 @@ export default function ActivityForm (props) {
 
       // proceed to next step
       if (callback && typeof callback === 'function') {
-        callback({ result, proceedToNextUrl });
+        callback({ result, proceedToNextUrl, defaultNextUrl });
       } else {
-        proceedToNextUrl(result);
+        proceedToNextUrl(result, defaultNextUrl);
       }
       return result;
     }

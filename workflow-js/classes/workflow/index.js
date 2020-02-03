@@ -12,17 +12,10 @@ export const fixDevelmentUrl = (urlstr) => {
   return urlstr;
 };
 
-export const proceedToNextUrl = (result) => {
+export const proceedToNextUrl = (result, defaultNextUrl) => {
   const { response, error } = result || {};
   if (!error) {
-    let nextUrl = response && response.activityFormUrl;
-    if (!nextUrl) {
-      try {
-        window.close();
-      } finally {
-        nextUrl = '/workflow/workList';
-      }
-    }
+    const nextUrl = (response && response.activityFormUrl) || defaultNextUrl || '/workflow/workList';
     if (process.browser) {
       document.location = fixDevelmentUrl(nextUrl);
     } else {
