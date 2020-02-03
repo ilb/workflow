@@ -58,7 +58,7 @@ export default function ActivityForm (props) {
 
       // proceed to next step
       if (callback && typeof callback === 'function') {
-        callback({ result, proceedToNextUrl, defaultNextUrl });
+        callback({ result, proceedToNextUrl });
       } else {
         proceedToNextUrl(result, defaultNextUrl);
       }
