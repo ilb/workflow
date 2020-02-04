@@ -58,7 +58,7 @@
         <description>Путь к файлам процесса</description>
         <env-entry-name>ru.bystrobank.apps.workflow.processfilesbase</env-entry-name>
         <env-entry-type>java.lang.String</env-entry-type>
-        <env-entry-value>file:///tmp/workflow/files</env-entry-value>
+        <env-entry-value>/var/apps/workflow/files</env-entry-value>
     </env-entry>
     <env-entry>
         <description>URL формы активности</description>
