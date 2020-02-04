@@ -20,5 +20,4 @@
         password="shark"
     />
 
-    <Environment name="xpdlRepository" value="/home/slavb/work/workflow/trunk/xpdlrepository/web" type="java.lang.String" override="false"/>
 </Context>

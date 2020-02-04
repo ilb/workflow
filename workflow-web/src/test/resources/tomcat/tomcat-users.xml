@@ -33,5 +33,5 @@
       <user username="both" password="tomcat" roles="tomcat,role1"/>
       <user username="role1" password="tomcat" roles="role1"/>
     -->
-    <user password="123" roles="manager-script,ru.bystrobank.tws.admin,manager-gui" username="slavb"/>
+    <user password="123" roles="manager-script,ru.bystrobank.tws.admin,manager-gui" username="ide"/>
 </tomcat-users>
