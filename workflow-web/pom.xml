@@ -188,7 +188,7 @@
         <dependency>
             <groupId>ru.ilb.filedossier</groupId>
             <artifactId>filedossier-components</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
