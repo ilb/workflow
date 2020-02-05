@@ -4,7 +4,7 @@
         <description>файл с сертификатом, который будем использовать для аутентификации в других ресурсах</description>
         <env-entry-name>ru.bystrobank.apps.workflow.certfile</env-entry-name>
         <env-entry-type>java.lang.String</env-entry-type>
-        <env-entry-value>/etc/ssl/private/php-application.pem</env-entry-value>
+        <env-entry-value>/etc/ssl/private/workflow.pem</env-entry-value>
     </env-entry>
 
     <env-entry>
