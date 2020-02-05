@@ -11,9 +11,11 @@ function fillparams () {
   if (!process.browser && !paramsloaded) {
     // auth params
     certfile = process.env['ru.bystrobank.apps.workflow.certfile'];
+    console.log('WORKFLOW CERTFILE: ', certfile); // eslint-disable-line no-console
     passphrase = process.env['ru.bystrobank.apps.workflow.cert_PASSWORD'];
     const fs = require('fs');
     cert = certfile ? fs.readFileSync(certfile) : null;
+    console.log('WORKFLOW CERT: ', cert); // eslint-disable-line no-console
     ca = process.env.NODE_EXTRA_CA_CERTS ? fs.readFileSync(process.env.NODE_EXTRA_CA_CERTS) : null;
 
     // web services
