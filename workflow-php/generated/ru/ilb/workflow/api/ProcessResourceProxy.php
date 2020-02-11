@@ -236,4 +236,20 @@ class ProcessResourceProxy extends JAXRSClientProxyImpl implements ProcessResour
         return $conn->doDelete($url . ($filter ? ('?filter=' . $filter) : ''));
     }
 
+    /**
+     * @param string $processId
+     * @param string $activityId
+     * @return string
+     */
+    public function completeProcess($processId, $activityId) {
+        if (!$processId) {
+            throw new \Exception('processId не передан');
+        }
+        if (!$activityId) {
+            throw new \Exception('activityId не передан');
+        }
+        $url = $this->baseUrl . '/processes/' . $processId . '/activities/' . $activityId . "/complete";
+        $conn = \HTTP_ConnectionPool::getInstance()->getConnect($url, $this->curlConfig);
+        return $conn->doPost($url, NULL);
+    }
 }

@@ -91,4 +91,11 @@ interface ProcessResource {
      * @return string
      */
     public function terminateProcessInstanceList($filter);
+
+    /**
+     * @param string $processId
+     * @param string $activityId
+     * @return string
+     */
+    public function completeProcess($processId, $activityId);
 }
