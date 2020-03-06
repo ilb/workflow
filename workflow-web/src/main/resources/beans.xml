@@ -195,7 +195,7 @@
             <!--<ref bean="logInbound"/>-->
         </jaxrs:inInterceptors>
     </jaxrs:server>
-    <jaxrs:server address="/v2" basePackages="ru.ilb.workflow.web,ru.ilb.workflow.xpil.web,ru.ilb.workflow.providers,ru.ilb.common.jaxrs.providers,ru.ilb.common.jaxrs.exceptionhandler,ru.ilb.filedossier.components">
+    <jaxrs:server address="/v2" basePackages="ru.ilb.workflow.web,ru.ilb.workflow.xpil.web,ru.ilb.workflow.context.web,ru.ilb.workflow.providers,ru.ilb.common.jaxrs.providers,ru.ilb.common.jaxrs.exceptionhandler,ru.ilb.filedossier.components">
         <jaxrs:properties>
             <entry key="search.lax.property.match" value="true" />
         </jaxrs:properties>

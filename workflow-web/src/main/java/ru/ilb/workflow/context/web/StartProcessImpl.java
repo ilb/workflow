@@ -46,7 +46,7 @@ public class StartProcessImpl implements StartProcess {
     public Response startProcess(String x_remote_user, String packageId, String versionId, String processDefinitionId, URI contextUrl) {
         Map<String, Object> context = new HashMap<>();
         if (contextUrl != null) {
-            context.put(ContextConstants.CONTEXTURL_VARIABLE, contextUrl);
+            context.put(ContextConstants.CONTEXTURL_VARIABLE, contextUrl.toString());
         }
         //TODO read context to process formal parameters
         ProcessInstance processInstance = processInstanceFactory.createProcessInstance(packageId, versionId, processDefinitionId, context);
