@@ -36,6 +36,7 @@ const ProcessSelector = (props) => {
       <Dropdown.Menu>
         {(processes || []).map((pd) => (
           <Dropdown.Item
+            id={"start_"+pd.id}
             key={pd.id}
             text={pd.definitionName}
             value={pd.id}
