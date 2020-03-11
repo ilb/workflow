@@ -1,4 +1,4 @@
-import 'semantic-ui-css/semantic.min.css';
+import 'semantic-ui-offline/semantic.min.css';
 import React from 'react';
 import PropTypes from 'prop-types';
 import MainMenu from './MainMenu';
