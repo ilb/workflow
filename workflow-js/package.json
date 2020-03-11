@@ -1,6 +1,6 @@
 {
   "name": "@ilb/workflow-js",
-  "version": "2.0.103",
+  "version": "2.0.104",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -14,6 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/runtime-corejs2": "^7.8.7",
     "@bb/jsonschema-form": "^1.0.2",
     "@ilb/filedossier-js": "^1.0.65",
     "@ilb/js-auto-proxy": "^2.0.0",
