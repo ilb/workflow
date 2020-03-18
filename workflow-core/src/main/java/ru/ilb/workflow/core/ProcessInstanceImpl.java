@@ -28,8 +28,6 @@ import org.enhydra.shark.api.common.AssignmentFilterBuilder;
 import org.enhydra.shark.api.common.SharkConstants;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 import org.enhydra.shark.utilities.namevalue.NameValueUtilities;
-import ru.ilb.jfunction.map.accessors.MapAccessor;
-import ru.ilb.jfunction.map.accessors.MapAccessorImpl;
 import ru.ilb.workflow.entities.ActivityInstance;
 import ru.ilb.workflow.entities.ProcessContext;
 import ru.ilb.workflow.entities.ProcessInstance;
@@ -138,6 +136,7 @@ public class ProcessInstanceImpl implements ProcessInstance {
             }
             return nextAct;
         } catch (Exception ex) {
+            Logger.getLogger(ProcessInstanceImpl.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             throw new RuntimeException(ex);
         }
     }
