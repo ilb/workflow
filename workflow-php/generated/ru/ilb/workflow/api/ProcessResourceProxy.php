@@ -252,4 +252,29 @@ class ProcessResourceProxy extends JAXRSClientProxyImpl implements ProcessResour
         $conn = \HTTP_ConnectionPool::getInstance()->getConnect($url, $this->curlConfig);
         return $conn->doPost($url, NULL);
     }
+
+    /**
+     * @param string $processId
+     * @param string $activityId
+     * @param string $sourceUser
+     * @param string $targetUser
+     */
+    public function reassignActivity($processId, $activityId, $sourceUser, $targetUser) {
+        if (!$processId) {
+            throw new \Exception('processId не передан');
+        }
+        if (!$activityId) {
+            throw new \Exception('activityId не передан');
+        }
+        if (!$sourceUser) {
+            throw new \Exception('sourceUser не передан');
+        }
+        if (!$targetUser) {
+            throw new \Exception('targetUser не передан');
+        }
+        $url = $this->baseUrl . '/processes/' . $processId . '/activities/' . $activityId . '/reassign' .
+                '?sourceUser=' . $sourceUser . '&targetUser=' . $targetUser;
+        $conn = \HTTP_ConnectionPool::getInstance()->getConnect($url, $this->curlConfig);
+        return $conn->doPost($url, NULL);
+    }
 }

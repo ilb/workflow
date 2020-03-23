@@ -98,4 +98,12 @@ interface ProcessResource {
      * @return string
      */
     public function completeProcess($processId, $activityId);
+
+    /**
+     * @param string $processId
+     * @param string $activityId
+     * @param string $sourceUser
+     * @param string $targetUser
+     */
+    public function reassignActivity($processId, $activityId, $sourceUser, $targetUser);
 }
