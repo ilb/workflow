@@ -42,7 +42,7 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:svn:https://svn.ilb.ru/repos/workflow/trunk</connection>
+        <connection>scm:git:https://git.ilb.ru/ilb.ru/workflow.git</connection>
     </scm>
     <build>
         <pluginManagement>
