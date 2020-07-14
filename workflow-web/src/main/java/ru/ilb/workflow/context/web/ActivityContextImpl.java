@@ -55,7 +55,6 @@ public class ActivityContextImpl implements ActivityContext {
         ProcessInstance processInstance = processInstanceFactory.getProcessInstance(processInstanceId);
         ActivityInstance activityInstance = processInstance.getActivityInstance(activityInstanceId);
 
-
         Map<String, Object> contextData = new HashMap<>();
 
         String parentContextUrl = processInstance.getContext().accessor().getStringProperty(ContextConstants.CONTEXTURL_VARIABLE);
@@ -72,6 +71,8 @@ public class ActivityContextImpl implements ActivityContext {
         CallContext callContext = callContextFactory.createCallContext(null, contextData);
         callContext.setCallbackUri(resourceUri.resolve("activityCallback?callId=" + callId + "&callerId=" + callerId));
 
+        // FIXME HARDCODE, use code from ActivityFormResourceImpl.getActivityDossier to build dossier link
+        callContext.setLink("dossier", URI.create("https://devel.net.ilb.ru/workflow-web/web/v2/dossiers/" + processInstanceId + "/correspondence/correspondence/register.json"));
         String json = callContext.getContextJson();
         return json;
     }
