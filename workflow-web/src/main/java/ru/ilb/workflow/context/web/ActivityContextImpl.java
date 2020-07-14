@@ -19,6 +19,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
+import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.callcontext.entities.CallContext;
 import ru.ilb.callcontext.entities.CallContextFactory;
 import ru.ilb.jfunction.map.converters.MapToJsonFunction;
@@ -49,6 +50,7 @@ public class ActivityContextImpl implements ActivityContext {
     }
 
     @Override
+    @Transactional
     public String activityContext(String x_remote_user, String callId, String callerId) {
         String processInstanceId = callerId, activityInstanceId = callId;
 
