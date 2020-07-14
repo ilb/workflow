@@ -74,7 +74,7 @@ public class ActivityContextImplTest {
 
         ActivityContextImpl instance = new ActivityContextImpl(processInstanceFactory, callContextFactory, resourceUri);
         String expCallbackUrl = "http://localhost/workflow/web/callcontext/activityCallback?callId=" + callId + "&callerId=" + callerId;
-        String expResult = "{\"link\":[{\"rel\":\"callback\",\"href\":\"" + expCallbackUrl + "\"}],\"key\":\"value\",\"k\":1}";
+        String expResult = "{\"link\":[{\"rel\":\"callback\",\"href\":\"" + expCallbackUrl + "\"},{\"rel\":\"dossier\",\"href\":\"https://devel.net.ilb.ru/workflow-web/web/v2/dossiers/456/correspondence/correspondence/register.json\"}],\"key\":\"value\",\"k\":1}";
         //String expResult = "";
         String result = instance.activityContext(x_remote_user, callId, callerId);
         assertEquals(expResult, result);
