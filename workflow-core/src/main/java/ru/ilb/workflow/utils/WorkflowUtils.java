@@ -98,12 +98,11 @@ public class WorkflowUtils {
         params.put("activityDefinitionShortId", activityDefinitionShortId);
         activityFormUrl = templateEvaluator.evaluateStringExpression(activityFormUrl, params);
 
-        //FIXME прямой проброс contextUrl! временное решение!
-        String contextUrl = (String) processContext.getContext().get(ContextConstants.CONTEXTURL_VARIABLE);
-
+        //FIXME HARDCODE URL
+        String contextUrl = "https://devel.net.ilb.ru/workflow-web/web/v2/callcontext/activityContext?callerId=" + processInstanceId + "&callId=" + activityInstanceId;
         if (contextUrl != null) {
             try {
-            activityFormUrl = activityFormUrl + "&contextUrl=" + URLEncoder.encode(contextUrl, "UTF-8");
+                activityFormUrl = activityFormUrl + "&contextUrl=" + URLEncoder.encode(contextUrl, "UTF-8");
             } catch (UnsupportedEncodingException ex) {
                 Logger.getLogger(WorkflowUtils.class.getName()).log(Level.SEVERE, null, ex);
             }
