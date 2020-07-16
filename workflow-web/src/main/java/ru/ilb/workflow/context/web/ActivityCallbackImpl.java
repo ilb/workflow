@@ -19,6 +19,7 @@ import java.net.URI;
 import java.util.Optional;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
+import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.callcontext.entities.CallContext;
 import ru.ilb.callcontext.entities.CallContextFactory;
 import ru.ilb.workflow.api.ActivityCallback;
@@ -46,6 +47,7 @@ public class ActivityCallbackImpl implements ActivityCallback {
     }
 
     @Override
+    @Transactional
     public Response activityCallback(String x_remote_user, String callId, String callerId, URI responseUrl) {
         String processInstanceId = callerId, activityInstanceId = callId;
 
