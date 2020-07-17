@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.ws.rs.core.Response;
 import org.springframework.transaction.annotation.Transactional;
+import ru.ilb.callcontext.entities.CallContext;
 import ru.ilb.callcontext.entities.CallContextFactory;
 import ru.ilb.workflow.api.StartProcess;
 import ru.ilb.workflow.core.context.ContextConstants;
@@ -44,12 +45,17 @@ public class StartProcessImpl implements StartProcess {
     @Override
     @Transactional
     public Response startProcess(String x_remote_user, String packageId, String versionId, String processDefinitionId, URI contextUrl) {
-        Map<String, Object> context = new HashMap<>();
+        Map<String, Object> contextData = new HashMap<>();
         if (contextUrl != null) {
-            context.put(ContextConstants.CONTEXTURL_VARIABLE, contextUrl.toString());
+            contextData.put(ContextConstants.CONTEXTURL_VARIABLE, contextUrl.toString());
+            CallContext parentContext = callContextFactory.getCallContext(contextUrl);
+
+            //TODO read context to process formal parameters
+            //only remove link !FIXME! !HARDCODE!
+            parentContext.getContext().remove("link");
+            contextData.putAll(parentContext.getContext());
         }
-        //TODO read context to process formal parameters
-        ProcessInstance processInstance = processInstanceFactory.createProcessInstance(packageId, versionId, processDefinitionId, context);
+        ProcessInstance processInstance = processInstanceFactory.createProcessInstance(packageId, versionId, processDefinitionId, contextData);
         processInstance.start();
 
         ActivityInstance nextActivityInstance = processInstance.getNextActivityInstance();
