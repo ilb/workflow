@@ -307,11 +307,6 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>ru.ilb.jfunction</groupId>
-            <artifactId>jfunction-map</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>workflow-entities</artifactId>
             <version>${project.version}</version>
