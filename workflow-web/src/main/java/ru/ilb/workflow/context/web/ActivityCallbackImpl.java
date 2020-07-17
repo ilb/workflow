@@ -61,15 +61,26 @@ public class ActivityCallbackImpl implements ActivityCallback {
         }
 
         activityInstance.complete();
+        ActivityInstance nextActivityInstance = processInstance.getNextActivityInstance();
+        // переход на следующую активность если есть
+        if (nextActivityInstance != null) {
+            return Response.seeOther(nextActivityInstance.getActivityFormUrl()).build();
 
-        Response.ResponseBuilder builder = Response.ok(processInstance.getId());
-        String parentContextUrl = processInstance.getContext().accessor().getStringProperty(ContextConstants.CONTEXTURL_VARIABLE);
-        if (parentContextUrl != null) {
-            CallContext parentContext = callContextFactory.getCallContext(URI.create(parentContextUrl));
+        } else {
+            // если следующей активности нет
+            String parentContextUrl = processInstance.getContext().accessor().getStringProperty(ContextConstants.CONTEXTURL_VARIABLE);
+            if (parentContextUrl != null) {
+                CallContext parentContext = callContextFactory.getCallContext(URI.create(parentContextUrl));
 
-            Optional<URI> callbackUri = parentContext.getCallbackUri();
+                Optional<URI> callbackUri = parentContext.getCallbackUri();
+                // Если есть callbackUri, перейдем на него
+                if (callbackUri.isPresent()) {
+                    return Response.seeOther(callbackUri.get()).build();
 
+                }
+            }
+            return Response.ok("finished " + processInstance.getId()).build();
         }
-        return builder.build();
+
     }
 }
