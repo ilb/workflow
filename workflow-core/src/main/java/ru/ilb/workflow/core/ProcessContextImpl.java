@@ -15,6 +15,7 @@
  */
 package ru.ilb.workflow.core;
 
+import java.util.Iterator;
 import java.util.Map;
 import org.enhydra.shark.Shark;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
@@ -35,6 +36,8 @@ public class ProcessContextImpl implements ProcessContext {
 
     private final WfProcess processInstance;
 
+    private final String processInstanceId;
+
     private Map<String, Object> context;
     private Map<String, String> contextSignature;
 
@@ -46,6 +49,7 @@ public class ProcessContextImpl implements ProcessContext {
             sc = Shark.getInstance().getSharkConnection();
             sc.attachToHandle(shandle);
             processInstance = sc.getProcess(processInstanceId);
+            this.processInstanceId = processInstanceId;
         } catch (Exception ex) {
             throw new WorkflowException(ex);
         }
@@ -77,15 +81,41 @@ public class ProcessContextImpl implements ProcessContext {
 
     @Override
     public void setContext(Map<String, Object> context) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            updateProcessVariables(shandle, processInstanceId, context);
+        } catch (Exception ex) {
+            throw new WorkflowException(ex);
+        }
     }
 
     @Override
     public ProcessContextAccessor accessor() {
-        if (accessor==null) {
+        if (accessor == null) {
             accessor = new ProcessContextAccessorImpl(this);;
         }
         return accessor;
+    }
+
+    private static void updateProcessVariables(WMSessionHandle shandle, String procId, Map vars) throws Exception {
+        SharkConnection sc = Shark.getInstance().getSharkConnection();
+        sc.attachToHandle(shandle);
+
+        WfProcess process = sc.getProcess(procId);
+        Map pcnt = process.process_context();
+        filterNonExistingNullVars(vars, pcnt);
+        process.set_process_context(vars);
+    }
+
+    private static void filterNonExistingNullVars(Map toUpdate, Map currentVars) throws Exception {
+        if (toUpdate != null && currentVars != null) {
+            Iterator it = toUpdate.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry me = (Map.Entry) it.next();
+                if (me.getValue() == null && !currentVars.containsKey(me.getKey())) {
+                    it.remove();
+                }
+            }
+        }
     }
 
 }
