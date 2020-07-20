@@ -41,7 +41,7 @@ public class SalepointProviderImplTest {
         System.out.println("getSalepointUid");
         URI toURI = this.getClass().getResource("getSalepointByUser.xml").toURI();
         String authorisedUser = "slavb";
-        SalepointProviderImpl instance = new SalepointProviderImpl(toURI);
+        SalepointProviderImpl instance = new SalepointProviderImpl(toURI.toString());
         String expResult = "ru.bystrobank.sales.users";
         String result = instance.getSalepointUid(authorisedUser);
         assertEquals(expResult, result);

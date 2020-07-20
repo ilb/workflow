@@ -18,15 +18,18 @@ package ru.ilb.workflow.context.web;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 import javax.ws.rs.core.Response;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.callcontext.entities.CallContext;
 import ru.ilb.callcontext.entities.CallContextFactory;
 import ru.ilb.workflow.api.StartProcess;
+import ru.ilb.workflow.core.SessionData;
 import ru.ilb.workflow.core.context.ContextConstants;
 import ru.ilb.workflow.entities.ActivityInstance;
 import ru.ilb.workflow.entities.ProcessInstance;
 import ru.ilb.workflow.entities.ProcessInstanceFactory;
+import ru.ilb.workflow.salepoint.SalepointProvider;
 
 public class StartProcessImpl implements StartProcess {
 
@@ -34,18 +37,28 @@ public class StartProcessImpl implements StartProcess {
 
     private final CallContextFactory callContextFactory;
 
+
+    private final Supplier<SessionData> sessionHandleSupplier;
+
+    private final SalepointProvider salepointProvider;
+
     private final URI resourceUri;
 
-    public StartProcessImpl(ProcessInstanceFactory processInstanceFactory, CallContextFactory callContextFactory, URI resourceUri) {
+    public StartProcessImpl(ProcessInstanceFactory processInstanceFactory, CallContextFactory callContextFactory, Supplier<SessionData> sessionHandleSupplier, SalepointProvider salepointProvider, URI resourceUri) {
         this.processInstanceFactory = processInstanceFactory;
-        this.resourceUri = resourceUri;
         this.callContextFactory = callContextFactory;
+        this.sessionHandleSupplier = sessionHandleSupplier;
+        this.salepointProvider = salepointProvider;
+        this.resourceUri = resourceUri;
     }
+
+
 
     @Override
     @Transactional
     public Response startProcess(String x_remote_user, String packageId, String versionId, String processDefinitionId, URI contextUrl) {
         Map<String, Object> contextData = new HashMap<>();
+        contextData.put("salepointUid", salepointProvider.getSalepointUid(sessionHandleSupplier.get().getAuthorisedUser()));
         if (contextUrl != null) {
             contextData.put(ContextConstants.CONTEXTURL_VARIABLE, contextUrl.toString());
             CallContext parentContext = callContextFactory.getCallContext(contextUrl);

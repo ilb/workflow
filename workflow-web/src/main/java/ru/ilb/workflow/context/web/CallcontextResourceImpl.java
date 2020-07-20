@@ -30,6 +30,7 @@ import ru.ilb.workflow.api.CallcontextResource;
 import ru.ilb.workflow.api.StartProcess;
 import ru.ilb.workflow.core.SessionData;
 import ru.ilb.workflow.entities.ProcessInstanceFactory;
+import ru.ilb.workflow.salepoint.SalepointProvider;
 
 @Named
 @Path("callcontext")
@@ -42,12 +43,19 @@ public class CallcontextResourceImpl implements CallcontextResource {
 
     private final CallContextFactory callContextFactory;
 
+    private final Supplier<SessionData> sessionHandleSupplier;
+
+    private final SalepointProvider salepointProvider;
+
     @Inject
-    public CallcontextResourceImpl(ApplicationContext applicationContext, ProcessInstanceFactory processInstanceFactory, CallContextFactory callContextFactory) {
+    public CallcontextResourceImpl(ApplicationContext applicationContext, ProcessInstanceFactory processInstanceFactory, CallContextFactory callContextFactory, Supplier<SessionData> sessionHandleSupplier, SalepointProvider salepointProvider) {
         this.applicationContext = applicationContext;
         this.processInstanceFactory = processInstanceFactory;
         this.callContextFactory = callContextFactory;
+        this.sessionHandleSupplier = sessionHandleSupplier;
+        this.salepointProvider = salepointProvider;
     }
+
 
     @Context
     public void setResourceContext(ResourceContext resourceContext) {
@@ -66,7 +74,7 @@ public class CallcontextResourceImpl implements CallcontextResource {
 
     @Override
     public StartProcess getStartProcess() {
-        return initResource(new StartProcessImpl(processInstanceFactory, callContextFactory, messageContext.getUriInfo().getAbsolutePath()));
+        return initResource(new StartProcessImpl(processInstanceFactory, callContextFactory, sessionHandleSupplier,salepointProvider, messageContext.getUriInfo().getAbsolutePath()));
     }
 
     @Override

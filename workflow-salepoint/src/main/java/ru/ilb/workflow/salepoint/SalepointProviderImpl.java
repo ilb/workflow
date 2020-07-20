@@ -37,9 +37,9 @@ public class SalepointProviderImpl implements SalepointProvider {
 
     URIAccessorFactory uriAccessorFactory = new URIAccessorFactory();
 
-    private final URI serviceURITemplate;
+    private final String serviceURITemplate;
 
-    public SalepointProviderImpl(URI serviceURITemplate) {
+    public SalepointProviderImpl(String serviceURITemplate) {
         this.serviceURITemplate = serviceURITemplate;
     }
 
@@ -47,24 +47,23 @@ public class SalepointProviderImpl implements SalepointProvider {
         this.serviceURITemplate = null;
     }
 
-    private static URI getLdapUri() {
+    private static String getLdapUri() {
         try {
-            return URI.create((String) new javax.naming.InitialContext().lookup("ru.bystrobank.apps.ldapadminko.ws"));
+            return (String) new javax.naming.InitialContext().lookup("ru.bystrobank.apps.ldapadminko.ws");
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
     }
 
     private URI getServiceURI(String authorisedUser) {
-        URI serviceURI = serviceURITemplate;
+        String serviceURI = serviceURITemplate;
         if (serviceURI == null) {
-            serviceURI = getLdapUri().resolve("getSalepointByUser.php?uid-0=${uid}");
+            serviceURI = getLdapUri() + "/getSalepointByUser.php?uid-0=${uid}";
         }
         Map valuesMap = new HashMap();
         valuesMap.put("uid", authorisedUser);
         StringSubstitutor sub = new StringSubstitutor(valuesMap);
-        serviceURI = URI.create(sub.replace(serviceURI.toString()));
-        return serviceURI;
+        return URI.create(sub.replace(serviceURI));
     }
 
     @Override

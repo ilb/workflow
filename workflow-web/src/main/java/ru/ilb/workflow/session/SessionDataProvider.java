@@ -45,10 +45,11 @@ public class SessionDataProvider implements ContainerRequestFilter, Supplier<Ses
 
         String userName = requestContext.getSecurityContext().getUserPrincipal().getName();
         String xremoteUserName = requestContext.getHeaderString("X-Remote-User");
-        MultivaluedMap<String, String> queryParams = requestContext.getUriInfo().getQueryParameters();
-        if (xremoteUserName == null) {
-            xremoteUserName = queryParams.getFirst("x-remote-user");
-        }
+// UNSAFE
+//        MultivaluedMap<String, String> queryParams = requestContext.getUriInfo().getQueryParameters();
+//        if (xremoteUserName == null) {
+//            xremoteUserName = queryParams.getFirst("x-remote-user");
+//        }
         sd.setAuthorisedUser(xremoteUserName != null ? xremoteUserName : userName);
     }
 
