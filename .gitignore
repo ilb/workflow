@@ -7,3 +7,5 @@ workflow-shark/target/
 /workflow-web/target/
 /workflow-web/bower_components/
 /workflow-js/.next
+/workflow-salepoint/nbproject/
+/workflow-salepoint/target/
