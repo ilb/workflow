@@ -19,6 +19,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.naming.NamingException;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.callcontext.entities.CallContext;
 import ru.ilb.callcontext.entities.CallContextFactory;
@@ -74,9 +75,27 @@ public class ActivityContextImpl implements ActivityContext {
         callContext.setCallbackUri(resourceUri.resolve("activityCallback?callId=" + callId + "&callerId=" + callerId));
 
         // FIXME HARDCODE, use code from ActivityFormResourceImpl.getActivityDossier to build dossier link
-        callContext.setLink("dossier", URI.create("https://devel.net.ilb.ru/workflow-web/web/v2/dossiers/" + processInstanceId + "/correspondence/correspondence/register.json"));
+        callContext.setLink("dossier", URI.create(getWorkflowUri()+"/v2/dossiers/" + processInstanceId + "/correspondence/correspondence/register.json"));
+        callContext.setLink("organization", URI.create(getOrganizationsUri()+"/data/2f27ec16-33d5-44e2-b939-22da11d1cee5.json"));
+
         String json = callContext.getContextJson();
         return json;
     }
 
+    private static String getWorkflowUri() {
+        try {
+            return (String) new javax.naming.InitialContext().lookup("ru.bystrobank.apps.workflow.ws");
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+
+    private static String getOrganizationsUri() {
+        try {
+            return (String) new javax.naming.InitialContext().lookup("ru.bystrobank.apps.organizations.ws");
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 }

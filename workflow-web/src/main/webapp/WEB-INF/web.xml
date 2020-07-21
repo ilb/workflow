@@ -121,6 +121,11 @@
         <resource-env-ref-type>javax.jms.Queue</resource-env-ref-type>
     </resource-env-ref>
     <resource-env-ref>
+        <description>Сервисы реквизитов организаций</description>
+        <resource-env-ref-name>ru.bystrobank.apps.organizations.ws</resource-env-ref-name>
+        <resource-env-ref-type>javax.jms.Queue</resource-env-ref-type>
+    </resource-env-ref>
+    <resource-env-ref>
         <description>Сервисы LDAP</description>
         <resource-env-ref-name>ru.bystrobank.apps.ldapadminko.ws</resource-env-ref-name>
         <resource-env-ref-type>javax.jms.Queue</resource-env-ref-type>

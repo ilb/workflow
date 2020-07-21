@@ -58,7 +58,10 @@ public class StartProcessImpl implements StartProcess {
     @Transactional
     public Response startProcess(String x_remote_user, String packageId, String versionId, String processDefinitionId, URI contextUrl) {
         Map<String, Object> contextData = new HashMap<>();
+        //TODO read context to process formal parameters!!!
         contextData.put("salepointUid", salepointProvider.getSalepointUid(sessionHandleSupplier.get().getAuthorisedUser()));
+        // FIXME HARDCODE
+        contextData.put("organizationUid","2f27ec16-33d5-44e2-b939-22da11d1cee5");
         if (contextUrl != null) {
             contextData.put(ContextConstants.CONTEXTURL_VARIABLE, contextUrl.toString());
             CallContext parentContext = callContextFactory.getCallContext(contextUrl);
