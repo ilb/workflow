@@ -69,13 +69,7 @@ public class SalepointProviderImpl implements SalepointProvider {
     @Override
     public String getSalepointUid(String authorisedUser) {
         URIAccessor uriAccessor = uriAccessorFactory.getURIAccessor(getServiceURI(authorisedUser));
-        byte[] content;
-        try {
-            content = uriAccessor.getContent();
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
-
+        byte[] content = uriAccessor.getContent();
         List<String> salepoints = getSalepoints(new String(content));
         return salepoints.stream().findFirst().orElse(null);
     }
@@ -85,7 +79,7 @@ public class SalepointProviderImpl implements SalepointProvider {
         Object salepointNode = apply.get("salepoint");
         if (!(salepointNode instanceof List)) {
             salepointNode = Arrays.asList(salepointNode);
-        };
+        }
         List<Map<String, String>> salepointList = (List<Map<String, String>>) salepointNode;
 
         return salepointList.stream().map(sp -> sp.get("name")).collect(Collectors.toList());
