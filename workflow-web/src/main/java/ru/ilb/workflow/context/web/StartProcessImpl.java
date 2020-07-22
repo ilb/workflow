@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.callcontext.entities.CallContext;
 import ru.ilb.callcontext.entities.CallContextFactory;
 import ru.ilb.workflow.api.StartProcess;
+import ru.ilb.workflow.context.InitialProcessContextProvider;
 import ru.ilb.workflow.core.SessionData;
 import ru.ilb.workflow.core.context.ContextConstants;
 import ru.ilb.workflow.entities.ActivityInstance;
@@ -39,28 +40,22 @@ public class StartProcessImpl implements StartProcess {
 
     private final Supplier<SessionData> sessionHandleSupplier;
 
-    private final SalepointProvider salepointProvider;
+    private final InitialProcessContextProvider initialProcessContextProvider;
 
     private final URI resourceUri;
 
-    public StartProcessImpl(ProcessInstanceFactory processInstanceFactory, CallContextFactory callContextFactory, Supplier<SessionData> sessionHandleSupplier, SalepointProvider salepointProvider, URI resourceUri) {
+    public StartProcessImpl(ProcessInstanceFactory processInstanceFactory, CallContextFactory callContextFactory, Supplier<SessionData> sessionHandleSupplier, InitialProcessContextProvider initialProcessContextProvider, URI resourceUri) {
         this.processInstanceFactory = processInstanceFactory;
         this.callContextFactory = callContextFactory;
         this.sessionHandleSupplier = sessionHandleSupplier;
-        this.salepointProvider = salepointProvider;
+        this.initialProcessContextProvider = initialProcessContextProvider;
         this.resourceUri = resourceUri;
     }
 
     @Override
     @Transactional
     public Response startProcess(String x_remote_user, String packageId, String versionId, String processDefinitionId, URI contextUrl) {
-        Map<String, Object> contextData = new HashMap<>();
-        //TODO read context to process formal parameters!!!
-        String salepointUid = salepointProvider.getSalepointUid(sessionHandleSupplier.get().getAuthorisedUser());
-        contextData.put("salepointUid", salepointUid);
-        // FIXME HARDCODE
-        String organizationUid = salepointUid.startsWith("ru.bystrobank.sales.moscow") ? "8ca14c37-2080-49f4-~c-ab6841abad8c" : "2f27ec16-33d5-44e2-b939-22da11d1cee5";
-        contextData.put("organizationUid", organizationUid);
+        Map<String, Object> contextData = initialProcessContextProvider.getContextData();
         if (contextUrl != null) {
             contextData.put(ContextConstants.CONTEXTURL_VARIABLE, contextUrl.toString());
             CallContext parentContext = callContextFactory.getCallContext(contextUrl);

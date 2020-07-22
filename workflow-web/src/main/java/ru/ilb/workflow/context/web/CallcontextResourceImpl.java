@@ -28,6 +28,7 @@ import ru.ilb.workflow.api.ActivityCallback;
 import ru.ilb.workflow.api.ActivityContext;
 import ru.ilb.workflow.api.CallcontextResource;
 import ru.ilb.workflow.api.StartProcess;
+import ru.ilb.workflow.context.InitialProcessContextProvider;
 import ru.ilb.workflow.core.SessionData;
 import ru.ilb.workflow.entities.ProcessInstanceFactory;
 import ru.ilb.workflow.salepoint.SalepointProvider;
@@ -45,17 +46,16 @@ public class CallcontextResourceImpl implements CallcontextResource {
 
     private final Supplier<SessionData> sessionHandleSupplier;
 
-    private final SalepointProvider salepointProvider;
+    private final InitialProcessContextProvider initialProcessContextProvider;
 
     @Inject
-    public CallcontextResourceImpl(ApplicationContext applicationContext, ProcessInstanceFactory processInstanceFactory, CallContextFactory callContextFactory, Supplier<SessionData> sessionHandleSupplier, SalepointProvider salepointProvider) {
+    public CallcontextResourceImpl(ApplicationContext applicationContext, ProcessInstanceFactory processInstanceFactory, CallContextFactory callContextFactory, Supplier<SessionData> sessionHandleSupplier, InitialProcessContextProvider initialProcessContextProvider) {
         this.applicationContext = applicationContext;
         this.processInstanceFactory = processInstanceFactory;
         this.callContextFactory = callContextFactory;
         this.sessionHandleSupplier = sessionHandleSupplier;
-        this.salepointProvider = salepointProvider;
+        this.initialProcessContextProvider = initialProcessContextProvider;
     }
-
 
     @Context
     public void setResourceContext(ResourceContext resourceContext) {
@@ -74,7 +74,7 @@ public class CallcontextResourceImpl implements CallcontextResource {
 
     @Override
     public StartProcess getStartProcess() {
-        return initResource(new StartProcessImpl(processInstanceFactory, callContextFactory, sessionHandleSupplier,salepointProvider, messageContext.getUriInfo().getAbsolutePath()));
+        return initResource(new StartProcessImpl(processInstanceFactory, callContextFactory, sessionHandleSupplier, initialProcessContextProvider, messageContext.getUriInfo().getAbsolutePath()));
     }
 
     @Override

@@ -15,6 +15,7 @@
         <module>workflow-core</module>
         <module>workflow-shark-webclient</module>
         <module>workflow-salepoint</module>
+        <module>workflow-context</module>
     </modules>
     <name>workflow</name>
     <properties>
