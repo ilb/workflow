@@ -37,7 +37,6 @@ public class StartProcessImpl implements StartProcess {
 
     private final CallContextFactory callContextFactory;
 
-
     private final Supplier<SessionData> sessionHandleSupplier;
 
     private final SalepointProvider salepointProvider;
@@ -52,16 +51,16 @@ public class StartProcessImpl implements StartProcess {
         this.resourceUri = resourceUri;
     }
 
-
-
     @Override
     @Transactional
     public Response startProcess(String x_remote_user, String packageId, String versionId, String processDefinitionId, URI contextUrl) {
         Map<String, Object> contextData = new HashMap<>();
         //TODO read context to process formal parameters!!!
-        contextData.put("salepointUid", salepointProvider.getSalepointUid(sessionHandleSupplier.get().getAuthorisedUser()));
+        String salepointUid = salepointProvider.getSalepointUid(sessionHandleSupplier.get().getAuthorisedUser());
+        contextData.put("salepointUid", salepointUid);
         // FIXME HARDCODE
-        contextData.put("organizationUid","2f27ec16-33d5-44e2-b939-22da11d1cee5");
+        String organizationUid = salepointUid.startsWith("ru.bystrobank.sales.moscow") ? "8ca14c37-2080-49f4-~c-ab6841abad8c" : "2f27ec16-33d5-44e2-b939-22da11d1cee5";
+        contextData.put("organizationUid", organizationUid);
         if (contextUrl != null) {
             contextData.put(ContextConstants.CONTEXTURL_VARIABLE, contextUrl.toString());
             CallContext parentContext = callContextFactory.getCallContext(contextUrl);

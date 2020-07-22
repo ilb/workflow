@@ -75,9 +75,11 @@ public class ActivityContextImpl implements ActivityContext {
         callContext.setCallbackUri(resourceUri.resolve("activityCallback?callId=" + callId + "&callerId=" + callerId));
 
         // FIXME HARDCODE, use code from ActivityFormResourceImpl.getActivityDossier to build dossier link
-        callContext.setLink("dossier", URI.create(getWorkflowUri()+"/v2/dossiers/" + processInstanceId + "/correspondence/correspondence/register.json"));
-        callContext.setLink("organization", URI.create(getOrganizationsUri()+"/data/2f27ec16-33d5-44e2-b939-22da11d1cee5.json"));
-
+        callContext.setLink("dossier", URI.create(getWorkflowUri() + "/v2/dossiers/" + processInstanceId + "/correspondence/correspondence/register.json"));
+        if (serializedActivityContext.containsKey("organizationUid")) {
+            String organizationUid = (String) serializedActivityContext.get("organizationUid");
+            callContext.setLink("organization", URI.create(getOrganizationsUri() + "/data/" + organizationUid + ".json"));
+        }
         String json = callContext.getContextJson();
         return json;
     }
@@ -89,7 +91,6 @@ public class ActivityContextImpl implements ActivityContext {
             throw new RuntimeException(ex);
         }
     }
-
 
     private static String getOrganizationsUri() {
         try {
