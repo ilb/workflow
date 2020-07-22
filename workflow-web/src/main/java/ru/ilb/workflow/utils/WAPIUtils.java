@@ -19,7 +19,9 @@ package ru.ilb.workflow.utils;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -67,9 +69,9 @@ public class WAPIUtils {
             String contextUrlDecode = URLDecoder.decode(contextUrl, "UTF-8");
             processId = findProcessInstanceCtx(shandle, packageId, versionId, processDefinitionId, callbackUrl, contextUrlDecode);
             if (processId == null) {
-                JsonMapObject processData = new JsonMapObject();
-                processData.setProperty(ContextConstants.CONTEXTURL_VARIABLE, contextUrlDecode);
-                processData.setProperty(ContextConstants.CALLBACKURL_VARIABLE, URLDecoder.decode(callbackUrl, "UTF-8"));
+                Map<String,Object> processData = new HashMap<>();
+                processData.put(ContextConstants.CONTEXTURL_VARIABLE, contextUrlDecode);
+                processData.put(ContextConstants.CALLBACKURL_VARIABLE, URLDecoder.decode(callbackUrl, "UTF-8"));
                 processId = createProcessInstance(shandle, packageId, versionId, processDefinitionId, processData);
             }
         } catch (UnsupportedEncodingException ex) {
@@ -100,7 +102,7 @@ public class WAPIUtils {
         }
     }
 
-    public static String createProcessInstance(WMSessionHandle shandle, String packageId, String versionId, String processDefinitionId, JsonMapObject processData) {
+    public static String createProcessInstance(WMSessionHandle shandle, String packageId, String versionId, String processDefinitionId, Map<String,Object> processData) {
         Objects.requireNonNull(processDefinitionId, "processDefinitionId required");
         try {
 
@@ -112,8 +114,8 @@ public class WAPIUtils {
 
             String processInstanceId = wapi.createProcessInstance(shandle, wmProcessDefinition[0].getName(), null);
             // update variables if set
-            if (processData != null && !processData.asMap().isEmpty()) {
-                SharkUtils.updateProcessInfo(shandle, processInstanceId, processData.asMap());
+            if (processData != null && !processData.isEmpty()) {
+                SharkUtils.updateProcessInfo(shandle, processInstanceId, processData);
             }
             wapi.startProcess(shandle, processInstanceId);
             return processInstanceId;

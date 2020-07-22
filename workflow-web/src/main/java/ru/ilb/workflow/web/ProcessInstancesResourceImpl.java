@@ -18,6 +18,7 @@ package ru.ilb.workflow.web;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
@@ -39,6 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.workflow.api.CreateProcessInstanceCtx;
 import ru.ilb.workflow.api.ProcessInstanceResource;
 import ru.ilb.workflow.api.ProcessInstancesResource;
+import ru.ilb.workflow.context.InitialProcessContextProvider;
 import ru.ilb.workflow.core.AcceptedStatus;
 import ru.ilb.workflow.mappers.ActivityInstanceMapper;
 import ru.ilb.workflow.mappers.ProcessInstanceMapper;
@@ -63,6 +65,9 @@ public class ProcessInstancesResourceImpl extends JaxRsContextResource implement
     private ProcessInstanceMapper processInstanceMapper;
     @Inject
     private ActivityInstanceMapper activityInstanceMapper;
+
+    @Inject
+    private InitialProcessContextProvider initialProcessContextProvider;
 
     @Override
     public ProcessInstanceResource getProcessInstanceResource(String x_remote_user, String processInstanceId) {
@@ -95,7 +100,9 @@ public class ProcessInstancesResourceImpl extends JaxRsContextResource implement
     @Transactional
     public String createProcessInstance(String x_remote_user, String packageId, String versionId, String processDefinitionId, JsonMapObject jsonmapobject) {
         WMSessionHandle shandle = sessionDataProvider.get().getSessionHandle();
-        return WAPIUtils.createProcessInstance(shandle, packageId, versionId, processDefinitionId, jsonmapobject);
+        Map<String, Object> contextData = jsonmapobject.asMap();
+        contextData.putAll(initialProcessContextProvider.getContextData());
+        return WAPIUtils.createProcessInstance(shandle, packageId, versionId, processDefinitionId, contextData);
     }
 
     @Override
