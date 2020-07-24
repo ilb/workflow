@@ -84,7 +84,9 @@ public class SalepointProviderImpl implements SalepointProvider {
         List<Map<String, String>> salepointList = (List<Map<String, String>>) salepointNode;
 
         if (salepointList != null) {
-            return salepointList.stream().map(sp -> sp.get("name")).collect(Collectors.toList());
+            return salepointList.stream()
+                    .filter((sp -> sp != null))
+                    .map(sp -> sp.get("name")).collect(Collectors.toList());
         }
         return Collections.EMPTY_LIST;
     }
