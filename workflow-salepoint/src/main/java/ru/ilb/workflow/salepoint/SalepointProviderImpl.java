@@ -18,6 +18,7 @@ package ru.ilb.workflow.salepoint;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,7 +83,10 @@ public class SalepointProviderImpl implements SalepointProvider {
         }
         List<Map<String, String>> salepointList = (List<Map<String, String>>) salepointNode;
 
-        return salepointList.stream().map(sp -> sp.get("name")).collect(Collectors.toList());
+        if (salepointList != null) {
+            return salepointList.stream().map(sp -> sp.get("name")).collect(Collectors.toList());
+        }
+        return Collections.EMPTY_LIST;
     }
 
 }
