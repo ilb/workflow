@@ -36,14 +36,16 @@ public class InitialProcessContextProviderImpl implements InitialProcessContextP
 
     @Override
     public Map<String, Object> getContextData() {
-             Map<String, Object> contextData = new HashMap<>();
+        Map<String, Object> contextData = new HashMap<>();
         //TODO read context to process formal parameters!!!
         String salepointUid = salepointProvider.getSalepointUid(sessionHandleSupplier.get().getAuthorisedUser());
-        contextData.put("salepointUid", salepointUid);
-        // FIXME HARDCODE
-        String organizationUid = salepointUid.startsWith("ru.bystrobank.sales.moscow") ? "8ca14c37-2080-49f4-~c-ab6841abad8c" : "2f27ec16-33d5-44e2-b939-22da11d1cee5";
-        contextData.put("organizationUid", organizationUid);
+        if (salepointUid != null) {
+            contextData.put("salepointUid", salepointUid);
+            // FIXME HARDCODE
+            String organizationUid = salepointUid.startsWith("ru.bystrobank.sales.moscow") ? "8ca14c37-2080-49f4-~c-ab6841abad8c" : "2f27ec16-33d5-44e2-b939-22da11d1cee5";
+            contextData.put("organizationUid", organizationUid);
+        }
         return contextData;
-   }
+    }
 
 }
