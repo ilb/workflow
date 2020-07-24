@@ -3,10 +3,13 @@
 workflow-engine/target/
 workflow-shark/target/
 /workflow/target/
-.svn
 /workflow-web/target/
 /workflow-web/bower_components/
 /workflow-js/.next
 /workflow-salepoint/nbproject/
 /workflow-salepoint/target/
 /workflow-context/target/
+/workflow-context-api/target/
+/workflow-core/target/
+/workflow-entities/target/
+/workflow-shark-webclient/target/
