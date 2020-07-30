@@ -219,9 +219,9 @@
             <bean class="ru.ilb.common.jaxrs.interceptors.EncodingInInterceptor"/>
 
         </jaxrs:providers>
-        <jaxrs:extensionMappings>
-            <entry key="xml" value="application/xml;charset=UTF-8"/>
-            <entry key="json" value="application/json;charset=UTF-8"/>
+        <jaxrs:extensionMappings>1
+            <entry key="xml" value="application/xml"/>
+            <entry key="json" value="application/json"/>
             <entry key="csv" value="text/csv"/>
             <entry key="jpg" value="image/jpeg"/>
             <entry key="txt" value="text/plain"/>
