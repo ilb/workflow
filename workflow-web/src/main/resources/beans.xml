@@ -60,7 +60,7 @@
     <bean id="springApplicationContext" class="ru.ilb.workflow.utils.SpringApplicationContext"/>
 
     <!-- configure atomikos. replaced by spring -->
-<!--    <tx:jta-transaction-manager />
+    <!--    <tx:jta-transaction-manager />
     <tx:annotation-driven mode="aspectj"/>
     <bean id="AtomikosTransactionManager"
           class="com.atomikos.icatch.jta.UserTransactionManager"
@@ -152,6 +152,7 @@
         <property name="prettyPrint" value="true"/>
     </bean>
 
+    <bean id="containersResource" class="ru.ilb.containeraccessor.components.ContainersResourceImpl"/>
     <bean id="authorizationHandler" class="ru.ilb.workflow.session.AuthorizationHandler"/>
     <bean id="sessionDataProvider" class="ru.ilb.workflow.session.SessionDataProvider"/>
     <bean id="searchContextProvider" class="org.apache.cxf.jaxrs.ext.search.SearchContextProvider"/>
@@ -164,6 +165,9 @@
         <jaxrs:properties>
             <entry key="search.lax.property.match" value="true" />
         </jaxrs:properties>
+        <jaxrs:serviceBeans>
+            <ref bean="containersResource" />
+        </jaxrs:serviceBeans>
         <jaxrs:providers>
             <!--<ref bean="jaxbContextResolver"/>-->
             <ref bean="authorizationHandler"/>
@@ -199,6 +203,9 @@
         <jaxrs:properties>
             <entry key="search.lax.property.match" value="true" />
         </jaxrs:properties>
+        <jaxrs:serviceBeans>
+            <ref bean="containersResource" />
+        </jaxrs:serviceBeans>
         <jaxrs:providers>
             <ref bean="jaxbContextResolver"/>
             <ref bean="authorizationHandler"/>
