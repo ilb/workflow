@@ -186,7 +186,8 @@
             <entry key="xml" value="application/xml;charset=UTF-8"/>
             <entry key="json" value="application/json;charset=UTF-8"/>
             <entry key="csv" value="text/csv"/>
-            <entry key="jpg" value="image/jpeg"/>
+            <!-- not works with containeraccessor -->
+            <!--<entry key="jpg" value="image/jpeg"/>-->
             <entry key="txt" value="text/plain"/>
             <entry key="ics" value="text/calendar"/>
         </jaxrs:extensionMappings>
@@ -223,7 +224,8 @@
             <entry key="xml" value="application/xml"/>
             <entry key="json" value="application/json"/>
             <entry key="csv" value="text/csv"/>
-            <entry key="jpg" value="image/jpeg"/>
+            <!-- not works with containeraccessor -->
+            <!--<entry key="jpg" value="image/jpeg"/>-->
             <entry key="txt" value="text/plain"/>
         </jaxrs:extensionMappings>
         <jaxrs:features>
