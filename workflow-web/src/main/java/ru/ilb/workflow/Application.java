@@ -93,10 +93,10 @@ public class Application {
         return new LocalValidatorFactoryBean();
     }
 
-    @Bean
-    public ContainersResource containersResource(){
-        return new ContainersResourceImpl();
-    }
+//    @Bean
+//    public ContainersResource containersResource(){
+//        return new ContainersResourceImpl();
+//    }
 // only works with auto-registered cxf jax-rs server
 //    @Bean
 //    public LoggingFeature loggingFeature() {
