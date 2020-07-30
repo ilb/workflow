@@ -27,6 +27,8 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import ru.ilb.containeraccessor.components.ContainersResource;
+import ru.ilb.containeraccessor.components.ContainersResourceImpl;
 import ru.ilb.filedossier.context.DossierContextBuilder;
 import ru.ilb.filedossier.context.DossierContextImpl;
 import ru.ilb.filedossier.ddl.DossierDefinitionRepository;
@@ -91,6 +93,10 @@ public class Application {
         return new LocalValidatorFactoryBean();
     }
 
+    @Bean
+    public ContainersResource containersResource(){
+        return new ContainersResourceImpl();
+    }
 // only works with auto-registered cxf jax-rs server
 //    @Bean
 //    public LoggingFeature loggingFeature() {
