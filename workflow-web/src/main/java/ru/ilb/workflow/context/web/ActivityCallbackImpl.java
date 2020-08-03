@@ -17,6 +17,7 @@ package ru.ilb.workflow.context.web;
 
 import java.net.URI;
 import java.util.Optional;
+import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +39,13 @@ public class ActivityCallbackImpl implements ActivityCallback {
      * Resource uri for relative links
      */
     private final URI resourceUri;
+
+    private URI worklistUri;
+
+    @Resource(mappedName = "ru.bystrobank.apps.workflow.worklisturl")
+    public void setWorklistUri(String value) {
+        this.worklistUri = URI.create(value);
+    }
 
     @Inject
     public ActivityCallbackImpl(ProcessInstanceFactory processInstanceFactory, CallContextFactory callContextFactory, URI resourceUri) {
@@ -79,7 +87,7 @@ public class ActivityCallbackImpl implements ActivityCallback {
 
                 }
             }
-            return Response.ok("finished " + processInstance.getId()).build();
+            return Response.seeOther(worklistUri).build();
         }
 
     }
