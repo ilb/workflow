@@ -17,8 +17,8 @@ package ru.ilb.workflow.context.web;
 
 import java.net.URI;
 import java.util.Optional;
-import javax.annotation.Resource;
 import javax.inject.Inject;
+import javax.naming.NamingException;
 import javax.ws.rs.core.Response;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.callcontext.entities.CallContext;
@@ -39,13 +39,6 @@ public class ActivityCallbackImpl implements ActivityCallback {
      * Resource uri for relative links
      */
     private final URI resourceUri;
-
-    private URI worklistUri;
-
-    @Resource(mappedName = "ru.bystrobank.apps.workflow.worklisturl")
-    public void setWorklistUri(String value) {
-        this.worklistUri = URI.create(value);
-    }
 
     @Inject
     public ActivityCallbackImpl(ProcessInstanceFactory processInstanceFactory, CallContextFactory callContextFactory, URI resourceUri) {
@@ -87,8 +80,16 @@ public class ActivityCallbackImpl implements ActivityCallback {
 
                 }
             }
-            return Response.seeOther(worklistUri).build();
+            return Response.seeOther(URI.create(getWorklistUri())).build();
         }
 
+    }
+
+    private static String getWorklistUri() {
+        try {
+            return (String) new javax.naming.InitialContext().lookup("ru.bystrobank.apps.workflow.worklisturl");
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }
