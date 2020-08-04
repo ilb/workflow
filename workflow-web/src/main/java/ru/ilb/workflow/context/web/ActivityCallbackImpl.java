@@ -87,7 +87,7 @@ public class ActivityCallbackImpl implements ActivityCallback {
 
     private static String getWorklistUri() {
         try {
-            return (String) new javax.naming.InitialContext().lookup("ru.bystrobank.apps.workflow.worklisturl");
+            return ((String) new javax.naming.InitialContext().lookup("ru.bystrobank.apps.workflowfront.ws")) + "/workList";
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }

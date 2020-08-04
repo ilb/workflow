@@ -73,12 +73,6 @@
         <env-entry-value>${ru.bystrobank.apps.workflowfront.ws}/api/activityApi?processInstanceId=${processInstanceId}&amp;activityInstanceId=${activityInstanceId}&amp;activityDefinitionShortId=${activityDefinitionShortId}</env-entry-value>
     </env-entry>
     <env-entry>
-        <description>URL списка процессов</description>
-        <env-entry-name>ru.bystrobank.apps.workflow.worklisturl</env-entry-name>
-        <env-entry-type>java.lang.String</env-entry-type>
-        <env-entry-value>${ru.bystrobank.apps.workflowfront.ws}/workList</env-entry-value>
-    </env-entry>
-    <env-entry>
         <description>Группа, дающая доступ к процессу независимо от офиса</description>
         <env-entry-name>allOfficesGroup</env-entry-name>
         <env-entry-type>java.lang.String</env-entry-type>
