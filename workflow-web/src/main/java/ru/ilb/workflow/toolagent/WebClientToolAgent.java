@@ -54,8 +54,10 @@ public class WebClientToolAgent extends AbstractToolAgent {
 
             cus.info(shandle, "procInstId=" + procInstId + " assId=" + assId + " appName=" + appName + " appMode=" + appMode + " wpId=" + toolInfo.getWpId() + " actiId=" + toolInfo.getActId() + " url=" + url);
 
-            String[] headers = {"Content-Type: application/json"};
-
+            String[] headers = {
+                "Content-Type: application/json",
+                "X-Remote-User: " + assId.substring(assId.indexOf("#") + 1)
+            };
             WebClient.execute("POST", url, headers, "{}");
             //cus.info(shandle, "appName = " + appName + " appMode = " + appMode + " appInfo=" + appInfo + " toolInfo=" + toolInfo);
 
