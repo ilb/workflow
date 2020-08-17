@@ -16,7 +16,6 @@
  */
 package ru.ilb.workflow.xpil.web;
 
-import ru.ilb.workflow.session.AuthorizationHandler;
 import at.together._2006.xpil1.ActivityInstance;
 import at.together._2006.xpil1.DataInstance;
 import at.together._2006.xpil1.DataInstances;
@@ -35,15 +34,12 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.Callable;
-import java.util.concurrent.locks.ReadWriteLock;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
@@ -94,16 +90,17 @@ import org.enhydra.shark.xpil.XPILWorkflowProcessInstancesDocument;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.collection.api.CollectcasesResource;
 import ru.ilb.common.jaxrs.async.AsyncTaskManager;
-import ru.ilb.workflow.xpil.api.ProcessesResource;
 import ru.ilb.workflow.search.ActivityFilterVisitor;
+import ru.ilb.workflow.session.AuthorizationHandler;
 import ru.ilb.workflow.utils.ContentDisposition;
 import ru.ilb.workflow.utils.ExceptionUtils;
 import ru.ilb.workflow.utils.WAPIUtils;
+import ru.ilb.workflow.utils.WorkflowUtils;
+import ru.ilb.workflow.xpil.api.ProcessesResource;
 import ru.ilb.workflow.xpil.utils.XPILJAXBUtils;
 import ru.ilb.workflow.xpil.utils.XPILJAXBWrapper;
 import ru.ilb.workflow.xpil.utils.XPILUtils;
@@ -189,8 +186,9 @@ public class ProcessesResourceImpl implements ProcessesResource {
             for (WorkflowProcessInstance proc : result.getMainWorkflowProcessInstancesAndSubWorkflowProcessInstances()) {
                 if (proc.getActivityInstances() != null) {
                     for (ActivityInstance act : proc.getActivityInstances().getManualActivityInstancesAndToolActivityInstancesAndBlockActivityInstances()) {
-                        URI uri = processesResourceIntr.getUriBuilder(act, proc, uriInfo).path("processes").path(proc.getId()).path("activities").path(act.getId()).build();
-                        act.getOtherAttributes().put(new QName("http://www.w3.org/1999/xlink", "href", "xlink"), uri.toString());
+                        //URI uri = processesResourceIntr.getUriBuilder(act, proc, uriInfo).path("processes").path(proc.getId()).path("activities").path(act.getId()).build();
+                        String url = WorkflowUtils.getActivityFormUrl(shandle, proc.getDefinitionId(), proc.getId(), act.getDefinitionId(), act.getId());
+                        act.getOtherAttributes().put(new QName("http://www.w3.org/1999/xlink", "href", "xlink"), url);
                     }
                 }
             }
