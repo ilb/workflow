@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN" "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg-flat.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<?xml-stylesheet type="text/xsl" href="/oooxhtml/oooxhtml.xsl"?><html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" type="text/css" href="/oooxhtml/oooxhtml.css"/>
     <style type="text/css">@page {margin-top:2cm;margin-bottom:2cm;margin-left:2cm;margin-right:2cm;}</style>
     <title>Бизнес-процессы</title>
-    <meta name="generator" content="oooxhtml/1.3"/>
+    <meta name="generator" content="oooxhtml/1.4"/>
     <meta name="HeadURL" content="$HeadURL$"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   </head>
@@ -82,6 +81,32 @@
         <a class="anchor" href="#dobavit__peremenn_e">Добавить переменные</a>
       </h3>
       <p>Меню Process -&gt; Workflow variables. Добавить переменную. В свойствах переменной указать<br/>Id - латинский идентификатор, например "<i>decision"</i><br/>Name - заполнить русское имя, например "<i>Решение</i>". Если значения Да/Нет то нужно выбирать тип Boolean.</p>
+      <h2 id="rabota_s_repozitoriem">
+        <a class="anchor" href="#rabota_s_repozitoriem">Работа с репозиторием</a>
+      </h2>
+      <p>Описания бизнес-процессов хранятся в репозитории. Схема работы с репозиторием бизнес-процессов:</p>
+      <ol>
+        <li>
+          <p>Вытянуть/обновить проект xpdlrepository из репозитория</p>
+          <ol>
+            <li>
+              <p>Если проект xpdlrepository еще не вытянут локально, выполнить команду: <span style="font-weight:bold;background-color:#ffff00;">svn co </span><a href="https://svn.ilb.ru/repos/xpdlrepository/trunk/xpdlrepository/"><span style="font-weight:bold;background-color:#ffff00;">https://svn.ilb.ru/repos/xpdlrepository/trunk/xpdlrepository/</span></a>. Данное действие нужно выполнить 1 раз в каталоге с рабочими файлами. В результате будет создан каталог xpdlrepository. </p>
+            </li>
+            <li>
+              <p>Если проект xpdlrepository уже вытянут локально, для обновления проекта (получения изменений других участников) нужно выполнить команду <span style="font-weight:bold;background-color:#ffff00;">svn up</span><b> </b>в каталоге xpdlrepository.</p>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <p>Открыть в программе <a href="https://sourceforge.net/projects/jawe/">Together Workflow Editor</a> процесс для работы, например из каталога xpdlrepository/packages/correspondence.xpdl</p>
+        </li>
+        <li>
+          <p>Внести изменения в процесс</p>
+        </li>
+        <li>
+          <p>Закомитить изменения командой <span style="font-weight:bold;background-color:#ffff00;">svn ci</span>. В поле ввода указать сообщение к изменениям. После комита в репозиторий процесс будет автоматически загружен в машину бизнес-процессов на devel.</p>
+        </li>
+      </ol>
       <h2 id="primer__processov">
         <a class="anchor" href="#primer__processov">Примеры процессов</a>
       </h2>
@@ -98,7 +123,5 @@
         <img alt="Изображение7" style="width:16.722cm;height:22.093cm" src="images/example_New_Employee.jpg"/>
       </p>
     </div>
-    <script type="text/javascript" src="/privilegedAPI/web/scripts/privilegedAPI.js"></script>
-    <script type="text/javascript" src="/oooxhtml/oooxhtml.js"></script>
   </body>
 </html>
