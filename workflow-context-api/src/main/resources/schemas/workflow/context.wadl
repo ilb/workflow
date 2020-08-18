@@ -67,6 +67,28 @@
         </method>
     </resource_type>
 
+    <resource_type id="activityForm">
+        <doc>Форма процесса</doc>
+        <param name="x-remote-user" style="header" type="xsd:string">
+            <doc>remote authenticated user</doc>
+        </param>
+        <method name="GET" id="activityForm">
+            <request>
+                <param name="callId" style="query" type="xsd:string">
+                    <doc>call identificator (equals to activity id)</doc>
+                </param>
+                <param name="callerId" style="query" type="xsd:string">
+                    <doc>caller identificator (equals to process id)</doc>
+                </param>
+            </request>
+            <response status="303">
+                <param name="Location" style="header" type="xsd:string">
+                    <doc>Redirect location activity form location</doc>
+                </param>
+            </response>
+        </method>
+    </resource_type>
+
     <resource_type id="activityCallback">
         <doc>Данные процесса</doc>
         <param name="x-remote-user" style="header" type="xsd:string">
@@ -99,6 +121,7 @@
         <resource path="callcontext">
             <resource path="startProcess" id="startProcess" type="#startProcess"/>
             <resource path="activityContext" id="activityContext" type="#activityContext"/>
+            <resource path="activityForm" id="activityForm" type="#activityForm"/>
             <resource path="activityCallback" id="activityCallback" type="#activityCallback"/>
         </resource>
     </resources>

@@ -26,6 +26,7 @@ import org.springframework.context.ApplicationContext;
 import ru.ilb.callcontext.entities.CallContextFactory;
 import ru.ilb.workflow.api.ActivityCallback;
 import ru.ilb.workflow.api.ActivityContext;
+import ru.ilb.workflow.api.ActivityForm;
 import ru.ilb.workflow.api.CallcontextResource;
 import ru.ilb.workflow.api.StartProcess;
 import ru.ilb.workflow.context.InitialProcessContextProvider;
@@ -85,6 +86,11 @@ public class CallcontextResourceImpl implements CallcontextResource {
     @Override
     public ActivityCallback getActivityCallback() {
         return initResource(new ActivityCallbackImpl(processInstanceFactory, callContextFactory, messageContext.getUriInfo().getAbsolutePath()));
+    }
+
+    @Override
+    public ActivityForm getActivityForm() {
+        return initResource(new ActivityFormImpl(processInstanceFactory));
     }
 
 }
