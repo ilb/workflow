@@ -70,10 +70,10 @@
             <artifactId>atomikos-util</artifactId>
             <version>${atomikos.version}</version>
         </dependency>-->
-        <dependency>
+<!--        <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
