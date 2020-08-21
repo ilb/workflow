@@ -722,6 +722,7 @@
                 </param>
                 <method name="GET" id="getWorkList">
                     <request>
+                        <param name="filter" type="xsd:string" style="query" />
                         <param name="assignment" type="core:acceptedStatus" style="query" default="ACCEPTED_AND_NON_ACCEPTED"/>
                         <param name="limit" type="xsd:int" style="query" default="100"/>
                     </request>

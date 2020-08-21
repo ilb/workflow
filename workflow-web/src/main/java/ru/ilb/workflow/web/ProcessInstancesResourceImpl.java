@@ -21,18 +21,18 @@ import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.ws.rs.Path;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Context;
+import org.apache.cxf.jaxrs.ext.search.SearchBean;
+import org.apache.cxf.jaxrs.ext.search.SearchCondition;
+import org.apache.cxf.jaxrs.ext.search.SearchContext;
 import org.apache.cxf.jaxrs.json.basic.JsonMapObject;
-import static org.apache.tomcat.jni.User.username;
 import org.enhydra.shark.api.client.wfmc.wapi.WAPI;
 import org.enhydra.shark.api.client.wfmc.wapi.WMActivityInstance;
 import org.enhydra.shark.api.client.wfmc.wapi.WMFilter;
-import org.enhydra.shark.api.client.wfmc.wapi.WMProcessDefinition;
 import org.enhydra.shark.api.client.wfmc.wapi.WMProcessInstance;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.enhydra.shark.api.common.ActivityFilterBuilder;
 import org.enhydra.shark.api.common.SharkConstants;
-import org.enhydra.shark.api.internal.toolagent.ToolAgentGeneralException;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -44,10 +44,9 @@ import ru.ilb.workflow.context.InitialProcessContextProvider;
 import ru.ilb.workflow.core.AcceptedStatus;
 import ru.ilb.workflow.mappers.ActivityInstanceMapper;
 import ru.ilb.workflow.mappers.ProcessInstanceMapper;
+import ru.ilb.workflow.search.ActivityFilterVisitor;
 import ru.ilb.workflow.session.AuthorizationHandler;
 import ru.ilb.workflow.session.SessionDataProvider;
-import ru.ilb.workflow.utils.ExceptionUtils;
-import ru.ilb.workflow.utils.SharkUtils;
 import ru.ilb.workflow.utils.WAPIUtils;
 import ru.ilb.workflow.view.ActivityInstance;
 import ru.ilb.workflow.view.ActivityInstances;
@@ -56,6 +55,8 @@ import ru.ilb.workflow.view.ProcessInstances;
 @Path("processInstances")
 @Component
 public class ProcessInstancesResourceImpl extends JaxRsContextResource implements ProcessInstancesResource {
+
+    private SearchContext searchContext;
 
     @Inject
     private SessionDataProvider sessionDataProvider;
@@ -68,6 +69,11 @@ public class ProcessInstancesResourceImpl extends JaxRsContextResource implement
 
     @Inject
     private InitialProcessContextProvider initialProcessContextProvider;
+
+    @Context
+    public void setSearchContext(SearchContext searchContext) {
+        this.searchContext = searchContext;
+    }
 
     @Override
     public ProcessInstanceResource getProcessInstanceResource(String x_remote_user, String processInstanceId) {
@@ -120,25 +126,45 @@ public class ProcessInstancesResourceImpl extends JaxRsContextResource implement
 
     @Override
     @Transactional
-    public ActivityInstances getWorkList(String x_remote_user, AcceptedStatus assignment, Integer limit) {
+    public ActivityInstances getWorkList(String x_remote_user, String filter, AcceptedStatus assignment, Integer limit) {
         try {
             WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
             WMSessionHandle shandle = sessionDataProvider.get().getSessionHandle();
-            ActivityFilterBuilder fb = SharkInterfaceWrapper.getShark().getActivityFilterBuilder();
-            List<WMFilter> filters = new ArrayList<>();
-            filters.add(fb.addStateStartsWith(shandle, SharkConstants.STATEPREFIX_OPEN));
-            if (assignment != null) {
-                filters.add(fb.addHasAssignmentForUser(shandle, sessionDataProvider.getSessionData().getAuthorisedUser(), WAPIUtils.acceptedStatus(assignment.value())));
+            WMFilter wmfilter = null;
+            if (filter == null) {
+                ActivityFilterBuilder fb = SharkInterfaceWrapper.getShark().getActivityFilterBuilder();
+                List<WMFilter> filters = new ArrayList<>();
+                filters.add(fb.addStateStartsWith(shandle, SharkConstants.STATEPREFIX_OPEN));
+                if (assignment != null) {
+                    filters.add(fb.addHasAssignmentForUser(shandle, sessionDataProvider.getSessionData().getAuthorisedUser(), WAPIUtils.acceptedStatus(assignment.value())));
+                }
+                wmfilter = fb.andForArray(shandle, filters.toArray(new WMFilter[filters.size()]));
+                if (limit != null) {
+                    fb.setLimit(shandle, wmfilter, limit);
+                }
+            } else {
+                wmfilter = getWorkListFilter(shandle, filter);
             }
-            WMFilter filter = fb.andForArray(shandle, filters.toArray(new WMFilter[filters.size()]));
-            if (limit != null) {
-                fb.setLimit(shandle, filter, limit);
-            }
-            WMActivityInstance[] entities = wapi.listActivityInstances(shandle, filter, false).getArray();
+            WMActivityInstance[] entities = wapi.listActivityInstances(shandle, wmfilter, false).getArray();
             return activityInstanceMapper.createWrapperFromEntities(Arrays.asList(entities));
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    private WMFilter getWorkListFilter(WMSessionHandle shandle, String filter) throws Exception {
+        ActivityFilterBuilder afb = SharkInterfaceWrapper.getShark().getActivityFilterBuilder();
+        WMFilter f;
+        if (filter != null && !filter.isEmpty()) {
+            SearchCondition<SearchBean> sc = searchContext.getCondition(filter, SearchBean.class);
+            ActivityFilterVisitor<SearchBean> visitor = new ActivityFilterVisitor<>(shandle, AuthorizationHandler.getAuthorisedUser());
+            sc.accept(visitor);
+            f = visitor.getQuery();
+        } else {
+            f = afb.createEmptyFilter(shandle);
+        }
+
+        return f;
     }
 
 }
