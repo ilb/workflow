@@ -88,6 +88,7 @@ public class ActivityInstanceImpl implements ActivityInstance {
         }
         return context;
     }
+
     @Override
     public ProcessContext getSerializedContext() {
         return new SerializedContextAccessor(getContext());
@@ -110,9 +111,36 @@ public class ActivityInstanceImpl implements ActivityInstance {
     }
 
     @Override
+    public boolean changeState(String state) {
+        try {
+            return changeActivityStateInternal(shandle, getDelegate(), state);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
     public boolean complete() {
         try {
-            return changeActivityState(shandle, getDelegate(), SharkConstants.STATE_CLOSED_COMPLETED);
+            return changeActivityStateInternal(shandle, getDelegate(), SharkConstants.STATE_CLOSED_COMPLETED);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
+    public boolean terminate() {
+        try {
+            return changeActivityStateInternal(shandle, getDelegate(), SharkConstants.STATE_CLOSED_TERMINATED);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
+    public boolean abort() {
+        try {
+            return changeActivityStateInternal(shandle, getDelegate(), SharkConstants.STATE_CLOSED_ABORTED);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -123,7 +151,7 @@ public class ActivityInstanceImpl implements ActivityInstance {
         return processInstance;
     }
 
-    private  static Boolean changeActivityState(WMSessionHandle shandle, WMActivityInstance act, String state) throws Exception {
+    private static Boolean changeActivityStateInternal(WMSessionHandle shandle, WMActivityInstance act, String state) throws Exception {
         Boolean changed = false;
         if (state != null) {
             WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();

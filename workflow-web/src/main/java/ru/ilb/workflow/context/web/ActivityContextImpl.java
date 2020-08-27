@@ -72,7 +72,8 @@ public class ActivityContextImpl implements ActivityContext {
         contextData.putAll(serializedActivityContext);
 
         CallContext callContext = callContextFactory.createCallContext(null, contextData);
-        callContext.setCallbackUri(resourceUri.resolve("activityCallback?callId=" + callId + "&callerId=" + callerId));
+        callContext.setCallbackUri(resourceUri.resolve("activityCallback?callId=" + callId + "&callerId=" + callerId + "&state=closed.completed"));
+        callContext.setLink("rollback", resourceUri.resolve("activityCallback?callId=" + callId + "&callerId=" + callerId + "&state=closed.terminated"));
 
         // FIXME HARDCODE, use code from ActivityFormResourceImpl.getActivityDossier to build dossier link
         callContext.setLink("dossier", URI.create(getWorkflowUri() + "/v2/dossiers/" + processInstanceId + "/correspondence/correspondence/register.json"));

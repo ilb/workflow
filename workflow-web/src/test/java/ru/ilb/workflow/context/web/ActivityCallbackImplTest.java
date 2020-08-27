@@ -101,7 +101,7 @@ public class ActivityCallbackImplTest {
         String expCallbackUrl = "http://localhost/workflow/web/callcontext/activityCallback?callId=" + callId + "&callerId=" + callerId;
         //String expResult = "{\"link\":[{\"rel\":\"callback\",\"href\":\"" + expCallbackUrl + "\"}],\"key\":\"value\",\"k\":1}";
         //String expResult = "";
-        Response result = instance.activityCallback(x_remote_user, callId, callerId, responseUri);
+        Response result = instance.activityCallback(x_remote_user, callId, callerId, responseUri, "closed.completed");
     }
 
 }

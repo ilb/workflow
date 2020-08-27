@@ -49,7 +49,7 @@ public class ActivityCallbackImpl implements ActivityCallback {
 
     @Override
     @Transactional
-    public Response activityCallback(String x_remote_user, String callId, String callerId, URI responseUrl) {
+    public Response activityCallback(String x_remote_user, String callId, String callerId, URI responseUrl, String state) {
         String processInstanceId = callerId, activityInstanceId = callId;
 
         ProcessInstance processInstance = processInstanceFactory.getProcessInstance(processInstanceId);
@@ -61,7 +61,9 @@ public class ActivityCallbackImpl implements ActivityCallback {
             activityInstance.getContext().setContext(responseContext.getContext());
         }
 
-        activityInstance.complete();
+        if (state != null) {
+            activityInstance.changeState(state);
+        }
         ActivityInstance nextActivityInstance = processInstance.getNextActivityInstance();
         // переход на следующую активность если есть
         if (nextActivityInstance != null) {

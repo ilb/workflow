@@ -90,7 +90,7 @@
     </resource_type>
 
     <resource_type id="activityCallback">
-        <doc>Данные процесса</doc>
+        <doc>activity callback url</doc>
         <param name="x-remote-user" style="header" type="xsd:string">
             <doc>remote authenticated user</doc>
         </param>
@@ -104,6 +104,9 @@
                 </param>
                 <param name="responseUrl" style="query" type="xsd:anyURI">
                     <doc>URL to get response context</doc>
+                </param>
+                 <param name="state" style="query" type="xsd:string">
+                    <doc>change activity state</doc>
                 </param>
             </request>
             <response status="200">

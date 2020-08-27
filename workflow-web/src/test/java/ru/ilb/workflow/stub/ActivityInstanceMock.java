@@ -74,4 +74,19 @@ public class ActivityInstanceMock implements ActivityInstance{
         return new SerializedContextAccessor(getContext());
     }
 
+    @Override
+    public boolean terminate() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean abort() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean changeState(String state) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

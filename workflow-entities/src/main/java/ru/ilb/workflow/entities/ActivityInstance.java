@@ -36,18 +36,21 @@ public interface ActivityInstance {
 
     /**
      * get context of activity (values as raw objects, e.g. dates)
+     *
      * @return
      */
     public ProcessContext getContext();
 
     /**
      * get serialized context of activity (values as primitives / strings)
+     *
      * @return
      */
     public ProcessContext getSerializedContext();
 
     /**
      * get link to activity form
+     *
      * @return
      */
     public URI getActivityFormUrl();
@@ -55,9 +58,32 @@ public interface ActivityInstance {
     public String getActivityDefinitionId();
 
     /**
+     * changes state of the activity
+     *
+     * @param state requested state
+     * @return is state changed
+     */
+    public boolean changeState(String state);
+
+    /**
      * completes the activity
      *
      * @return is state changed (e.g. complete completed activity result = false)
      */
     public boolean complete();
+
+    /**
+     * terminates the activity
+     *
+     * @return is state changed (e.g. teriminate terminated activity result = false)
+     */
+    public boolean terminate();
+
+    /**
+     * aborts the activity
+     *
+     * @return is state changed (e.g. abort aborted activity result = false)
+     */
+    public boolean abort();
+
 }
