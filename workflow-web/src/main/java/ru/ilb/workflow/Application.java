@@ -15,20 +15,23 @@
  */
 package ru.ilb.workflow;
 
+import com.github.benmanes.caffeine.cache.Caffeine;
 import java.net.URI;
 import java.nio.file.Paths;
+import java.util.concurrent.TimeUnit;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
-import ru.ilb.containeraccessor.components.ContainersResource;
-import ru.ilb.containeraccessor.components.ContainersResourceImpl;
 import ru.ilb.filedossier.context.DossierContextBuilder;
 import ru.ilb.filedossier.context.DossierContextImpl;
 import ru.ilb.filedossier.ddl.DossierDefinitionRepository;
@@ -46,6 +49,7 @@ import ru.ilb.filedossier.store.StoreFactory;
 @EnableJdbcRepositories(basePackages = "ru.ilb.filedossier.context.persistence.repositories")
 @ImportResource("classpath:beans.xml")
 @EnableTransactionManagement(mode=AdviceMode.ASPECTJ)
+@EnableCaching(mode = AdviceMode.ASPECTJ)
 public class Application {
 
     //@Resource(mappedName = "ru.bystrobank.apps.workflow.processfilesbase")
@@ -92,7 +96,16 @@ public class Application {
     public javax.validation.Validator localValidatorFactoryBean() {
         return new LocalValidatorFactoryBean();
     }
-
+	@Bean
+	public Caffeine caffeineConfig() {
+	    return Caffeine.newBuilder().expireAfterWrite(5, TimeUnit.MINUTES);
+	}
+	@Bean
+	public CacheManager cacheManager(Caffeine caffeine) {
+	    CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
+	    caffeineCacheManager.setCaffeine(caffeine);
+	    return caffeineCacheManager;
+	}
 //    @Bean
 //    public ContainersResource containersResource(){
 //        return new ContainersResourceImpl();

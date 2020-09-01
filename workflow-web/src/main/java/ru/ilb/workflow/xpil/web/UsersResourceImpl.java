@@ -22,25 +22,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Resource;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
-import org.springframework.stereotype.Component;
-import ru.ilb.workflow.xpil.api.UsersResource;
-import static org.apache.commons.codec.digest.DigestUtils.sha1Hex;
-import org.enhydra.shark.Shark;
 import org.enhydra.shark.api.admin.UserGroupManagerAdmin;
-import org.enhydra.shark.api.client.wfmc.wapi.WAPI;
-import org.enhydra.shark.api.client.wfmc.wapi.WMActivityInstance;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.workflow.session.AuthorizationHandler;
-import ru.ilb.workflow.utils.WAPIUtils;
+import ru.ilb.workflow.xpil.api.UsersResource;
 
 @Component
 @Path("users")
 public class UsersResourceImpl implements UsersResource {
+
+    private @Inject UsersResourceIntr usersResourceIntr;
 
     @Resource(mappedName = "autorizationKeySalt")
     private String autorizationKeySalt;
@@ -59,7 +57,7 @@ public class UsersResourceImpl implements UsersResource {
             WMSessionHandle shandle = SharkInterfaceWrapper.getSessionHandle(AuthorizationHandler.getAuthorisedUser(), null);
             UserGroupManagerAdmin userGroupAdmin = SharkInterfaceWrapper.getUserGroupAdmin();
             String[] allUsers = userGroupAdmin.getAllUsers(shandle);
-            List<User> collect = Stream.of(allUsers).map(user -> getUser(user)).collect(Collectors.toList());
+            List<User> collect = Stream.of(allUsers).map(user -> usersResourceIntr.getUserInternal(shandle, userGroupAdmin, user)).collect(Collectors.toList());
             return new Users().withUsers(collect);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
@@ -67,13 +65,20 @@ public class UsersResourceImpl implements UsersResource {
     }
 
     @Override
+    @Transactional
     public User getUser(String userUid) {
-        User user = new User();
-        user.setId(userUid);
-        return user;
+        try {
+            WMSessionHandle shandle = SharkInterfaceWrapper.getSessionHandle(AuthorizationHandler.getAuthorisedUser(), null);
+            UserGroupManagerAdmin userGroupAdmin = SharkInterfaceWrapper.getUserGroupAdmin();
+            return usersResourceIntr.getUserInternal(shandle, userGroupAdmin, userUid);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
+
     @Override
+    @Transactional
     public User getAuthorisedUser() {
         return getUser(getAuthorisedUserName());
     }

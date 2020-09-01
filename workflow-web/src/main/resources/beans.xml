@@ -36,7 +36,7 @@
     <!--Activates @Configurable -->
     <context:spring-configured/>
 
-    <cache:annotation-driven />
+    <!--<cache:annotation-driven />-->
 
     <!-- task execution -->
     <task:annotation-driven executor="taskExecutor" scheduler="taskScheduler"/>
