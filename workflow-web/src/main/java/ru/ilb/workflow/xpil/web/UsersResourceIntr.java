@@ -41,7 +41,8 @@ public class UsersResourceIntr {
         try {
             User user = new User();
             user.setId(userUid);
-            user.setName(userGroupAdmin.getUserRealName(shandle, userUid));
+            // тормозит, переделать на ldap
+            //user.setName(userGroupAdmin.getUserRealName(shandle, userUid));
             return user;
         } catch (Exception ex) {
             throw new RuntimeException(ex);
