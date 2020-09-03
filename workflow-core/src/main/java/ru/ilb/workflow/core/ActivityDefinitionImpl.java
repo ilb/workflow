@@ -17,6 +17,8 @@ package ru.ilb.workflow.core;
 
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
@@ -69,6 +71,15 @@ public class ActivityDefinitionImpl implements ActivityDefinition {
     @Override
     public List<FormalParameter> getFormalParameters() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getExtendedAttribute(String name) {
+        try {
+            return WMEntityUtilities.findEAAndGetValue(shandle, SharkInterfaceWrapper.getShark().getXPDLBrowser(), entity, name);
+        } catch (Exception ex) {
+            throw new WorkflowException(ex);
+        }
     }
 
 }

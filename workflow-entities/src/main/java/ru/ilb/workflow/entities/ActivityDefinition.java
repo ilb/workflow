@@ -37,4 +37,6 @@ public interface ActivityDefinition {
      * @return
      */
     List<FormalParameter> getFormalParameters();
+
+    public String getExtendedAttribute(String name);
 }
