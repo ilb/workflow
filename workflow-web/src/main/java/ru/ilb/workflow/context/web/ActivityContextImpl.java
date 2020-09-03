@@ -36,9 +36,10 @@ import ru.ilb.workflow.entities.ProcessContext;
 import ru.ilb.workflow.entities.ProcessDefinition;
 import ru.ilb.workflow.entities.ProcessInstance;
 import ru.ilb.workflow.entities.ProcessInstanceFactory;
-import ru.ilb.workflow.web.ActivityFormResourceImpl;
 
 public class ActivityContextImpl implements ActivityContext {
+
+    private final static String EA_IS_WEBDAV_FOR_ACTIVITY_VISIBLE = "IS_WEBDAV_FOR_ACTIVITY_VISIBLE";
 
     private final ProcessInstanceFactory processInstanceFactory;
 
@@ -89,9 +90,11 @@ public class ActivityContextImpl implements ActivityContext {
         String dossierCode = processDefinition.getId();
         String dossierMode = activityInstance.getActivityDefinitionId();
 
-        callContext.setLink("dossier",
-                URI.create(getWorkflowUri() + "/v2/dossiers/" + processInstanceId + "/" + dossierPackage + "/" + dossierCode + "/" + dossierMode + ".json"),
-                "Досье");
+        if ("true".equals(activityDefinition.getExtendedAttribute(EA_IS_WEBDAV_FOR_ACTIVITY_VISIBLE))) {
+            callContext.setLink("dossier",
+                    URI.create(getWorkflowUri() + "/v2/dossiers/" + processInstanceId + "/" + dossierPackage + "/" + dossierCode + "/" + dossierMode + ".json"),
+                    "Досье");
+        }
         if (serializedActivityContext.containsKey("organizationUid")) {
             String organizationUid = (String) serializedActivityContext.get("organizationUid");
             callContext.setLink("organization", URI.create(getOrganizationsUri() + "/data/" + organizationUid + ".json"));
