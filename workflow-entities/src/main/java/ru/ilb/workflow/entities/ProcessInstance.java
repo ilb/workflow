@@ -23,14 +23,18 @@ public interface ProcessInstance {
 
     public String getId();
 
+    public ProcessDefinition getProcessDefinition();
+
     /**
      * get activity context
+     *
      * @return
      */
     public ProcessContext getContext();
 
     /**
      * get activity instance by id
+     *
      * @param activityInstanceId
      * @return
      */
@@ -38,6 +42,7 @@ public interface ProcessInstance {
 
     /**
      * get next running accessible activity for session user
+     *
      * @return
      */
     public ActivityInstance getNextActivityInstance();

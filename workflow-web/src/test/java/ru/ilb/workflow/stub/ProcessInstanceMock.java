@@ -19,6 +19,7 @@ import ru.ilb.jfunction.map.accessors.MapAccessor;
 import ru.ilb.jfunction.map.accessors.MapAccessorImpl;
 import ru.ilb.workflow.entities.ActivityInstance;
 import ru.ilb.workflow.entities.ProcessContext;
+import ru.ilb.workflow.entities.ProcessDefinition;
 import ru.ilb.workflow.entities.ProcessInstance;
 
 /**
@@ -58,6 +59,11 @@ public class ProcessInstanceMock implements ProcessInstance{
 
     @Override
     public void start() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ProcessDefinition getProcessDefinition() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

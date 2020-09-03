@@ -30,6 +30,7 @@ import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 import org.enhydra.shark.utilities.namevalue.NameValueUtilities;
 import ru.ilb.workflow.entities.ActivityInstance;
 import ru.ilb.workflow.entities.ProcessContext;
+import ru.ilb.workflow.entities.ProcessDefinition;
 import ru.ilb.workflow.entities.ProcessInstance;
 
 public class ProcessInstanceImpl implements ProcessInstance {
@@ -139,6 +140,11 @@ public class ProcessInstanceImpl implements ProcessInstance {
             Logger.getLogger(ProcessInstanceImpl.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             throw new RuntimeException(ex);
         }
+    }
+
+    @Override
+    public ProcessDefinition getProcessDefinition() {
+        return new ProcessDefinitionImpl(shandle, getDelegate().getProcessFactoryName());
     }
 
 

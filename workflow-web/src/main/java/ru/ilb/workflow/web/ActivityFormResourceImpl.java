@@ -114,7 +114,7 @@ public class ActivityFormResourceImpl implements ActivityFormResource {
 
     }
 
-    private static ActivityDossier getActivityDossier(WMSessionHandle shandle, WMActivityInstance wmActivityInstance) throws Exception {
+    public static ActivityDossier getActivityDossier(WMSessionHandle shandle, WMActivityInstance wmActivityInstance) throws Exception {
         AdminMisc adminMisc = SharkInterfaceWrapper.getShark().getAdminMisc();
         WMEntity activityDefinition = adminMisc.getActivityDefinitionInfo(shandle, wmActivityInstance.getProcessInstanceId(), wmActivityInstance.getId());
         String webDavVisible = WMEntityUtilities.findEAAndGetValue(shandle, SharkInterfaceWrapper.getShark().getXPDLBrowser(), activityDefinition, EA_IS_WEBDAV_FOR_ACTIVITY_VISIBLE);

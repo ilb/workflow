@@ -18,6 +18,7 @@ package ru.ilb.workflow.context.web;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 import javax.inject.Inject;
 import javax.naming.NamingException;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,17 +27,23 @@ import ru.ilb.callcontext.entities.CallContextFactory;
 import ru.ilb.jfunction.map.converters.MapToJsonFunction;
 import ru.ilb.jfunction.map.converters.ObjectMapToSerializedMapFunction;
 import ru.ilb.workflow.api.ActivityContext;
+import ru.ilb.workflow.core.ActivityDefinitionImpl;
+import ru.ilb.workflow.core.SessionData;
 import ru.ilb.workflow.core.context.ContextConstants;
+import ru.ilb.workflow.entities.ActivityDefinition;
 import ru.ilb.workflow.entities.ActivityInstance;
 import ru.ilb.workflow.entities.ProcessContext;
+import ru.ilb.workflow.entities.ProcessDefinition;
 import ru.ilb.workflow.entities.ProcessInstance;
 import ru.ilb.workflow.entities.ProcessInstanceFactory;
+import ru.ilb.workflow.web.ActivityFormResourceImpl;
 
 public class ActivityContextImpl implements ActivityContext {
 
     private final ProcessInstanceFactory processInstanceFactory;
 
     private final CallContextFactory callContextFactory;
+//    private final Supplier<SessionData> sessionHandleSupplier;
 
     /**
      * Resource uri for relative links
@@ -58,6 +65,9 @@ public class ActivityContextImpl implements ActivityContext {
         ProcessInstance processInstance = processInstanceFactory.getProcessInstance(processInstanceId);
         ActivityInstance activityInstance = processInstance.getActivityInstance(activityInstanceId);
 
+        ActivityDefinition activityDefinition = activityInstance.getActivityDefinition();
+        ProcessDefinition processDefinition = processInstance.getProcessDefinition();
+
         Map<String, Object> contextData = new HashMap<>();
 
         String parentContextUrl = processInstance.getContext().accessor().getStringProperty(ContextConstants.CONTEXTURL_VARIABLE);
@@ -75,8 +85,13 @@ public class ActivityContextImpl implements ActivityContext {
         callContext.setCallbackUri(resourceUri.resolve("activityCallback?callId=" + callId + "&callerId=" + callerId + "&state=closed.completed"));
         callContext.setLink("rollback", resourceUri.resolve("activityCallback?callId=" + callId + "&callerId=" + callerId + "&state=closed.terminated"));
 
-        // FIXME HARDCODE, use code from ActivityFormResourceImpl.getActivityDossier to build dossier link
-        callContext.setLink("dossier", URI.create(getWorkflowUri() + "/v2/dossiers/" + processInstanceId + "/correspondence/correspondence/register.json"));
+        String dossierPackage = processDefinition.getPackageId();
+        String dossierCode = processDefinition.getId();
+        String dossierMode = activityInstance.getActivityDefinitionId();
+
+        callContext.setLink("dossier",
+                URI.create(getWorkflowUri() + "/v2/dossiers/" + processInstanceId + "/" + dossierPackage + "/" + dossierCode + "/" + dossierMode + ".json"),
+                "Досье");
         if (serializedActivityContext.containsKey("organizationUid")) {
             String organizationUid = (String) serializedActivityContext.get("organizationUid");
             callContext.setLink("organization", URI.create(getOrganizationsUri() + "/data/" + organizationUid + ".json"));
