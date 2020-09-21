@@ -350,6 +350,11 @@
             <artifactId>mapstruct</artifactId>
             <version>${org.mapstruct.version}</version>
         </dependency>
+        <dependency>
+            <groupId>ru.ilb</groupId>
+            <artifactId>ldap-api</artifactId>
+            <version>1.9</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>${project.name}</finalName>

@@ -16,10 +16,12 @@
 package ru.ilb.workflow.xpil.web;
 
 import at.together._2006.xpil1.User;
+import javax.annotation.Resource;
 import javax.inject.Named;
 import org.enhydra.shark.api.admin.UserGroupManagerAdmin;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.springframework.cache.annotation.Cacheable;
+import ru.ilb.ldap.api.LdapResource;
 
 /**
  *
@@ -27,6 +29,9 @@ import org.springframework.cache.annotation.Cacheable;
  */
 @Named
 public class UsersResourceIntr {
+
+    @Resource(name = "ldapWrapper")
+    private LdapResource ldapResource;
 
     /**
      * TODO move to core.UserRepository
@@ -43,6 +48,7 @@ public class UsersResourceIntr {
             user.setId(userUid);
             // тормозит, переделать на ldap
             //user.setName(userGroupAdmin.getUserRealName(shandle, userUid));
+            user.setName(ldapResource.getVCardByUser(userUid).getFN());
             return user;
         } catch (Exception ex) {
             throw new RuntimeException(ex);

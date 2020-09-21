@@ -160,6 +160,9 @@
     <bean id="loggingFeature" class="org.apache.cxf.ext.logging.LoggingFeature"/>
     <bean class="ru.ilb.workflow.eventaudit.CollectionEventAuditListener"/>
     <bean class="ru.ilb.workflow.utils.InitUtils" init-method="initializeEngine" destroy-method="stopEngine" />
+    <bean id="ldapWrapper" class="ru.ilb.ldap.core.LdapWrapper">
+        <property name="backend" ref="ldapProxy"/>
+    </bean>
     <context:component-scan base-package="ru.ilb.workflow.web,ru.ilb.filedossier,ru.ilb.callcontext.core"/>
     <jaxrs:server address="/" basePackages="ru.ilb.workflow.web,ru.ilb.workflow.xpil.web,ru.ilb.workflow.context.web,ru.ilb.workflow.providers,ru.ilb.common.jaxrs.providers,ru.ilb.common.jaxrs.exceptionhandler">
         <jaxrs:properties>
@@ -259,6 +262,12 @@
         <jaxrs-client:providers>
             <!--<ref bean="mapParamConverterProvider"/>-->
         </jaxrs-client:providers>
+    </jaxrs-client:client>
+
+    <jaxrs-client:client
+        address="${ru.bystrobank.apps.ldap.ws}"
+        id="ldapProxy"
+        serviceClass="ru.ilb.ldap.api.LdapResource" username="ide" password="123" basePackages="ru.ilb.common.jaxrs.providers">
     </jaxrs-client:client>
 
 </beans>
