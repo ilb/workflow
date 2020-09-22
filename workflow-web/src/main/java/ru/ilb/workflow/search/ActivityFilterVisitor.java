@@ -23,7 +23,6 @@ import org.enhydra.shark.api.client.wfmc.wapi.WMFilter;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.enhydra.shark.api.common.ActivityFilterBuilder;
 import org.enhydra.shark.api.common.FilterBuilder;
-import org.enhydra.shark.api.common.ProcessFilterBuilder;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 
 /**
@@ -108,6 +107,22 @@ public class ActivityFilterVisitor<T> extends FilterVisitor<T> {
                         throw new RuntimeException("Unsuported operator for field " + varName + ": " + statement.getCondition());
                 }
                 break;
+            case "activatedTime":
+                varValueLong = DatatypeConverter.parseDateTime(varValue).getTime().getTime();
+                switch (statement.getCondition()) {
+                    case EQUALS:
+                        filter = afb.addActivatedTimeEquals(shandle, varValueLong);
+                        break;
+                    case GREATER_THAN:
+                        filter = afb.addActivatedTimeAfter(shandle, varValueLong);
+                        break;
+                    case LESS_THAN:
+                        filter = afb.addActivatedTimeBefore(shandle, varValueLong);
+                        break;
+                    default:
+                        throw new RuntimeException("Unsuported operator for field " + varName + ": " + statement.getCondition());
+                }
+                break;
 
             case "startPosition":
                 afb.setStartPosition(shandle, filterEx, Integer.parseInt(varValue));
@@ -132,6 +147,18 @@ public class ActivityFilterVisitor<T> extends FilterVisitor<T> {
                             break;
                         case "lastStateTime":
                             afb.setOrderByLastStateTime(shandle, filterEx, asc);
+                            break;
+                        case "state":
+                            afb.setOrderByState(shandle, filterEx, asc);
+                            break;
+                        case "name":
+                            afb.setOrderByName(shandle, filterEx, asc);
+                            break;
+                        case "resourceUsername":
+                            afb.setOrderByResourceUsername(shandle, filterEx, asc);
+                            break;
+                        case "processDefName":
+                            afb.setOrderByProcessDefName(shandle, filterEx, asc);
                             break;
                         default:
                             throw new RuntimeException("Unknown order field " + parts[0]);
