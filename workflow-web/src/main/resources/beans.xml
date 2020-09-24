@@ -265,7 +265,7 @@
     </jaxrs-client:client>
 
     <jaxrs-client:client
-        address="${ru.bystrobank.apps.ldap.ws}"
+        address="${ru.bystrobank.apps.ldapadminko.ws}"
         id="ldapProxy"
         serviceClass="ru.ilb.ldap.api.LdapResource" username="ide" password="123" basePackages="ru.ilb.common.jaxrs.providers">
     </jaxrs-client:client>

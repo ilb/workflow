@@ -195,11 +195,6 @@
         <resource-env-ref-name>ru.bystrobank.apps.correspondence.ws</resource-env-ref-name>
         <resource-env-ref-type>javax.jms.Queue</resource-env-ref-type>
     </resource-env-ref>
-    <resource-env-ref>
-        <description>LDAP</description>
-        <resource-env-ref-name>ru.bystrobank.apps.ldap.ws</resource-env-ref-name>
-        <resource-env-ref-type>javax.jms.Queue</resource-env-ref-type>
-    </resource-env-ref>
     <env-entry>
         <description>Секретный ключ для authorizationKey</description>
         <env-entry-name>autorizationKeySalt</env-entry-name>

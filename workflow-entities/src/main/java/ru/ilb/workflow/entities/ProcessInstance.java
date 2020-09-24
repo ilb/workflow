@@ -48,6 +48,13 @@ public interface ProcessInstance {
     public ActivityInstance getNextActivityInstance();
 
     /**
+     * get RequesterUsername
+     *
+     * @return
+     */
+    public String getRequesterUsername();
+
+    /**
      * starts the process
      */
     public void start();

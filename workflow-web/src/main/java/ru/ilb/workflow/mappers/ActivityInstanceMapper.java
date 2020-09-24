@@ -22,6 +22,8 @@ import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
+import ru.ilb.workflow.entities.ProcessInstance;
+import ru.ilb.workflow.entities.ProcessInstanceFactory;
 import ru.ilb.workflow.session.SessionDataProvider;
 import ru.ilb.workflow.utils.WorkflowUtils;
 import ru.ilb.workflow.view.ActivityInstance;
@@ -37,6 +39,9 @@ public abstract class ActivityInstanceMapper implements GenericMapperDto<WMActiv
     @Inject
     private SessionDataProvider sessionDataProvider;
 
+    @Inject
+    private ProcessInstanceFactory processInstanceFactory;
+
     @Override
     public abstract ActivityInstance createFromEntity(WMActivityInstance entity);
 
@@ -45,6 +50,8 @@ public abstract class ActivityInstanceMapper implements GenericMapperDto<WMActiv
         WMSessionHandle shandle = sessionDataProvider.getSessionData().getSessionHandle();
         String url = WorkflowUtils.getActivityFormUrl(shandle, null, entity.getProcessInstanceId(), entity.getActivityDefinitionId(), entity.getId());
         dto.setActivityFormUrl(url);
+        ProcessInstance processInstance = processInstanceFactory.getProcessInstance(entity.getProcessInstanceId());
+        dto.setProcessRequesterUserName(processInstance.getRequesterUsername());
     }
 
     public ActivityInstances createWrapperFromEntities(List<WMActivityInstance> entities) {

@@ -23,6 +23,7 @@ import org.enhydra.shark.api.client.wfmc.wapi.WMFilter;
 import org.enhydra.shark.api.client.wfmc.wapi.WMProcessInstance;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.enhydra.shark.api.client.wfmc.wapi.WMWorkItem;
+import org.enhydra.shark.api.client.wfservice.AdminMisc;
 import org.enhydra.shark.api.common.ActivityFilterBuilder;
 import org.enhydra.shark.api.common.AssignmentFilterBuilder;
 import org.enhydra.shark.api.common.SharkConstants;
@@ -42,6 +43,8 @@ public class ProcessInstanceImpl implements ProcessInstance {
     private final String id;
 
     private WMProcessInstance delegate;
+
+    private String requesterUserName;
 
     public ProcessInstanceImpl(SessionData sessionData, String processInstanceId) {
         this.sessionData = sessionData;
@@ -97,7 +100,6 @@ public class ProcessInstanceImpl implements ProcessInstance {
         }
     }
 
-
     private static WMActivityInstance findNextActivity(WMSessionHandle shandle, String userId, String procId) {
 
         try {
@@ -147,5 +149,17 @@ public class ProcessInstanceImpl implements ProcessInstance {
         return new ProcessDefinitionImpl(shandle, getDelegate().getProcessFactoryName());
     }
 
+    @Override
+    public String getRequesterUsername() {
+        if (requesterUserName == null) {
+            try {
+                AdminMisc am = SharkInterfaceWrapper.getShark().getAdminMisc();
+                requesterUserName = am.getProcessRequesterUsername(shandle, id);
+            } catch (Exception ex) {
+                throw new WorkflowException(ex);
+            }
+        }
+        return requesterUserName;
+    }
 
 }
