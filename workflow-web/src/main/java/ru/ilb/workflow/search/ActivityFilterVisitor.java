@@ -76,7 +76,7 @@ public class ActivityFilterVisitor<T> extends FilterVisitor<T> {
                         default:
                             throw new RuntimeException("hasAssignment values: *, ACCEPTED_AND_NON_ACCEPTED, ONLY_NON_ACCEPTED,ONLY_ACCEPTED");
                     }
-                    filter = afb.addHasAssignmentForUser(shandle, username, valueInt);
+                    filter = afb.addHasAssignmentForUserEndsWith(shandle, username, valueInt);
                 }
                 break;
             case "definitionId":
