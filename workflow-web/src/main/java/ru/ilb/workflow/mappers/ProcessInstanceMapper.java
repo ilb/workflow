@@ -22,8 +22,10 @@ import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import ru.ilb.workflow.entities.ProcessInstanceFactory;
+import ru.ilb.workflow.utils.PosixRealm;
 import ru.ilb.workflow.view.ProcessInstance;
 import ru.ilb.workflow.view.ProcessInstances;
+import ru.ilb.workflow.view.UserType;
 
 /**
  *
@@ -45,7 +47,11 @@ public abstract class ProcessInstanceMapper implements GenericMapperDto<WMProces
     @AfterMapping
     protected void afterMapping(@MappingTarget ProcessInstance dto, WMProcessInstance entity) {
         ru.ilb.workflow.entities.ProcessInstance processInstance = processInstanceFactory.getProcessInstance(entity.getId());
-        dto.setRequesterUserName(processInstance.getRequesterUsername());
+        String requesterUsername = processInstance.getRequesterUsername();
+        dto.setRequesterUser(new UserType(
+                requesterUsername,
+                PosixRealm.getFioByUser(requesterUsername)
+        ));
     }
 
 }

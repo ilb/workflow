@@ -150,7 +150,7 @@ public class ProcessInstanceImpl implements ProcessInstance {
     }
 
     @Override
-    public String getProcessRequesterUsername() {
+    public String getRequesterUsername() {
         if (requesterUserName == null) {
             try {
                 AdminMisc am = SharkInterfaceWrapper.getShark().getAdminMisc();

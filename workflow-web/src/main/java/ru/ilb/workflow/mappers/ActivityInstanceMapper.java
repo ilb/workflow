@@ -53,8 +53,11 @@ public abstract class ActivityInstanceMapper implements GenericMapperDto<WMActiv
         String url = WorkflowUtils.getActivityFormUrl(shandle, null, entity.getProcessInstanceId(), entity.getActivityDefinitionId(), entity.getId());
         dto.setActivityFormUrl(url);
         ProcessInstance processInstance = processInstanceFactory.getProcessInstance(entity.getProcessInstanceId());
-        UserType user = new UserType(processInstance.getProcessRequesterUsername(), PosixRealm.getFioByUser(processInstance.getProcessRequesterUsername()));
-        dto.setProcessRequesterUser(user);
+        String requesterUsername = processInstance.getRequesterUsername();
+        dto.setProcessRequesterUser(new UserType(
+                requesterUsername,
+                PosixRealm.getFioByUser(requesterUsername)
+        ));
     }
 
     public ActivityInstances createWrapperFromEntities(List<WMActivityInstance> entities) {
