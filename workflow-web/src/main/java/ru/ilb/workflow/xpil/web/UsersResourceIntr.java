@@ -22,6 +22,7 @@ import org.enhydra.shark.api.admin.UserGroupManagerAdmin;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.springframework.cache.annotation.Cacheable;
 import ru.ilb.ldap.api.LdapResource;
+import ru.ilb.workflow.utils.PosixRealm;
 
 /**
  *
@@ -46,9 +47,10 @@ public class UsersResourceIntr {
         try {
             User user = new User();
             user.setId(userUid);
+            user.setName(PosixRealm.getFioByUser(userUid));
             // тормозит, переделать на ldap
             //user.setName(userGroupAdmin.getUserRealName(shandle, userUid));
-            user.setName(ldapResource.getVCardByUser(userUid).getFN());
+//            user.setName(ldapResource.getVCardByUser(userUid).getFN());
             return user;
         } catch (Exception ex) {
             throw new RuntimeException(ex);
