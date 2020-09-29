@@ -25,9 +25,11 @@ import org.mapstruct.MappingTarget;
 import ru.ilb.workflow.entities.ProcessInstance;
 import ru.ilb.workflow.entities.ProcessInstanceFactory;
 import ru.ilb.workflow.session.SessionDataProvider;
+import ru.ilb.workflow.utils.PosixRealm;
 import ru.ilb.workflow.utils.WorkflowUtils;
 import ru.ilb.workflow.view.ActivityInstance;
 import ru.ilb.workflow.view.ActivityInstances;
+import ru.ilb.workflow.view.UserType;
 
 /**
  *
@@ -51,7 +53,8 @@ public abstract class ActivityInstanceMapper implements GenericMapperDto<WMActiv
         String url = WorkflowUtils.getActivityFormUrl(shandle, null, entity.getProcessInstanceId(), entity.getActivityDefinitionId(), entity.getId());
         dto.setActivityFormUrl(url);
         ProcessInstance processInstance = processInstanceFactory.getProcessInstance(entity.getProcessInstanceId());
-        dto.setProcessRequesterUserName(processInstance.getRequesterUsername());
+        UserType user = new UserType(processInstance.getProcessRequesterUsername(), PosixRealm.getFioByUser(processInstance.getProcessRequesterUsername()));
+        dto.setProcessRequesterUser(user);
     }
 
     public ActivityInstances createWrapperFromEntities(List<WMActivityInstance> entities) {

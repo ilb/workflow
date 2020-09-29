@@ -52,7 +52,7 @@ public interface ProcessInstance {
      *
      * @return
      */
-    public String getRequesterUsername();
+    public String getProcessRequesterUsername();
 
     /**
      * starts the process

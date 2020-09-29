@@ -2,12 +2,7 @@ package ru.ilb.workflow.utils;
 
 /**
  *
- * не реализует аутентификацию - её оставляем снаружи чтоб tomcat не требовал свою указываем <Connector ... tomcatAuthentication="false" .../>
- *
- * логгер включается conf/logging.properties: ru.bb.tomcat.realm.TomcatPosixRealm.level = FINEST
- *
- * @see http://stackoverflow.com/questions/1138450/implement-a-tomcat-realm-with-ldap-authentication-and-jdbc-authorization
- * @author dab@bystrobank.ru
+ * @author valeev
  */
 import java.io.*;
 import java.util.HashMap;
@@ -30,8 +25,8 @@ public class PosixRealm {
     private final static Map<String, Character> replaceMap = new LinkedHashMap();
 
     static {
-        String[] search = new String[]{"shh", "Shh", "yo", "zh", "ch", "sh", "``", "y`", "e`", "yu", "ya", "Yo", "Zh", "Ch", "Sh", "``", "Y`", "E`", "Yu", "Ya", "a", "b", "v", "g", "d", "e", "z", "i", "j", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u", "f", "x", "c", "`", "A", "B", "V", "G", "D", "E", "Z", "I", "J", "K", "L", "M", "N", "O", "P", "R", "S", "T", "U", "F", "X", "C", "`"};
-        Character[] replace = new Character[]{'щ', 'Щ', 'ё', 'ж', 'ч', 'ш', 'ъ', 'ы', 'э', 'ю', 'я', 'Ё', 'Ж', 'Ч', 'Ш', 'Ъ', 'Ы', 'Э', 'Ю', 'Я', 'а', 'б', 'в', 'г', 'д', 'е', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ь', 'А', 'Б', 'В', 'Г', 'Д', 'Е', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ь'};
+        String[] search = new String[]{"shh", "Shh", "yo", "zh", "ch", "sh", "``", "y`", "e`", "yu", "ya", "Yo", "Zh", "Ch", "Sh", "Y`", "E`", "Yu", "Ya", "a", "b", "v", "g", "d", "e", "z", "i", "j", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u", "f", "x", "c", "`", "A", "B", "V", "G", "D", "E", "Z", "I", "J", "K", "L", "M", "N", "O", "P", "R", "S", "T", "U", "F", "X", "C"};
+        Character[] replace = new Character[]{'щ', 'Щ', 'ё', 'ж', 'ч', 'ш', 'ъ', 'ы', 'э', 'ю', 'я', 'Ё', 'Ж', 'Ч', 'Ш', 'Ы', 'Э', 'Ю', 'Я', 'а', 'б', 'в', 'г', 'д', 'е', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ь', 'А', 'Б', 'В', 'Г', 'Д', 'Е', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц'};
         for (int i = 0; i < search.length; i++) {
             replaceMap.put(search[i], replace[i]);
         }

@@ -16,12 +16,10 @@
 package ru.ilb.workflow.xpil.web;
 
 import at.together._2006.xpil1.User;
-import javax.annotation.Resource;
 import javax.inject.Named;
 import org.enhydra.shark.api.admin.UserGroupManagerAdmin;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import org.springframework.cache.annotation.Cacheable;
-import ru.ilb.ldap.api.LdapResource;
 import ru.ilb.workflow.utils.PosixRealm;
 
 /**
@@ -30,9 +28,6 @@ import ru.ilb.workflow.utils.PosixRealm;
  */
 @Named
 public class UsersResourceIntr {
-
-    @Resource(name = "ldapWrapper")
-    private LdapResource ldapResource;
 
     /**
      * TODO move to core.UserRepository

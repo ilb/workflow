@@ -76,7 +76,7 @@
                 <xsd:element name="lastStateTime" type="xsd:dateTime" minOccurs="0"/>
                 <xsd:element name="limitTime" type="xsd:dateTime" minOccurs="0"/>
                 <xsd:element name="state" type="processInstanceState" minOccurs="0"/>
-                <xsd:element name="requesterUserName" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="requesterUser" type="userType" minOccurs="0"/>
                 <xsd:element ref="activityInstance"  minOccurs="0" maxOccurs="unbounded"/>
             </xsd:sequence>
         </xsd:complexType>
@@ -146,7 +146,7 @@
                     </xsd:annotation>
                 </xsd:element>
                 <xsd:element name="state" type="activityInstanceState" minOccurs="0"/>
-                <xsd:element name="processRequesterUserName" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="processRequesterUser" type="userType" minOccurs="0"/>
                 <xsd:element name="activityFormUrl" type="xsd:string"/>
             </xsd:sequence>
         </xsd:complexType>
@@ -231,5 +231,15 @@
             </xsd:sequence>
         </xsd:complexType>
     </xsd:element>
+
+    <xsd:complexType name="userType">
+        <xsd:annotation>
+            <xsd:documentation>User</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="login" type="xsd:string"/>
+            <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
 
 </xsd:schema>

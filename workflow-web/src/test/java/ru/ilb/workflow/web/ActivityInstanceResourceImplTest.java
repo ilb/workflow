@@ -15,18 +15,9 @@
  */
 package ru.ilb.workflow.web;
 
-import org.apache.cxf.jaxrs.json.basic.JsonMapObject;
+import static junit.framework.Assert.assertEquals;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
-import ru.ilb.workflow.api.ActivityFormResource;
-import ru.ilb.workflow.api.JsonSchemaResource;
-import ru.ilb.workflow.api.ProcessContextResource;
-import ru.ilb.workflow.view.ActivityInstance;
+import ru.ilb.workflow.utils.PosixRealm;
 
 /**
  *
@@ -45,6 +36,13 @@ public class ActivityInstanceResourceImplTest {
      */
     @Test
     public void testGetActivityInstance() {
+    }
+
+    @Test
+    public void testPosixRealm() {
+        String user = "a888";
+        String result = PosixRealm.getFioByUser(user);
+        assertEquals("Фамилия Имя Отчество_Оглы_Иванович", result);
     }
 
     /**
