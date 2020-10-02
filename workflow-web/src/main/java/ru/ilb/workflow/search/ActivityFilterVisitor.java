@@ -58,10 +58,11 @@ public class ActivityFilterVisitor<T> extends FilterVisitor<T> {
                 filter = afb.addIdEquals(shandle, varValue);
                 break;
             case "resourceUsername":
-                filter = afb.addResourceUsernameEquals(shandle, varValue);
-                break;
-            case "resourceUsernameEnd":
-                filter = afb.addResourceUsernameEndsWith(shandle, varValue);
+                if (!"*".equals(varValue)) {
+                    filter = afb.addResourceUsernameEquals(shandle, varValue);
+                } else {
+                    filter = afb.not(shandle, afb.addResourceUsernameEquals(shandle, null));
+                }
                 break;
             case "assignment":
                 if (!"*".equals(varValue)) {
