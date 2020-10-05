@@ -157,7 +157,9 @@ public class ProcessInstancesResourceImpl extends JaxRsContextResource implement
         WMFilter f;
         if (filter != null && !filter.isEmpty()) {
             SearchCondition<SearchBean> sc = searchContext.getCondition(filter, SearchBean.class);
-            ActivityFilterVisitor<SearchBean> visitor = new ActivityFilterVisitor<>(shandle, AuthorizationHandler.getAuthorisedUser());
+            String user = sc.getSearchConditions().stream().filter(s -> s.getCondition().get("processRequesterUsername") != null)
+                    .map(s -> s.getCondition().get("processRequesterUsername")).findFirst().orElse(AuthorizationHandler.getAuthorisedUser());
+            ActivityFilterVisitor<SearchBean> visitor = new ActivityFilterVisitor<>(shandle, user);
             sc.accept(visitor);
             f = visitor.getQuery();
         } else {
