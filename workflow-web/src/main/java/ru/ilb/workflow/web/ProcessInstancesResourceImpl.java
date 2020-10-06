@@ -158,7 +158,7 @@ public class ProcessInstancesResourceImpl extends JaxRsContextResource implement
         if (filter != null && !filter.isEmpty()) {
             SearchCondition<SearchBean> sc = searchContext.getCondition(filter, SearchBean.class);
             // берем пользователя с фильтра processRequesterUsername
-            String user = sc.getSearchConditions().stream().filter(s -> s.getCondition().get("processRequesterUsername") != null)
+            String user = sc.getSearchConditions().stream().filter(s -> s.getCondition() != null && s.getCondition().get("processRequesterUsername") != null)
                     .map(s -> s.getCondition().get("processRequesterUsername")).findFirst().orElse(AuthorizationHandler.getAuthorisedUser());
             ActivityFilterVisitor<SearchBean> visitor = new ActivityFilterVisitor<>(shandle, user);
             sc.accept(visitor);
