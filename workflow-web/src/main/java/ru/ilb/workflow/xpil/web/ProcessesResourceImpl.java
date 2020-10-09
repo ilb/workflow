@@ -186,8 +186,12 @@ public class ProcessesResourceImpl implements ProcessesResource {
             for (WorkflowProcessInstance proc : result.getMainWorkflowProcessInstancesAndSubWorkflowProcessInstances()) {
                 if (proc.getActivityInstances() != null) {
                     for (ActivityInstance act : proc.getActivityInstances().getManualActivityInstancesAndToolActivityInstancesAndBlockActivityInstances()) {
-                        //URI uri = processesResourceIntr.getUriBuilder(act, proc, uriInfo).path("processes").path(proc.getId()).path("activities").path(act.getId()).build();
-                        String url = WorkflowUtils.getActivityFormUrl(shandle, proc.getDefinitionId(), proc.getId(), act.getDefinitionId(), act.getId());
+                        String url;
+                        if ("outgoingcall".equals(proc.getDefinitionId())) {
+                            url = processesResourceIntr.getUriBuilder(act, proc, uriInfo).path("processes").path(proc.getId()).path("activities").path(act.getId()).build().toString();
+                        } else {
+                            url = WorkflowUtils.getActivityFormUrl(shandle, proc.getDefinitionId(), proc.getId(), act.getDefinitionId(), act.getId());
+                        }
                         act.getOtherAttributes().put(new QName("http://www.w3.org/1999/xlink", "href", "xlink"), url);
                     }
                 }
