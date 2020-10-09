@@ -64,6 +64,13 @@ public class ActivityFilterVisitor<T> extends FilterVisitor<T> {
                     filter = afb.not(shandle, afb.addResourceUsernameEquals(shandle, null));
                 }
                 break;
+            case "processRequesterUsername":
+                if (!"*".equals(varValue)) {
+                    filter = afb.addProcessRequesterUsernameEquals(shandle, varValue);
+                } else {
+                    filter = afb.not(shandle, afb.addProcessRequesterUsernameEquals(shandle, null));
+                }
+                break;
             case "assignment":
                 if (!"*".equals(varValue)) {
                     int valueInt;

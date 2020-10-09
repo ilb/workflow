@@ -28,7 +28,6 @@ import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import ru.ilb.filedossier.scripting.SubstitutorTemplateEvaluator;
 import ru.ilb.filedossier.scripting.TemplateEvaluator;
 import ru.ilb.workflow.core.ProcessContextImpl;
-import ru.ilb.workflow.core.context.ContextConstants;
 import ru.ilb.workflow.entities.ProcessContext;
 
 /**
@@ -99,7 +98,7 @@ public class WorkflowUtils {
         activityFormUrl = templateEvaluator.evaluateStringExpression(activityFormUrl, params);
 
         //FIXME HARDCODE URL
-        String contextUrl = "https://devel.net.ilb.ru/workflow-web/web/v2/callcontext/activityContext?callerId=" + processInstanceId + "&callId=" + activityInstanceId;
+        String contextUrl = getWorkflowUri() + "/v2/callcontext/activityContext?callerId=" + processInstanceId + "&callId=" + activityInstanceId;
         if (contextUrl != null) {
             try {
                 activityFormUrl = activityFormUrl + "&contextUrl=" + URLEncoder.encode(contextUrl, "UTF-8");
@@ -110,6 +109,14 @@ public class WorkflowUtils {
 
         return activityFormUrl;
 
+    }
+
+    private static String getWorkflowUri() {
+        try {
+            return (String) new javax.naming.InitialContext().lookup("ru.bystrobank.apps.workflow.ws");
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
 }
