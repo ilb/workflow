@@ -20,12 +20,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.transaction.UserTransaction;
 import org.enhydra.shark.admin.repositorymanagement.RepositoryManager;
 import org.enhydra.shark.api.admin.RepositoryMgr;
@@ -36,6 +38,8 @@ import org.enhydra.shark.webclient.business.prof.graph.SnapshotImageCreator;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.slf4j.LoggerFactory;
+import ru.ilb.filedossier.scripting.SubstitutorTemplateEvaluator;
+import ru.ilb.filedossier.scripting.TemplateEvaluator;
 
 /**
  *
@@ -124,6 +128,17 @@ public class EngineUtils {
         }
     }
 
+    public static void setContextProperties(Properties p, Context ctx) {
+        TemplateEvaluator templateEvaluator = new SubstitutorTemplateEvaluator(ctx);
+        Map<String, Object> params = new HashMap<>();
+
+        for (Iterator it = p.keySet().iterator(); it.hasNext();) {
+            String key = (String) it.next();
+            String value = p.getProperty(key);
+            p.setProperty(key, templateEvaluator.evaluateStringExpression(value, params));
+        }
+    }
+
     public static void setSharkProperties(String contextPath) {
         Properties properties = new Properties();
         String confPath = contextPath + "conf/Shark.conf";
@@ -132,6 +147,13 @@ public class EngineUtils {
         } catch (IOException ex) {
             throw new RuntimeException("Cannot open " + confPath, ex);
         }
+        javax.naming.Context ctx;
+        try {
+            ctx = new InitialContext();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        setContextProperties(properties, ctx);
         setLDAPProperties(properties);
         setRealPath(properties, contextPath);
         setQuartzProperties(properties, contextPath);
