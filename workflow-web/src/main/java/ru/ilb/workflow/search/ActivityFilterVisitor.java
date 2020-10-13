@@ -73,6 +73,9 @@ public class ActivityFilterVisitor<T> extends FilterVisitor<T> {
                 break;
             case "assignment":
                 if (!"*".equals(varValue)) {
+                    String[] arr = varValue.split("@");
+                    varValue = arr[0];
+                    String userLogin = arr.length > 1 ? arr[1] : username;
                     int valueInt;
                     switch (varValue) {
                         case "ACCEPTED_AND_NON_ACCEPTED":
@@ -87,7 +90,7 @@ public class ActivityFilterVisitor<T> extends FilterVisitor<T> {
                         default:
                             throw new RuntimeException("hasAssignment values: *, ACCEPTED_AND_NON_ACCEPTED, ONLY_NON_ACCEPTED,ONLY_ACCEPTED");
                     }
-                    filter = afb.addHasAssignmentForUser(shandle, username, valueInt);
+                    filter = afb.addHasAssignmentForUser(shandle, userLogin, valueInt);
                 }
                 break;
             case "definitionId":
