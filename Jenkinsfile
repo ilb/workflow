@@ -18,7 +18,7 @@ pipeline {
             }
             steps {
                 sh 'mvn install deploy'
-                sh 'sudo /opt/bin/tomcatmavendeploy /var/lib/tomcat-8/shark/webapps/workflow.mavendeploy'
+                sh 'sudo /opt/bin/tomcatmavendeploy /var/lib/tomcat-8/workflow/webapps/workflow.mavendeploy'
             }
         }
         stage("Release") {
