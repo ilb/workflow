@@ -57,6 +57,8 @@ public interface ActivityInstance {
 
     public String getActivityDefinitionId();
 
+    State getState();
+
     /**
      * changes state of the activity
      *

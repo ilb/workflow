@@ -21,6 +21,7 @@ import ru.ilb.workflow.entities.ActivityDefinition;
 import ru.ilb.workflow.entities.ActivityInstance;
 import ru.ilb.workflow.entities.ProcessContext;
 import ru.ilb.workflow.entities.ProcessInstance;
+import ru.ilb.workflow.entities.State;
 
 /**
  *
@@ -86,6 +87,11 @@ public class ActivityInstanceMock implements ActivityInstance{
 
     @Override
     public boolean changeState(String state) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public State getState() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

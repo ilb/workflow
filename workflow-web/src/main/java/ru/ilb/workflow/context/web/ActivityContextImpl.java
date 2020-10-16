@@ -18,21 +18,15 @@ package ru.ilb.workflow.context.web;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 import javax.inject.Inject;
 import javax.naming.NamingException;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.callcontext.entities.CallContext;
 import ru.ilb.callcontext.entities.CallContextFactory;
-import ru.ilb.jfunction.map.converters.MapToJsonFunction;
-import ru.ilb.jfunction.map.converters.ObjectMapToSerializedMapFunction;
 import ru.ilb.workflow.api.ActivityContext;
-import ru.ilb.workflow.core.ActivityDefinitionImpl;
-import ru.ilb.workflow.core.SessionData;
 import ru.ilb.workflow.core.context.ContextConstants;
 import ru.ilb.workflow.entities.ActivityDefinition;
 import ru.ilb.workflow.entities.ActivityInstance;
-import ru.ilb.workflow.entities.ProcessContext;
 import ru.ilb.workflow.entities.ProcessDefinition;
 import ru.ilb.workflow.entities.ProcessInstance;
 import ru.ilb.workflow.entities.ProcessInstanceFactory;
@@ -83,9 +77,11 @@ public class ActivityContextImpl implements ActivityContext {
         contextData.putAll(serializedActivityContext);
 
         CallContext callContext = callContextFactory.createCallContext(null, contextData);
-        callContext.setCallbackUri(resourceUri.resolve("activityCallback?callId=" + callId + "&callerId=" + callerId + "&state=closed.completed"));
-        callContext.setLink("rollback", resourceUri.resolve("activityCallback?callId=" + callId + "&callerId=" + callerId + "&state=closed.terminated"));
-
+        // callback and rollback only for open activities
+        if (activityInstance.getState().getOpen()) {
+            callContext.setLink("callback", resourceUri.resolve("activityCallback?callId=" + callId + "&callerId=" + callerId + "&state=closed.completed"));
+            callContext.setLink("rollback", resourceUri.resolve("activityCallback?callId=" + callId + "&callerId=" + callerId + "&state=closed.terminated"));
+        }
         String dossierPackage = processDefinition.getPackageId();
         String dossierCode = processDefinition.getId();
         String dossierMode = activityInstance.getActivityDefinitionId();

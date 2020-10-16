@@ -26,6 +26,7 @@ import ru.ilb.workflow.entities.ActivityDefinition;
 import ru.ilb.workflow.entities.ActivityInstance;
 import ru.ilb.workflow.entities.ProcessContext;
 import ru.ilb.workflow.entities.ProcessInstance;
+import ru.ilb.workflow.entities.State;
 import ru.ilb.workflow.utils.WorkflowUtils;
 
 public class ActivityInstanceImpl implements ActivityInstance {
@@ -169,6 +170,11 @@ public class ActivityInstanceImpl implements ActivityInstance {
             }
         }
         return changed;
+    }
+
+    @Override
+    public State getState() {
+        return new ActivityInstanceState(getDelegate().getState());
     }
 
 }
