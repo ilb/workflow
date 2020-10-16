@@ -78,10 +78,10 @@ public class ActivityContextImpl implements ActivityContext {
 
         CallContext callContext = callContextFactory.createCallContext(null, contextData);
         // callback and rollback only for open activities
-        if (activityInstance.getState().getOpen()) {
+//        if (activityInstance.getState().getOpen()) {
             callContext.setLink("callback", resourceUri.resolve("activityCallback?callId=" + callId + "&callerId=" + callerId + "&state=closed.completed"));
             callContext.setLink("rollback", resourceUri.resolve("activityCallback?callId=" + callId + "&callerId=" + callerId + "&state=closed.terminated"));
-        }
+//        }
         String dossierPackage = processDefinition.getPackageId();
         String dossierCode = processDefinition.getId();
         String dossierMode = activityInstance.getActivityDefinitionId();
