@@ -40,7 +40,7 @@
         <dependency>
             <groupId>ru.ilb.uriaccessor</groupId>
             <artifactId>uriaccessor</artifactId>
-            <version>1.2-SNAPSHOT</version>
+            <version>${uriaccessor.version}</version>
         </dependency>
         <dependency>
             <groupId>ru.ilb.jfunction</groupId>
