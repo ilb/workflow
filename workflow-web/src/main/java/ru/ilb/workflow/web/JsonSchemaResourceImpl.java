@@ -15,7 +15,7 @@
  */
 package ru.ilb.workflow.web;
 
-import ru.ilb.workflow.utils.XPDLUtils;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 import javax.ws.rs.core.Response;
@@ -32,16 +32,17 @@ import ru.ilb.jsonschema.jsonschema.Property;
 import ru.ilb.jsonschema.utils.JsonTypeConverter;
 import ru.ilb.workflow.api.JsonSchemaResource;
 import ru.ilb.workflow.core.SessionData;
+import ru.ilb.workflow.utils.XPDLUtils;
 
 public class JsonSchemaResourceImpl implements JsonSchemaResource {
 
-    private final Supplier <SessionData> sessionHandleSupplier;
+    private final Supplier<SessionData> sessionHandleSupplier;
 
     private final String processInstanceId;
 
     private final String activityInstanceId;
 
-    public JsonSchemaResourceImpl(Supplier <SessionData> sessionHandleSupplier, String processInstanceId, String activityInstanceId) {
+    public JsonSchemaResourceImpl(Supplier<SessionData> sessionHandleSupplier, String processInstanceId, String activityInstanceId) {
         this.sessionHandleSupplier = sessionHandleSupplier;
         this.processInstanceId = processInstanceId;
         this.activityInstanceId = activityInstanceId;
@@ -76,13 +77,13 @@ public class JsonSchemaResourceImpl implements JsonSchemaResource {
 
         Map<String, Boolean> activityVariables = XPDLUtils.getActivityVariables(shandle, processInstanceId, activityInstanceId);
 
-        // remove not existent variables
-        jsonSchema.getProperties().entrySet().removeIf(e -> !activityVariables.containsKey(e.getKey()));
-
-        // set readonly fields
-        jsonSchema.getProperties().entrySet().stream()
-                .filter(e -> activityVariables.get(e.getKey()))
-                .forEach(e -> e.getValue().setReadOnly(true));
+        LinkedHashMap<String, Property> activityProperties = new LinkedHashMap();
+        activityVariables.entrySet().forEach(av -> {
+            Property property = jsonSchema.getProperty(av.getKey());
+            property.setReadOnly(av.getValue() ? true : null);
+            activityProperties.put(av.getKey(), property);
+        });
+        jsonSchema.setProperties(activityProperties);
     }
 
     private static JsonSchema getJsonSchemaProcess(WMSessionHandle shandle, SharkConnection sc, String processInstanceId) throws Exception {

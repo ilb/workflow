@@ -35,7 +35,6 @@ import org.enhydra.shark.api.client.wfservice.XPDLBrowser;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 import org.enhydra.shark.utilities.wmentity.WMEntityUtilities;
 import org.enhydra.shark.webclient.business.prof.graph.JaWEUtil;
-//import org.enhydra.shark.webclient.business.prof.graph.JaWEUtil;
 
 /**
  *
@@ -166,7 +165,7 @@ public class XPDLUtils {
 
         Map<String, Boolean> result = Stream.of(extAttribs)
                 .filter(extAttrib -> extAttrib[0].startsWith(EA_VAR_TO_PROCESS))
-                .collect(Collectors.toMap(extAttrib -> extAttrib[1], extAttrib -> extAttrib[0].equals(EA_VAR_TO_PROCESS_VIEW)));
+                .collect(MoreCollectors.toLinkedMap(extAttrib -> extAttrib[1], extAttrib -> extAttrib[0].equals(EA_VAR_TO_PROCESS_VIEW)));
         return result;
     }
 
