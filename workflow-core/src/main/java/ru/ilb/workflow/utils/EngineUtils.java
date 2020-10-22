@@ -18,8 +18,10 @@ package ru.ilb.workflow.utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -143,7 +145,7 @@ public class EngineUtils {
         Properties properties = new Properties();
         String confPath = contextPath + "conf/Shark.conf";
         try (FileInputStream fis = new FileInputStream(confPath)) {
-            properties.load(fis);
+            properties.load(new InputStreamReader(fis, Charset.forName("UTF-8")));
         } catch (IOException ex) {
             throw new RuntimeException("Cannot open " + confPath, ex);
         }
