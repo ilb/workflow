@@ -15,7 +15,9 @@
  */
 package ru.ilb.workflow.web;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 import javax.ws.rs.core.Response;
@@ -76,14 +78,19 @@ public class JsonSchemaResourceImpl implements JsonSchemaResource {
     private static void filterActivityVariables(WMSessionHandle shandle, JsonSchema jsonSchema, String processInstanceId, String activityInstanceId) throws Exception {
 
         Map<String, Boolean> activityVariables = XPDLUtils.getActivityVariables(shandle, processInstanceId, activityInstanceId);
-
+        List<String> required = new ArrayList<>();
         LinkedHashMap<String, Property> activityProperties = new LinkedHashMap();
         activityVariables.entrySet().forEach(av -> {
             Property property = jsonSchema.getProperty(av.getKey());
-            property.setReadOnly(av.getValue() ? true : null);
+            if (av.getValue()) {
+                property.setReadOnly(true);
+            } else {
+                required.add(av.getKey());
+            }
             activityProperties.put(av.getKey(), property);
         });
         jsonSchema.setProperties(activityProperties);
+        jsonSchema.setRequired(required);
     }
 
     private static JsonSchema getJsonSchemaProcess(WMSessionHandle shandle, SharkConnection sc, String processInstanceId) throws Exception {
