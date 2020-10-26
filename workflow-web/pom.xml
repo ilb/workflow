@@ -277,7 +277,7 @@
         <dependency>
             <groupId>ru.ilb.jsonschema</groupId>
             <artifactId>jsonschema</artifactId>
-            <version>1.1</version>
+            <version>1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
