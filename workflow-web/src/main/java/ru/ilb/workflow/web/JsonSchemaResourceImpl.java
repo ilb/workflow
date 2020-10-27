@@ -20,6 +20,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
+import javax.annotation.Resource;
+import javax.naming.NamingException;
 import javax.ws.rs.core.Response;
 import org.enhydra.jxpdl.elements.WorkflowProcess;
 import org.enhydra.shark.Shark;
@@ -37,6 +39,15 @@ import ru.ilb.workflow.core.SessionData;
 import ru.ilb.workflow.utils.XPDLUtils;
 
 public class JsonSchemaResourceImpl implements JsonSchemaResource {
+
+    @Resource(mappedName = "apps.workflow.jsonschema.property.string.pattern")
+    private String stringPattern;
+
+    @Resource(mappedName = "apps.workflow.jsonschema.property.string.patternDesc")
+    private String stringPatternDesc;
+
+    @Resource(mappedName = "apps.workflow.jsonschema.property.string.minLength")
+    private Integer stringMinLength;
 
     private final Supplier<SessionData> sessionHandleSupplier;
 
@@ -85,12 +96,36 @@ public class JsonSchemaResourceImpl implements JsonSchemaResource {
             if (av.getValue()) {
                 property.setReadOnly(true);
             } else {
+                //TODO: refactor to entitites
+                switch (property.getType()) {
+                    case STRING:
+                        property.setMinLength(lookupInteger("apps.workflow.jsonschema.property.string.minLength"));
+                        property.setPattern(lookupString("apps.workflow.jsonschema.property.string.pattern"));
+                        property.setPatternDesc(lookupString("apps.workflow.jsonschema.property.string.patternDesc"));
+                }
+                //property.setPattern(processInstanceId);
                 required.add(av.getKey());
             }
             activityProperties.put(av.getKey(), property);
         });
         jsonSchema.setProperties(activityProperties);
         jsonSchema.setRequired(required);
+    }
+
+    private static String lookupString(String name) {
+        try {
+            return ((String) new javax.naming.InitialContext().lookup(name));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    private static Integer lookupInteger(String name) {
+        try {
+            return ((Integer) new javax.naming.InitialContext().lookup(name));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     private static JsonSchema getJsonSchemaProcess(WMSessionHandle shandle, SharkConnection sc, String processInstanceId) throws Exception {

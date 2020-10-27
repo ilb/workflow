@@ -73,6 +73,24 @@
         <env-entry-value>${ru.bystrobank.apps.workflowfront.ws}/api/activityApi?processInstanceId=${processInstanceId}&amp;activityInstanceId=${activityInstanceId}&amp;activityDefinitionShortId=${activityDefinitionShortId}</env-entry-value>
     </env-entry>
     <env-entry>
+        <description>Паттерн для полей типа string в jsonschema</description>
+        <env-entry-name>apps.workflow.jsonschema.property.string.pattern</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>^(?!\s*$).+</env-entry-value>
+    </env-entry>
+    <env-entry>
+        <description>Описание паттерна для полей типа string в jsonschema</description>
+        <env-entry-name>apps.workflow.jsonschema.property.string.patternDesc</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>не пустое</env-entry-value>
+    </env-entry>
+    <env-entry>
+        <description>Минимальная длина для полей типа string в jsonschema</description>
+        <env-entry-name>apps.workflow.jsonschema.property.string.minLength</env-entry-name>
+        <env-entry-type>java.lang.Integer</env-entry-type>
+        <env-entry-value>1</env-entry-value>
+    </env-entry>
+    <env-entry>
         <description>Группа, дающая доступ к процессу независимо от офиса</description>
         <env-entry-name>allOfficesGroup</env-entry-name>
         <env-entry-type>java.lang.String</env-entry-type>
