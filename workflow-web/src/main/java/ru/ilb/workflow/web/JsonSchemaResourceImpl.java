@@ -33,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.jsonschema.jsonschema.JsonSchema;
 import ru.ilb.jsonschema.jsonschema.JsonType;
 import ru.ilb.jsonschema.jsonschema.Property;
+import ru.ilb.jsonschema.jsonschema.Uniforms;
 import ru.ilb.jsonschema.utils.JsonTypeConverter;
 import ru.ilb.workflow.api.JsonSchemaResource;
 import ru.ilb.workflow.core.SessionData;
@@ -95,6 +96,10 @@ public class JsonSchemaResourceImpl implements JsonSchemaResource {
             Property property = jsonSchema.getProperty(av.getKey());
             if (av.getValue()) {
                 property.setReadOnly(true);
+                //TEMP FIX readonly via disabled
+                Uniforms uniforms = new Uniforms();
+                uniforms.setDisabled(true);
+                property.setUniforms(uniforms);
             } else {
                 //TODO: refactor to entitites
                 switch (property.getType()) {
