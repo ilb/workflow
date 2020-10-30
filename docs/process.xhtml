@@ -1,127 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN" "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg-flat.dtd">
-<?xml-stylesheet type="text/xsl" href="/oooxhtml/oooxhtml.xsl"?><html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/oooxhtml/oooxhtml.css"/>
     <style type="text/css">@page {margin-top:2cm;margin-bottom:2cm;margin-left:2cm;margin-right:2cm;}</style>
     <title>Бизнес-процессы</title>
-    <meta name="generator" content="oooxhtml/1.4"/>
+    <meta name="generator" content="oooxhtml/1.2"/>
     <meta name="HeadURL" content="$HeadURL$"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   </head>
   <body>
     <div class="container text">
-      <h1 id="biznes-process_">
-        <a class="anchor" href="#biznes-process_">Бизнес-процессы</a>
-      </h1>
-      <h2 id="kak_opisat_">
-        <a class="anchor" href="#kak_opisat_">Как описать бизнес-процесс</a>
-      </h2>
-      <p>Действия выполняются в программе <a href="https://sourceforge.net/projects/jawe/">Together Workflow Editor</a></p>
-      <h3 id="sozdat__paket_processov">
-        <a class="anchor" href="#sozdat__paket_processov">Создать пакет процессов</a>
-      </h3>
-      <p>Меню File-&gt;New (<b>Ctrl-N</b>) </p>
-      <p>
-        <img alt="Изображение1" style="width:15.342cm;height:9.021cm" src="images/package_processes.png"/>
-      </p>
-      <p>В свойствах вкладки <b>General</b> указать <br/>Id - латинский идентификатор, например "<i>stockvaluation"</i><br/>Name - заполнить русское название процесса, например "<i>Оценка активности рынка по ЦБ"</i></p>
-      <p>
-        <img alt="Изображение2" style="width:17cm;height:6.807cm" src="images/package_general.png"/>
-      </p>
-      <h3 id="s">
-        <a class="anchor" href="#s">Сохранить пакет</a>
-      </h3>
-      <p>Меню File→Save (<b>Ctrl-S</b>) — указать каталог для сохранения.</p>
-      <h3 id="sozdat__process">
-        <a class="anchor" href="#sozdat__process">Создать процесс</a>
-      </h3>
-      <p>Меню Package -&gt; Processes, кнопка New<br/>В свойствах вкладки <b>General </b>указать<br/>Id - латинский идентификатор, например "<i>fairpricecalc"</i><br/>Name - заполнить русское имя, например "<i>Определение справедливой стоимости ценных бумаг</i>"</p>
-      <p>
-        <img alt="Изображение4" style="width:17cm;height:6.976cm" src="images/process_general.png"/>
-      </p>
-      <h3 id="dobavit__ispolnitelej">
-        <a class="anchor" href="#dobavit__ispolnitelej">Добавить исполнителей</a>
-      </h3>
-      <p>Меню: Package -&gt; Participants добавить вручную кнопкой New, выбрать тип <b>Role</b></p>
-      <p>Заполнить id = LDAP идентификатор группы, например <i>ru.bystrobank.apps.stockvaluation.securityaccounters</i></p>
-      <p>name = название группы, например "<i>Специалист по учету ценных бумаг</i>"<br/>Так же можно использовать <i>импорт во вкладке LDAP: Unique attribute search criteria: ввести полное имя группы, например ru.bystrobank.apps.stockvaluation.securityaccounters и нажать кнопку Import. </i></p>
-      <p>Для того, чтобы добавить исполнителя "Система" нужно выбрать тип <b>System</b>, ввести наименование "Система"</p>
-      <h3 id="dobavit__dorozki">
-        <a class="anchor" href="#dobavit__dorozki">Добавить дорожки</a>
-      </h3>
-      <p>Кнопка Insert Lane for Existing Participant </p>
-      <p><i>или добавить одну общую дорожку: кнопка Expression Lane</i>. </p>
-      <p>
-        <img alt="Изображение3" style="width:17cm;height:0.975cm" src="images/lane.png"/>
-      </p>
-      <h3 id="dobavit__aktivnosti">
-        <a class="anchor" href="#dobavit__aktivnosti">Добавить активности</a>
-      </h3>
-      <ol>
-        <li>
-          <p>Добавить начальную точку процесса</p>
-        </li>
-        <li>
-          <p>Добавить ручные активности</p>
-        </li>
-        <li>
-          <p>Добавить конечную точку процесса</p>
-        </li>
-      </ol>
-      <h3 id="dobavit_perehody">
-        <a class="anchor" href="#dobavit_perehody">Добавить переходы</a>
-      </h3>
-      <p>Добавить переходы между активностями (условные и безусловные). Для задания условий условного перехода (Conditioal Flow) в поле Expression нажать вторую слева кнопку "&gt;&gt;" и выбирать переменную. Можно писать выражения на javascript.</p>
-      <p>Для отображений на диаграмме процессов условий переходов нужно нажать кнопку отмеченную "Отображать условия" на рисунке ниже (Show transtion conditions).</p>
-      <p>
-        <img alt="Изображение5" style="width:18cm;height:1.115cm" src="images/activities.png"/>
-      </p>
-      <h3 id="dobavit__peremenn_e">
-        <a class="anchor" href="#dobavit__peremenn_e">Добавить переменные</a>
-      </h3>
-      <p>Меню Process -&gt; Workflow variables. Добавить переменную. В свойствах переменной указать<br/>Id - латинский идентификатор, например "<i>decision"</i><br/>Name - заполнить русское имя, например "<i>Решение</i>". Если значения Да/Нет то нужно выбирать тип Boolean.</p>
-      <h2 id="rabota_s_repozitoriem">
-        <a class="anchor" href="#rabota_s_repozitoriem">Работа с репозиторием</a>
-      </h2>
-      <p>Описания бизнес-процессов хранятся в репозитории. Схема работы с репозиторием бизнес-процессов:</p>
-      <ol>
-        <li>
-          <p>Вытянуть/обновить проект xpdlrepository из репозитория</p>
-          <ol>
-            <li>
-              <p>Если проект xpdlrepository еще не вытянут локально, выполнить команду: <span style="font-weight:bold;background-color:#ffff00;">svn co </span><a href="https://svn.ilb.ru/repos/xpdlrepository/trunk/xpdlrepository/"><span style="font-weight:bold;background-color:#ffff00;">https://svn.ilb.ru/repos/xpdlrepository/trunk/xpdlrepository/</span></a>. Данное действие нужно выполнить 1 раз в каталоге с рабочими файлами. В результате будет создан каталог xpdlrepository. </p>
-            </li>
-            <li>
-              <p>Если проект xpdlrepository уже вытянут локально, для обновления проекта (получения изменений других участников) нужно выполнить команду <span style="font-weight:bold;background-color:#ffff00;">svn up</span><b> </b>в каталоге xpdlrepository.</p>
-            </li>
-          </ol>
-        </li>
-        <li>
-          <p>Открыть в программе <a href="https://sourceforge.net/projects/jawe/">Together Workflow Editor</a> процесс для работы, например из каталога xpdlrepository/packages/correspondence.xpdl</p>
-        </li>
-        <li>
-          <p>Внести изменения в процесс</p>
-        </li>
-        <li>
-          <p>Закомитить изменения командой <span style="font-weight:bold;background-color:#ffff00;">svn ci</span>. В поле ввода указать сообщение к изменениям. После комита в репозиторий процесс будет автоматически загружен в машину бизнес-процессов на devel.</p>
-        </li>
-      </ol>
-      <h2 id="primer__processov">
-        <a class="anchor" href="#primer__processov">Примеры процессов</a>
-      </h2>
-      <h3 id="soglasovanie_dokumenta">
-        <a class="anchor" href="#soglasovanie_dokumenta">Согласование документа</a>
-      </h3>
-      <p>
-        <img alt="Изображение6" style="width:17cm;height:12.439cm" src="images/example_Document_approval.jpg"/>
-      </p>
-      <h3 id="priem_na_rabotu">
-        <a class="anchor" href="#priem_na_rabotu">Прием на работу</a>
-      </h3>
-      <p>
-        <img alt="Изображение7" style="width:16.722cm;height:22.093cm" src="images/example_New_Employee.jpg"/>
-      </p>
-    </div>
+    <script type="text/javascript">
+    window.location="../devmethodology/designtools/process.xhtml";
+    </script>
   </body>
 </html>
