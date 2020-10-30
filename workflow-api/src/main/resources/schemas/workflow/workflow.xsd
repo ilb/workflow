@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema elementFormDefault="qualified"
+            xmlns="urn:ru:ilb:workflow:workflow"
+            targetNamespace="urn:ru:ilb:workflow:workflow"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+>
+
+    <xsd:complexType name="ChangedProcessesRequest">
+        <xsd:sequence>
+            <xsd:element name="versionFrom" type="xsd:int" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>min version</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="versionTo" type="xsd:int" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>max version or all</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="limit" type="xsd:int" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>limit result</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="definitionId" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+                <xsd:annotation>
+                    <xsd:documentation>process definition Id</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:element name="changedProcessesRequest" type="ChangedProcessesRequest"/>
+
+    <xsd:complexType name="ChangedProcessesResponse">
+        <xsd:sequence>
+            <xsd:element name="versionFrom" type="xsd:int" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>min version</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="versionTo" type="xsd:int" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>max version</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+
+            <xsd:element name="processId" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+                <xsd:annotation>
+                    <xsd:documentation>Process id</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+
+    </xsd:complexType>
+    <xsd:element name="changedProcessesResponse" type="ChangedProcessesResponse"/>
+</xsd:schema>

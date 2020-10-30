@@ -6,15 +6,17 @@
     xmlns:html="http://www.w3.org/1999/xhtml"
     xmlns:view="urn:ru:ilb:workflow:view"
     xmlns:core="urn:ru:ilb:workflow:core"
+    xmlns:wf="urn:ru:ilb:workflow:workflow"
     xmlns:global="urn:ru:ilb:global"
     xmlns="http://wadl.dev.java.net/2009/02">
 
-    <doc title="BystroBank XPIL API">
-        <html:p>XPIL API</html:p>
+    <doc title="workflow api">
+        <html:p>workflow api</html:p>
     </doc>
     <grammars>
         <include href="global.xsd" />
         <include href="view.xsd" />
+        <include href="workflow.xsd" />
     </grammars>
     <resource_type id="processDefinitionResource">
         <doc title="processDefinition resource"></doc>
@@ -137,7 +139,7 @@
             </request>
             <response status="200">
                 <representation>
-<!--                    <param name="Location" style="header" type="xsd:string">
+                    <!--                    <param name="Location" style="header" type="xsd:string">
                         <doc>Redirect location to activity form service</doc>
                     </param>-->
                 </representation>
@@ -743,6 +745,23 @@
                 <param name="processInstanceId" style="template" type="xsd:string">
                     <doc>processInstanceId</doc>
                 </param>
+            </resource>
+        </resource>
+        <resource path="processhistories"  id="ru.ilb.workflow.api.ProcessHistoriesResource">
+            <resource path="changedprocesses">
+                <doc>
+                    Измененные процессы
+                </doc>
+                <method name="POST" id="getChangedProcesses">
+                    <request>
+                        <representation mediaType="application/xml" element="wf:changedProcessesRequest"/>
+                        <representation mediaType="*/*" />
+                    </request>
+                    <response status="200">
+                        <representation mediaType="application/xml" element="wf:changedProcessesResponse"/>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
             </resource>
         </resource>
     </resources>
