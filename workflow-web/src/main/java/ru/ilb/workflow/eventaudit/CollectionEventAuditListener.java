@@ -27,11 +27,9 @@ import org.enhydra.shark.eventaudit.notifying.EventAuditEvent;
 import org.enhydra.shark.eventaudit.notifying.EventAuditListener;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import ru.ilb.collection.api.CollectcasesResource;
 import ru.ilb.workflow.job.ReevaluateAssignments;
 import ru.ilb.workflow.toolagent.ProcessToolAgent;
-import ru.ilb.workflow.xpil.web.ProcessesResourceImpl;
 
 /**
  *
@@ -48,23 +46,25 @@ public class CollectionEventAuditListener implements EventAuditListener {
     public void eventAuditChanged(WMSessionHandle shandle, EventAuditEvent e) {
         try {
             WAPI wapi = SharkInterfaceWrapper.getShark().getWAPIConnection();
-
+            String processId = e.getPersister().getProcessId();
             if ("collection_activity".equals(e.getPersister().getProcessDefinitionId())) {
+
+                logger.info("collection_activity processId = " + processId + " start");
 
                 if (e.getPersister() instanceof StateEventAuditPersistenceObject && "processStateChanged".equals(e.getPersister().getType())) {
                     StateEventAuditPersistenceObject se = (StateEventAuditPersistenceObject) e.getPersister();
 
-                    String processId = e.getPersister().getProcessId();
                     WMAttribute clientUUIDAttr = wapi.getProcessInstanceAttributeValue(shandle, processId, "clientUUID");
                     String clientUUID = clientUUIDAttr.getValue() != null ? ((String[]) clientUUIDAttr.getValue())[0] : null;
+
+                    logger.info("collection_activity processId = " + processId + " UID = " + clientUUID + " se.getNewState() = " + se.getNewState());
 
                     if ("open.running".equals(se.getNewState()) && clientUUID != null) {
                         WMAttribute eventStartAttr = wapi.getProcessInstanceAttributeValue(shandle, processId, "EVENT_start");
                         if (eventStartAttr.getValue() != null) {
                             Date EVENT_start = new Date(((Date) eventStartAttr.getValue()).getTime());
-                            logger.info("new process EVENT_start = " + EVENT_start);
+                            logger.info("setNextActivityDate EVENT_start = " + EVENT_start + "processId = " + processId + " UID = " + clientUUID);
                             collectionProxy.setNextActivityDate(UUID.fromString(clientUUID), (Date) EVENT_start, Boolean.FALSE);
-                            logger.info("setLastActivityCommentDate processId = " + processId + " UID = " + clientUUID);
                             collectionProxy.setLastActivityCommentDate(UUID.fromString(clientUUID), (new Date()));
                         }
                     }
