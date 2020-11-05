@@ -277,7 +277,7 @@
         <dependency>
             <groupId>ru.ilb.jsonschema</groupId>
             <artifactId>jsonschema</artifactId>
-            <version>1.2-SNAPSHOT</version>
+            <version>1.4</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -292,7 +292,7 @@
         <dependency>
             <groupId>ru.ilb.callcontext</groupId>
             <artifactId>callcontext</artifactId>
-            <version>1.2-SNAPSHOT</version>
+            <version>1.2</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
