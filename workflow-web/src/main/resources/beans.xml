@@ -110,7 +110,7 @@
         <property name="formattedOutput" value="true"/>
         <property name="includeRoot" value="false"/>
     </bean>-->
-    <bean id="moxyJsonProvider" class="ru.ilb.common.jaxrs.json.MOXyJsonProvider">
+    <bean id="moxyJsonProvider" class="org.eclipse.persistence.jaxb.rs.MOXyJsonProvider">
         <!--        <property name="namespacePrefixMapper" ref="namespaceMap"/>
         <property name="namespaceSeparator" value=":"/>-->
         <property name="formattedOutput" value="true"/>
