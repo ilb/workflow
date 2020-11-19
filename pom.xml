@@ -24,7 +24,7 @@
         <doclint>none</doclint>
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
         <maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
-        <ilb-common.version>1.32</ilb-common.version>
+        <ilb-common.version>1.35-SNAPSHOT</ilb-common.version>
         <filedossier.version>1.8-SNAPSHOT</filedossier.version>
         <spring.boot.version>2.1.4.RELEASE</spring.boot.version>
         <maven.compiler.source>1.8</maven.compiler.source>
