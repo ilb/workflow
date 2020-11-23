@@ -110,7 +110,7 @@ import ru.ilb.workflow.xpil.utils.XpilpropUtils;
 @Component
 public class ProcessesResourceImpl implements ProcessesResource {
 
-    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ProcessesResourceImpl.class);
+    private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(ProcessesResourceImpl.class);
     @Autowired
     UsersResourceImpl userResourceImpl;
     @Autowired
@@ -400,8 +400,10 @@ public class ProcessesResourceImpl implements ProcessesResource {
             }
             processesResourceIntr.setSearchContext(searchContext);
             WMFilter procFilter = processesResourceIntr.getProcessFilter(shandle, filter);
-            ex.deleteProcessesWithFiltering(shandle, procFilter);
-            return "OK";
+            WMProcessInstance[] deleted = ex.deleteProcessesWithFiltering(shandle, procFilter).getArray();
+//            List<String> processIds = Stream.of(deleted).map(pi -> pi.getId()).collect(Collectors.toList());
+//            LOG.info("deleted processIds:" + String.join(",", processIds));
+            return "deleted " + deleted.length + " processed";
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -674,7 +676,7 @@ public class ProcessesResourceImpl implements ProcessesResource {
                 try {
                     nextAct = WAPIUtils.findNextActivity(shandle, AuthorizationHandler.getAuthorisedUser(), processId);
                 } catch (Exception ex) {
-                    logger.error("Exception in findNextActivity,continue without redirect", ex);
+                    LOG.error("Exception in findNextActivity,continue without redirect", ex);
                 }
                 if (nextAct != null) {
                     activityId = nextAct.getId();
@@ -757,7 +759,7 @@ public class ProcessesResourceImpl implements ProcessesResource {
             if ("collection_activity".equals(pdef.getId())) {
                 WMAttribute clientUUIDAttr = wapi.getProcessInstanceAttributeValue(shandle, processId, "clientUUID");
                 String clientUUID = clientUUIDAttr.getValue() != null ? ((String[]) clientUUIDAttr.getValue())[0] : null;
-                logger.info("setLastActivityCommentDate processId = " + processId + " UID = " + clientUUID);
+                LOG.info("setLastActivityCommentDate processId = " + processId + " UID = " + clientUUID);
                 collectionProxy.setLastActivityCommentDate(UUID.fromString(clientUUID), (new Date()));
             }
         } catch (Exception ex) {
