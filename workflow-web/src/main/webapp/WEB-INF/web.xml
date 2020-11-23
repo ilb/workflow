@@ -91,6 +91,12 @@
         <env-entry-value>1</env-entry-value>
     </env-entry>
     <env-entry>
+        <description>archiving of the process when deleting</description>
+        <env-entry-name>apps.workflow.DoArchivingOnFastProcessDeletion</env-entry-name>
+        <env-entry-type>java.lang.Boolean</env-entry-type>
+        <env-entry-value>false</env-entry-value>
+    </env-entry>
+    <env-entry>
         <description>Группа, дающая доступ к процессу независимо от офиса</description>
         <env-entry-name>allOfficesGroup</env-entry-name>
         <env-entry-type>java.lang.String</env-entry-type>
