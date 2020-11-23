@@ -403,7 +403,7 @@ public class ProcessesResourceImpl implements ProcessesResource {
             WMProcessInstance[] deleted = ex.deleteProcessesWithFiltering(shandle, procFilter).getArray();
 //            List<String> processIds = Stream.of(deleted).map(pi -> pi.getId()).collect(Collectors.toList());
 //            LOG.info("deleted processIds:" + String.join(",", processIds));
-            return "deleted " + deleted.length + " processed";
+            return Integer.toString(deleted.length);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
