@@ -37,9 +37,9 @@ import ru.ilb.filedossier.context.DossierContextImpl;
 import ru.ilb.filedossier.ddl.DossierDefinitionRepository;
 import ru.ilb.filedossier.ddl.FileDossierDefinitionRepository;
 import ru.ilb.filedossier.entities.DossierContext;
-import ru.ilb.filedossier.scripting.SubstitutorTemplateEvaluator;
-import ru.ilb.filedossier.scripting.TemplateEvaluator;
 import ru.ilb.filedossier.store.StoreFactory;
+import ru.ilb.scripting.evaluator.SubstitutorTemplateEvaluator;
+import ru.ilb.scripting.evaluator.TemplateEvaluator;
 
 /**
  *

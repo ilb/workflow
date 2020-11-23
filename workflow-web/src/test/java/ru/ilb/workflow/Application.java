@@ -15,16 +15,12 @@
  */
 package ru.ilb.workflow;
 
-import ru.ilb.workflow.*;
 import java.net.URI;
 import java.nio.file.Paths;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ImportResource;
-import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import ru.ilb.callcontext.core.CallContextFactoryImpl;
 import ru.ilb.callcontext.core.ContextParserImpl;
@@ -36,8 +32,8 @@ import ru.ilb.filedossier.context.DossierContextImpl;
 import ru.ilb.filedossier.ddl.DossierDefinitionRepository;
 import ru.ilb.filedossier.ddl.FileDossierDefinitionRepository;
 import ru.ilb.filedossier.entities.DossierContext;
-import ru.ilb.filedossier.scripting.SubstitutorTemplateEvaluator;
-import ru.ilb.filedossier.scripting.TemplateEvaluator;
+import ru.ilb.scripting.evaluator.SubstitutorTemplateEvaluator;
+import ru.ilb.scripting.evaluator.TemplateEvaluator;
 import ru.ilb.filedossier.store.StoreFactory;
 
 /**

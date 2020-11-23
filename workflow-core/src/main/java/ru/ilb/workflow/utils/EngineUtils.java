@@ -40,8 +40,8 @@ import org.enhydra.shark.webclient.business.prof.graph.SnapshotImageCreator;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.slf4j.LoggerFactory;
-import ru.ilb.filedossier.scripting.SubstitutorTemplateEvaluator;
-import ru.ilb.filedossier.scripting.TemplateEvaluator;
+import ru.ilb.scripting.evaluator.SubstitutorTemplateEvaluator;
+import ru.ilb.scripting.evaluator.TemplateEvaluator;
 
 /**
  *
