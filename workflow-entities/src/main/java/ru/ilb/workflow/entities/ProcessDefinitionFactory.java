@@ -25,5 +25,4 @@ public interface ProcessDefinitionFactory {
 
     Stream<ProcessDefinition> getProcessDefinitions(Boolean enabled, String packageId, String versionId, String processDefinitionId);
 
-
 }

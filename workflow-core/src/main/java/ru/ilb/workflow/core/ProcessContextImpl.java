@@ -91,7 +91,7 @@ public class ProcessContextImpl implements ProcessContext {
     @Override
     public ProcessContextAccessor accessor() {
         if (accessor == null) {
-            accessor = new ProcessContextAccessorImpl(this);;
+            accessor = new ProcessContextAccessorImpl(this);
         }
         return accessor;
     }

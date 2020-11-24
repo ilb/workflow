@@ -16,12 +16,11 @@
 package ru.ilb.workflow;
 
 import com.atomikos.icatch.jta.UserTransactionManager;
-import javax.sql.DataSource;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.naming.NamingException;
-import javax.naming.Reference;
+import javax.sql.DataSource;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 import ru.ilb.workflow.core.ProcessDefinitionFactoryImplTest;
 import ru.ilb.workflow.utils.EngineUtils;

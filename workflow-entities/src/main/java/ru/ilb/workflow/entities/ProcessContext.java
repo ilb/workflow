@@ -19,30 +19,34 @@ import java.util.Map;
 
 /**
  * Process context
+ *
  * @author slavb
  */
 public interface ProcessContext {
 
     /**
      * returns key-value process context properties
+     *
      * @return
      */
-    public Map<String, Object> getContext();
+    Map<String, Object> getContext();
 
     /**
      * updates context by provided variables
+     *
      * @param context
      */
-    public void setContext(Map<String, Object> context);
+    void setContext(Map<String, Object> context);
 
     /**
      * returns property types
      * map key is property name
      * map value is property java class
+     *
      * @return
      */
-    public Map<String, String> getContextSignature();
+    Map<String, String> getContextSignature();
 
-    public ProcessContextAccessor accessor();
+    ProcessContextAccessor accessor();
 
 }

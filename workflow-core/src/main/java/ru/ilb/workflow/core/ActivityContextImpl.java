@@ -17,10 +17,7 @@ package ru.ilb.workflow.core;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
-import ru.ilb.workflow.entities.ActivityDefinition;
 import ru.ilb.workflow.entities.ActivityInstance;
 import ru.ilb.workflow.entities.ProcessContext;
 import ru.ilb.workflow.entities.ProcessContextAccessor;
@@ -83,8 +80,8 @@ public class ActivityContextImpl implements ProcessContext {
 
     @Override
     public ProcessContextAccessor accessor() {
-        if (accessor==null) {
-            accessor = new ProcessContextAccessorImpl(this);;
+        if (accessor == null) {
+            accessor = new ProcessContextAccessorImpl(this);
         }
         return accessor;
 

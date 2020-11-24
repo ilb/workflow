@@ -17,8 +17,6 @@ package ru.ilb.workflow.core;
 
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
@@ -32,7 +30,7 @@ import ru.ilb.workflow.entities.FormalParameter;
 public class ActivityDefinitionImpl implements ActivityDefinition {
 
     private static final String EA_VAR_TO_PROCESS = "VariableToProcess_";
-    private static final String EA_VAR_TO_PROCESS_UPDATE = "VariableToProcess_UPDATE";
+//    private static final String EA_VAR_TO_PROCESS_UPDATE = "VariableToProcess_UPDATE";
     private static final String EA_VAR_TO_PROCESS_VIEW = "VariableToProcess_VIEW";
 
     private final WMSessionHandle shandle;

@@ -47,9 +47,12 @@ import ru.ilb.scripting.evaluator.TemplateEvaluator;
  *
  * @author slavb
  */
-public class EngineUtils {
+public final class EngineUtils {
 
     private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(EngineUtils.class);
+
+    private EngineUtils() {
+    }
 
     public static void stopEngine() {
         Scheduler scheduler = QuartzInitializer.getScheduler();
@@ -83,9 +86,10 @@ public class EngineUtils {
                 if (st.hasMoreTokens()) {
                     URI lurl = new URI(st.nextToken());
                     p.setProperty("LDAPHost", lurl.getHost());
-                    p.setProperty("LDAPPort", "" + ((lurl.getPort() != -1) ? lurl.getPort() : (lurl.getScheme().equals("ldaps") ? 636 : 389)));
+                    int port = (lurl.getPort() != -1) ? lurl.getPort() : (lurl.getScheme().equals("ldaps") ? 636 : 389);
+                    p.setProperty("LDAPPort", Integer.toString(port));
                     p.setProperty("LDAPProtocol", lurl.getScheme());
-                    p.setProperty("LDAPSearchBase", "" + lurl.getPath().substring(1)); //отрезаем лидирующий слеш-разделитель - он в путь попадает
+                    p.setProperty("LDAPSearchBase", lurl.getPath().substring(1)); //отрезаем лидирующий слеш-разделитель - он в путь попадает
                 }
             }
         } catch (URISyntaxException ex) {
@@ -187,9 +191,9 @@ public class EngineUtils {
         }
     }
 
-    public static void setXpdlRepository(String XPDLRepositoryPath) {
+    public static void setXpdlRepository(String xpdlRepositoryPath) {
 
-        if (XPDLRepositoryPath != null) {
+        if (xpdlRepositoryPath != null) {
             /*try {
                 Files.createSymbolicLink(Paths.get(contextPath, "xpdlrepository"), Paths.get(XPDLRepositoryPath));
             } catch (FileAlreadyExistsException ex) {
@@ -202,7 +206,7 @@ public class EngineUtils {
                 ut = SharkInterfaceWrapper.getUserTransaction();
                 ut.begin();
                 RepositoryMgr repMgr = RepositoryManager.getInstance();
-                repMgr.setPathToXPDLRepositoryFolder(XPDLRepositoryPath + "/packages");
+                repMgr.setPathToXPDLRepositoryFolder(xpdlRepositoryPath + "/packages");
                 ut.commit();
             } catch (Exception ex) {
                 LOG.error("Cannot setPathToXPDLRepositoryFolder ", ex);

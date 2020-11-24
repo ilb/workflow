@@ -34,8 +34,8 @@ public class DataFieldImpl implements DataField {
 //    protected Class dataType;
     protected final boolean isArray;
 
-    public DataFieldImpl(org.enhydra.jxpdl.elements.DataField dataField ) {
-        this.id= dataField.getName();
+    public DataFieldImpl(org.enhydra.jxpdl.elements.DataField dataField) {
+        this.id = dataField.getName();
         this.name = dataField.getDescription();
         this.isArray = dataField.getIsArray();
     }
@@ -46,7 +46,6 @@ public class DataFieldImpl implements DataField {
         this.isArray = isArray;
     }
 
-
     @Override
     public String getId() {
         return id;
@@ -56,7 +55,6 @@ public class DataFieldImpl implements DataField {
 //    public void setId(String id) {
 //        this.id = id;
 //    }
-
     @Override
     public String getName() {
         return name;
@@ -66,7 +64,6 @@ public class DataFieldImpl implements DataField {
 //    public void setName(String name) {
 //        this.name = name;
 //    }
-
 //    @Override
 //    public Class getDataType() {
 //        return dataType;
@@ -76,7 +73,6 @@ public class DataFieldImpl implements DataField {
 //    public void setDataType(Class dataType) {
 //        this.dataType = dataType;
 //    }
-
     @Override
     public boolean isIsArray() {
         return isArray;
@@ -86,5 +82,4 @@ public class DataFieldImpl implements DataField {
 //    public void setIsArray(boolean isArray) {
 //        this.isArray = isArray;
 //    }
-
 }

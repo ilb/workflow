@@ -23,15 +23,15 @@ import java.net.URI;
  */
 public interface CallContext {
 
-    public String getCallId();
+    String getCallId();
 
-    public String getCallerId();
+    String getCallerId();
 
-    public URI getCallbackUrl();
+    URI getCallbackUrl();
 
-    public URI getContextUrl();
+    URI getContextUrl();
 
-    public URI getResultUrl();
+    URI getResultUrl();
 
 }
 

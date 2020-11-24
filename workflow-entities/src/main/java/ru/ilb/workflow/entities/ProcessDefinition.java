@@ -15,7 +15,6 @@
  */
 package ru.ilb.workflow.entities;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,12 +39,14 @@ public interface ProcessDefinition {
 
     /**
      * get process formal parameters
+     *
      * @return
      */
     Map<String, FormalParameter> getFormalParameters();
 
     /**
      * get process variables
+     *
      * @return
      */
     Map<String, DataField> getDataFields();
@@ -63,5 +64,4 @@ public interface ProcessDefinition {
 //    void setVersion(String version);
 //
 //    void setEnabled(Boolean enabled);
-
 }

@@ -74,7 +74,7 @@ public class ProcessDefinitionFactoryImpl implements ProcessDefinitionFactory {
 
         WMFilter filter = null;
         if (!filters.isEmpty()) {
-            filter = fb.andForArray(shandle, filters.toArray(new WMFilter[filters.size()]));
+            filter = fb.andForArray(shandle, filters.toArray(new WMFilter[0]));
         }
         WMProcessDefinition[] mgrs = wapi.listProcessDefinitions(shandle, filter, false).getArray();
 

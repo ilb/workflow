@@ -22,7 +22,6 @@ package ru.ilb.workflow.entities;
 public interface DataField {
 
 //    Class getDataType();
-
     String getId();
 
     String getName();
@@ -36,5 +35,4 @@ public interface DataField {
 //    void setIsArray(boolean isArray);
 //
 //    void setName(String name);
-
 }

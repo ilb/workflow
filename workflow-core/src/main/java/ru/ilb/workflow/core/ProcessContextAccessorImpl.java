@@ -24,15 +24,13 @@ import ru.ilb.workflow.entities.ProcessContextAccessor;
  *
  * @author slavb
  */
-public class ProcessContextAccessorImpl implements ProcessContextAccessor{
+public class ProcessContextAccessorImpl implements ProcessContextAccessor {
 
     private final MapAccessor accessor;
 
     public ProcessContextAccessorImpl(ProcessContext context) {
         accessor = new MapAccessorImpl(context.getContext());
     }
-
-
 
     @Override
     public String getStringProperty(String string) {

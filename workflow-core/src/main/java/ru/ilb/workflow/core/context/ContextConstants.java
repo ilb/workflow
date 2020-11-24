@@ -19,14 +19,15 @@ package ru.ilb.workflow.core.context;
  *
  * @author slavb
  */
-public class ContextConstants {
+public final class ContextConstants {
 
-    final public static String CALLBACKURL_VARIABLE = "callbackUrl";
+    public static final String CALLBACKURL_VARIABLE = "callbackUrl";
 
-    final public static String CONTEXTURL_VARIABLE = "contextUrl";
+    public static final String CONTEXTURL_VARIABLE = "contextUrl";
 
-    final public static String RESULTURL_VARIABLE = "resultUrl";
+    public static final String RESULTURL_VARIABLE = "resultUrl";
+
+    private ContextConstants() {
+    }
 
 }
-
-

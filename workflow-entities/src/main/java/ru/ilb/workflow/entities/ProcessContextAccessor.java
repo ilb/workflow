@@ -21,6 +21,6 @@ package ru.ilb.workflow.entities;
  */
 public interface ProcessContextAccessor {
 
-    public String getStringProperty(String name);
+    String getStringProperty(String name);
 
 }

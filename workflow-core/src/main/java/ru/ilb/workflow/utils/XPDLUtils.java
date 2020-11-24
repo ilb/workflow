@@ -35,16 +35,20 @@ import org.enhydra.shark.api.client.wfservice.XPDLBrowser;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 import org.enhydra.shark.utilities.wmentity.WMEntityUtilities;
 import org.enhydra.shark.webclient.business.prof.graph.JaWEUtil;
+import ru.ilb.jfunction.collectors.MapCollectors;
 
 /**
  *
  * @author slavb
  */
-public class XPDLUtils {
+public final class XPDLUtils {
 
     private static final String EA_VAR_TO_PROCESS = "VariableToProcess_";
-    private static final String EA_VAR_TO_PROCESS_UPDATE = "VariableToProcess_UPDATE";
+//    private static final String EA_VAR_TO_PROCESS_UPDATE = "VariableToProcess_UPDATE";
     private static final String EA_VAR_TO_PROCESS_VIEW = "VariableToProcess_VIEW";
+
+    private XPDLUtils() {
+    }
 
     /**
      * getProcessDefinitionId
@@ -57,7 +61,9 @@ public class XPDLUtils {
     public static String getUniqueProcessDefinitionName(WMSessionHandle shandle, String processDefinitionId) throws Exception {
         XPDLBrowser xpdlb = SharkInterfaceWrapper.getShark().getXPDLBrowser();
         String[] parts = processDefinitionId.split("#");
-        String pkgId, pkgVer, pDefId;
+        String pkgId;
+        String pkgVer;
+        String pDefId;
         switch (parts.length) {
             case 2:
                 pkgId = parts[0];
@@ -165,7 +171,7 @@ public class XPDLUtils {
 
         Map<String, Boolean> result = Stream.of(extAttribs)
                 .filter(extAttrib -> extAttrib[0].startsWith(EA_VAR_TO_PROCESS))
-                .collect(MoreCollectors.toLinkedMap(extAttrib -> extAttrib[1], extAttrib -> extAttrib[0].equals(EA_VAR_TO_PROCESS_VIEW)));
+                .collect(MapCollectors.toLinkedMap(extAttrib -> extAttrib[1], extAttrib -> extAttrib[0].equals(EA_VAR_TO_PROCESS_VIEW)));
         return result;
     }
 

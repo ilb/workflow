@@ -21,14 +21,10 @@ package ru.ilb.workflow.entities;
  */
 public interface FormalParameter extends DataField {
 
-
     Mode getMode();
 
-
 //    void setMode(Mode mode);
-
-
-    public static enum Mode {
+    enum Mode {
         IN, OUT, INOUT;
     }
 

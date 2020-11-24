@@ -35,25 +35,25 @@ import org.enhydra.shark.utilities.wmentity.WMEntityUtilities;
  *
  * @author slavb
  */
-public class SharkUtils {
+public final class SharkUtils {
 
     /**
      * property for setting process name
      */
-    final public static String PROPERTY_NAME = "$name";
+    public static final String PROPERTY_NAME = "$name";
     /**
      * property for setting process description
      */
-    final public static String PROPERTY_DESCRIPTION = "$description";
+    public static final String PROPERTY_DESCRIPTION = "$description";
     /**
      * property for setting process priority
      */
-    final public static String PROPERTY_PRIORITY = "$priority";
+    public static final String PROPERTY_PRIORITY = "$priority";
     /**
      * property for setting process limit
      */
-    final public static String PROPERTY_LIMIT = "$limit";
-    final public static Map<String, String> PROPERTY_SIGNATURE = new HashMap<>();
+    public static final String PROPERTY_LIMIT = "$limit";
+    public static final Map<String, String> PROPERTY_SIGNATURE = new HashMap<>();
 
     static {
         PROPERTY_SIGNATURE.put(PROPERTY_NAME, String.class.getCanonicalName());
@@ -62,11 +62,16 @@ public class SharkUtils {
         PROPERTY_SIGNATURE.put(PROPERTY_LIMIT, java.sql.Timestamp.class.getCanonicalName());
     }
 
+
+    private SharkUtils() {
+    }
+
+
     public static void updateProcessInfo(WMSessionHandle shandle, String procId, Map<String, Object> procInfo) throws Exception {
         SharkConnection sc = Shark.getInstance().getSharkConnection();
         sc.attachToHandle(shandle);
 
-        if (procInfo != null && procInfo.size() > 0) {
+        if (procInfo != null && !procInfo.isEmpty()) {
             String proName = (String) procInfo.get(PROPERTY_NAME);
             String proDesc = (String) procInfo.get(PROPERTY_DESCRIPTION);
             Integer proPri = (Integer) procInfo.get(PROPERTY_PRIORITY);
@@ -98,7 +103,7 @@ public class SharkUtils {
         SharkConnection sc = Shark.getInstance().getSharkConnection();
         sc.attachToHandle(shandle);
 
-        if (actInfo != null && actInfo.size() > 0) {
+        if (actInfo != null && !actInfo.isEmpty()) {
             String actName = (String) actInfo.get(PROPERTY_NAME);
             String actDesc = (String) actInfo.get(PROPERTY_DESCRIPTION);
             Integer actPri = (Integer) actInfo.get(PROPERTY_PRIORITY);

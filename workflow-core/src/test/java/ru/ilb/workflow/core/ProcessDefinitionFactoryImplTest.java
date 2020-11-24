@@ -78,7 +78,7 @@ public class ProcessDefinitionFactoryImplTest {
         //ProcessDefinitionFactoryImpl instance = new ProcessDefinitionFactoryImpl(() -> new SessionDataImpl(System.getProperty("user.name"), new SessionHandleFunction()));
         String expResult = "simpletest";
         TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
-        Stream<ProcessDefinition> result = transactionTemplate.execute((status)
+        Stream<ProcessDefinition> result = transactionTemplate.execute(status
                 -> instance.getProcessDefinitions(enabled, packageId, versionId, processDefinitionId));
         assertEquals(expResult, result.findFirst().get().getId());
     }

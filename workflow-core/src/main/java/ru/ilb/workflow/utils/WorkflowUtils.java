@@ -27,17 +27,19 @@ import javax.naming.NamingException;
 import org.enhydra.shark.api.client.wfmc.wapi.WMSessionHandle;
 import ru.ilb.scripting.evaluator.SubstitutorTemplateEvaluator;
 import ru.ilb.scripting.evaluator.TemplateEvaluator;
-import ru.ilb.workflow.core.ProcessContextImpl;
-import ru.ilb.workflow.entities.ProcessContext;
 
 /**
  *
  * @author slavb
  */
-public class WorkflowUtils {
+public final class WorkflowUtils {
 
     private static final String WORKFLOW_ACTIVITYFORM = "WORKFLOW_ACTIVITYFORM";
     private static final String WORKFLOW_ACTIVITYAPI = "WORKFLOW_ACTIVITYAPI";
+
+    private WorkflowUtils() {
+    }
+
 
     /**
      * Get url to activity form
@@ -80,10 +82,10 @@ public class WorkflowUtils {
         Map<String, Object> params = new HashMap<>();
         //FIXME HARD CODE cut process Id
         if (processDefinitionId == null) {
-            processDefinitionId = processInstanceId.substring(processInstanceId.indexOf("_") + 1);
-            processDefinitionId = processDefinitionId.substring(processDefinitionId.indexOf("_") + 1);
+            processDefinitionId = processInstanceId.substring(processInstanceId.indexOf('_') + 1);
+            processDefinitionId = processDefinitionId.substring(processDefinitionId.indexOf('_') + 1);
         }
-        ProcessContext processContext = new ProcessContextImpl(shandle, processInstanceId);
+//        ProcessContext processContext = new ProcessContextImpl(shandle, processInstanceId);
 
         params.put("processDefinitionId", processDefinitionId);
         params.put("activityDefinitionId", activityDefinitionId);

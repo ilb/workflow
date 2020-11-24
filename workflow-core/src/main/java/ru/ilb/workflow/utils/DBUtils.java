@@ -24,7 +24,10 @@ import javax.transaction.UserTransaction;
  *
  * @author slavb
  */
-public class DBUtils {
+public final class DBUtils {
+
+    private DBUtils() {
+    }
 
     public static void rollback(UserTransaction ut) {
         try {

@@ -21,16 +21,16 @@ package ru.ilb.workflow.entities;
  */
 public interface ProcessInstance {
 
-    public String getId();
+    String getId();
 
-    public ProcessDefinition getProcessDefinition();
+    ProcessDefinition getProcessDefinition();
 
     /**
      * get activity context
      *
      * @return
      */
-    public ProcessContext getContext();
+    ProcessContext getContext();
 
     /**
      * get activity instance by id
@@ -38,24 +38,24 @@ public interface ProcessInstance {
      * @param activityInstanceId
      * @return
      */
-    public ActivityInstance getActivityInstance(String activityInstanceId);
+    ActivityInstance getActivityInstance(String activityInstanceId);
 
     /**
      * get next running accessible activity for session user
      *
      * @return
      */
-    public ActivityInstance getNextActivityInstance();
+    ActivityInstance getNextActivityInstance();
 
     /**
      * get RequesterUsername
      *
      * @return
      */
-    public String getRequesterUsername();
+    String getRequesterUsername();
 
     /**
      * starts the process
      */
-    public void start();
+    void start();
 }

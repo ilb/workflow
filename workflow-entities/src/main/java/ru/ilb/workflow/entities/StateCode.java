@@ -48,7 +48,7 @@ public enum StateCode {
     }
 
     public static StateCode fromValue(String v) {
-        for (StateCode c: StateCode.values()) {
+        for (StateCode c : StateCode.values()) {
             if (c.value.equals(v)) {
                 return c;
             }

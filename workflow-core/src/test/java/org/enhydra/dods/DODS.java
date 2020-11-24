@@ -43,18 +43,17 @@
  */
 package org.enhydra.dods;
 
+//CHECKSTYLE:OFF
+import com.lutris.appserver.server.sql.*;
+import com.lutris.logging.*;
+import com.lutris.util.*;
 import java.io.*;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.*;
-
 import javax.naming.Context;
 import javax.naming.InitialContext;
-
-import com.lutris.appserver.server.sql.*;
-import com.lutris.logging.*;
-import com.lutris.util.*;
 
 /**
  * Main DODS class. There are two modes of usage: non-threading and
@@ -81,6 +80,7 @@ import com.lutris.util.*;
  *
  * </blockquote>
  */
+@SuppressWarnings("PMD")
 public class DODS {
 
     /**
@@ -808,3 +808,4 @@ public class DODS {
     }
 
 }
+//CHECKSTYLE:ON

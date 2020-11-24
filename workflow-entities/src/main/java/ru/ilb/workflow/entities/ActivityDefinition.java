@@ -23,20 +23,22 @@ import java.util.Map;
  * @author slavb
  */
 public interface ActivityDefinition {
+
     /**
      * Get activity definition variables
      * map key is variable name
      * map value is "readonly" state: true - variable is readonly, false - variable can be updated
+     *
      * @return
      */
     Map<String, Boolean> getActivityVariables();
 
-
     /**
      * get activity formal parameters
+     *
      * @return
      */
     List<FormalParameter> getFormalParameters();
 
-    public String getExtendedAttribute(String name);
+    String getExtendedAttribute(String name);
 }

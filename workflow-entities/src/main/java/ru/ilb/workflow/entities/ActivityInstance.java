@@ -23,39 +23,39 @@ import java.net.URI;
  */
 public interface ActivityInstance {
 
-    public String getId();
+    String getId();
 
-    public ActivityDefinition getActivityDefinition();
+    ActivityDefinition getActivityDefinition();
 
     /**
      * get process instance of activity
      *
      * @return
      */
-    public ProcessInstance getProcessInstance();
+    ProcessInstance getProcessInstance();
 
     /**
      * get context of activity (values as raw objects, e.g. dates)
      *
      * @return
      */
-    public ProcessContext getContext();
+    ProcessContext getContext();
 
     /**
      * get serialized context of activity (values as primitives / strings)
      *
      * @return
      */
-    public ProcessContext getSerializedContext();
+    ProcessContext getSerializedContext();
 
     /**
      * get link to activity form
      *
      * @return
      */
-    public URI getActivityFormUrl();
+    URI getActivityFormUrl();
 
-    public String getActivityDefinitionId();
+    String getActivityDefinitionId();
 
     State getState();
 
@@ -65,27 +65,27 @@ public interface ActivityInstance {
      * @param state requested state
      * @return is state changed
      */
-    public boolean changeState(String state);
+    boolean changeState(String state);
 
     /**
      * completes the activity
      *
      * @return is state changed (e.g. complete completed activity result = false)
      */
-    public boolean complete();
+    boolean complete();
 
     /**
      * terminates the activity
      *
      * @return is state changed (e.g. teriminate terminated activity result = false)
      */
-    public boolean terminate();
+    boolean terminate();
 
     /**
      * aborts the activity
      *
      * @return is state changed (e.g. abort aborted activity result = false)
      */
-    public boolean abort();
+    boolean abort();
 
 }

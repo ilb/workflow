@@ -49,16 +49,16 @@ public class DODSPersistenceManager extends DODSSelectivePersistenceManager {
                     + " JOIN SHKActivities on SHKActivities." + oidCol + "=SHKDeadlines.Activity"
                     + " WHERE SHKDeadlines.TimeLimit < " + timeLimitBoundary
                     + " AND (SHKActivities.State=" + actNotStartedState + " OR SHKActivities.State=" + actRunningState + "))";
-            ProcessDO[] DOs = null;
+            ProcessDO[] dos = null;
             ProcessQuery query = null;
             query = new ProcessQuery();
             QueryBuilder qb = query.getQueryBuilder();
             qb.addWhere(sqlWherePS);
             qb.addWhere(sqlWhereDL);
-            DOs = query.getDOArray();
-            if (DOs != null) {
-                for (int i = 0; i < DOs.length; i++) {
-                    ret.add(DOs[i].getId());
+            dos = query.getDOArray();
+            if (dos != null) {
+                for (int i = 0; i < dos.length; i++) {
+                    ret.add(dos[i].getId());
                 }
             }
             return ret;
