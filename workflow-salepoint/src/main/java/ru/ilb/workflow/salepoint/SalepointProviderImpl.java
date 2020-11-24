@@ -15,19 +15,15 @@
  */
 package ru.ilb.workflow.salepoint;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.inject.Named;
 import javax.naming.NamingException;
-import static org.apache.commons.lang3.Range.is;
 import org.apache.commons.text.StringSubstitutor;
 import ru.ilb.jfunction.map.converters.XmlToMapFunction;
 import ru.ilb.uriaccessor.URIAccessor;
@@ -85,7 +81,7 @@ public class SalepointProviderImpl implements SalepointProvider {
 
         if (salepointList != null) {
             return salepointList.stream()
-                    .filter((sp -> sp != null))
+                    .filter(sp -> sp != null)
                     .map(sp -> sp.get("name")).collect(Collectors.toList());
         }
         return Collections.EMPTY_LIST;

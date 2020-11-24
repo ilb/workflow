@@ -17,14 +17,16 @@ package ru.ilb.workflow.salepoint;
 
 /**
  * Поставщик точки продаж
+ *
  * @author slavb
  */
 public interface SalepointProvider {
 
     /**
      * Получить точку продаж по пользователю
+     *
      * @param authorisedUser
      * @return
      */
-    public String getSalepointUid(String authorisedUser);
+    String getSalepointUid(String authorisedUser);
 }

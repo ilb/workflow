@@ -16,8 +16,6 @@
 package ru.ilb.workflow.context;
 
 import java.util.Map;
-import java.util.function.Supplier;
-import ru.ilb.workflow.salepoint.SalepointProvider;
 
 /**
  *
@@ -25,5 +23,5 @@ import ru.ilb.workflow.salepoint.SalepointProvider;
  */
 public interface InitialProcessContextProvider {
 
-    public Map<String, Object> getContextData();
+    Map<String, Object> getContextData();
 }
