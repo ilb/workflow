@@ -16,7 +16,7 @@
 package ru.ilb.workflow.core;
 
 import java.util.Map;
-import ru.ilb.jfunction.map.converters.ObjectMapToSerializedMapFunction;
+import ru.ilb.jfunction.marshallers.map.ObjectMapToSerializedMapFunction;
 import ru.ilb.workflow.entities.ProcessContext;
 import ru.ilb.workflow.entities.ProcessContextAccessor;
 

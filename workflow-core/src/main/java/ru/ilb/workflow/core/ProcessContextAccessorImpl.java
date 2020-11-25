@@ -15,8 +15,8 @@
  */
 package ru.ilb.workflow.core;
 
-import ru.ilb.jfunction.map.accessors.MapAccessor;
-import ru.ilb.jfunction.map.accessors.MapAccessorImpl;
+import ru.ilb.jfunction.map.MapAccessor;
+import ru.ilb.jfunction.map.MapAccessorImpl;
 import ru.ilb.workflow.entities.ProcessContext;
 import ru.ilb.workflow.entities.ProcessContextAccessor;
 

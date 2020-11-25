@@ -35,7 +35,7 @@ import org.enhydra.shark.api.client.wfservice.XPDLBrowser;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 import org.enhydra.shark.utilities.wmentity.WMEntityUtilities;
 import org.enhydra.shark.webclient.business.prof.graph.JaWEUtil;
-import ru.ilb.jfunction.collectors.MapCollectors;
+import ru.ilb.jfunction.map.MapCollectors;
 
 /**
  *

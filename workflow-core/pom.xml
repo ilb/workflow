@@ -37,7 +37,7 @@
         </dependency>
         <dependency>
             <groupId>ru.ilb.jfunction</groupId>
-            <artifactId>jfunction-collectors</artifactId>
+            <artifactId>jfunction-marshallers-map</artifactId>
             <version>${jfunction.version}</version>
         </dependency>
         <dependency>

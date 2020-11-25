@@ -50,7 +50,7 @@
         </dependency>
         <dependency>
             <groupId>ru.ilb.jfunction</groupId>
-            <artifactId>jfunction-map</artifactId>
+            <artifactId>jfunction-marshallers-map</artifactId>
             <version>${jfunction.version}</version>
         </dependency>
     </dependencies>

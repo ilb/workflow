@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 import javax.inject.Named;
 import javax.naming.NamingException;
 import org.apache.commons.text.StringSubstitutor;
-import ru.ilb.jfunction.map.converters.XmlToMapFunction;
+import ru.ilb.jfunction.marshallers.map.XmlToMapFunction;
 import ru.ilb.uriaccessor.URIAccessor;
 import ru.ilb.uriaccessor.URIAccessorFactory;
 
