@@ -12,6 +12,8 @@
         <shark.version>6.3-4</shark.version>
         <twe.version>5.3.1</twe.version>
         <atomikos.version>4.0.6</atomikos.version>
+        <pmd.skip>true</pmd.skip>
+        <checkstyle.skip>true</checkstyle.skip>
     </properties>
     <dependencies>
         <!-- JDK 11 -->
@@ -32,7 +34,7 @@
             <version>2.0b1</version>
             <type>jar</type>
         </dependency>
-<!--        <dependency>
+        <!--        <dependency>
             <groupId>com.atomikos</groupId>
             <artifactId>transactions</artifactId>
             <version>${atomikos.version}</version>
@@ -443,7 +445,7 @@
             <artifactId>tro-dbmanager</artifactId>
             <version>${shark.version}</version>
         </dependency>
-<!--        <dependency>
+        <!--        <dependency>
             <groupId>org.enhydra.shark.contrib</groupId>
             <artifactId>tro-localcontext</artifactId>
             <version>${shark.version}</version>

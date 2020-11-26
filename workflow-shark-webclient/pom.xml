@@ -8,6 +8,10 @@
     </parent>
     <artifactId>workflow-shark-webclient</artifactId>
     <packaging>jar</packaging>
+    <properties>
+        <pmd.skip>true</pmd.skip>
+        <checkstyle.skip>true</checkstyle.skip>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
