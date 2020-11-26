@@ -49,7 +49,7 @@ public class ActivityFormResourceImpl implements ActivityFormResource {
 
     private final static JsonMapObjectReaderWriter JSONREADERWRITER = new JsonMapObjectReaderWriter();
 
-    private final Supplier <SessionData> sessionHandleSupplier;
+    private final Supplier<SessionData> sessionHandleSupplier;
 
     private final String processInstanceId;
 
@@ -64,7 +64,7 @@ public class ActivityFormResourceImpl implements ActivityFormResource {
     @Inject
     private ProcessInstanceMapper processInstanceMapper;
 
-    public ActivityFormResourceImpl(Supplier <SessionData> sessionHandleSupplier, String processInstanceId, String activityInstanceId) {
+    public ActivityFormResourceImpl(Supplier<SessionData> sessionHandleSupplier, String processInstanceId, String activityInstanceId) {
         this.sessionHandleSupplier = sessionHandleSupplier;
         this.processInstanceId = processInstanceId;
         this.activityInstanceId = activityInstanceId;

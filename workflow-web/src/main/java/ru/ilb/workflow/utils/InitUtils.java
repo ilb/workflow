@@ -53,6 +53,7 @@ public class InitUtils {
         EngineUtils.setSnapshotImageCreator();
         initEventListeners();
     }
+
     public void stopEngine() {
         EngineUtils.stopEngine();
     }

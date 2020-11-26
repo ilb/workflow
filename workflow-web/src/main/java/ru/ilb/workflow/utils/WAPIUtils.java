@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.cxf.jaxrs.json.basic.JsonMapObject;
 import org.enhydra.shark.api.client.wfmc.wapi.WAPI;
 import org.enhydra.shark.api.client.wfmc.wapi.WMActivityInstance;
 import org.enhydra.shark.api.client.wfmc.wapi.WMActivityInstanceState;
@@ -69,7 +68,7 @@ public class WAPIUtils {
             String contextUrlDecode = URLDecoder.decode(contextUrl, "UTF-8");
             processId = findProcessInstanceCtx(shandle, packageId, versionId, processDefinitionId, callbackUrl, contextUrlDecode);
             if (processId == null) {
-                Map<String,Object> processData = new HashMap<>();
+                Map<String, Object> processData = new HashMap<>();
                 processData.put(ContextConstants.CONTEXTURL_VARIABLE, contextUrlDecode);
                 processData.put(ContextConstants.CALLBACKURL_VARIABLE, URLDecoder.decode(callbackUrl, "UTF-8"));
                 processId = createProcessInstance(shandle, packageId, versionId, processDefinitionId, processData);
@@ -102,7 +101,7 @@ public class WAPIUtils {
         }
     }
 
-    public static String createProcessInstance(WMSessionHandle shandle, String packageId, String versionId, String processDefinitionId, Map<String,Object> processData) {
+    public static String createProcessInstance(WMSessionHandle shandle, String packageId, String versionId, String processDefinitionId, Map<String, Object> processData) {
         Objects.requireNonNull(processDefinitionId, "processDefinitionId required");
         try {
 

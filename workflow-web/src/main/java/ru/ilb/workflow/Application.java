@@ -48,7 +48,7 @@ import ru.ilb.scripting.evaluator.TemplateEvaluator;
 @SpringBootApplication
 @EnableJdbcRepositories(basePackages = "ru.ilb.filedossier.context.persistence.repositories")
 @ImportResource("classpath:beans.xml")
-@EnableTransactionManagement(mode=AdviceMode.ASPECTJ)
+@EnableTransactionManagement(mode = AdviceMode.ASPECTJ)
 @EnableCaching(mode = AdviceMode.ASPECTJ)
 public class Application {
 
@@ -96,16 +96,18 @@ public class Application {
     public javax.validation.Validator localValidatorFactoryBean() {
         return new LocalValidatorFactoryBean();
     }
-	@Bean
-	public Caffeine caffeineConfig() {
-	    return Caffeine.newBuilder().expireAfterWrite(5, TimeUnit.MINUTES);
-	}
-	@Bean
-	public CacheManager cacheManager(Caffeine caffeine) {
-	    CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
-	    caffeineCacheManager.setCaffeine(caffeine);
-	    return caffeineCacheManager;
-	}
+
+    @Bean
+    public Caffeine caffeineConfig() {
+        return Caffeine.newBuilder().expireAfterWrite(5, TimeUnit.MINUTES);
+    }
+
+    @Bean
+    public CacheManager cacheManager(Caffeine caffeine) {
+        CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
+        caffeineCacheManager.setCaffeine(caffeine);
+        return caffeineCacheManager;
+    }
 //    @Bean
 //    public ContainersResource containersResource(){
 //        return new ContainersResourceImpl();

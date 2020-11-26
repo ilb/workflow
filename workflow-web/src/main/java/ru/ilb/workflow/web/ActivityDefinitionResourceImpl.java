@@ -26,7 +26,7 @@ import ru.ilb.workflow.view.ActivityDefinition;
 
 public class ActivityDefinitionResourceImpl implements ActivityDefinitionResource {
 
-    private final Supplier <SessionData> sessionHandleSupplier;
+    private final Supplier<SessionData> sessionHandleSupplier;
 
     private final String processInstanceId;
 
@@ -34,7 +34,7 @@ public class ActivityDefinitionResourceImpl implements ActivityDefinitionResourc
 
     private final String activityDefinitionId;
 
-    public ActivityDefinitionResourceImpl(Supplier <SessionData> sessionHandleSupplier, String processDefinitionId, String activityDefinitionId, String processInstanceId) {
+    public ActivityDefinitionResourceImpl(Supplier<SessionData> sessionHandleSupplier, String processDefinitionId, String activityDefinitionId, String processInstanceId) {
         this.sessionHandleSupplier = sessionHandleSupplier;
         this.processDefinitionId = processDefinitionId;
         this.activityDefinitionId = activityDefinitionId;

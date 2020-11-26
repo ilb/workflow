@@ -30,14 +30,13 @@ import org.enhydra.shark.api.common.SharkConstants;
 import org.enhydra.shark.utilities.interfacewrapper.SharkInterfaceWrapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
-import ru.ilb.jfunction.map.accessors.MapAccessor;
 import ru.ilb.jsonschema.utils.JsonMapMarshaller;
 import ru.ilb.workflow.api.ActivityFormResource;
 import ru.ilb.workflow.api.ActivityInstanceResource;
 import ru.ilb.workflow.api.JsonSchemaResource;
 import ru.ilb.workflow.api.ProcessContextResource;
-import ru.ilb.workflow.core.context.ContextConstants;
 import ru.ilb.workflow.core.SessionData;
+import ru.ilb.workflow.core.context.ContextConstants;
 import ru.ilb.workflow.entities.ProcessContextAccessor;
 import ru.ilb.workflow.entities.ProcessInstance;
 import ru.ilb.workflow.entities.ProcessInstanceFactory;
@@ -50,7 +49,7 @@ import ru.ilb.workflow.view.ActivityInstance;
 
 public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
 
-    private final Supplier <SessionData> sessionHandleSupplier;
+    private final Supplier<SessionData> sessionHandleSupplier;
 
     private final String processInstanceId;
 
@@ -71,7 +70,7 @@ public class ActivityInstanceResourceImpl implements ActivityInstanceResource {
     @Inject
     private ProcessInstanceFactory processContextFactory;
 
-    public ActivityInstanceResourceImpl(Supplier <SessionData> sessionHandleSupplier, String processInstanceId, String activityInstanceId) {
+    public ActivityInstanceResourceImpl(Supplier<SessionData> sessionHandleSupplier, String processInstanceId, String activityInstanceId) {
         this.sessionHandleSupplier = sessionHandleSupplier;
         this.processInstanceId = processInstanceId;
         this.activityInstanceId = activityInstanceId;
