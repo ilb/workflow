@@ -24,7 +24,7 @@ import ru.ilb.workflow.entities.ProcessInstance;
  *
  * @author slavb
  */
-public class ProcessInstanceMock implements ProcessInstance{
+public class ProcessInstanceMock implements ProcessInstance {
 
     ProcessContext context;
 

@@ -27,7 +27,7 @@ import ru.ilb.workflow.entities.State;
  *
  * @author slavb
  */
-public class ActivityInstanceMock implements ActivityInstance{
+public class ActivityInstanceMock implements ActivityInstance {
 
     ProcessContext context;
 

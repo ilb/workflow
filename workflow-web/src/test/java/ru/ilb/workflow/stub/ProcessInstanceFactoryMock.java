@@ -22,9 +22,10 @@ import ru.ilb.workflow.entities.ProcessInstanceFactory;
 
 /**
  * Strub factory for tests
+ *
  * @author slavb
  */
-public class ProcessInstanceFactoryMock implements ProcessInstanceFactory{
+public class ProcessInstanceFactoryMock implements ProcessInstanceFactory {
 
     ProcessInstance processInstance;
 
