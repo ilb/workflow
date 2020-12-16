@@ -40,7 +40,7 @@ var activityId = null;
                     }, "*");
 
                 } else if (newstate) {
-                    var webrootpath = document.location.toString().substr(0, document.location.toString().indexOf("/workflow/") + 9);
+                    var webrootpath = document.location.toString().substr(0, document.location.toString().indexOf("/workflow-web/") + 13);
                     document.location = webrootpath + "/web/processes/workList";
                 } else {
                     document.location.reload();
@@ -58,7 +58,7 @@ var activityId = null;
         var arr = window.location.toString().match(/\/processes\/(.*)\/activities\/([^?\/]*)/);
         processId = arr[1];
         activityId = arr[2];
-        var baseAddress = document.location.toString().substr(0, document.location.toString().indexOf("/workflow/") + 13) + "/processes";
+        var baseAddress = document.location.toString().substr(0, document.location.toString().indexOf("/workflow-web/") + 17) + "/processes";
         processResource = new workflow_api_ProcessResource(baseAddress);
     });
     window.addEventListener('unload', function () {

@@ -57,7 +57,7 @@
     window.addEventListener('load', function () {
         var arr = window.location.toString().match(/\/processes\/([^?]*)/);
         processId = arr[1];
-        var baseAddress = document.location.toString().substr(0, document.location.toString().indexOf("/workflow/") + 13) + "/processes";
+        var baseAddress = document.location.toString().substr(0, document.location.toString().indexOf("/workflow-web/") + 17) + "/processes";
         processResource = new workflow_api_ProcessResource(baseAddress);
 
         document.querySelector("#reevaluateAssignmentsBtn").addEventListener("click", reevaluateAssignmentsBtnOnClick);

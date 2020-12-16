@@ -27,7 +27,7 @@
             if (location) {
                 document.location = location;
             } else {
-                var webrootpath = document.location.toString().substr(0, document.location.toString().indexOf("/workflow/") + 9);
+                var webrootpath = document.location.toString().substr(0, document.location.toString().indexOf("/workflow-web/") + 13);
                 document.location = webrootpath + "/web/processes/workList";
             }
         } else {
@@ -48,7 +48,7 @@
     }
 
     window.addEventListener('load', function () {
-        var baseAddress = document.location.toString().substr(0, document.location.toString().indexOf("/workflow/") + 13) + "/packages";
+        var baseAddress = document.location.toString().substr(0, document.location.toString().indexOf("/workflow-web/") + 17) + "/packages";
         packagesResource = new workflow_api_PackagesResource(baseAddress);
 
         var buttons = document.querySelectorAll(".disableProcessDefinition");
