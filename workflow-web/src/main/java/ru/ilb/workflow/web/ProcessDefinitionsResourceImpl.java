@@ -16,6 +16,7 @@
 package ru.ilb.workflow.web;
 
 import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.Path;
@@ -25,6 +26,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ilb.workflow.api.ProcessDefinitionResource;
 import ru.ilb.workflow.api.ProcessDefinitionsResource;
+import ru.ilb.workflow.entities.ProcessDefinition;
+import ru.ilb.workflow.entities.ProcessDefinitionFactory;
 import ru.ilb.workflow.mappers.ProcessDefinitionMapper;
 import ru.ilb.workflow.session.SessionDataProvider;
 import ru.ilb.workflow.utils.ProcessDefinitionFilter;
@@ -45,6 +48,9 @@ public class ProcessDefinitionsResourceImpl extends JaxRsContextResource impleme
     private ProcessDefinitionMapper processDefinitionMapper;
 
     @Inject
+    private ProcessDefinitionFactory processDefinitionFactory;
+
+    @Inject
     private ApplicationContext applicationContext;
 
     @Override
@@ -58,6 +64,9 @@ public class ProcessDefinitionsResourceImpl extends JaxRsContextResource impleme
     @Transactional
     public ProcessDefinitions getProcessDefinitions(String x_remote_user, Boolean enabled, String packageId, String versionId, String processDefinitionId) {
         try {
+
+//            Stream<ProcessDefinition> processDefinitions = processDefinitionFactory.getProcessDefinitions(enabled, packageId, versionId, processDefinitionId);
+
             WMSessionHandle shandle = sessionDataProvider.getSessionData().getSessionHandle();
             WMProcessDefinition[] wmProcessDefinitions = WAPIUtils.getProcessDefinitions(shandle, enabled, packageId, versionId, processDefinitionId);
             String userName = sessionDataProvider.getSessionData().getAuthorisedUser();

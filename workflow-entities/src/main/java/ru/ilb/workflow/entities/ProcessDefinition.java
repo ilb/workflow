@@ -15,6 +15,7 @@
  */
 package ru.ilb.workflow.entities;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -50,6 +51,18 @@ public interface ProcessDefinition {
      * @return
      */
     Map<String, DataField> getDataFields();
+
+    /**
+     * get process access level
+     * @return
+     */
+    String getAccessLevel();
+
+    /**
+     * get process responsibles
+     * @return
+     */
+    List<String> getResponsibles();
 
 //    void setDefinitionName(String definitionName);
 //

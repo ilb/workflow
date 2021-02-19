@@ -1,7 +1,7 @@
 /workflow-api/target/
 /workflow-xpil-api/target/
-workflow-engine/target/
-workflow-shark/target/
+/workflow-engine/target/
+/workflow-shark/target/
 /workflow/target/
 /workflow-web/target/
 /workflow-web/bower_components/
@@ -13,3 +13,4 @@ workflow-shark/target/
 /workflow-core/target/
 /workflow-entities/target/
 /workflow-shark-webclient/target/
+/workflow-core/transaction-logs/

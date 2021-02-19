@@ -15,10 +15,15 @@
  */
 package ru.ilb.workflow.core;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.enhydra.jxpdl.XMLCollectionElement;
+import org.enhydra.jxpdl.XMLUtil;
 import org.enhydra.jxpdl.elements.DataFields;
+import org.enhydra.jxpdl.elements.Responsible;
 import org.enhydra.jxpdl.elements.WorkflowProcess;
 import org.enhydra.shark.api.client.wfmc.wapi.WAPI;
 import org.enhydra.shark.api.client.wfmc.wapi.WMProcessDefinition;
@@ -136,6 +141,23 @@ public class ProcessDefinitionImpl implements ProcessDefinition {
                                 df -> (DataField) df
                         ));
         return result;
+    }
+
+    @Override
+    public List<String> getResponsibles() {
+        List resps = XMLUtil.getResponsibles(getWorkflowProcess());
+        Iterator it = resps.iterator();
+        List<String> responsibles = new ArrayList<>();
+        while (it.hasNext()) {
+            Responsible resp = (Responsible) it.next();
+            responsibles.add(resp.toValue());
+        }
+        return responsibles;
+    }
+
+    @Override
+    public String getAccessLevel() {
+        return getWorkflowProcess().getAccessLevel();
     }
 
 }
