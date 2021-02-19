@@ -30,7 +30,7 @@
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
         <maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
         <ilb-common.version>1.35</ilb-common.version>
-        <filedossier.version>1.8-SNAPSHOT</filedossier.version>
+        <filedossier.version>1.8</filedossier.version>
         <spring.boot.version>2.1.4.RELEASE</spring.boot.version>
         <eclipselink.version>2.7.6</eclipselink.version>
         <maven.compiler.source>1.8</maven.compiler.source>
